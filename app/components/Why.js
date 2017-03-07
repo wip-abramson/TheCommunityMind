@@ -26,7 +26,7 @@ Why.PropTypes = {
   question: PropTypes.string.isRequired,
   onUpdateQuestion: PropTypes.func.isRequired,
   placeholder: PropTypes.string.isRequired,
-  onAskQuestion: PropTypes.func.isRequired
+  onAskQuestion: PropTypes.func.isRequired,
   hows: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number.isRequired,
     question: PropTypes.string.isRequired

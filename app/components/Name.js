@@ -8,7 +8,7 @@ var Name = function () {
   return (
     <div style={style}>
       <a  href="/">
-        <h1>Inquisitive Minds</h1>
+        <h1>Collective Inquiry</h1>
         <h4>Open sourcing creativity</h4>
       </a>
     </div>

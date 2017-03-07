@@ -16,9 +16,6 @@ var MainHeader = function () {
     <div style={style}>
       <Name/>
       <LoginButtons/>
-
-
-
     </div>
   )
 }

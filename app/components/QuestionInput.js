@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 
 function QuestionInput (props) {
   return (
@@ -23,5 +23,13 @@ function QuestionInput (props) {
       </div>
   )
 }
+
+QuestionInput.PropTypes = {
+  question: PropTypes.string.isRequired,
+  onUpdateQuestion: PropTypes.func.isRequired,
+  placeholder: PropTypes.string.isRequired,
+  onAskQuestion: PropTypes.func.isRequired
+}
+
 
 module.exports = QuestionInput;

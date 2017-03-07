@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
 import QuestionInput from '../components/QuestionInput'
 
@@ -18,9 +18,18 @@ function WhatIf (props) {
         })}
       </ul>
     </div>
-
-
   )
+}
+
+WhatIf.PropTypes = {
+  question: PropTypes.string.isRequired,
+  onUpdateQuestion: PropTypes.func.isRequired,
+  placeholder: PropTypes.string.isRequired,
+  onAskQuestion: PropTypes.func.isRequired
+  whatIfs: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    question: PropTypes.string.isRequired
+  }).isRequired).isRequired
 }
 
 module.exports = WhatIf;

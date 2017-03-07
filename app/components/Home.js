@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
 
 
@@ -15,6 +15,13 @@ function Home (props) {
 
     </div>
   )
+}
+
+Home.PropTypes = {
+  topics: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired
+  }).isRequired).isRequired
 }
 
 module.exports = Home;

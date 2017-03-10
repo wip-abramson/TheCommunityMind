@@ -7,17 +7,20 @@ import WhyContainer from '../containers/WhyContainer'
 import WhatIfContainer from '../containers/WhatIfContainer'
 import HowContainer from '../containers/HowContainer'
 
-var routes = (
-  <Router history={browserHistory}>
-    <Route path='/' component={Main}>
-      <IndexRoute component={HomeContainer} />
-      <Route path='/topic' component={TopicContainer}>
-        <IndexRoute component={WhyContainer} />
-        <Route path='/why' component={WhatIfContainer} />
-        <Route path='/whatif' component={HowContainer} />
+var AppRouter = function (){
+  return (
+    <Router history={browserHistory}>
+      <Route path='/' component={Main}>
+        <IndexRoute component={HomeContainer} />
+        <Route path='/topic' component={TopicContainer}>
+          <IndexRoute component={WhyContainer} />
+          <Route path='/why' component={WhatIfContainer} />
+          <Route path='/whatif' component={HowContainer} />
+        </Route>
       </Route>
-    </Route>
-  </Router>
-)
+    </Router>
+  )
+}
 
-module.exports = routes;
+
+module.exports = AppRouter;

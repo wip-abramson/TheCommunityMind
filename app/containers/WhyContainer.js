@@ -1,55 +1,26 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import Why from '../components/Why'
+import addWhy from '../actions/Why'
 
-var WhyContainer = React.createClass({
-
-  getInitialState: function () {
-    return {
-      whys: [
-        {
-          id: 1,
-          question: "this is a why"
-        },
-        {
-          id: 2,
-          question: "this is another why"
-        }
-      ],
-      newWhy: ""
-    }
-  },
-  handleUpdateQuestion: function (e) {
-    this.setState({
-      whys: this.state.whys,
-      newWhy: e.target.value
-    })
-  },
-
-  handleAskQuestion: function (e) {
-    e.preventDefault()
-    var whys = this.state.whys
-    var question = this.state.newWhy;
-    var newWhy = {
-      id: 3,
-      question: question
-    }
-    console.log(newWhy);
-    whys.push(newWhy);
-    console.log(whys);
-    this.setState({
-      whys: whys,
-      newWhy: ""
-    })
-  },
-
-  render: function() {
-    return <Why
-      placeholder="Why ...?"
-      onUpdateQuestion={this.handleUpdateQuestion}
-      onAskQuestion={this.handleAskQuestion}
-      question={this.state.newWhy}
-      whys={this.state.whys}/>
+const mapStateToProps =  function(state) {
+  return {
+    whys: state.whys,
   }
-})
+}
+
+const mapDispatchToProps = function(dispatch) {
+  return {
+    onAskQuestion: function(question) {
+      console.log("Dispatching add why")
+      dispatch(addWhy(question))
+    }
+  }
+}
+
+const WhyContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Why);
 
 module.exports = WhyContainer;

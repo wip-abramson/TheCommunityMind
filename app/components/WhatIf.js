@@ -7,9 +7,7 @@ function WhatIf (props) {
     <div>
       <h2>What If?</h2>
       <QuestionInput
-        question={props.question}
-        onUpdateQuestion={props.onUpdateQuestion}
-        placeholder={props.placeholder}
+        placeholder="What if ...?"
         onAskQuestion={props.onAskQuestion}>
       </QuestionInput>
       <ul>
@@ -22,9 +20,6 @@ function WhatIf (props) {
 }
 
 WhatIf.PropTypes = {
-  question: PropTypes.string.isRequired,
-  onUpdateQuestion: PropTypes.func.isRequired,
-  placeholder: PropTypes.string.isRequired,
   onAskQuestion: PropTypes.func.isRequired,
   whatIfs: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number.isRequired,

@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react'
 
 function QuestionInput (props) {
+  let input;
+
   return (
     <div className="col-sm-12">
         <form onSubmit={function(e) {
@@ -9,14 +11,15 @@ function QuestionInput (props) {
           // if (props.question.trim()) {
           //   return;
           // }
-          props.onAskQuestion(props.question)
+          props.onAskQuestion(input.value)
         }}>
           <div className="form-group">
             <input
+              ref={node => {
+                input = node
+              }}
               className="form-control"
               placeholder={props.placeholder}
-              onChange={props.onUpdateQuestion}
-              value={props.question}
               type="text" />
           </div>
           <div className="form-group col-sm-4 col-sm-offset-4">
@@ -32,8 +35,8 @@ function QuestionInput (props) {
 }
 
 QuestionInput.PropTypes = {
-  question: PropTypes.string.isRequired,
-  onUpdateQuestion: PropTypes.func,
+  // question: PropTypes.string.isRequired,
+  // onUpdateQuestion: PropTypes.func,
   placeholder: PropTypes.string.isRequired,
   onAskQuestion: PropTypes.func.isRequired
 }

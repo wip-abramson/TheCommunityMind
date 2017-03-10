@@ -3,7 +3,14 @@ import React, { PropTypes } from 'react'
 function QuestionInput (props) {
   return (
     <div className="col-sm-12">
-        <form onSubmit={props.onAskQuestion}>
+        <form onSubmit={function(e) {
+          e.preventDefault()
+          // console.log("Props",props)
+          // if (props.question.trim()) {
+          //   return;
+          // }
+          props.onAskQuestion(props.question)
+        }}>
           <div className="form-group">
             <input
               className="form-control"
@@ -26,7 +33,7 @@ function QuestionInput (props) {
 
 QuestionInput.PropTypes = {
   question: PropTypes.string.isRequired,
-  onUpdateQuestion: PropTypes.func.isRequired,
+  onUpdateQuestion: PropTypes.func,
   placeholder: PropTypes.string.isRequired,
   onAskQuestion: PropTypes.func.isRequired
 }

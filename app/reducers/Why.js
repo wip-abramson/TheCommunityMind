@@ -1,8 +1,9 @@
-import { ADD_WHY } from '../actions/Why'
+import { ADD_WHY, UDPDATE_CURRENT_WHY } from '../actions/Why'
+
 
 
 var currentId = 0;
-export default function whys (state = [], action) {
+export function whys (state = [], action) {
 
   switch (action.type) {
     case ADD_WHY:
@@ -18,4 +19,13 @@ export default function whys (state = [], action) {
       return state;
   }
 
+}
+
+export function currentWhy (state=null, action) {
+  switch (action.type) {
+    case UDPDATE_CURRENT_WHY:
+        return Object.assign({}, state, action.why)
+    default:
+      return state;
+  }
 }

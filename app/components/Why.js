@@ -13,7 +13,15 @@ function Why (props) {
       </QuestionInput>
       <ul>
         {props.whys.map(function(why){
-          return <li key={'why-' + why.id}><Link to="why">{why.question}</Link></li>
+          return (
+            <li key={'why-' + why.id}>
+              <Link
+                to="why"
+                onClick={() => {
+                  props.onSelectWhy(why)
+              }}>
+            {why.question}</Link>
+            </li>)
         })}
       </ul>
     </div>
@@ -21,6 +29,7 @@ function Why (props) {
 }
 
 Why.PropTypes = {
+  onSelectWhy: PropTypes.func.isRequired,
   onAskQuestion: PropTypes.func.isRequired,
   hows: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number.isRequired,

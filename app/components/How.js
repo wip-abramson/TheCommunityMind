@@ -12,7 +12,7 @@ var How = function(props) {
 
         </QuestionInput>
         <ul>
-          {props.hows.map(function(how){
+          {props.hows.map(function(how) {
             return <li key={"how-"+how.id}>{how.question}</li>
           })}
         </ul>

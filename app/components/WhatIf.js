@@ -12,7 +12,16 @@ function WhatIf (props) {
       </QuestionInput>
       <ul>
         {props.whatIfs.map(function(whatif){
-          return <li key={"whatif-"+whatif.id}><Link to="whatif">{whatif.question}</Link></li>
+          return (
+            <li key={"whatif-"+whatif.id}>
+              <Link
+                to="whatif"
+                onClick={() => {
+                  props.onSelectWhatIf(whatif)
+                }}>
+                {whatif.question}
+              </Link>
+            </li>)
         })}
       </ul>
     </div>
@@ -20,6 +29,7 @@ function WhatIf (props) {
 }
 
 WhatIf.PropTypes = {
+  onSelectWhatIf: PropTypes.func.isRequired,
   onAskQuestion: PropTypes.func.isRequired,
   whatIfs: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number.isRequired,

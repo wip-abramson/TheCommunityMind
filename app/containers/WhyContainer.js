@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Why from '../components/Why'
-import addWhy from '../actions/Why'
+import { addWhy, updateCurrentWhy } from '../actions/Why'
 
 const mapStateToProps =  function(state) {
   return {
@@ -14,6 +14,10 @@ const mapDispatchToProps = function(dispatch) {
     onAskQuestion: function(question) {
       console.log("Dispatching add why")
       dispatch(addWhy(question))
+    },
+    onSelectWhy:function(why) {
+      console.log("Selecting Why", why)
+      dispatch(updateCurrentWhy(why))
     }
   }
 }

@@ -12,6 +12,7 @@ function QuestionInput (props) {
           //   return;
           // }
           props.onAskQuestion(input.value)
+          input.value="";
         }}>
           <div className="form-group">
             <input

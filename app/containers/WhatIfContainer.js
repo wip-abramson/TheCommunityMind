@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import WhatIf from '../components/WhatIf'
-import addWhatIf from '../actions/WhatIf'
+import { addWhatIf, updateCurrentWhatIf } from '../actions/WhatIf'
 
 const mapStateToProps = function(state) {
   return {
@@ -13,6 +13,9 @@ const mapDispatchToProps = function(dispatch) {
   return {
     onAskQuestion: function(question) {
       dispatch(addWhatIf(question))
+    },
+    onSelectWhatIf: function(whatIf) {
+      dispatch(updateCurrentWhatIf(whatIf))
     }
   }
 }

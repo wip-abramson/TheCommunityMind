@@ -1,28 +1,16 @@
 import React from 'react'
 import Topic from '../components/Topic'
+import { connect } from 'react-redux'
 
-var TopicContainer = React.createClass({
-  contextTypes: {
-    router: React.PropTypes.object.isRequired
-  },
-  getInitialState: function() {
-    return {
-      name: "Topic Name",
-      id: 1,
-      whys: [{
-        id: 1,
-        question: "this is a why"
-      }]
-    }
-  },
-
-
-  render: function () {
-    console.log(this.props);
-    return (
-      <Topic name={this.state.name} children={this.props.children} />
-    )
+const mapStateToProps = function(state) {
+  return {
+    topicName: state.currentTopic.name
   }
-})
+}
+
+
+const TopicContainer = connect(
+  mapStateToProps
+)(Topic)
 
 module.exports = TopicContainer;

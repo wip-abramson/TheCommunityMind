@@ -5,7 +5,7 @@ function Topic (props) {
 
   return (
     <div>
-      <h1 className="text-center">{props.name}</h1>
+      <h1 className="text-center">{props.topicName}</h1>
       {props.children}
     </div>
 

@@ -1,6 +1,6 @@
 import { ADD_TOPIC, UDPDATE_CURRENT_TOPIC } from '../actions/Topic'
 
-var currentId
+var currentId= 0;
 export function topics (state= [], action) {
 
   switch (action.type) {
@@ -9,7 +9,7 @@ export function topics (state= [], action) {
         ...state,
         {
           id: ++currentId,
-          topic: action.topic
+          name: action.topic
         }
       ]
   default:

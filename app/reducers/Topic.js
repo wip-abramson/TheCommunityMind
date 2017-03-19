@@ -17,7 +17,7 @@ export function topics (state= [], action) {
   }
 }
 
-export function currentTopic (state= null, action) {
+export function currentTopic (state=null, action) {
   switch (action.type) {
     case UDPDATE_CURRENT_TOPIC:
       return Object.assign({}, state, action.topic)

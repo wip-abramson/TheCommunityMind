@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import WhatIf from '../components/WhatIf'
 import { addWhatIf, updateCurrentWhatIf } from '../actions/WhatIf'
+import { setTopicHeaderType, TOPIC_HEADERS } from '../actions/TopicHeader'
 
 const mapStateToProps = function(state) {
   return {
@@ -16,6 +17,7 @@ const mapDispatchToProps = function(dispatch) {
     },
     onSelectWhatIf: function(whatIf) {
       dispatch(updateCurrentWhatIf(whatIf))
+      dispatch(setTopicHeaderType(TOPIC_HEADERS.HOW))
     }
   }
 }

@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import Why from '../components/Why'
 import { addWhy, updateCurrentWhy } from '../actions/Why'
+import { setTopicHeaderType, TOPIC_HEADERS } from '../actions/TopicHeader'
 
 const mapStateToProps =  function(state) {
   return {
@@ -18,6 +19,7 @@ const mapDispatchToProps = function(dispatch) {
     onSelectWhy:function(why) {
       console.log("Selecting Why", why)
       dispatch(updateCurrentWhy(why))
+      dispatch(setTopicHeaderType(TOPIC_HEADERS.WHATIF))
     }
   }
 }

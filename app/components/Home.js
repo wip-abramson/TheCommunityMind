@@ -12,23 +12,25 @@ function Home (props) {
           placeholder = "New topic"
         />
       </div>
+      <div>
+        <ul>
+          {props.topics.map(function(topic) {
 
-      <ul>
-        {props.topics.map(function(topic) {
+            return (
+              <li key={topic.id}>
+                <Link
+                  onClick={() => {
+                    console.log("Selecting topic")
+                    props.onSelectTopic(topic)
+                  }}
+                  to='topic'>
+                  {topic.name}
+                </Link>
+            </li>)
+          })}
+        </ul>
+      </div>
 
-          return (
-            <li key={topic.id}>
-              <Link
-                onClick={() => {
-                  console.log("Selecting topic")
-                  props.onSelectTopic(topic)
-                }}
-                to='topic'>
-                {topic.name}
-              </Link>
-          </li>)
-        })}
-      </ul>
 
     </div>
   )

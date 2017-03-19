@@ -13,7 +13,7 @@ function TextInput (props) {
           props.onSubmit(input.value)
           input.value="";
         }}>
-          <div className="form-group">
+          <div className="form-group col-sm-8">
             <input
               ref={node => {
                 input = node
@@ -22,7 +22,7 @@ function TextInput (props) {
               placeholder={props.placeholder}
               type="text" />
           </div>
-          <div className="form-group col-sm-4 col-sm-offset-4">
+          <div className="form-group col-sm-4">
             <button
               className="btn btn-block btn-success"
               type="submit">

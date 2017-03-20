@@ -1,12 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import WhatIf from '../components/WhatIf'
+import QuestionView from '../components/QuestionView'
 import { addWhatIf, updateCurrentWhatIf } from '../actions/WhatIf'
 import { setTopicHeaderType, TOPIC_HEADERS } from '../actions/TopicHeader'
 
 const mapStateToProps = function(state) {
   return {
-    whatIfs: state.whatIfs,
+    questions: state.whatIfs,
+    placeholder: "What If ...?",
+    link: "/whatif",
   }
 }
 
@@ -15,7 +17,7 @@ const mapDispatchToProps = function(dispatch) {
     onAskQuestion: function(question) {
       dispatch(addWhatIf(question))
     },
-    onSelectWhatIf: function(whatIf) {
+    onSelectQuestion: function(whatIf) {
       dispatch(updateCurrentWhatIf(whatIf))
       dispatch(setTopicHeaderType(TOPIC_HEADERS.HOW))
     }
@@ -25,6 +27,6 @@ const mapDispatchToProps = function(dispatch) {
 const WhatIfContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(WhatIf)
+)(QuestionView)
 
 module.exports = WhatIfContainer;

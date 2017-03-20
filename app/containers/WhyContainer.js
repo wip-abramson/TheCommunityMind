@@ -1,12 +1,16 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Why from '../components/Why'
+import QuestionView from '../components/QuestionView'
 import { addWhy, updateCurrentWhy } from '../actions/Why'
 import { setTopicHeaderType, TOPIC_HEADERS } from '../actions/TopicHeader'
 
 const mapStateToProps =  function(state) {
   return {
-    whys: state.whys,
+    questions: state.whys,
+    placeholder: "Why ...?",
+    link: "/why",
+
   }
 }
 
@@ -16,7 +20,7 @@ const mapDispatchToProps = function(dispatch) {
       console.log("Dispatching add why")
       dispatch(addWhy(question))
     },
-    onSelectWhy:function(why) {
+    onSelectQuestion:function(why) {
       console.log("Selecting Why", why)
       dispatch(updateCurrentWhy(why))
       dispatch(setTopicHeaderType(TOPIC_HEADERS.WHATIF))
@@ -27,6 +31,6 @@ const mapDispatchToProps = function(dispatch) {
 const WhyContainer = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Why);
+)(QuestionView);
 
 module.exports = WhyContainer;

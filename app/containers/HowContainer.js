@@ -1,12 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import How from '../components/How'
+import QuestionView from '../components/QuestionView'
 import { addHow } from '../actions/How'
 
 
 const mapStateToProps =  function(state) {
   return {
-    hows: state.hows,
+    questions: state.hows,
+    placeholder: "How ...?",
   }
 }
 
@@ -23,7 +24,7 @@ const mapDispatchToProps = function(dispatch) {
 const HowContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(How)
+)(QuestionView)
 
 
 module.exports = HowContainer;

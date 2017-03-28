@@ -1,17 +1,20 @@
 import React from 'react'
 import MainHeader from '../components/MainHeader'
+import FullDiv from './generic/FullDiv'
+import { Grid } from 'react-bootstrap'
 
-var Main = React.createClass({
-  render: function() {
-    return (
+function Main (props) {
+  return (
+    <FullDiv className='main-container container-full'>
+      <MainHeader className='container-fluid'></MainHeader>
+      <FullDiv className="container-fluid">
 
-      <div className='main-container '>
-        <MainHeader className='container-fluid'></MainHeader>
+        {props.children}
+      </FullDiv>
 
-        {this.props.children}
-      </div>
-    )
-  }
-})
+    </FullDiv>
+  )
+}
+
 
 module.exports = Main;

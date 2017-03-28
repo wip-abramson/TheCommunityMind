@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { addTopic, updateCurrentTopic } from '../actions/Topic'
 import { setTopicHeaderType, TOPIC_HEADERS } from '../actions/TopicHeader'
 
+
 const mapStateToProps = function(state) {
   return {
     topics: state.topics

@@ -15,7 +15,9 @@ const mapStateToProps = function(state) {
 
 const mapDispatchToProps = function(dispatch) {
   return {
+
     onUpdateHeader: function(headerType) {
+        console.log(headerType)
       dispatch(setTopicHeaderType(headerType))
     }
   }

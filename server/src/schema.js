@@ -8,8 +8,27 @@ import { resolvers } from './resolvers';
 const typeDefs = `
 type Topic {
    id: ID!                # "!" denotes a required field
-   name: String
+   name: String!
+   whys: [Why]
 }
+
+type Why {
+    id: ID!
+    question: String!
+    whatifs: [WhatIf]
+}
+
+type WhatIf {
+    id: ID!
+    question: String!
+    hows: [How]
+}
+
+type How {
+    id: ID!
+    question: String!
+}
+
 # This type specifies the entry points into our API. In this case
 # there is only one - "channels" - which returns a list of channels.
 type Query {

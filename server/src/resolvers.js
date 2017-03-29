@@ -1,3 +1,4 @@
+import { Topic } from './db'
 
 const topics = [{
     id: 1,
@@ -12,15 +13,18 @@ let nextId = 3;
 
 export const resolvers = {
     Query: {
-        topics: () => {
-            return topics
-        }
+        topics(){
+            return Topic.findAll();
+        },
+        // whys: () => {
+        //
+        // }
     },
     Mutation: {
         addTopic: (root, args) => {
-            const newTopic = { id: nextId++, name: args.name};
-            topics.push(newTopic);
-            return newTopic;
+            const newTopic = {name: args.name};
+            return Topic.create(newTopic);
+
         }
     }
 }

@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react'
-import TextInput from './TextInput'
+import TextInput from './generic/TextInput'
 
 function QuestionInput (props) {
   let input;

@@ -4,13 +4,17 @@ import FullDiv from './generic/FullDiv'
 import { Grid } from 'react-bootstrap'
 
 function Main (props) {
+  var style = {
+    padding: 20
+
+  }
   return (
-    <FullDiv className='main-container container-full'>
-      <MainHeader className='container-fluid'></MainHeader>
-      <FullDiv className="container-fluid">
+    <FullDiv>
+      <MainHeader></MainHeader>
+      <Grid style={style}>
 
         {props.children}
-      </FullDiv>
+      </Grid>
 
     </FullDiv>
   )

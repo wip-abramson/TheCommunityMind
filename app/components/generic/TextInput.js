@@ -40,4 +40,4 @@ TextInput.PropTypes = {
   onSubmit: PropTypes.func.isRequired
 }
 
-module.exports = TextInput;
+export default TextInput;

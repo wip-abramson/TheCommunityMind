@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react'
-import { Link } from 'react-router'
+import HeaderLink from './HeaderLink'
 import { TOPIC_HEADERS } from '../actions/TopicHeader'
+import { Well, Button } from 'react-bootstrap'
 
 function TopicHeader (props) {
 
@@ -9,22 +10,22 @@ function TopicHeader (props) {
   }
 
   var component = []
-  component.push(<Link key="1" to="/topic" onClick={() => {props.onUpdateHeader(TOPIC_HEADERS.WHY)}}>{props.topicName}</Link>)
+  component.push(<HeaderLink key="1" to="/topic" onClick={() => {props.onUpdateHeader(TOPIC_HEADERS.WHY)}}>{props.topicName}</HeaderLink>)
 
 
   switch (props.headerType) {
     case TOPIC_HEADERS.WHY:
 
-      component.push(<p key="2">Why?</p>)
+      component.push(<HeaderLink key="2" to="/topic">Why?</HeaderLink>)
       break;
     case TOPIC_HEADERS.WHATIF:
-      component.push(<Link key="2" to="/why" onClick={() => {props.onUpdateHeader(TOPIC_HEADERS.WHATIF)}}>{props.why}</Link>)
-      component.push(<p key="3">What if?</p>)
+      component.push(<HeaderLink key="2" to="/why" onClick={() => {props.onUpdateHeader(TOPIC_HEADERS.WHATIF)}}>{props.why}</HeaderLink>)
+      component.push(<HeaderLink key="3" to="/whatif">What if?</HeaderLink>)
       break;
     case TOPIC_HEADERS.HOW:
-      component.push(<Link key="2" to="/why" onClick={() => {props.onUpdateHeader(TOPIC_HEADERS.WHATIF)}}>{props.why}</Link>)
-      component.push(<Link key="3" to="/whatif" onClick={() => {props.onUpdateHeader(TOPIC_HEADERS.HOW)}}>{props.whatIf}</Link>)
-      component.push(<p key="4">How?</p>)
+      component.push(<HeaderLink key="2" to="/why" onClick={() => {props.onUpdateHeader(TOPIC_HEADERS.WHATIF)}}>{props.why}</HeaderLink>)
+      component.push(<HeaderLink key="3" to="/whatif" onClick={() => {props.onUpdateHeader(TOPIC_HEADERS.HOW)}}>{props.whatIf}</HeaderLink>)
+      component.push(<HeaderLink key="4" to="/whatif">How?</HeaderLink>)
       break;
     default:
 
@@ -32,9 +33,9 @@ function TopicHeader (props) {
 
 
   return (
-    <div style={style}>
+    <Well style={style}>
       {component}
-    </div>
+    </Well>
 
   )
 }

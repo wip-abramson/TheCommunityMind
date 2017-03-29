@@ -7,7 +7,7 @@ import { setTopicHeaderType, TOPIC_HEADERS } from '../actions/TopicHeader'
 
 const mapStateToProps = function(state) {
   return {
-    topics: state.topics
+    // topics: state.topics
   }
 }
 

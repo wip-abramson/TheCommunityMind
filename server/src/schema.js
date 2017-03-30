@@ -32,7 +32,7 @@ type How {
 
 type Query {
    topics: [Topic]    # "[]" means this is a list of channels
-   whys(topicId: ID): [Why]
+   whys(topicId: ID!): [Why]
    whatIfs(whyId: ID): [WhatIf]
    hows(whatIfId: ID): [How]
 }

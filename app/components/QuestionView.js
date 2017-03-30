@@ -5,12 +5,21 @@ import { Link } from 'react-router'
 
 function QuestionView(props) {
 
-
+    console.log(props.refetchQuery)
+    if (props.loading) {
+        return <p>Loading ...</p>;
+    }
+    if (props.error) {
+        return <p>{props.error.message}</p>;
+    }
   return (
     <div>
       <QuestionInput
         placeholder={props.placeholder}
-        onAskQuestion={props.onAskQuestion}>
+        onAskQuestion={props.onAskQuestion}
+        mutate={props.mutate}
+        refetchQuery={props.refetchQuery}
+      >
       </QuestionInput>
       <ul>
         {props.questions.map(function(question){

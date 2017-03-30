@@ -68,13 +68,22 @@ WhatIfModel.hasMany(HowModel, {as: 'Hows'});
 HowModel.belongsTo(WhatIfModel);
 
 Conn.sync({force: true}).then(() => {
-    return Topic.create({
+    return [
+        Topic.create({
             name: "Peace"
         }).then((topic) => {
-        topic.createWhy({
-            question: "Why can't we all live in peace"
-        })
-    })
+            topic.createWhy({
+                question: "Why can't we all live in peace"
+            })
+        }),
+        Topic.create({
+            name: "Inquiry"
+        }).then((topic) => {
+            topic.createWhy({
+                question: "Why do we not question more"
+            })
+        }),
+    ]
 
 
 })

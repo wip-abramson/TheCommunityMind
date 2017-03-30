@@ -6,9 +6,13 @@ export const resolvers = {
         topics(){
             return Topic.findAll();
         },
-        whys(args) {
+        whys: function(obj, args, info) {
+
             return Why.findAll({
-                where: args
+                where: {
+                    "topicId": args.topicId
+                }
+
             });
 
         },
@@ -29,6 +33,9 @@ export const resolvers = {
             return Topic.create(newTopic);
 
         },
+        addWhy: (root, args) => {
+            return Why.create({question: args.question})
+        }
     },
 
     Topic: {

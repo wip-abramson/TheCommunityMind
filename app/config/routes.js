@@ -3,8 +3,8 @@ import { Router, Route, browserHistory, IndexRoute } from 'react-router'
 import MainContainer from '../containers/MainContainer'
 import HomeContainer from '../containers/HomeContainer'
 import Topic from '../components/Topic'
-import WhyContainer from '../containers/WhyContainer'
-import WhatIfContainer from '../containers/WhatIfContainer'
+import WhyContainer from '../containers/Why'
+import WhatIfContainer from '../containers/WhatIf'
 import HowContainer from '../containers/HowContainer'
 
 var AppRouter = function (){

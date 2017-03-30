@@ -3,16 +3,18 @@ import { connect } from 'react-redux'
 import QuestionView from '../components/QuestionView'
 import { addWhy, updateCurrentWhy } from '../actions/Why'
 import { setTopicHeaderType, TOPIC_HEADERS } from '../actions/TopicHeader'
+import {
+    gql,
+    graphql
+} from 'react-apollo'
+
 
 const mapStateToProps =  function(state) {
-  return {
-    questions: state.whys,
-    placeholder: "Why ...?",
-    link: "/why",
+    return {
+        questions: state.whys,
 
-  }
+    }
 }
-
 const mapDispatchToProps = function(dispatch) {
   return {
     onAskQuestion: function(question) {
@@ -27,9 +29,25 @@ const mapDispatchToProps = function(dispatch) {
   }
 }
 
+const whyListQuery = gql`
+  query WhyListQuery {
+    whys {
+      question
+       id
+     }
+   }
+`;
+
+const WhyView = graphql(whyListQuery, {
+  options: {pollInterval: 5000},
+  props: ({ ownProps, data: {loading, error, whys} }) => ({
+    loading, error, whys, questions: whys, onSelectQuestion: ownProps.onSelectQuestion, placeholder: "Why ...?", link: "/why"
+  })
+})(QuestionView);
+
 const WhyContainer = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(QuestionView);
+)(WhyView);
 
-module.exports = WhyContainer;
+export default WhyContainer;

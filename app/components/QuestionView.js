@@ -4,7 +4,6 @@ import { Link } from 'react-router'
 
 
 function QuestionView(props) {
-  const Tag = props.link ? "Link" : "p"
 
 
   return (
@@ -47,11 +46,11 @@ function QuestionView(props) {
 
 QuestionView.PropTypes = {
   onSelectQuestion: PropTypes.func.isRequired,
-  onAskQuestion: PropTypes.func.isRequired,
+  onAskQuestion: PropTypes.func,
   questions: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number.isRequired,
     question: PropTypes.string.isRequired
   }).isRequired).isRequired
 }
 
-module.exports = QuestionView
+export default QuestionView

@@ -1,6 +1,5 @@
 import React from 'react'
 import { Link } from 'react-router'
-import FullDiv  from './generic/FullDiv'
 import { Col } from 'react-bootstrap'
 import {
     gql,
@@ -53,5 +52,5 @@ export default graphql(topicListQuery, {
     props: ({ ownProps, data: { loading, error, topics } }) => ({
         loading, error, topics, onSelectTopic: ownProps.onSelectTopic})
 
-    })(TopicList);
+})(TopicList);
 

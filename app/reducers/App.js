@@ -15,9 +15,6 @@ export const client = new ApolloClient({
 });
 
 export const App = combineReducers({
-  whys,
-  whatIfs,
-  hows,
   currentTopic,
   currentWhy,
   currentWhatIf,

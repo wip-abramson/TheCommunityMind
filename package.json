@@ -1,7 +1,7 @@
 {
   "name": "inquisitive_minds",
   "version": "1.0.0",
-  "description": "Web app that uses the power of questioning to inspire ideas",
+  "description": "Web app that harneses the power of questioning to inspire ideas",
   "main": "index.js",
   "scripts": {
     "production": "webpack -p",

@@ -1,6 +1,6 @@
 import React from 'react'
 
-var Name = function () {
+var AppTitle = function () {
   var style = {
     width: 500,
     display: "inline-block"
@@ -8,11 +8,12 @@ var Name = function () {
   return (
     <div style={style}>
       <a  href="/">
-        <h1>Collective Inquiry</h1>
+        <h4>The</h4>
+        <h1>Community Mind</h1>
         <h4>Open sourcing creativity</h4>
       </a>
     </div>
   )
 }
 
-module.exports = Name;
+export default AppTitle;

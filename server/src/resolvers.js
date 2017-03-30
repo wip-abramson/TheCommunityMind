@@ -6,7 +6,7 @@ export const resolvers = {
         topics(){
             return Topic.findAll();
         },
-        whys: function(obj, args, info) {
+        whys: (obj, args, info) => {
 
             return Why.findAll({
                 where: {
@@ -16,9 +16,11 @@ export const resolvers = {
             });
 
         },
-        whatIfs(args) {
+        whatIfs: (obj, args, info) => {
             return WhatIf.findAll({
-                where: args
+                where: {
+                    whyId: args.whyId
+                }
             });
         },
         hows(args) {
@@ -31,14 +33,16 @@ export const resolvers = {
         addTopic: (root, args) => {
             const newTopic = {name: args.name};
             return Topic.create(newTopic);
-
         },
         addWhy: (root, args) => {
-
             return Topic.findById(args.topicId).then(function(topic) {
                 return topic.createWhy({question: args.question})
             })
-
+        },
+        addWhatIf: (root, args) => {
+            return Why.findById(args.whyId).then(function(why) {
+                return why.createWhatIf({question: args.question})
+            })
         }
     },
 

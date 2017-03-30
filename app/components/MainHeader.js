@@ -1,5 +1,5 @@
 import React from 'react';
-import Name from './Name'
+import Name from './AppTitle'
 import LoginButtons from './LoginButtons'
 
 var MainHeader = function () {
@@ -21,4 +21,4 @@ var MainHeader = function () {
 
 
 
-module.exports = MainHeader;
+export default MainHeader;

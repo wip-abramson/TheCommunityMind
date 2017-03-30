@@ -21,8 +21,10 @@ type Why {
 
 type WhatIf {
     id: ID!
+    whyId: ID!
     question: String!
     hows: [How]
+   
 }
 
 type How {
@@ -40,7 +42,7 @@ type Query {
 type Mutation {
     addTopic(name: String!): Topic
     addWhy(question: String!, topicId: ID!): Why
-    addWhatIf(question: String!): WhatIf
+    addWhatIf(question: String!, whyId: ID!): WhatIf
     addHow(question: String!): How
 }
 `;

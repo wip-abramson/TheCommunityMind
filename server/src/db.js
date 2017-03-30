@@ -1,5 +1,4 @@
 
-import Faker from 'faker'
 import Sequelize from 'sequelize'
 
 const Conn = new Sequelize(
@@ -61,17 +60,22 @@ const HowModel = Conn.define('how', {
 })
 
 // Relationships
-TopicModel.hasMany(WhyModel);
+TopicModel.hasMany(WhyModel, {as: 'Whys'});
 WhyModel.belongsTo(TopicModel);
-WhyModel.hasMany(WhatIfModel);
+WhyModel.hasMany(WhatIfModel, {as: 'WhatIfs'});
 WhatIfModel.belongsTo(WhyModel);
-WhatIfModel.hasMany(HowModel);
+WhatIfModel.hasMany(HowModel, {as: 'Hows'});
 HowModel.belongsTo(WhatIfModel);
 
 Conn.sync({force: true}).then(() => {
-    return TopicModel.create({
-        name: "Peace"
+    return Topic.create({
+            name: "Peace"
+        }).then((topic) => {
+        topic.createWhy({
+            question: "Why can't we all live in peace"
+        })
     })
+
 
 })
 

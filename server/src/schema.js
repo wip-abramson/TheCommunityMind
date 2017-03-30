@@ -14,8 +14,9 @@ type Topic {
 
 type Why {
     id: ID!
+    topicId: ID!
     question: String!
-    whatifs: [WhatIf]
+    whatIfs: [WhatIf]
 }
 
 type WhatIf {
@@ -29,14 +30,18 @@ type How {
     question: String!
 }
 
-# This type specifies the entry points into our API. In this case
-# there is only one - "channels" - which returns a list of channels.
 type Query {
    topics: [Topic]    # "[]" means this is a list of channels
+   whys(topicId: ID): [Why]
+   whatIfs(whyId: ID): [WhatIf]
+   hows(whatIfId: ID): [How]
 }
 
 type Mutation {
     addTopic(name: String!): Topic
+    addWhy(question: String!): Why
+    addWhatIf(question: String!): WhatIf
+    addHow(question: String!): How
 }
 `;
 

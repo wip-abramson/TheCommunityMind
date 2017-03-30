@@ -39,7 +39,7 @@ type Query {
 
 type Mutation {
     addTopic(name: String!): Topic
-    addWhy(question: String!): Why
+    addWhy(question: String!, topicId: ID!): Why
     addWhatIf(question: String!): WhatIf
     addHow(question: String!): How
 }

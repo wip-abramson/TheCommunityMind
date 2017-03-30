@@ -35,10 +35,10 @@ export const whyListQuery = gql`
 `;
 
 export const addWhyMutation = gql`
-    mutation AddWhy($question: String!) {
-        addWhy(question: $question) {
-            id
-            question
+    mutation AddWhyMutation($question: String!, $topicId: ID!) {
+        addWhy(question: $question, topicId: $topicId) {
+           id
+           question
         }
     }
 `
@@ -63,7 +63,11 @@ const Why = compose(
           refetchQuery: whyListQuery
       })
     }),
-    graphql(addWhyMutation)
+    graphql(addWhyMutation, {
+        options: (props) => ({
+            variables: {topicId: props.topicId}
+        })
+    })
 
 )(QuestionView);
 

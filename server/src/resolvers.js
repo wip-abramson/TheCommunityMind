@@ -34,7 +34,11 @@ export const resolvers = {
 
         },
         addWhy: (root, args) => {
-            return Why.create({question: args.question})
+
+            return Topic.findById(args.topicId).then(function(topic) {
+                return topic.createWhy({question: args.question})
+            })
+
         }
     },
 

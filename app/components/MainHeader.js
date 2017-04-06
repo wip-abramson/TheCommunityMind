@@ -20,5 +20,4 @@ var MainHeader = function () {
 }
 
 
-
 export default MainHeader;

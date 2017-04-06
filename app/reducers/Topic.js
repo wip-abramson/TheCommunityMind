@@ -1,10 +1,10 @@
-import { ADD_TOPIC, UDPDATE_CURRENT_TOPIC } from '../actions/Topic'
+import {ADD_TOPIC, UDPDATE_CURRENT_TOPIC} from "../actions/Topic";
 
-var currentId= 0;
-export function topics (state= [], action) {
+var currentId = 0;
+export function topics(state = [], action) {
 
   switch (action.type) {
-  case ADD_TOPIC:
+    case ADD_TOPIC:
       return [
         ...state,
         {
@@ -12,12 +12,12 @@ export function topics (state= [], action) {
           name: action.topic
         }
       ]
-  default:
-    return state;
+    default:
+      return state;
   }
 }
 
-export function currentTopic (state=null, action) {
+export function currentTopic(state = null, action) {
   switch (action.type) {
     case UDPDATE_CURRENT_TOPIC:
       return Object.assign({}, state, action.topic)

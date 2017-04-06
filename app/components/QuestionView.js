@@ -1,17 +1,16 @@
-import React, { PropTypes } from 'react'
-import QuestionInput from '../components/QuestionInput'
-import { Link } from 'react-router'
+import React, {PropTypes} from "react";
+import QuestionInput from "../components/QuestionInput";
+import {Link} from "react-router";
 
 
 function QuestionView(props) {
 
-    console.log(props.refetchQuery)
-    if (props.loading) {
-        return <p>Loading ...</p>;
-    }
-    if (props.error) {
-        return <p>{props.error.message}</p>;
-    }
+  if (props.loading) {
+    return <p>Loading ...</p>;
+  }
+  if (props.error) {
+    return <p>{props.error.message}</p>;
+  }
   return (
     <div>
       <QuestionInput
@@ -22,10 +21,10 @@ function QuestionView(props) {
       >
       </QuestionInput>
       <ul>
-        {props.questions.map(function(question){
+        {props.questions.map(function (question) {
           if (props.link) {
             return (
-              <li key={"id-"+question.id}>
+              <li key={"id-" + question.id}>
                 <Link
                   onClick={() => {
                     props.onSelectQuestion(question)
@@ -38,12 +37,12 @@ function QuestionView(props) {
           }
           else {
             return (
-              <li key={"id-"+question.id}
+              <li key={"id-" + question.id}
                   onClick={() => {
                     props.onSelectQuestion(question)
                   }}>
 
-                  {question.question}
+                {question.question}
               </li>)
           }
 

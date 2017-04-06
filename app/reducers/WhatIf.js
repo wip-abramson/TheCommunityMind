@@ -1,18 +1,18 @@
-import { ADD_WHATIF, UPDATE_CURRENT_WHATIF } from '../actions/WhatIf'
+import {ADD_WHATIF, UPDATE_CURRENT_WHATIF} from "../actions/WhatIf";
 
 var currentId = 0;
-export function whatIfs (state = [], action) {
+export function whatIfs(state = [], action) {
 
   switch (action.type) {
     case ADD_WHATIF:
-    console.log("Adding " + action.question)
+      console.log("Adding " + action.question)
       return [
-          ...state,
-          {
-            id: ++currentId,
-            question: action.question
-          }
-        ]
+        ...state,
+        {
+          id: ++currentId,
+          question: action.question
+        }
+      ]
     default:
       return state;
   }

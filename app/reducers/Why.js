@@ -1,5 +1,4 @@
-import { ADD_WHY, UDPDATE_CURRENT_WHY } from '../actions/Why'
-
+import {ADD_WHY, UDPDATE_CURRENT_WHY} from "../actions/Why";
 
 
 var currentId = 0;

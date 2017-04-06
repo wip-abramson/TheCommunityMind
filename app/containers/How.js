@@ -1,13 +1,9 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import QuestionView from '../components/QuestionView'
-import {
-    compose,
-    gql,
-    graphql
-} from 'react-apollo'
+import React from "react";
+import {connect} from "react-redux";
+import QuestionView from "../components/QuestionView";
+import {compose, gql, graphql} from "react-apollo";
 
-const mapStateToProps =  function(state) {
+const mapStateToProps = function (state) {
   return {
     parentId: state.currentWhatIf.id
   }
@@ -32,28 +28,28 @@ export const addHowMutation = gql`
 `
 
 const How = compose(
-    connect(
-      mapStateToProps,
-      {}
-    ),
-    graphql(howListQuery, {
-        options: (props) => ({
-            variables: {parentId: props.parentId},
-            pollInterval: 5000
-        }),
-        props: ({ ownProps, data: {loading, error, hows} }) => ({
-            loading,
-            error,
-            questions: hows,
-            placeholder: "How ...?",
-            refetchQuery: howListQuery,
-        })
+  connect(
+    mapStateToProps,
+    {}
+  ),
+  graphql(howListQuery, {
+    options: (props) => ({
+      variables: {parentId: props.parentId},
+      pollInterval: 5000
     }),
-    graphql(addHowMutation, {
-        options: (props) => ({
-            variables: {whatIfId: props.parentId},
-        }),
+    props: ({ownProps, data: {loading, error, hows}}) => ({
+      loading,
+      error,
+      questions: hows,
+      placeholder: "How ...?",
+      refetchQuery: howListQuery,
     })
+  }),
+  graphql(addHowMutation, {
+    options: (props) => ({
+      variables: {whatIfId: props.parentId},
+    }),
+  })
 )(QuestionView)
 
 

@@ -1,10 +1,10 @@
-import React, { PropTypes } from 'react'
+import React, {PropTypes} from 'react'
 import AddTopic from './AddTopic'
 import TopicList from './TopicList'
-import { Row, Col } from 'react-bootstrap'
+import {Row, Col} from 'react-bootstrap'
 
 
-function Home (props) {
+function Home(props) {
 
   return (
     <Row className='row'>
@@ -20,7 +20,7 @@ function Home (props) {
 }
 
 Home.PropTypes = {
-    onSelectTopic: PropTypes.func.isRequired,
+  onSelectTopic: PropTypes.func.isRequired,
 }
 
 module.exports = Home;

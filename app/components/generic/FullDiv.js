@@ -1,11 +1,11 @@
-import React from 'react'
+import React from "react";
 
-const FullDiv = function(props) {
-  var style={
+const FullDiv = function (props) {
+  var style = {
     height: "100%",
   }
   return (
-    <div  style={style}>
+    <div style={style}>
       {props.children}
     </div>)
 }

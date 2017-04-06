@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Question (props) {
+function Question(props) {
   return (
     <div>This is a question?</div>
   )

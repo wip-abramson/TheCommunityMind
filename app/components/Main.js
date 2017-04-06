@@ -1,9 +1,9 @@
 import React from 'react'
 import MainHeader from '../components/MainHeader'
 import FullDiv from './generic/FullDiv'
-import { Grid } from 'react-bootstrap'
+import {Grid} from 'react-bootstrap'
 
-function Main (props) {
+function Main(props) {
   var style = {
     padding: 20
 

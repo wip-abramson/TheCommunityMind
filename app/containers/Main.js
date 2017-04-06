@@ -1,19 +1,15 @@
-import React from 'react'
-import Main from '../components/Main'
-import { connect } from 'react-redux'
-import { updateCurrentTopic } from '../actions/Topic'
-import { setTopicHeaderType, TOPIC_HEADERS } from '../actions/TopicHeader'
+import React from "react";
+import Main from "../components/Main";
+import {connect} from "react-redux";
 
-const mapStateToProps = function(state) {
+const mapStateToProps = function (state) {
   return {
     topics: state.topics
   }
 }
 
-const mapDispatchToProps = function(dispatch) {
-  return {
-
-  }
+const mapDispatchToProps = function (dispatch) {
+  return {}
 }
 
 const MainContainer = connect(

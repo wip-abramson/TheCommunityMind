@@ -8,5 +8,5 @@ export const TOPIC_HEADERS = {
 }
 
 export function setTopicHeaderType(headerType) {
-  return { type: SET_TOPIC_HEADER, headerType: headerType}
+  return {type: SET_TOPIC_HEADER, headerType: headerType}
 }

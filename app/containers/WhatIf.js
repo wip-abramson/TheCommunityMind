@@ -1,23 +1,19 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import QuestionView from '../components/QuestionView'
-import { updateCurrentWhatIf } from '../actions/WhatIf'
-import { setTopicHeaderType, TOPIC_HEADERS } from '../actions/TopicHeader'
-import {
-    compose,
-    gql,
-    graphql
-} from 'react-apollo'
+import React from "react";
+import {connect} from "react-redux";
+import QuestionView from "../components/QuestionView";
+import {updateCurrentWhatIf} from "../actions/WhatIf";
+import {setTopicHeaderType, TOPIC_HEADERS} from "../actions/TopicHeader";
+import {compose, gql, graphql} from "react-apollo";
 
-const mapStateToProps = function(state) {
+const mapStateToProps = function (state) {
   return {
-      parentId: state.currentWhy.id,
+    parentId: state.currentWhy.id,
   }
 }
 
-const mapDispatchToProps = function(dispatch) {
+const mapDispatchToProps = function (dispatch) {
   return {
-    onSelectQuestion: function(whatIf) {
+    onSelectQuestion: function (whatIf) {
       dispatch(updateCurrentWhatIf(whatIf))
       dispatch(setTopicHeaderType(TOPIC_HEADERS.HOW))
     }
@@ -43,31 +39,30 @@ export const addWhatIfMutation = gql`
 `
 
 const WhatIf = compose(
-    connect(
-      mapStateToProps,
-      mapDispatchToProps
-    ),
-    graphql(whatIfListQuery, {
-        options: (props) => ({
-            variables: {parentId: props.parentId},
-            pollInterval: 5000
-        }),
-        props: ({ ownProps, data: {loading, error, whatIfs} }) => ({
-            loading,
-            error,
-            questions: whatIfs,
-            onSelectQuestion: ownProps.onSelectQuestion,
-            placeholder: "What If ...?",
-            link: "/whatif",
-            refetchQuery: whatIfListQuery
-        })
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  graphql(whatIfListQuery, {
+    options: (props) => ({
+      variables: {parentId: props.parentId},
+      pollInterval: 5000
     }),
-    graphql(addWhatIfMutation, {
-        options: (props) => ({
-            variables: {whyId: props.parentId}
-        })
+    props: ({ownProps, data: {loading, error, whatIfs}}) => ({
+      loading,
+      error,
+      questions: whatIfs,
+      onSelectQuestion: ownProps.onSelectQuestion,
+      placeholder: "What If ...?",
+      link: "/whatif",
+      refetchQuery: whatIfListQuery
     })
-
+  }),
+  graphql(addWhatIfMutation, {
+    options: (props) => ({
+      variables: {whyId: props.parentId}
+    })
+  })
 )(QuestionView)
 
 export default WhatIf;

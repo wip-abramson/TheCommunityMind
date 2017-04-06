@@ -12,7 +12,7 @@ var AppTitle = function () {
 
   return (
     <div style={style}>
-      <a  href="/">
+      <a href="/">
         <h4 style={noMargin}>The</h4>
         <h1 style={noMargin}>Community Mind</h1>
         <h4 style={noMargin}>Open sourcing creativity</h4>

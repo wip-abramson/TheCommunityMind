@@ -1,23 +1,23 @@
-import React, { PropTypes } from 'react'
-import TextInput from './generic/TextInput'
+import React, {PropTypes} from "react";
+import TextInput from "./generic/TextInput";
 
-function QuestionInput (props ) {
+function QuestionInput(props) {
 
-    const handleSubmit = (evt) => {
+  const handleSubmit = (evt) => {
 
-        props.mutate({
-            variables: {question: evt},
-            refetchQueries: [{
-                query: props.refetchQuery,
-                variables: {
-                    parentId: props.parentId
-                }
-            }]
-        })
-        .then( res => {
-            evt = "";
-        });
-    }
+    props.mutate({
+      variables: {question: evt},
+      refetchQueries: [{
+        query: props.refetchQuery,
+        variables: {
+          parentId: props.parentId
+        }
+      }]
+    })
+      .then(res => {
+        evt = "";
+      });
+  }
   return (
 
     <div className="col-sm-12">

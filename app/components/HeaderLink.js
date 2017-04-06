@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router'
+import {Link} from 'react-router'
 
 
 function HeaderLink(props) {
@@ -12,8 +12,8 @@ function HeaderLink(props) {
   }
   return (
     <Link style={style}
-      to={props.to}
-      onClick={props.onUpdateHeader}>
+          to={props.to}
+          onClick={props.onUpdateHeader}>
       {props.children}
     </Link>
   )

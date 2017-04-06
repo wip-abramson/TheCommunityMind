@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router'
+import TopicListItem from './TopicListItem'
 import { Col } from 'react-bootstrap'
 import {
     gql,
@@ -11,28 +11,35 @@ function TopicList(props) {
     height: "100%",
     border: "2px solid grey"
   }
+
+  var padding = {
+      padding: 0
+  }
+
+  var component;
+
     if (props.loading) {
-        return <p>Loading ...</p>;
+        component = <p>Loading ...</p>;
     }
     if (props.error) {
-        return <p>{props.error.message}</p>;
+        component = <p>{props.error.message}</p>;
+    }
+    if (!props.loading & !props.error) {
+        component = props.topics.map(function(topic) {
+            return (
+                <TopicListItem
+                    key={topic.id}
+                    topic={topic}
+                    onSelectTopic={props.onSelectTopic}>
+                    {topic.name}
+                </TopicListItem>)
+        })
     }
   return (
     <Col sm={3} md={2} style={style}>
-      <ul>
-        {props.topics.map(function(topic) {
-          return (
-            <li key={topic.id}>
-              <Link
-                onClick={() => {
-                  console.log("Selecting topic")
-                  props.onSelectTopic(topic)
-                }}
-                to='topic'>
-                {topic.name}
-              </Link>
-          </li>)
-        })}
+        <h3>Topics</h3>
+      <ul style={padding}>
+          {component}
       </ul>
     </Col>
   )

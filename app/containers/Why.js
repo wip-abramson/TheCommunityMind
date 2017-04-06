@@ -12,7 +12,7 @@ import {
 
 const mapStateToProps =  function(state) {
     return {
-        topicId: state.currentTopic.id
+        parentId: state.currentTopic.id
     }
 }
 const mapDispatchToProps = function(dispatch) {
@@ -26,8 +26,8 @@ const mapDispatchToProps = function(dispatch) {
 }
 
 export const whyListQuery = gql`
-  query WhyListQuery($topicId: ID!) {
-    whys(topicId: $topicId) {
+  query WhyListQuery($parentId: ID!) {
+    whys(topicId: $parentId) {
         id
         question
      }
@@ -50,7 +50,7 @@ const Why = compose(
     ),
     graphql(whyListQuery, {
        options:  (props) => ({
-           variables: {topicId: props.topicId},
+           variables: {parentId: props.parentId},
            pollInterval: 5000
        }),
       props: ({ ownProps, data: {loading, error, whys} }) => ({
@@ -65,7 +65,7 @@ const Why = compose(
     }),
     graphql(addWhyMutation, {
         options: (props) => ({
-            variables: {topicId: props.topicId}
+            variables: {topicId: props.parentId}
         })
     })
 

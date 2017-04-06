@@ -11,7 +11,7 @@ import {
 
 const mapStateToProps = function(state) {
   return {
-      whyId: state.currentWhy.id,
+      parentId: state.currentWhy.id,
   }
 }
 
@@ -25,8 +25,8 @@ const mapDispatchToProps = function(dispatch) {
 }
 
 export const whatIfListQuery = gql`
-    query WhatIfListQuery($whyId: ID!) {
-        whatIfs(whyId: $whyId) {
+    query WhatIfListQuery($parentId: ID!) {
+        whatIfs(whyId: $parentId) {
             id
             question
          }
@@ -49,7 +49,7 @@ const WhatIf = compose(
     ),
     graphql(whatIfListQuery, {
         options: (props) => ({
-            variables: {whyId: props.whyId},
+            variables: {parentId: props.parentId},
             pollInterval: 5000
         }),
         props: ({ ownProps, data: {loading, error, whatIfs} }) => ({
@@ -64,7 +64,7 @@ const WhatIf = compose(
     }),
     graphql(addWhatIfMutation, {
         options: (props) => ({
-            variables: {whyId: props.whyId}
+            variables: {whyId: props.parentId}
         })
     })
 

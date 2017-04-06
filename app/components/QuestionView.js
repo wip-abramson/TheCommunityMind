@@ -16,9 +16,9 @@ function QuestionView(props) {
     <div>
       <QuestionInput
         placeholder={props.placeholder}
-        onAskQuestion={props.onAskQuestion}
         mutate={props.mutate}
         refetchQuery={props.refetchQuery}
+        parentId={props.parentId}
       >
       </QuestionInput>
       <ul>
@@ -55,7 +55,6 @@ function QuestionView(props) {
 
 QuestionView.PropTypes = {
   onSelectQuestion: PropTypes.func.isRequired,
-  onAskQuestion: PropTypes.func,
   questions: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number.isRequired,
     question: PropTypes.string.isRequired

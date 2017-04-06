@@ -1,10 +1,10 @@
 import React from 'react';
-import Name from './AppTitle'
+import AppTitle from './AppTitle'
 import LoginButtons from './LoginButtons'
 
 var MainHeader = function () {
   var style = {
-    padding: 20,
+    padding: 10,
     height: "auto",
     width: "100%",
     display: "inline-block",
@@ -13,7 +13,7 @@ var MainHeader = function () {
   }
   return (
     <div style={style}>
-      <Name/>
+      <AppTitle/>
       <LoginButtons/>
     </div>
   )

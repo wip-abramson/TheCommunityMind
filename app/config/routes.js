@@ -1,11 +1,13 @@
 import React from 'react'
 import { Router, Route, browserHistory, IndexRoute } from 'react-router'
-import MainContainer from '../containers/MainContainer'
-import HomeContainer from '../containers/HomeContainer'
+import MainContainer from '../containers/Main'
+import HomeContainer from '../containers/Home'
 import Topic from '../components/Topic'
 import WhyContainer from '../containers/Why'
 import WhatIfContainer from '../containers/WhatIf'
-import HowContainer from '../containers/HowContainer'
+import HowContainer from '../containers/How'
+import Login from '../components/Login'
+import Register from '../components/Register'
 
 var AppRouter = function (){
   return (
@@ -18,6 +20,8 @@ var AppRouter = function (){
           <Route path='/whatif' component={HowContainer} />
         </Route>
       </Route>
+      <Route path='/login' component={Login}/>
+      <Route path='register' component={Register}/>
     </Router>
   )
 }

@@ -4,11 +4,15 @@ import TextInput from './generic/TextInput'
 function QuestionInput (props ) {
 
     const handleSubmit = (evt) => {
-        // evt.persist();
-        console.log(evt)
+
         props.mutate({
             variables: {question: evt},
-            refetchQueries: [ {query: props.refetchQuery}]
+            refetchQueries: [{
+                query: props.refetchQuery,
+                variables: {
+                    parentId: props.parentId
+                }
+            }]
         })
         .then( res => {
             evt = "";

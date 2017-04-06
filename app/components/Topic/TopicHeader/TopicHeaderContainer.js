@@ -1,7 +1,7 @@
 import React from "react";
-import TopicHeader from "../components/TopicHeader";
+import TopicHeader from "./TopicHeader";
 import {connect} from "react-redux";
-import {setTopicHeaderType} from "../actions/TopicHeader";
+import {setTopicHeaderType} from "../../../actions/TopicHeader";
 
 
 const mapStateToProps = function (state) {

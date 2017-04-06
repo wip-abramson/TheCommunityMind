@@ -1,6 +1,6 @@
 import React, {PropTypes} from "react";
 import HeaderLink from "./HeaderLink";
-import {TOPIC_HEADERS} from "../actions/TopicHeader";
+import {TOPIC_HEADERS} from "../../../actions/TopicHeader";
 import {Well} from "react-bootstrap";
 
 function TopicHeader(props) {
@@ -11,14 +11,14 @@ function TopicHeader(props) {
 
   var component = []
   component.push(<HeaderLink key="1" to="/topic" onUpdateHeader={() => {
-    props.onUpdateHeader(TOPIC_HEADERS.WHY)
+    props.onUpdateHeader(TOPIC_HEADERS.HOME)
   }}>{props.topicName}</HeaderLink>)
 
 
   switch (props.headerType) {
     case TOPIC_HEADERS.WHY:
 
-      component.push(<HeaderLink key="2" to="/topic">Why?</HeaderLink>)
+      component.push(<HeaderLink key="2" to="/why">Why?</HeaderLink>)
       break;
     case TOPIC_HEADERS.WHATIF:
       component.push(<HeaderLink key="2" to="/why" onUpdateHeader={() => {
@@ -31,9 +31,9 @@ function TopicHeader(props) {
         props.onUpdateHeader(TOPIC_HEADERS.WHATIF)
       }}>{props.why}</HeaderLink>)
       component.push(<HeaderLink key="3" to="/whatif" onUpdateHeader={() => {
-        props.onUpdateHeader(TOPIC_HEADERS.HOW)
+        props.onUpdateHeader(TOPIC_HEADERS.WHATIF)
       }}>{props.whatIf}</HeaderLink>)
-      component.push(<HeaderLink key="4" to="/whatif">How?</HeaderLink>)
+      component.push(<HeaderLink key="4" to="/how">How?</HeaderLink>)
       break;
     default:
 

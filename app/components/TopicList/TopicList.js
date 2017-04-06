@@ -1,7 +1,8 @@
 import React from "react";
 import TopicListItem from "./TopicListItem";
 import {Col} from "react-bootstrap";
-import {gql, graphql} from "react-apollo";
+import {graphql} from "react-apollo";
+import {topicListQuery} from "../../queries/queries";
 
 function TopicList(props) {
   var style = {
@@ -42,14 +43,6 @@ function TopicList(props) {
   )
 }
 
-export const topicListQuery = gql`
-  query TopicListQuery {
-    topics {
-      id
-      name
-    }
-  }
-`;
 
 export default graphql(topicListQuery, {
   options: {pollInterval: 5000},

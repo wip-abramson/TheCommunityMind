@@ -1,7 +1,9 @@
 import React from "react";
 import {connect} from "react-redux";
-import QuestionView from "../components/QuestionView";
-import {compose, gql, graphql} from "react-apollo";
+import QuestionView from "./QuestionView/QuestionView";
+import {compose, graphql} from "react-apollo";
+import {addHowMutation} from "../../queries/mutations";
+import {howListQuery} from "../../queries/queries";
 
 const mapStateToProps = function (state) {
   return {
@@ -9,23 +11,6 @@ const mapStateToProps = function (state) {
   }
 }
 
-
-export const howListQuery = gql`
-  query HowListQuery($parentId: ID!) {
-    hows(whatIfId: $parentId) {
-      id
-      question
-     }
-  }
-`
-export const addHowMutation = gql`
-    mutation AddHowMutation($question: String!, $whatIfId: ID!) {
-        addHow(question: $question, whatIfId: $whatIfId) {
-            id
-            question
-        }
-    }
-`
 
 const How = compose(
   connect(

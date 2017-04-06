@@ -1,5 +1,5 @@
 import React from "react";
-import TopicHeaderContainer from "../containers/TopicHeader";
+import TopicHeaderContainer from "./TopicHeader/TopicHeaderContainer";
 
 function Topic(props) {
   return (

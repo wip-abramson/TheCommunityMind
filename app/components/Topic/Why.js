@@ -1,9 +1,11 @@
 import React from "react";
 import {connect} from "react-redux";
-import QuestionView from "../components/QuestionView";
-import {updateCurrentWhy} from "../actions/Why";
-import {setTopicHeaderType, TOPIC_HEADERS} from "../actions/TopicHeader";
-import {compose, gql, graphql} from "react-apollo";
+import QuestionView from "./QuestionView/QuestionView";
+import {updateCurrentWhy} from "../../actions/Why";
+import {setTopicHeaderType, TOPIC_HEADERS} from "../../actions/TopicHeader";
+import {compose, graphql} from "react-apollo";
+import {addWhyMutation} from "../../queries/mutations";
+import {whyListQuery} from "../../queries/queries";
 
 
 const mapStateToProps = function (state) {
@@ -21,23 +23,6 @@ const mapDispatchToProps = function (dispatch) {
   }
 }
 
-export const whyListQuery = gql`
-  query WhyListQuery($parentId: ID!) {
-    whys(topicId: $parentId) {
-        id
-        question
-     }
-   }
-`;
-
-export const addWhyMutation = gql`
-    mutation AddWhyMutation($question: String!, $topicId: ID!) {
-        addWhy(question: $question, topicId: $topicId) {
-           id
-           question
-        }
-    }
-`
 
 const Why = compose(
   connect(
@@ -55,7 +40,7 @@ const Why = compose(
       questions: whys,
       onSelectQuestion: ownProps.onSelectQuestion,
       placeholder: "Why ...?",
-      link: "/why",
+      link: "/whatif",
       refetchQuery: whyListQuery
     })
   }),

@@ -1,12 +1,12 @@
 import React, {PropTypes} from "react";
-import TextInput from "./generic/TextInput";
+import TextInput from "../../generic/TextInput";
 
 function QuestionInput(props) {
 
   const handleSubmit = (evt) => {
 
     props.mutate({
-      variables: {question: evt},
+      variables: {question: evt.trim()},
       refetchQueries: [{
         query: props.refetchQuery,
         variables: {

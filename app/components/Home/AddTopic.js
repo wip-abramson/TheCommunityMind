@@ -1,20 +1,18 @@
 /**
  * Created by will on 29/03/17.
  */
-import React from 'react'
-import {topicListQuery} from './TopicList'
-import TextInput from './generic/TextInput'
-import {
-  graphql,
-  gql
-} from 'react-apollo'
+import React from "react";
+import {topicListQuery} from "../TopicList/TopicList";
+import TextInput from "../generic/TextInput";
+import {graphql} from "react-apollo";
+import {addTopicMutation} from "../../queries/mutations";
 
 const AddTopic = ({mutate}) => {
   const handleSubmit = (evt) => {
     // evt.persist();
     console.log(evt)
     mutate({
-      variables: {name: evt},
+      variables: {name: evt.trim()},
       refetchQueries: [{query: topicListQuery}]
     })
       .then(res => {
@@ -31,14 +29,6 @@ const AddTopic = ({mutate}) => {
   )
 }
 
-const addTopicMutation = gql`
-  mutation addTopic($name: String!) {
-    addTopic(name: $name) {
-      id
-      name
-    }
-  }
-`;
 
 const AddTopicWithMutation = graphql(
   addTopicMutation

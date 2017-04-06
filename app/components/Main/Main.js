@@ -1,6 +1,6 @@
 import React from 'react'
-import MainHeader from '../components/MainHeader'
-import FullDiv from './generic/FullDiv'
+import MainHeader from './Header/MainHeader'
+import FullDiv from '../generic/FullDiv'
 import {Grid} from 'react-bootstrap'
 
 function Main(props) {

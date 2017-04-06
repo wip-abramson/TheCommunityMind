@@ -1,6 +1,6 @@
 import React, {PropTypes} from "react";
-import QuestionInput from "../components/QuestionInput";
-import {Link} from "react-router";
+import QuestionInput from "./QuestionInput";
+import Question from "./Question";
 
 
 function QuestionView(props) {
@@ -22,30 +22,15 @@ function QuestionView(props) {
       </QuestionInput>
       <ul>
         {props.questions.map(function (question) {
-          if (props.link) {
-            return (
-              <li key={"id-" + question.id}>
-                <Link
-                  onClick={() => {
-                    props.onSelectQuestion(question)
-                  }}
-                  to={props.link}>
-
-                  {question.question}
-                </Link>
-              </li>)
-          }
-          else {
-            return (
-              <li key={"id-" + question.id}
-                  onClick={() => {
-                    props.onSelectQuestion(question)
-                  }}>
-
-                {question.question}
-              </li>)
-          }
-
+          return (
+            <Question
+              key={"id-" + question.id}
+              onSelectQuestion={props.onSelectQuestion}
+              question={question}
+              link={props.link}
+            >
+              {question.question}
+            </Question>)
         })}
       </ul>
     </div>

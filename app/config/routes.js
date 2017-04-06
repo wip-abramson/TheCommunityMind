@@ -1,23 +1,25 @@
 import React from "react";
 import {Router, Route, browserHistory, IndexRoute} from "react-router";
-import MainContainer from "../containers/Main";
-import HomeContainer from "../containers/Home";
-import Topic from "../components/Topic";
-import WhyContainer from "../containers/Why";
-import WhatIfContainer from "../containers/WhatIf";
-import HowContainer from "../containers/How";
+import Main from "../components/Main/Main";
+import Home from "../components/Home/HomeContainer";
+import Topic from "../components/Topic/Topic";
+import Why from "../components/Topic/Why";
+import WhatIf from "../components/Topic/WhatIf";
+import How from "../components/Topic/How";
 import Login from "../components/Login";
 import Register from "../components/Register";
+import TopicHome from "../components/Topic/TopicHome";
 
 var AppRouter = function () {
   return (
     <Router history={browserHistory}>
-      <Route path='/' component={MainContainer}>
-        <IndexRoute component={HomeContainer}/>
+      <Route path='/' component={Main}>
+        <IndexRoute component={Home}/>
         <Route path='/topic' component={Topic}>
-          <IndexRoute component={WhyContainer}/>
-          <Route path='/why' component={WhatIfContainer}/>
-          <Route path='/whatif' component={HowContainer}/>
+          <IndexRoute component={TopicHome}/>
+          <Route path='/why' component={Why}/>
+          <Route path='/whatif' component={WhatIf}/>
+          <Route path='/how' component={How}/>
         </Route>
       </Route>
       <Route path='/login' component={Login}/>

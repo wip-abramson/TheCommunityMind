@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 import AddTopic from './AddTopic'
-import TopicList from './TopicList'
+import TopicList from '../TopicList/TopicList'
 import {Row, Col} from 'react-bootstrap'
 
 

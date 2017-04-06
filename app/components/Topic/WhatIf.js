@@ -1,9 +1,11 @@
 import React from "react";
 import {connect} from "react-redux";
-import QuestionView from "../components/QuestionView";
-import {updateCurrentWhatIf} from "../actions/WhatIf";
-import {setTopicHeaderType, TOPIC_HEADERS} from "../actions/TopicHeader";
-import {compose, gql, graphql} from "react-apollo";
+import QuestionView from "./QuestionView/QuestionView";
+import {updateCurrentWhatIf} from "../../actions/WhatIf";
+import {setTopicHeaderType, TOPIC_HEADERS} from "../../actions/TopicHeader";
+import {compose, graphql} from "react-apollo";
+import {addWhatIfMutation} from "../../queries/mutations";
+import {whatIfListQuery} from "../../queries/queries";
 
 const mapStateToProps = function (state) {
   return {
@@ -20,23 +22,6 @@ const mapDispatchToProps = function (dispatch) {
   }
 }
 
-export const whatIfListQuery = gql`
-    query WhatIfListQuery($parentId: ID!) {
-        whatIfs(whyId: $parentId) {
-            id
-            question
-         }
-     }
-`;
-
-export const addWhatIfMutation = gql`
-    mutation AddWhatIfMutation($question: String!, $whyId: ID!) {
-        addWhatIf(question: $question, whyId: $whyId) {
-           id
-           question
-        }
-    }
-`
 
 const WhatIf = compose(
   connect(
@@ -54,7 +39,7 @@ const WhatIf = compose(
       questions: whatIfs,
       onSelectQuestion: ownProps.onSelectQuestion,
       placeholder: "What If ...?",
-      link: "/whatif",
+      link: "/how",
       refetchQuery: whatIfListQuery
     })
   }),

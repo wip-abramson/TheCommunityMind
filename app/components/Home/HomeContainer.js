@@ -1,8 +1,8 @@
 import React from "react";
-import Home from "../components/Home";
+import Home from "./Home";
 import {connect} from "react-redux";
-import {updateCurrentTopic} from "../actions/Topic";
-import {setTopicHeaderType, TOPIC_HEADERS} from "../actions/TopicHeader";
+import {updateCurrentTopic} from "../../actions/Topic";
+import {setTopicHeaderType, TOPIC_HEADERS} from "../../actions/TopicHeader";
 
 const mapStateToProps = function (state) {
   return {}
@@ -13,7 +13,7 @@ const mapDispatchToProps = function (dispatch) {
     onSelectTopic: function (topic) {
       console.log(topic)
       dispatch(updateCurrentTopic(topic));
-      dispatch(setTopicHeaderType(TOPIC_HEADERS.WHY))
+      dispatch(setTopicHeaderType(TOPIC_HEADERS.HOME))
     }
   }
 }

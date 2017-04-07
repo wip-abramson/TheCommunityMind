@@ -9,6 +9,7 @@ import How from "../components/Topic/How";
 import Login from "../components/Login";
 import Register from "../components/Register";
 import TopicHome from "../components/Topic/TopicHome";
+import Wiki from "../components/Wiki/Wiki";
 
 var AppRouter = function () {
   return (
@@ -24,6 +25,7 @@ var AppRouter = function () {
       </Route>
       <Route path='/login' component={Login}/>
       <Route path='register' component={Register}/>
+      <Route path="/wiki" component={Wiki}/>
     </Router>
   )
 }

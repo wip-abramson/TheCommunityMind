@@ -19,10 +19,10 @@ function TopicList(props) {
   if (props.loading) {
     component = <p>Loading ...</p>;
   }
-  if (props.error) {
+  else if (props.error) {
     component = <p>{props.error.message}</p>;
   }
-  if (!props.loading & !props.error) {
+  else {
     component = props.topics.map(function (topic) {
       return (
         <TopicListItem
@@ -35,10 +35,11 @@ function TopicList(props) {
   }
   return (
     <Col sm={3} md={2} style={style}>
-      <h3>Topics</h3>
+      <h3>{props.header}</h3>
       <ul style={padding}>
         {component}
       </ul>
+
     </Col>
   )
 }
@@ -47,7 +48,7 @@ function TopicList(props) {
 export default graphql(topicListQuery, {
   options: {pollInterval: 5000},
   props: ({ownProps, data: {loading, error, topics}}) => ({
-    loading, error, topics, onSelectTopic: ownProps.onSelectTopic
+    loading, error, topics, onSelectTopic: ownProps.onSelectTopic, header: ownProps.header
   })
 
 })(TopicList);

@@ -21,8 +21,6 @@ let unsubscribe = store.subscribe(() =>
   console.log(store.getState())
 )
 
-store.dispatch(addTopic("Transport"))
-store.dispatch(addTopic("Goverment"))
 
 ReactDOM.render(
   <ApolloProvider store={store} client={client}>

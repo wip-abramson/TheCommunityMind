@@ -22,10 +22,11 @@ var AppRouter = function () {
           <Route path='/whatif' component={WhatIf}/>
           <Route path='/how' component={How}/>
         </Route>
+        <Route path="/wiki" component={Wiki}/>
       </Route>
       <Route path='/login' component={Login}/>
       <Route path='register' component={Register}/>
-      <Route path="/wiki" component={Wiki}/>
+
     </Router>
   )
 }

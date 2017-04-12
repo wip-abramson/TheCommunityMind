@@ -24,7 +24,7 @@ var MainHeader = function () {
       </Navbar.Header>
       <Navbar.Collapse>
         <Nav style={style}>
-          <LinkContainer to="/">
+          <LinkContainer to="/" onlyActiveOnIndex>
             <NavItem eventKey={1}>Home</NavItem>
           </LinkContainer>
           <LinkContainer to="/wiki">

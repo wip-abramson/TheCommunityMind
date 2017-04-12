@@ -7,7 +7,7 @@ export default function TopicBreadcrumb(props) {
 
   return (
     <Breadcrumb>
-      <LinkContainer to="/topic">
+      <LinkContainer to="/topic" onlyActiveOnIndex>
         <Breadcrumb.Item>
           Home
         </Breadcrumb.Item>

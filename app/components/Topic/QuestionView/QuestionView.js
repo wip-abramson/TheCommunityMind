@@ -42,7 +42,9 @@ QuestionView.PropTypes = {
   questions: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number.isRequired,
     question: PropTypes.string.isRequired
-  }).isRequired).isRequired
+  }).isRequired).isRequired,
+  loading: PropTypes.bool,
+  error: PropTypes.bool,
 }
 
 export default QuestionView

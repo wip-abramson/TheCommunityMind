@@ -1,4 +1,4 @@
-import React from "react";
+import React, {PropTypes} from "react";
 import {Link} from "react-router";
 
 export default function Question(props) {
@@ -26,8 +26,15 @@ export default function Question(props) {
 
 }
 
+
+Question.PropTypes = {
+  onSelectQuestion: PropTypes.func.isRequired,
+  link: PropTypes.string,
+  question: PropTypes.string.isRequired
+}
+
 function formatQuestion(question) {
-  
+
   if (question.charAt(question.length - 1) !== '?') {
     question = question + '?'
   }

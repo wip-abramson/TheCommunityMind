@@ -1,4 +1,3 @@
-export const LOAD_WHATIF = "LOAD_WHATIF";
 export const UPDATE_CURRENT_WHATIF = "UPDATE_CURRENT_WHATIF";
 
 

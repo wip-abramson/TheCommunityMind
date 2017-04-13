@@ -1,5 +1,5 @@
-import React from 'react'
-import {Link} from 'react-router'
+import React, {PropTypes} from "react";
+import {Link} from "react-router";
 
 
 function HeaderLink(props) {
@@ -19,4 +19,10 @@ function HeaderLink(props) {
   )
 }
 
-module.exports = HeaderLink;
+HeaderLink.PropTypes = {
+  onUpdateHeader: PropTypes.func.isRequired,
+  to: PropTypes.string.isRequired,
+  
+}
+
+export default HeaderLink;

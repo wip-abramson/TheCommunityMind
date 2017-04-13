@@ -10,10 +10,6 @@ var MainHeader = function () {
 
   }
   return (
-    // <div style={style}>
-    //   <AppTitle/>
-    //   <LoginButtons/>
-    // </div>
     <Navbar collapseOnSelect>
       <Navbar.Header>
         <Navbar.Brand>

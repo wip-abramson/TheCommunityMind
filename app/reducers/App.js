@@ -1,13 +1,7 @@
 import {currentWhy} from "./Why";
 import {currentWhatIf} from "./WhatIf";
-import {currentTopic} from "./Topic";
-import {headerType} from "./TopicHeader";
 import {combineReducers} from "redux";
 import {ApolloClient, createNetworkInterface} from "react-apollo";
-
-// const wsClient = new SubscriptionClient(`http://localhost:6000/`, {
-//     reconnect: true
-// });
 
 const networkInterface = createNetworkInterface({
   uri: 'http://localhost:5000/graphql',
@@ -16,11 +10,18 @@ const networkInterface = createNetworkInterface({
   // },
 })
 
-// Extend the network interface with the WebSocket
-// const networkInterfaceWithSubscriptions = addGraphQLSubscriptions(
-//     networkInterface,
-//     wsClient
-// );
+networkInterface.use([{
+  applyMiddleware(req, next) {
+    if (!req.options.headers) {
+      req.options.headers = {};  // Create the header object if needed.
+    }
+
+    // get the authentication token from local storage if it exists
+    const token = localStorage.getItem('token');
+    req.options.headers.authorization = token ? `Bearer ${token}` : null;
+    next();
+  }
+}]);
 
 // Finally, create your ApolloClient instance with the modified network interface
 export const client = new ApolloClient({
@@ -28,10 +29,8 @@ export const client = new ApolloClient({
 });
 
 export const App = combineReducers({
-  currentTopic,
   currentWhy,
   currentWhatIf,
-  headerType,
   apollo: client.reducer()
 });
 

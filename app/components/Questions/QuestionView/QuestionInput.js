@@ -3,9 +3,13 @@ import TextInput from "../../generic/TextInput";
 
 function QuestionInput(props) {
 
+  const style = {
+    height: 50
+  }
+
   const handleSubmit = (evt) => {
 
-    props.mutate({
+    props.addQuestion({
       variables: {question: evt.trim()},
       refetchQueries: [{
         query: props.refetchQuery,
@@ -20,7 +24,7 @@ function QuestionInput(props) {
   }
   return (
 
-    <div className="col-sm-12">
+    <div style={style}>
       <TextInput
         placeholder={props.placeholder}
         submitName="Ask"

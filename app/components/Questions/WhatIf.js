@@ -2,13 +2,14 @@ import React from "react";
 import {connect} from "react-redux";
 import QuestionView from "./QuestionView/QuestionView";
 import {updateCurrentWhatIf} from "../../actions/WhatIf";
-import {setTopicHeaderType, TOPIC_HEADERS} from "../../actions/TopicHeader";
 import {compose, graphql} from "react-apollo";
 import {addWhatIfMutation} from "../../queries/mutations";
 import {whatIfListQuery} from "../../queries/queries";
 
 const mapStateToProps = function (state) {
+  console.log(state.currentWhy.id)
   return {
+
     parentId: state.currentWhy.id,
   }
 }
@@ -17,7 +18,6 @@ const mapDispatchToProps = function (dispatch) {
   return {
     onSelectQuestion: function (whatIf) {
       dispatch(updateCurrentWhatIf(whatIf))
-      dispatch(setTopicHeaderType(TOPIC_HEADERS.HOW))
     }
   }
 }
@@ -44,6 +44,7 @@ const WhatIf = compose(
     })
   }),
   graphql(addWhatIfMutation, {
+    name: 'addQuestionMutation',
     options: (props) => ({
       variables: {whyId: props.parentId}
     })

@@ -12,8 +12,8 @@ var AppTitle = function () {
   }
 
   var imgstyle = {
-    width: 150,
-    height: 70,
+    width: 300,
+    height: 150,
   }
 
   return (

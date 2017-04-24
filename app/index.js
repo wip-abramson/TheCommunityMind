@@ -4,7 +4,6 @@ import AppRouter from "./config/routes";
 import {App, client} from "./reducers/App";
 import {createStore, applyMiddleware, compose} from "redux";
 import {ApolloProvider} from "react-apollo";
-import {addTopic} from "./actions/Topic";
 
 
 let store = createStore(

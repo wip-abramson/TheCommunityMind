@@ -1,10 +1,11 @@
 import {gql} from "react-apollo";
 
 export const whyListQuery = gql`
-  query WhyListQuery($parentId: ID!) {
-    whys(topicId: $parentId) {
+  query WhyListQuery {
+    whys {
         id
         question
+        stars
      }
    }
 `;
@@ -14,6 +15,7 @@ export const whatIfListQuery = gql`
         whatIfs(whyId: $parentId) {
             id
             question
+            stars
          }
      }
 `;
@@ -23,6 +25,7 @@ export const howListQuery = gql`
     hows(whatIfId: $parentId) {
       id
       question
+      stars
      }
   }
 `

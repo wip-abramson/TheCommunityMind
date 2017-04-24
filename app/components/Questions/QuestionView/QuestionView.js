@@ -1,7 +1,6 @@
 import React, {PropTypes} from "react";
 import QuestionInput from "./QuestionInput";
-import Question from "./Question";
-
+import QuestionList from "./QuestionList";
 
 function QuestionView(props) {
 
@@ -15,24 +14,16 @@ function QuestionView(props) {
     <div>
       <QuestionInput
         placeholder={props.placeholder}
-        mutate={props.mutate}
+        addQuestion={props.addQuestionMutation}
         refetchQuery={props.refetchQuery}
         parentId={props.parentId}
       >
       </QuestionInput>
-      <ul>
-        {props.questions.map(function (question) {
-          return (
-            <Question
-              key={"id-" + question.id}
-              onSelectQuestion={props.onSelectQuestion}
-              question={question}
-              link={props.link}
-            >
-              {question.question}
-            </Question>)
-        })}
-      </ul>
+      <QuestionList
+        questions={props.questions}
+        onSelectQuestion={props.onSelectQuestion}
+        link={props.link}
+      />
     </div>
   )
 }

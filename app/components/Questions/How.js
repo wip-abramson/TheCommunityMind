@@ -31,6 +31,7 @@ const How = compose(
     })
   }),
   graphql(addHowMutation, {
+    name: 'addQuestionMutation',
     options: (props) => ({
       variables: {whatIfId: props.parentId},
     }),

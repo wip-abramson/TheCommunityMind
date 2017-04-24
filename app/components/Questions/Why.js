@@ -2,7 +2,6 @@ import React from "react";
 import {connect} from "react-redux";
 import QuestionView from "./QuestionView/QuestionView";
 import {updateCurrentWhy} from "../../actions/Why";
-import {setTopicHeaderType, TOPIC_HEADERS} from "../../actions/TopicHeader";
 import {compose, graphql} from "react-apollo";
 import {addWhyMutation} from "../../queries/mutations";
 import {whyListQuery} from "../../queries/queries";
@@ -10,7 +9,7 @@ import {whyListQuery} from "../../queries/queries";
 
 const mapStateToProps = function (state) {
   return {
-    parentId: state.currentTopic.id
+    // parentId: state.currentTopic.id
   }
 }
 const mapDispatchToProps = function (dispatch) {
@@ -18,7 +17,6 @@ const mapDispatchToProps = function (dispatch) {
     onSelectQuestion: function (why) {
       console.log("Selecting Why", why)
       dispatch(updateCurrentWhy(why))
-      dispatch(setTopicHeaderType(TOPIC_HEADERS.WHATIF))
     }
   }
 }
@@ -31,7 +29,7 @@ const Why = compose(
   ),
   graphql(whyListQuery, {
     options: (props) => ({
-      variables: {parentId: props.parentId},
+      // variables: {parentId: props.parentId},
       pollInterval: 5000
     }),
     props: ({ownProps, data: {loading, error, whys}}) => ({
@@ -45,6 +43,7 @@ const Why = compose(
     })
   }),
   graphql(addWhyMutation, {
+    name: 'addQuestionMutation',
     options: (props) => ({
       variables: {topicId: props.parentId}
     })

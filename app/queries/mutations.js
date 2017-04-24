@@ -9,8 +9,8 @@ export const addWhatIfMutation = gql`
     }
 `
 export const addWhyMutation = gql`
-    mutation AddWhyMutation($question: String!, $topicId: ID!) {
-        addWhy(question: $question, topicId: $topicId) {
+    mutation AddWhyMutation($question: String!) {
+        addWhy(question: $question) {
            id
            question
         }

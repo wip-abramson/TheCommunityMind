@@ -1,23 +1,37 @@
-import express from 'express'
-import {
-    graphqlExpress,
-    graphiqlExpress,
-} from 'graphql-server-express';
-import bodyParser from 'body-parser';
-import { schema } from './src/schema';
-import cors from 'cors';
+import express from "express";
+import {graphiqlExpress} from "graphql-server-express";
+import {schema} from "./src/schema";
+import cors from "cors";
+import graphqlHTTP from "express-graphql";
+
 
 const PORT = 5000
 const server = express();
 
-server.use('*', cors({ origin: 'http://localhost:8080'}))
+server.use('*', cors({origin: 'http://localhost:8080'}))
 
-server.use('/graphql', bodyParser.json(), graphqlExpress({
-    schema
-}));
+server.use(express.static('../public'))
+
+// server.use('/graphql', jwt({
+//   secret: 'shhhhhhared-secret',
+//   requestProperty: 'auth',
+//   credentialsRequired: false,
+// }));
+server.use('/graphql', function (req, res, done) {
+  // const user = User.get(req.auth.sub);
+  req.context = {
+    // user: user,
+  }
+  done();
+});
+server.use('/graphql', graphqlHTTP(req => ({
+    schema: schema,
+    context: req.context,
+  })
+));
 
 server.use('/graphiql', graphiqlExpress({
-    endpointURL: '/graphql'
+  endpointURL: '/graphql'
 }));
 
 

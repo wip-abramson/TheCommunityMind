@@ -11,18 +11,26 @@
   "license": "ISC",
   "dependencies": {
     "babel-plugin-react-html-attrs": "^2.0.0",
+    "babel-preset-react-native": "^1.9.1",
+    "express-session": "^1.15.2",
     "faker": "^4.1.0",
+    "file-loader": "^0.11.1",
     "loadash": "^0.0.1",
+    "node-uuid": "^1.4.8",
     "pg": "^6.1.5",
     "pg-hstore": "^2.3.2",
     "react": "^15.4.2",
-    "react-apollo": "^1.0.0-rc.3",
+    "react-apollo": "^1.0.0",
     "react-bootstrap": "^0.30.8",
     "react-dom": "^15.4.2",
+    "react-icons": "^2.2.3",
     "react-redux": "^5.0.2",
     "react-router": "^3.0.2",
+    "react-router-bootstrap": "^0.23.1",
     "redux": "^3.6.0",
-    "sequelize": "^3.30.2"
+    "sequelize": "^3.30.2",
+    "subscriptions-transport-ws": "^0.5.5-alpha.0",
+    "url-loader": "^0.5.8"
   },
   "devDependencies": {
     "babel": "^6.23.0",

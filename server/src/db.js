@@ -1,5 +1,4 @@
-
-import Sequelize from 'sequelize'
+import Sequelize from "sequelize";
 
 const Conn = new Sequelize(
   'CollectiveInquiry',
@@ -10,6 +9,14 @@ const Conn = new Sequelize(
     host: 'localhost'
   }
 )
+
+const UserModel = Conn.define('user', {
+  username: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  }
+
+})
 
 const TopicModel = Conn.define('topic', {
   // id: {
@@ -24,13 +31,12 @@ const TopicModel = Conn.define('topic', {
 })
 
 const WhyModel = Conn.define('why', {
-  // id: {
-  //   type: DataTypes.UUID,
-  //   defaultValue: DataTypes.UUIDV1,
-  //   primaryKey: true
-  // },
   question: {
     type: Sequelize.STRING,
+    allowNull: false
+  },
+  stars: {
+    type: Sequelize.INTEGER,
     allowNull: false
   }
 })
@@ -44,6 +50,10 @@ const WhatIfModel = Conn.define('whatif', {
   question: {
     type: Sequelize.STRING,
     allowNull: false
+  },
+  stars: {
+    type: Sequelize.INTEGER,
+    allowNull: false
   }
 })
 
@@ -56,6 +66,10 @@ const HowModel = Conn.define('how', {
   question: {
     type: Sequelize.STRING,
     allowNull: false
+  },
+  stars: {
+    type: Sequelize.INTEGER,
+    allowNull: false
   }
 })
 
@@ -67,23 +81,8 @@ WhatIfModel.belongsTo(WhyModel);
 WhatIfModel.hasMany(HowModel, {as: 'Hows'});
 HowModel.belongsTo(WhatIfModel);
 
-Conn.sync({force: true}).then(() => {
-    return [
-        Topic.create({
-            name: "Peace"
-        }).then((topic) => {
-            topic.createWhy({
-                question: "Why can't we all live in peace"
-            })
-        }),
-        Topic.create({
-            name: "Inquiry"
-        }).then((topic) => {
-            topic.createWhy({
-                question: "Why do we not question more"
-            })
-        }),
-    ]
+Conn.sync().then(() => {
+  return []
 
 
 })
@@ -92,6 +91,6 @@ const Topic = Conn.models.topic;
 const Why = Conn.models.why;
 const WhatIf = Conn.models.whatif;
 const How = Conn.models.how;
+const User = Conn.models.user;
 
-
-export {Topic, Why, WhatIf, How}
+export {Topic, Why, WhatIf, How, User}

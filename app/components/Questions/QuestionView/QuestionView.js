@@ -36,6 +36,7 @@ QuestionView.PropTypes = {
   }).isRequired).isRequired,
   loading: PropTypes.bool,
   error: PropTypes.bool,
+  addQuestionMutation: PropTypes.func.isRequired,
 }
 
 export default QuestionView

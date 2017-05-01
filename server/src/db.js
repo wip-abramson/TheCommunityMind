@@ -1,8 +1,8 @@
 import Sequelize from "sequelize";
 
 const Conn = new Sequelize(
-  'CollectiveInquiry',
-  'communitiymind',
+  'themind',
+  'communitymind',
   '$TheCommunityMind$1',
   {
     dialect: 'mysql',
@@ -81,6 +81,7 @@ WhatIfModel.belongsTo(WhyModel);
 WhatIfModel.hasMany(HowModel, {as: 'Hows'});
 HowModel.belongsTo(WhatIfModel);
 
+//{force: true}
 Conn.sync().then(() => {
   return []
 

@@ -1,4 +1,5 @@
 import React, {PropTypes} from "react";
+import {FormGroup, Col, Button, FormControl} from 'react-bootstrap';
 
 function TextInput(props) {
   let input;
@@ -6,32 +7,35 @@ function TextInput(props) {
   return (
     <form onSubmit={function (e) {
       e.preventDefault()
-
       if (!input.value.trim()) {
         return;
       }
       props.onSubmit(input.value)
       input.value = "";
     }}>
-      <div className="form-group col-sm-8">
-        <input
-          ref={node => {
-            input = node
-          }}
-          className="form-control"
-          placeholder={props.placeholder}
-          type="text"/>
-      </div>
-      <div className="form-group col-sm-4">
-        <button
-          className="btn btn-block btn-success"
-          type="submit">
-          {props.submitName}
-        </button>
-      </div>
+
+      <FormGroup>
+        <Col xs={10}>
+          <FormControl
+            type="text"
+            placeholder={props.placeholder}
+            inputRef={node => {
+               input = node
+             }}/>
+
+        </Col>
+      </FormGroup>
+      <FormGroup>
+        <Col xs={2}>
+          <Button bsStyle="primary" block>
+            {props.submitName}
+          </Button>
+        </Col>
+      </FormGroup>
+
     </form>
 
-  )
+)
 }
 
 TextInput.PropTypes = {

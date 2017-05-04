@@ -1,28 +1,28 @@
 import React from "react";
+import {Link} from 'react-router';
 
 
 var AppTitle = function () {
-  var style = {
-    display: "inline-block"
-  }
+
 
   var noMargin = {
     margin: 0,
+    padding: 10,
     display: "inline-block",
   }
 
   var imgstyle = {
-    width: 300,
-    height: 150,
+      // height: 150,
+      // width: 300
   }
 
   return (
-    <div style={noMargin}>
-      <img src="public/imgs/CMlogo.jpg" style={imgstyle}/>
-      {/*<h4 style={noMargin}>The</h4>*/}
-      {/*<h2 style={noMargin}>Community Mind</h2>*/}
-      {/*<h4 style={noMargin}>Open sourcing creativity</h4>*/}
-    </div>
+      <Link to='/'>
+
+        <div style={noMargin}>
+          <img src="public/imgs/thecommunitymind_logo1@0.75x.png" style={imgstyle}/>
+        </div>
+      </Link>
   )
 }
 

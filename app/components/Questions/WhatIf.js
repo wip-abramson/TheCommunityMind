@@ -7,10 +7,10 @@ import {addWhatIfMutation} from "../../queries/mutations";
 import {whatIfListQuery} from "../../queries/queries";
 
 const mapStateToProps = function (state) {
-  console.log(state.currentWhy.id)
+  console.log("Getting current why",state.currentWhy);
   return {
 
-    parentId: state.currentWhy.id,
+    currentWhy: state.currentWhy,
   }
 }
 
@@ -30,7 +30,7 @@ const WhatIf = compose(
   ),
   graphql(whatIfListQuery, {
     options: (props) => ({
-      variables: {parentId: props.parentId},
+      variables: {parentId: props.currentWhy.id},
       pollInterval: 5000
     }),
     props: ({ownProps, data: {loading, error, whatIfs}}) => ({
@@ -40,13 +40,15 @@ const WhatIf = compose(
       onSelectQuestion: ownProps.onSelectQuestion,
       placeholder: "What If ...?",
       link: "/how",
-      refetchQuery: whatIfListQuery
+      refetchQuery: whatIfListQuery,
+      currentWhy: ownProps.currentWhy,
+      currentWhatIf: null,
     })
   }),
   graphql(addWhatIfMutation, {
     name: 'addQuestionMutation',
     options: (props) => ({
-      variables: {whyId: props.parentId}
+      variables: {whyId: props.currentWhy.id}
     })
   })
 )(QuestionView)

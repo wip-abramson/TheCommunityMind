@@ -1,6 +1,7 @@
 import React, {PropTypes} from "react";
 import QuestionInput from "./QuestionInput";
 import QuestionList from "./QuestionList";
+import Question from './Question/Question';
 
 function QuestionView(props) {
 
@@ -11,7 +12,11 @@ function QuestionView(props) {
     return <p>{props.error.message}</p>;
   }
   return (
-    <div>
+    <div >
+      {getCurrentWhyQuestion(props.currentWhy)}
+
+      {getCurrentWhatIf(props.currentWhatIf)}
+
       <QuestionInput
         placeholder={props.placeholder}
         addQuestion={props.addQuestionMutation}
@@ -26,6 +31,36 @@ function QuestionView(props) {
       />
     </div>
   )
+}
+
+function getCurrentWhyQuestion(question) {
+  if (question) {
+    return (
+      <Question
+        question={question}
+        stars={question.stars}
+        link='/'
+        onSelectQuestion={() => {return null} }
+      >
+        {question.question}
+      </Question>
+    )
+  }
+}
+
+function getCurrentWhatIf(question) {
+  if (question) {
+    return (
+      <Question
+        question={question}
+        stars={question.stars}
+        link='/whatif'
+        onSelectQuestion={() => {return null} }
+      >
+        {question.question}
+      </Question>
+    )
+  }
 }
 
 QuestionView.PropTypes = {

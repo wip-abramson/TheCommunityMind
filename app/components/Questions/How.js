@@ -7,7 +7,8 @@ import {howListQuery} from "../../queries/queries";
 
 const mapStateToProps = function (state) {
   return {
-    parentId: state.currentWhatIf.id
+    currentWhy: state.currentWhy,
+    currentWhatIf: state.currentWhatIf
   }
 }
 
@@ -19,7 +20,7 @@ const How = compose(
   ),
   graphql(howListQuery, {
     options: (props) => ({
-      variables: {parentId: props.parentId},
+      variables: {parentId: props.currentWhatIf.id},
       pollInterval: 5000
     }),
     props: ({ownProps, data: {loading, error, hows}}) => ({
@@ -28,12 +29,14 @@ const How = compose(
       questions: hows,
       placeholder: "How ...?",
       refetchQuery: howListQuery,
+      currentWhy: ownProps.currentWhy,
+      currentWhatIf: ownProps.currentWhatIf,
     })
   }),
   graphql(addHowMutation, {
     name: 'addQuestionMutation',
     options: (props) => ({
-      variables: {whatIfId: props.parentId},
+      variables: {whatIfId: props.currentWhatIf.id},
     }),
   })
 )(QuestionView)

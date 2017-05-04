@@ -6,7 +6,6 @@ import {compose, graphql} from "react-apollo";
 import {addWhyMutation} from "../../queries/mutations";
 import {whyListQuery} from "../../queries/queries";
 
-
 const mapStateToProps = function (state) {
   return {
     // parentId: state.currentTopic.id
@@ -20,7 +19,6 @@ const mapDispatchToProps = function (dispatch) {
     }
   }
 }
-
 
 const Why = compose(
   connect(
@@ -39,7 +37,9 @@ const Why = compose(
       onSelectQuestion: ownProps.onSelectQuestion,
       placeholder: "Why ...?",
       link: "/whatif",
-      refetchQuery: whyListQuery
+      refetchQuery: whyListQuery,
+      currentWhy: null,
+      currentWhatIf: null,
     })
   }),
   graphql(addWhyMutation, {
@@ -49,6 +49,5 @@ const Why = compose(
     })
   })
 )(QuestionView);
-
 
 export default Why;

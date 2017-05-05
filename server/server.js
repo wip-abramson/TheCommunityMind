@@ -8,7 +8,7 @@ import graphqlHTTP from "express-graphql";
 const PORT = 5000
 const server = express();
 
-server.use('*', cors({origin: 'http://localhost:8080'}))
+server.use('*', cors({origin: 'http://0.0.0.0:8080'}))
 
 server.use(express.static('../public'))
 

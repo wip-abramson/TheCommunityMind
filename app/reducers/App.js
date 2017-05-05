@@ -4,7 +4,7 @@ import {combineReducers} from "redux";
 import {ApolloClient, createNetworkInterface} from "react-apollo";
 
 const networkInterface = createNetworkInterface({
-  uri: 'http://localhost:5000/graphql',
+  uri: 'http://0.0.0.0:5000/graphql',
   // opts: {
   //     credentials: 'same-origin',
   // },

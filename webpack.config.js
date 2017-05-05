@@ -8,7 +8,9 @@ const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
 
 module.exports = {
   entry: [
-    './app/index.js'
+    './app/index.js',
+    'webpack-dev-server/client?http://0.0.0.0:80',
+    'webpack/hot/only-dev-server',
   ],
   output: {
     path: __dirname + "dist",

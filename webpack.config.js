@@ -16,7 +16,7 @@ module.exports = {
   },
   module: {
     loaders: [
-      {test: /\.jsx?/, loader: 'babel-loader', exclude: 'node_modules'},
+      {test: /\.jsx?/, loader: 'babel-loader', exclude: path.resolve(__dirname) + 'node_modules'},
       {test: /\.(png|jpg)$/, loader: "url-loader?mimetype=image/jpg"}
 
     ]

@@ -1,4 +1,5 @@
-import {Topic, Why, WhatIf, How} from "./db";
+import {Topic, Why, WhatIf, How, User} from "./db";
+import {hashPassword} from './security';
 
 /**
  * The authenticated function checks for a user and calls the next function in the composition if
@@ -71,6 +72,14 @@ export const resolvers = {
       return WhatIf.findById(args.whatIfId).then(function (whatIf) {
         return whatIf.createHow({question: args.question, stars: 0})
       })
+    },
+    addUser: (root, args) => {
+      User.createUser(
+        {
+          username: args.username,
+          password: hashPassword(args.password),
+          email: args.email,
+        })
     }
   },
 

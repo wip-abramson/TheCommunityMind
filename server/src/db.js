@@ -6,7 +6,7 @@ const Conn = new Sequelize(
   '$TheCommunityMind$1',
   {
     dialect: 'mysql',
-    host: 'localhost'
+    host: '0.0.0.0'
   }
 )
 
@@ -14,16 +14,20 @@ const UserModel = Conn.define('user', {
   username: {
     type: Sequelize.STRING,
     allowNull: false,
+  },
+  password: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  email: {
+    type: Sequelize.STRING,
+    allowNull: false
   }
+
 
 })
 
 const TopicModel = Conn.define('topic', {
-  // id: {
-  //   type: DataTypes.UUID,
-  //   defaultValue: DataTypes.UUIDV1,
-  //   primaryKey: true
-  // },
   name: {
     type: Sequelize.STRING,
     allowNull: false

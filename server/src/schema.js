@@ -35,6 +35,8 @@ type How {
 type User {
   id: ID!
   username: String!
+  password: String!
+  email: String!
 }
 
 
@@ -51,6 +53,7 @@ type Mutation {
     addWhy(question: String!): Why
     addWhatIf(question: String!, whyId: ID!): WhatIf
     addHow(question: String!, whatIfId: ID!): How
+    addUser(username: String!, password: String!, email: String!): User
 }
 `;
 

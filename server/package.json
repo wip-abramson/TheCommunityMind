@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "babel-cli": "^6.24.0",
+    "bcrypt": "^1.0.2",
     "body-parser": "^1.17.1",
     "cors": "^2.8.1",
     "express": "^4.15.2",
@@ -27,5 +28,8 @@
     "node-uuid": "^1.4.8",
     "passport": "^0.3.2",
     "sequelize": "^3.30.4"
+  },
+  "devDependencies": {
+    "babel-plugin-transform-object-rest-spread": "^6.23.0"
   }
 }

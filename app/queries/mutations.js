@@ -10,6 +10,15 @@ export const addUserMutation = gql`
   }
 `
 
+export const loginMutation = gql`
+  mutation LoginMutation($username: String!, $password: String!) {
+    login(username: $username, password: $password) {
+      id
+      username
+    }
+  }
+`
+
 export const addWhatIfMutation = gql`
   mutation AddWhatIfMutation($question: String!, $whyId: ID!) {
     addWhatIf(question: $question, whyId: $whyId) {

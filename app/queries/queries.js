@@ -1,5 +1,7 @@
 import {gql} from "react-apollo";
 
+
+
 export const whyListQuery = gql`
   query WhyListQuery {
     whys {

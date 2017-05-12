@@ -4,7 +4,7 @@ import Main from "../components/Main/Main";
 import Why from "../components/Questions/Why";
 import WhatIf from "../components/Questions/WhatIf";
 import How from "../components/Questions/How";
-import Login from "../components/Login";
+import LoginContainer from "../components/Login/LoginContainer";
 import RegisterContainer from "../components/Register/RegisterContainer";
 
 var AppRouter = function () {
@@ -17,7 +17,7 @@ var AppRouter = function () {
       </Route>
       < Route
         path='/login'
-        component={Login}/>
+        component={LoginContainer}/>
       < Route
         path='register'
         component={RegisterContainer}/>

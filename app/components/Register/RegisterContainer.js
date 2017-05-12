@@ -6,6 +6,8 @@ import {compose, graphql} from "react-apollo";
 import Register from './Register';
 import {addUserMutation} from '../../queries/mutations';
 
+
+
 export default compose(
   graphql(addUserMutation, {
     name: "addUser"

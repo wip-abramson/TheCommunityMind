@@ -5,7 +5,7 @@ import Why from "../components/Questions/Why";
 import WhatIf from "../components/Questions/WhatIf";
 import How from "../components/Questions/How";
 import Login from "../components/Login";
-import Register from "../components/Register";
+import RegisterContainer from "../components/Register/RegisterContainer";
 
 var AppRouter = function () {
   return (
@@ -20,7 +20,7 @@ var AppRouter = function () {
         component={Login}/>
       < Route
         path='register'
-        component={Register}/>
+        component={RegisterContainer}/>
 
     </ Router >
   )

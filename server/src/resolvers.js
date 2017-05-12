@@ -1,5 +1,5 @@
 import {Topic, Why, WhatIf, How, User} from "./db";
-import {hashPassword} from './security';
+import {saveUser} from './security';
 
 /**
  * The authenticated function checks for a user and calls the next function in the composition if
@@ -74,12 +74,9 @@ export const resolvers = {
       })
     },
     addUser: (root, args) => {
-      User.createUser(
-        {
-          username: args.username,
-          password: hashPassword(args.password),
-          email: args.email,
-        })
+      console.log("Adding user")
+      saveUser(args.username, args.password, args.email)
+
     }
   },
 

@@ -46,11 +46,6 @@ const WhyModel = Conn.define('why', {
 })
 
 const WhatIfModel = Conn.define('whatif', {
-  // id: {
-  //   type: DataTypes.UUID,
-  //   defaultValue: DataTypes.UUIDV1,
-  //   primaryKey: true
-  // },
   question: {
     type: Sequelize.STRING,
     allowNull: false
@@ -62,11 +57,6 @@ const WhatIfModel = Conn.define('whatif', {
 })
 
 const HowModel = Conn.define('how', {
-  // id: {
-  //   type: DataTypes.UUID,
-  //   defaultValue: DataTypes.UUIDV1,
-  //   primaryKey: true
-  // },
   question: {
     type: Sequelize.STRING,
     allowNull: false

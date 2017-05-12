@@ -1,5 +1,5 @@
 import {Topic, Why, WhatIf, How, User} from "./db";
-import {saveUser} from './security';
+import {saveUser, comparePassword} from './security';
 
 /**
  * The authenticated function checks for a user and calls the next function in the composition if
@@ -48,12 +48,8 @@ export const resolvers = {
         }
       })
     },
-    me: (parent, args, context, info) => {
-      if (context.user) {
-        return context.user;
-      }
-      return null;
-    }
+
+
   },
   Mutation: {
     addTopic: (root, args) => {
@@ -76,6 +72,16 @@ export const resolvers = {
     addUser: (root, args) => {
       console.log("Adding user")
       saveUser(args.username, args.password, args.email)
+
+    },
+    login: (obj, args, info) => {
+      User.find({
+        where: {
+          username: args.username
+        }
+      }).then((user) => {
+        comparePassword(args.password, user.password)
+      })
 
     }
   },

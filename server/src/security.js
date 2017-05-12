@@ -15,8 +15,8 @@ const saveUser = (username,password, email) => {
 
 
 const comparePassword = function (password, hash) {
-  return bcrpyt.compare(password, hash).then(function (res) {
-    return res;
+  bcrpyt.compare(password, hash).then(function (res) {
+    console.log(res)
   })
 }
 

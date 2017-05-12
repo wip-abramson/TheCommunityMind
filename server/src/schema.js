@@ -45,7 +45,7 @@ type Query {
    whys(topicId: ID): [Why]
    whatIfs(whyId: ID!): [WhatIf]
    hows(whatIfId: ID!): [How]
-   me: User
+   
 }
 
 type Mutation {
@@ -54,6 +54,7 @@ type Mutation {
     addWhatIf(question: String!, whyId: ID!): WhatIf
     addHow(question: String!, whatIfId: ID!): How
     addUser(username: String!, password: String!, email: String!): User
+    login(username: String!, password: String!): User
 }
 `;
 

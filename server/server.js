@@ -8,10 +8,15 @@ import session from 'express-session';
 const PORT = 5000
 const server = express();
 
+function loggingMiddleware(req, res, next) {
+  // console.log('header:', req.header);
+  next();
+}
+
 server.use('*', cors({origin: 'http://0.0.0.0:8080', credentials: true}))
 
 server.use(express.static('../public'))
-
+server.use(loggingMiddleware)
 server.use('/graphql', session({
   secret: 'shhhhhhared-secret',
   cookie: { maxAge: 60000 },

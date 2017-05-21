@@ -126,7 +126,6 @@ const questions = [
         whatif: "What if heaering aides were sold more like glasses",
         hows: []
       },
-      { whatif: "What id these cities actually existed under the sea", hows: ["how would it withstand the pressure"] },
     ],
   },
   {

@@ -1,4 +1,4 @@
-import { Topic, Why, WhatIf, How, User } from "./db";
+import { Topic, Why, WhatIf, How, Use, Questionr } from "./db";
 import { saveUser, comparePassword } from './security';
 import GraphQLDate from 'graphql-date';
 
@@ -93,44 +93,39 @@ export const resolvers = {
       return topic.getWhys()
     },
   },
+
+  Question: {
+    owner(question) {
+      return question.getUser();
+    }
+  },
+
   Why: {
     whatIfs(why) {
-      return why.getWhatIfs()
+      return why.getWhatIfs();
     },
-    owner(why) {
-      return why.getUser();
-    },
+    question(why) {
+      return why.getQuestion();
+    }
   },
   WhatIf: {
     hows(whatIf) {
       return whatIf.getHows();
     },
-    owner(whatIf) {
-      return whatIf.getUser();
-    },
+    question(whatIf) {
+      return whatIf.getQuestion();
+    }
   },
 
   How: {
-    owner(how) {
-      return how.getUser();
+    question(how) {
+      return how.getQuestion();
     },
   },
 
   User: {
-    whys(user) {
-      return Why.findAll({
-        where: {userId: user.id}
-      });
+    questions(user) {
+      return user.getQuestions();
     },
-    whatIfs(user) {
-      return WhatIf.findAll({
-        where: {userId: user.id}
-      });
-    },
-    hows(user) {
-      return How.findAll({
-        where: {userId: user.id}
-      });
-    }
   }
 }

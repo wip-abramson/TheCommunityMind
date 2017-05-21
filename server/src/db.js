@@ -30,7 +30,7 @@ const TopicModel = Conn.define('topic', {
   }
 })
 
-const WhyModel = Conn.define('why', {
+const QuestionModel = Conn.define('question', {
   question: {
     type: Sequelize.STRING,
     allowNull: false
@@ -39,38 +39,49 @@ const WhyModel = Conn.define('why', {
     type: Sequelize.INTEGER,
     allowNull: false
   }
+})
+
+const WhyModel = Conn.define('why', {
+  // question: {
+  //   type: Sequelize.STRING,
+  //   allowNull: false
+  // },
+  // stars: {
+  //   type: Sequelize.INTEGER,
+  //   allowNull: false
+  // }
 })
 
 const WhatIfModel = Conn.define('whatif', {
-  question: {
-    type: Sequelize.STRING,
-    allowNull: false
-  },
-  stars: {
-    type: Sequelize.INTEGER,
-    allowNull: false
-  }
+  // question: {
+  //   type: Sequelize.STRING,
+  //   allowNull: false
+  // },
+  // stars: {
+  //   type: Sequelize.INTEGER,
+  //   allowNull: false
+  // }
 })
 
 const HowModel = Conn.define('how', {
-  question: {
-    type: Sequelize.STRING,
-    allowNull: false
-  },
-  stars: {
-    type: Sequelize.INTEGER,
-    allowNull: false
-  }
+  // question: {
+  //   type: Sequelize.STRING,
+  //   allowNull: false
+  // },
+  // stars: {
+  //   type: Sequelize.INTEGER,
+  //   allowNull: false
+  // }
 })
 
 // Relationships
 
-UserModel.hasMany(WhyModel);
-WhyModel.belongsTo(UserModel);
-UserModel.hasMany(WhatIfModel);
-WhatIfModel.belongsTo(UserModel);
-UserModel.hasMany(HowModel);
-HowModel.belongsTo(UserModel);
+UserModel.hasMany(QuestionModel);
+QuestionModel.belongsTo(UserModel);
+// UserModel.hasMany(WhatIfModel);
+// WhatIfModel.belongsTo(UserModel);
+// UserModel.hasMany(HowModel);
+// HowModel.belongsTo(UserModel);
 
 
 TopicModel.hasMany(WhyModel, { as: 'Whys' });
@@ -79,6 +90,10 @@ WhyModel.hasMany(WhatIfModel, { as: 'WhatIfs' });
 WhatIfModel.belongsTo(WhyModel);
 WhatIfModel.hasMany(HowModel, { as: 'Hows' });
 HowModel.belongsTo(WhatIfModel);
+
+WhyModel.hasOne(QuestionModel);
+WhatIfModel.hasOne(QuestionModel);
+HowModel.hasOne(QuestionModel);
 
 const USERS = 5;
 const QUESTIONS = 5;
@@ -168,20 +183,36 @@ Conn.sync({ force: true }).then(() => {
   }).then((user) => {
     questions.forEach((whyData) => {
       // console.log(whyData.why);
-      return user.createWhy({ question: whyData.why, stars: 0 }).then((newWhy) => {
-        return whyData.whatifs.forEach((whatIfData) => {
-          // console.log(whatIfData.whatif)
-          return user.createWhatif({ question: whatIfData.whatif, stars: 0 }).then((newWhatIf) => {
-            // console.log(newWhatIf == null)
-            newWhy.addWhatIf(newWhatIf);
-            // console.log(newWhy == null)
-            return whatIfData.hows.forEach((how) => {
-              return user.createHow({ question: how, stars: 0 }).then((newHow) => {
-                newWhatIf.addHow(newHow);
+      return user.createQuestion({ question: whyData.why, stars: 0 }).then((whyQuestion) => {
+        return WhyModel.create({}).then((newWhy) => {
+          newWhy.setQuestion(whyQuestion);
+
+          return whyData.whatifs.forEach((whatIfData) => {
+            // console.log(whatIfData.whatif)
+            return user.createQuestion({ question: whatIfData.whatif, stars: 0 }).then((whatIfQuestion) => {
+              // console.log(newWhatIf == null)
+
+              return WhatIfModel.create({}).then((newWhatIf) => {
+                // whatIfQuestion.setWhatIf(newWhatIf);
+                newWhatIf.setQuestion(whatIfQuestion);
+                newWhy.addWhatIf(newWhatIf);
+              // console.log(newWhy == null)
+                return whatIfData.hows.forEach((how) => {
+                  return user.createQuestion({ question: how, stars: 0 }).then((howQuestion) => {
+
+                    return HowModel.create({}).then((newHow) => {
+                      newHow.setQuestion(howQuestion);
+                      newWhatIf.addHow(newHow);
+                    })
+
+                  })
+                })
               })
+
             })
           })
         })
+
       })
     })
 
@@ -193,5 +224,6 @@ const Why = Conn.models.why;
 const WhatIf = Conn.models.whatif;
 const How = Conn.models.how;
 const User = Conn.models.user;
+const Question = Conn.models.question;
 
-export { Topic, Why, WhatIf, How, User }
+export { Topic, Why, WhatIf, How, User, Question }

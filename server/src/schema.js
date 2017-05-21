@@ -10,30 +10,30 @@ const typeDefs = `
    whys: [Why]
   }
   
-  type Why {
+  type Question {
     id: ID!
     stars: Int!
     question: String!
-    whatIfs: [WhatIf]
-    createdAt: Date!
     owner: User!
+    createdAt: Date!
+  }
+  
+  type Why {
+    id: ID!
+    question: Question!
+    whatIfs: [WhatIf]
   }
   
   type WhatIf {
     id: ID!
-    stars: Int!
-    question: String!
+    question: Question!
     hows: [How]
-    createdAt: Date!
-    owner: User!
   }
   
   type How {
     id: ID!
-    question: String!
-    stars: Int!
-    createdAt: Date!
-    owner: User!
+    question: Question!
+    
   }
   
   type User {
@@ -44,6 +44,7 @@ const typeDefs = `
     whys: [Why]
     hows: [How]
     whatIfs: [WhatIf]
+    questions: [Question]
   }
   
   

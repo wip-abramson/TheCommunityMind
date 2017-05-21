@@ -1,10 +1,10 @@
 import React from "react";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import QuestionView from "./QuestionView/QuestionView";
-import {updateCurrentWhy} from "../../actions/Why";
-import {compose, graphql} from "react-apollo";
-import {addWhyMutation} from "../../queries/mutations";
-import {whyListQuery} from "../../queries/queries";
+import { updateCurrentWhy } from "../../actions/Why";
+import { compose, graphql } from "react-apollo";
+import { addWhyMutation } from "../../graphql/mutations";
+import { whyListQuery } from "../../graphql/queries";
 
 const mapStateToProps = function (state) {
   return {
@@ -30,7 +30,7 @@ const Why = compose(
       // variables: {parentId: props.parentId},
       pollInterval: 5000
     }),
-    props: ({ownProps, data: {loading, error, whys}}) => ({
+    props: ({ ownProps, data: { loading, error, whys } }) => ({
       loading,
       error,
       questions: whys,
@@ -45,7 +45,7 @@ const Why = compose(
   graphql(addWhyMutation, {
     name: 'addQuestionMutation',
     options: (props) => ({
-      variables: {topicId: props.parentId}
+      variables: { topicId: props.parentId }
     })
   })
 )(QuestionView);

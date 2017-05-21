@@ -1,9 +1,9 @@
 import React from "react";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import QuestionView from "./QuestionView/QuestionView";
-import {compose, graphql} from "react-apollo";
-import {addHowMutation} from "../../queries/mutations";
-import {howListQuery} from "../../queries/queries";
+import { compose, graphql } from "react-apollo";
+import { addHowMutation } from "../../graphql/mutations";
+import { howListQuery } from "../../graphql/queries";
 
 const mapStateToProps = function (state) {
   return {
@@ -12,7 +12,6 @@ const mapStateToProps = function (state) {
   }
 }
 
-
 const How = compose(
   connect(
     mapStateToProps,
@@ -20,10 +19,10 @@ const How = compose(
   ),
   graphql(howListQuery, {
     options: (props) => ({
-      variables: {parentId: props.currentWhatIf.id},
+      variables: { parentId: props.currentWhatIf.id },
       pollInterval: 5000
     }),
-    props: ({ownProps, data: {loading, error, hows}}) => ({
+    props: ({ ownProps, data: { loading, error, hows } }) => ({
       loading,
       error,
       questions: hows,
@@ -36,10 +35,9 @@ const How = compose(
   graphql(addHowMutation, {
     name: 'addQuestionMutation',
     options: (props) => ({
-      variables: {whatIfId: props.currentWhatIf.id},
+      variables: { whatIfId: props.currentWhatIf.id },
     }),
   })
 )(QuestionView)
-
 
 export default How;

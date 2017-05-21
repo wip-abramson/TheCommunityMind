@@ -1,4 +1,4 @@
-import React, {PropTypes} from "react";
+import React, { PropTypes } from "react";
 import QuestionInput from "./QuestionInput";
 import QuestionList from "./QuestionList";
 import Question from './Question/Question';
@@ -38,9 +38,13 @@ function getCurrentWhyQuestion(question) {
     return (
       <Question
         question={question}
-        stars={question.stars}
         link='/'
-        onSelectQuestion={() => {return null} }
+        onSelectQuestion={() => {
+          return null
+        } }
+        stars={question.question.stars}
+        value={question.question.question}
+        owner={question.question.owner.username}
       >
         {question.question}
       </Question>
@@ -53,9 +57,13 @@ function getCurrentWhatIf(question) {
     return (
       <Question
         question={question}
-        stars={question.stars}
         link='/whatif'
-        onSelectQuestion={() => {return null} }
+        onSelectQuestion={() => {
+          return null
+        } }
+        stars={question.question.stars}
+        value={question.question.question}
+        owner={question.question.owner.username}
       >
         {question.question}
       </Question>

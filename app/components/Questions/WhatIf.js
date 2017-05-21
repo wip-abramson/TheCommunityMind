@@ -1,13 +1,13 @@
 import React from "react";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import QuestionView from "./QuestionView/QuestionView";
-import {updateCurrentWhatIf} from "../../actions/WhatIf";
-import {compose, graphql} from "react-apollo";
-import {addWhatIfMutation} from "../../queries/mutations";
-import {whatIfListQuery} from "../../queries/queries";
+import { updateCurrentWhatIf } from "../../actions/WhatIf";
+import { compose, graphql } from "react-apollo";
+import { addWhatIfMutation } from "../../graphql/mutations";
+import { whatIfListQuery } from "../../graphql/queries";
 
 const mapStateToProps = function (state) {
-  console.log("Getting current why",state.currentWhy);
+  console.log("Getting current why", state.currentWhy);
   return {
 
     currentWhy: state.currentWhy,
@@ -22,7 +22,6 @@ const mapDispatchToProps = function (dispatch) {
   }
 }
 
-
 const WhatIf = compose(
   connect(
     mapStateToProps,
@@ -30,10 +29,10 @@ const WhatIf = compose(
   ),
   graphql(whatIfListQuery, {
     options: (props) => ({
-      variables: {parentId: props.currentWhy.id},
+      variables: { parentId: props.currentWhy.id },
       pollInterval: 5000
     }),
-    props: ({ownProps, data: {loading, error, whatIfs}}) => ({
+    props: ({ ownProps, data: { loading, error, whatIfs } }) => ({
       loading,
       error,
       questions: whatIfs,
@@ -48,7 +47,7 @@ const WhatIf = compose(
   graphql(addWhatIfMutation, {
     name: 'addQuestionMutation',
     options: (props) => ({
-      variables: {whyId: props.currentWhy.id}
+      variables: { whyId: props.currentWhy.id }
     })
   })
 )(QuestionView)

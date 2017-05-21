@@ -1,5 +1,5 @@
-import React, {PropTypes} from "react";
-import {Link} from "react-router";
+import React, { PropTypes } from "react";
+import { Link } from "react-router";
 import Star from "./Star";
 import Owner from "./Owner";
 
@@ -22,26 +22,24 @@ export default function Question(props) {
           }}
           to={props.link}>
 
-          {formatQuestion(props.children)}
+          {formatQuestion(props.value)}
         </Link>
         <Star count={props.stars}/>
-        <Owner owner="The Owner"/>
-
+        <Owner owner={props.owner}/>
       </div>
     )
   }
   else {
     return (
       <div style={style}>
-        {formatQuestion(props.children)}
+        {formatQuestion(props.value)}
         <Star count={props.stars}/>
-        <Owner owner="The Owner"/>
+        <Owner owner={props.owner}/>
       </div>
     )
   }
 
 }
-
 
 Question.PropTypes = {
   onSelectQuestion: PropTypes.func.isRequired,
@@ -50,7 +48,7 @@ Question.PropTypes = {
 }
 
 function formatQuestion(question) {
-
+  console.log(question)
   if (question.charAt(question.length - 1) !== '?') {
     question = '"' + question + '?' + '"';
   }

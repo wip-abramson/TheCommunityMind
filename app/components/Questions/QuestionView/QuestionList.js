@@ -13,10 +13,11 @@ const QuestionList = (props) => {
             key={"id-" + question.id}
             onSelectQuestion={props.onSelectQuestion}
             question={question}
-            stars={question.stars}
+            stars={question.question.stars}
             link={props.link}
+            value={question.question.question}
+            owner={question.question.owner.username}
           >
-            {question.question}
           </Question>)
       })}
     </div>

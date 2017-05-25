@@ -4,7 +4,7 @@
 import React from 'react'
 import Login from './Login'
 import {compose, graphql} from "react-apollo";
-import {loginMutation} from '../../queries/mutations';
+import {loginMutation} from '../../graphql/mutations';
 
 var container = React.createClass({
   getInitialState () {

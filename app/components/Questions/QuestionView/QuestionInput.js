@@ -9,12 +9,13 @@ function QuestionInput(props) {
 
   const handleSubmit = (evt) => {
 
-    props.addQuestion({
+    props.createQuestion({
       variables: {question: evt.trim()},
       refetchQueries: [{
         query: props.refetchQuery,
         variables: {
-          parentId: props.parentId
+          parentId: props.parentId,
+          userId: 1,
         }
       }]
     })
@@ -35,10 +36,10 @@ function QuestionInput(props) {
   )
 }
 
-QuestionInput.PropTypes = {
+QuestionInput.propTypes = {
 
   placeholder: PropTypes.string.isRequired,
-
+  createQuestion: PropTypes.func.isRequired,
 }
 
 

@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 import QuestionView from "./QuestionView/QuestionView";
 import { updateCurrentWhy } from "../../actions/Why";
 import { compose, graphql } from "react-apollo";
-import { addWhyMutation } from "../../graphql/mutations";
-import { whyListQuery } from "../../graphql/queries";
+import CREATE_WHY_MUTATION from "../../graphql/createWhy.mutation";
+import WHYS_QUERY from "../../graphql/whys.query";
 
 const mapStateToProps = function (state) {
   return {
@@ -25,7 +25,7 @@ const Why = compose(
     mapStateToProps,
     mapDispatchToProps,
   ),
-  graphql(whyListQuery, {
+  graphql(WHYS_QUERY, {
     options: (props) => ({
       // variables: {parentId: props.parentId},
       pollInterval: 5000
@@ -37,15 +37,15 @@ const Why = compose(
       onSelectQuestion: ownProps.onSelectQuestion,
       placeholder: "Why ...?",
       link: "/whatif",
-      refetchQuery: whyListQuery,
+      refetchQuery: WHYS_QUERY,
       currentWhy: null,
       currentWhatIf: null,
     })
   }),
-  graphql(addWhyMutation, {
-    name: 'addQuestionMutation',
+  graphql(CREATE_WHY_MUTATION, {
+    name: 'createQuestionMutation',
     options: (props) => ({
-      variables: { topicId: props.parentId }
+      variables: { userId: 1 }
     })
   })
 )(QuestionView);

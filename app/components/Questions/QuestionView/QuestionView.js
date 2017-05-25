@@ -19,7 +19,7 @@ function QuestionView(props) {
 
       <QuestionInput
         placeholder={props.placeholder}
-        addQuestion={props.addQuestionMutation}
+        createQuestion={props.createQuestionMutation}
         refetchQuery={props.refetchQuery}
         parentId={props.parentId}
       >

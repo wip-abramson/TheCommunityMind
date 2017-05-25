@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 import QuestionView from "./QuestionView/QuestionView";
 import { updateCurrentWhatIf } from "../../actions/WhatIf";
 import { compose, graphql } from "react-apollo";
-import { addWhatIfMutation } from "../../graphql/mutations";
-import { whatIfListQuery } from "../../graphql/queries";
+import CREATE_WHATIF_MUTATION from "../../graphql/createWhatIf.mutation";
+import WHATIFS_QUERY from "../../graphql/whatIfs.query";
 
 const mapStateToProps = function (state) {
   console.log("Getting current why", state.currentWhy);
@@ -27,7 +27,7 @@ const WhatIf = compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  graphql(whatIfListQuery, {
+  graphql(WHATIFS_QUERY, {
     options: (props) => ({
       variables: { parentId: props.currentWhy.id },
       pollInterval: 5000
@@ -39,15 +39,15 @@ const WhatIf = compose(
       onSelectQuestion: ownProps.onSelectQuestion,
       placeholder: "What If ...?",
       link: "/how",
-      refetchQuery: whatIfListQuery,
+      refetchQuery: WHATIFS_QUERY,
       currentWhy: ownProps.currentWhy,
       currentWhatIf: null,
     })
   }),
-  graphql(addWhatIfMutation, {
-    name: 'addQuestionMutation',
+  graphql(CREATE_WHATIF_MUTATION, {
+    name: 'createQuestionMutation',
     options: (props) => ({
-      variables: { whyId: props.currentWhy.id }
+      variables: { whyId: props.currentWhy.id, userId: 1 }
     })
   })
 )(QuestionView)

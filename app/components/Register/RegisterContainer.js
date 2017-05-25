@@ -4,7 +4,7 @@
 import React from 'react'
 import {compose, graphql} from "react-apollo";
 import Register from './Register';
-import {addUserMutation} from '../../queries/mutations';
+import {addUserMutation} from '../../graphql/mutations';
 
 
 

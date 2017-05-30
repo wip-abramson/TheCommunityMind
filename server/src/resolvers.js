@@ -1,4 +1,4 @@
-import { Topic, Why, WhatIf, How, Use, Questionr } from "./db";
+import { Topic, Why, WhatIf, How, User, Question } from "./db";
 import { saveUser, comparePassword } from './security';
 import GraphQLDate from 'graphql-date';
 
@@ -30,9 +30,7 @@ export const resolvers = {
     whys: (obj, args, info) => {
 
       return Why.findAll({
-        // where: {
-        //   "topicId": args.topicId
-        // }
+        order: [['createdAt', 'DESC']],
 
       });
 
@@ -57,19 +55,39 @@ export const resolvers = {
     addTopic: (root, args) => {
       return Topic.create({ name: args.name })
     },
-    addWhy: (root, args) => {
-      return Why.create({ question: args.question, stars: 0 })
+    createWhy(root, { userId, question }) {
+      console.log('creating Why', userId, question)
+      return Why.create({}).then((why) => {
+        return why.createQuestion({ question: question, userId: userId, stars: 0, whyId: why.id })
+          .then((newQuestion) => {
+
+            why.setQuestion(newQuestion);
+            // console.log(why.questionId)
+            return why;
+          });
+        // return why;
+      })
+
     },
 
-    addWhatIf: (root, args) => {
-      return Why.findById(args.whyId).then(function (why) {
-        return why.createWhatIf({ question: args.question, stars: 0 })
+    createWhatIf: (root, { userId, whyId, question }) => {
+      return WhatIf.create({ whyId: whyId }).then((whatIf) => {
+        return whatIf.createQuestion({ question: question, userId: userId, stars: 0, whatIfId: whatIf.id }).then((newQuestion) => {
+          whatIf.setQuestion(newQuestion);
+
+          return whatIf;
+        })
       })
     },
-    addHow: (root, args) => {
-      return WhatIf.findById(args.whatIfId).then(function (whatIf) {
-        return whatIf.createHow({ question: args.question, stars: 0 })
+    createHow: (root, { userId, whatIfId, question }) => {
+      return How.create({ whatIfId: whatIfId }).then((how) => {
+        return how.createQuestion({ question: question, userId: userId, stars: 0, howId: how.id }).then((newQuestion) => {
+          how.setQuestion(newQuestion);
+          return how;
+        })
       })
+
+
     },
     addUser: (root, args) => {
       // console.log("Adding user")
@@ -105,7 +123,9 @@ export const resolvers = {
       return why.getWhatIfs();
     },
     question(why) {
+      // console.log(why.getQuestion())
       return why.getQuestion();
+      // return Question.findOne({where: {whyId: why.id}})
     }
   },
   WhatIf: {

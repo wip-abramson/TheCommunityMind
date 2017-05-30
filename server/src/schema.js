@@ -58,9 +58,9 @@ const typeDefs = `
   
   type Mutation {
     addTopic(name: String!): Topic
-    addWhy(question: String!): Why
-    addWhatIf(question: String!, whyId: ID!): WhatIf
-    addHow(question: String!, whatIfId: ID!): How
+    createWhy(userId: ID!, question: String!): Why
+    createWhatIf(userId: ID!, question: String!, whyId: ID!): WhatIf
+    createHow(userId: ID!, question: String!, whatIfId: ID!): How
     addUser(username: String!, password: String!, email: String!): User
     login(username: String!, password: String!): User
   }

@@ -92,8 +92,13 @@ WhatIfModel.hasMany(HowModel, { as: 'Hows' });
 HowModel.belongsTo(WhatIfModel);
 
 WhyModel.hasOne(QuestionModel);
+// QuestionModel.belongsTo(WhyModel);
 WhatIfModel.hasOne(QuestionModel);
 HowModel.hasOne(QuestionModel);
+
+// QuestionModel.belongsTo(WhyModel);
+// QuestionModel.belongsTo(WhatIfModel);
+// QuestionModel.belongsTo(HowModel);
 
 const USERS = 5;
 const QUESTIONS = 5;

@@ -1,4 +1,4 @@
-import React, {PropTypes} from "react";
+import React, { PropTypes } from "react";
 import TextInput from "../../generic/TextInput";
 
 function QuestionInput(props) {
@@ -8,20 +8,11 @@ function QuestionInput(props) {
   }
 
   const handleSubmit = (evt) => {
-
-    props.createQuestion({
-      variables: {question: evt.trim()},
-      refetchQueries: [{
-        query: props.refetchQuery,
-        variables: {
-          parentId: props.parentId,
-          userId: 1,
-        }
-      }]
-    })
-      .then(res => {
-        evt = "";
-      });
+    console.log(evt.trim())
+    console.log(props.createQuestion)
+    props.createQuestion({ userId: 1, question: evt.trim() }).then(res => {
+      evt = "";
+    });
   }
   return (
 
@@ -41,6 +32,5 @@ QuestionInput.propTypes = {
   placeholder: PropTypes.string.isRequired,
   createQuestion: PropTypes.func.isRequired,
 }
-
 
 export default QuestionInput;

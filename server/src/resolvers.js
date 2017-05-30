@@ -39,14 +39,16 @@ export const resolvers = {
       return WhatIf.findAll({
         where: {
           whyId: args.whyId
-        }
+        },
+        order: [['createdAt', 'DESC']],
       });
     },
     hows: (obj, args, info) => {
       return How.findAll({
         where: {
           whatIfId: args.whatIfId
-        }
+        },
+        order: [['createdAt', 'DESC']],
       })
     },
 
@@ -80,7 +82,7 @@ export const resolvers = {
       })
     },
     createHow: (root, { userId, whatIfId, question }) => {
-      return How.create({ whatIfId: whatIfId }).then((how) => {
+      return How.create({ whatifId: whatIfId }).then((how) => {
         return how.createQuestion({ question: question, userId: userId, stars: 0, howId: how.id }).then((newQuestion) => {
           how.setQuestion(newQuestion);
           return how;

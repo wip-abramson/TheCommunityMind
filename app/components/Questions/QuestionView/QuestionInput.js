@@ -8,8 +8,6 @@ function QuestionInput(props) {
   }
 
   const handleSubmit = (evt) => {
-    console.log(evt.trim())
-    console.log(props.createQuestion)
     props.createQuestion({ userId: 1, question: evt.trim() }).then(res => {
       evt = "";
     });

@@ -88,6 +88,7 @@ QuestionView.propTypes = {
   loading: PropTypes.bool,
   error: PropTypes.bool,
   createQuestion: PropTypes.func.isRequired,
-}
+};
 
-export default QuestionView
+export default QuestionView;
+

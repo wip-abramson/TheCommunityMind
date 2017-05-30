@@ -22,7 +22,7 @@ const QuestionList = (props) => {
       })}
     </div>
   )
-}
+};
 
 QuestionList.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.shape({
@@ -37,6 +37,6 @@ QuestionList.propTypes = {
       }).isRequired
     }).isRequired
   }).isRequired),
-}
+};
 
 export default QuestionList;

@@ -10,7 +10,7 @@ const mapStateToProps = function (state) {
     currentWhy: state.currentWhy,
     currentWhatIf: state.currentWhatIf
   }
-}
+};
 
 const createHow = graphql(CREATE_HOW_MUTATION, {
   props: ({ ownProps, mutate }) => ({
@@ -73,6 +73,6 @@ const How = compose(
     })
   }),
   createHow,
-)(QuestionView)
+)(QuestionView);
 
 export default How;

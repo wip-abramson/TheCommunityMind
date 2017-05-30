@@ -72,7 +72,7 @@ function getCurrentWhatIf(question) {
 }
 
 QuestionView.propTypes = {
-  onSelectQuestion: PropTypes.func.isRequired,
+  onSelectQuestion: PropTypes.func,
   questions: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
     question: PropTypes.shape({

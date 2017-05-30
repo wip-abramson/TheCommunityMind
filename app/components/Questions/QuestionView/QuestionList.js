@@ -1,7 +1,7 @@
 /**
  * Created by will on 23/04/17.
  */
-import React from "react";
+import React, { PropTypes } from "react";
 import Question from "./Question/Question";
 
 const QuestionList = (props) => {
@@ -22,6 +22,21 @@ const QuestionList = (props) => {
       })}
     </div>
   )
+}
+
+QuestionList.propTypes = {
+  questions: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    question: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      question: PropTypes.string.isRequired,
+      stars: PropTypes.number.isRequired,
+      owner: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        username: PropTypes.string.isRequired,
+      }).isRequired
+    }).isRequired
+  }).isRequired),
 }
 
 export default QuestionList;

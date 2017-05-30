@@ -19,7 +19,7 @@ function QuestionView(props) {
 
       <QuestionInput
         placeholder={props.placeholder}
-        createQuestion={props.createQuestionMutation}
+        createQuestion={props.createQuestion}
         refetchQuery={props.refetchQuery}
         parentId={props.parentId}
       >
@@ -71,15 +71,23 @@ function getCurrentWhatIf(question) {
   }
 }
 
-QuestionView.PropTypes = {
+QuestionView.propTypes = {
   onSelectQuestion: PropTypes.func.isRequired,
   questions: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    question: PropTypes.string.isRequired
-  }).isRequired).isRequired,
+    id: PropTypes.string.isRequired,
+    question: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      question: PropTypes.string.isRequired,
+      stars: PropTypes.number.isRequired,
+      owner: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        username: PropTypes.string.isRequired,
+      }).isRequired
+    }).isRequired
+  }).isRequired),
   loading: PropTypes.bool,
   error: PropTypes.bool,
-  addQuestionMutation: PropTypes.func.isRequired,
+  createQuestion: PropTypes.func.isRequired,
 }
 
 export default QuestionView

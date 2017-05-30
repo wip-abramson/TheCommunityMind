@@ -5,7 +5,7 @@ import {gql} from 'react-apollo';
 import QUESTION_FRAGMENT from './question.fragment';
 
 const CREATE_WHY_MUTATION = gql`
-  mutation CreateWhyMutation($userId: Int!, $question: String!) {
+  mutation createWhy($userId: ID!, $question: String!) {
     createWhy(userId: $userId, question: $question) {
      id
      question {

@@ -2,7 +2,7 @@ import {gql} from 'react-apollo';
 import QUESTION_FRAGMENT from './question.fragment';
 
 const WHATIFS_QUERY = gql`
-  query whatIfs($parentId: Int!) {
+  query whatIfs($parentId: ID!) {
     whatIfs(whyId: $parentId) {
       id
       question {

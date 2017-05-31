@@ -7,12 +7,11 @@ import CREATE_WHATIF_MUTATION from "../../graphql/createWhatIf.mutation";
 import WHATIFS_QUERY from "../../graphql/whatIfs.query";
 
 const mapStateToProps = function (state) {
-  // console.log("Getting current why", state.currentWhy);
-  return {
 
+  return {
     currentWhy: state.currentWhy,
   }
-}
+};
 
 const mapDispatchToProps = function (dispatch) {
   return {
@@ -20,12 +19,11 @@ const mapDispatchToProps = function (dispatch) {
       dispatch(updateCurrentWhatIf(whatIf))
     }
   }
-}
+};
 
 const createWhatIf = graphql(CREATE_WHATIF_MUTATION, {
   props: ({ ownProps, mutate }) => ({
     createQuestion: ({ userId, question }) => {
-      console.log("WhatIfMutation", userId, question, ownProps.currentWhy.id)
       return mutate({
 
         variables: { userId, question, whyId: ownProps.currentWhy.id },
@@ -33,38 +31,42 @@ const createWhatIf = graphql(CREATE_WHATIF_MUTATION, {
           __typename: 'Mutation',
           createWhatIf: {
             __typename: 'WhatIf',
-            id: "", // don't know id yet, but it doesn't matter
+            id: "-1", // don't know id yet, but it doesn't matter
             question: {
               __typename: 'Question',
-              id: "",
+              id: "-1",
               question: question,
               stars: 0,
               createdAt: new Date().toISOString(), // the time is now!
               owner: {
                 __typename: 'User',
-                id: "", // still faking the user
+                id: "-1", // still faking the user
                 username: 'Justyn.Kautzer' // still faking the user
-                // maybe we should stop faking the user soon!
               },
-            }, // we know what the question will be
+            },
 
           },
         },
         update: (proxy, { data: { createWhatIf } }) => {
           // Read the data from our cache for this query.
-          const data = proxy.readQuery({ query: WHATIFS_QUERY, variables: { parentId: ownProps.currentWhy.id } });
-          // Add our comment from the mutation to the end.
-          // console.log(proxy)
+          const data = proxy.readQuery({
+            query: WHATIFS_QUERY,
+            variables: { parentId: ownProps.currentWhy.id }
+          });
+          // Add whatId from the mutation to the beginning.
 
           data.whatIfs.unshift(createWhatIf);
           // Write our data back to the cache.
-          proxy.writeQuery({ query: WHATIFS_QUERY, variables: { parentId: ownProps.currentWhy.id }, data });
+          proxy.writeQuery({
+            query: WHATIFS_QUERY,
+            variables: { parentId: ownProps.currentWhy.id },
+            data
+          });
         },
       })
     }
-
   })
-})
+});
 
 const WhatIf = compose(
   connect(
@@ -89,6 +91,6 @@ const WhatIf = compose(
     })
   }),
   createWhatIf,
-)(QuestionView)
+)(QuestionView);
 
 export default WhatIf;

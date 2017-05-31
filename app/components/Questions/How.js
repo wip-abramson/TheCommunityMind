@@ -21,28 +21,26 @@ const createHow = graphql(CREATE_HOW_MUTATION, {
           __typename: 'Mutation',
           createHow: {
             __typename: 'How',
-            id: "", // don't know id yet, but it doesn't matter
+            id: "-1", // fake id
             question: {
               __typename: 'Question',
-              id: "",
+              id: "-1",
               question: question,
               stars: 0,
               createdAt: new Date().toISOString(), // the time is now!
               owner: {
                 __typename: 'User',
-                id: "", // still faking the user
+                id: "-1", // still faking the user
                 username: 'Justyn.Kautzer' // still faking the user
                 // maybe we should stop faking the user soon!
               },
-            }, // we know what the question will be
+            },
 
           },
         },
         update: (proxy, { data: { createHow } }) => {
           const data = proxy.readQuery({ query: HOWS_QUERY, variables: { parentId: ownProps.currentWhatIf.id } });
-          // Add our comment from the mutation to the end.
-          // console.log(proxy)
-
+          // Add how from the mutation to the beginning.
           data.hows.unshift(createHow);
           // Write our data back to the cache.
           proxy.writeQuery({ query: HOWS_QUERY, variables: { parentId: ownProps.currentWhatIf.id }, data });

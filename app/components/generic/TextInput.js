@@ -25,13 +25,13 @@ function TextInput(props) {
 
         </Col>
       </FormGroup>
-      <FormGroup>
-        <Col xs={2}>
-          <Button bsStyle="primary" block>
-            {props.submitName}
-          </Button>
-        </Col>
-      </FormGroup>
+
+      <Col xs={2}>
+        <Button type="submit" bsStyle="primary" block >
+          {props.submitName}
+        </Button>
+      </Col>
+
 
     </form>
 

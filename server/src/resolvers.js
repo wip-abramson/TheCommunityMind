@@ -1,24 +1,9 @@
 import { Topic, Why, WhatIf, How, User, Question } from "./db";
-import { saveUser, comparePassword } from './security';
 import GraphQLDate from 'graphql-date';
-
-/**
- * The authenticated function checks for a user and calls the next function in the composition if
- * one exists. If no user exists in the context then an error is thrown.
- */
-// const authenticated =
-//   (fn) =>
-//     (parent, args, context, info) => {
-//       if (context.user) {
-//         return fn(parent, args, context, info);
-//       }
-//       return null;
-//     };
-
-/*
- * getLoggedInUser returns the logged in user from the context.
- */
-// const getLoggedInUser = (parent, args, context, info) => context.user;
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import { JWT_SECRET } from '../config';
+import { whyLogic, whatIfLogic, howLogic, userLogic } from './logic';
 
 export const resolvers = {
   Date: GraphQLDate,
@@ -27,29 +12,15 @@ export const resolvers = {
     topics(){
       return Topic.findAll();
     },
-    whys: (obj, args, info) => {
+    whys: (_, args, ctx) => {
 
-      return Why.findAll({
-        order: [['createdAt', 'DESC']],
-
-      });
-
+      return whyLogic.query(_, args, ctx);
     },
-    whatIfs: (obj, args, info) => {
-      return WhatIf.findAll({
-        where: {
-          whyId: args.whyId
-        },
-        order: [['createdAt', 'DESC']],
-      });
+    whatIfs: (_, args, ctx) => {
+      return whatIfLogic.query(_, args, ctx);
     },
-    hows: (obj, args, info) => {
-      return How.findAll({
-        where: {
-          whatIfId: args.whatIfId
-        },
-        order: [['createdAt', 'DESC']],
-      })
+    hows(_, args, ctx) {
+      return howLogic.query(_, args, ctx);
     },
 
   },
@@ -57,55 +28,62 @@ export const resolvers = {
     addTopic: (root, args) => {
       return Topic.create({ name: args.name })
     },
-    createWhy(root, { userId, question }) {
-      console.log('creating Why', userId, question)
-      return Why.create({}).then((why) => {
-        return why.createQuestion({ question: question, userId: userId, stars: 0, whyId: why.id })
-          .then((newQuestion) => {
+    createWhy(_, args, ctx) {
+      return whyLogic.createWhy(_, args, ctx);
 
-            why.setQuestion(newQuestion);
-            // console.log(why.questionId)
-            return why;
+    },
+    createWhatIf: (_, args, ctx) => {
+      return whatIfLogic.createWhatIf(_, args, ctx)
+    },
+    createHow: (_, args, ctx) => {
+      return howLogic.createHow(_, args, ctx)
+
+    },
+    register: (root, { username, password, email }, ctx) => {
+      // find user by email
+      return User.findOne({ where: { email } }).then((existing) => {
+        if (!existing) {
+          // hash password to create user
+          return bcrypt.hash(password, 10).then(hash => User.create({
+            email,
+            password: hash,
+            username: username || email,
+          })).then((user) => {
+            const { id } = user;
+            const token = jwt.sign({ id, email }, JWT_SECRET);
+            user.jwt = token;
+            ctx.user = Promise.resolve(user);
+            return user;
           });
-        // return why;
-      })
-
-    },
-
-    createWhatIf: (root, { userId, whyId, question }) => {
-      return WhatIf.create({ whyId: whyId }).then((whatIf) => {
-        return whatIf.createQuestion({ question: question, userId: userId, stars: 0, whatIfId: whatIf.id }).then((newQuestion) => {
-          whatIf.setQuestion(newQuestion);
-
-          return whatIf;
-        })
-      })
-    },
-    createHow: (root, { userId, whatIfId, question }) => {
-      return How.create({ whatifId: whatIfId }).then((how) => {
-        return how.createQuestion({ question: question, userId: userId, stars: 0, howId: how.id }).then((newQuestion) => {
-          how.setQuestion(newQuestion);
-          return how;
-        })
-      })
-
-
-    },
-    addUser: (root, args) => {
-      // console.log("Adding user")
-      saveUser(args.username, args.password, args.email)
-
-    },
-    login: (obj, args, info) => {
-      User.find({
-        where: {
-          username: args.username
         }
-      }).then((user) => {
-        comparePassword(args.password, user.password)
-      })
 
-    }
+        return Promise.reject('Email already exists');
+      });
+
+    },
+    login: (obj, { email, password }, ctx) => {
+      return User.findOne({ where: { email } }).then((user) => {
+        if (user) {
+          // validate password
+          return bcrypt.compare(password, user.password)
+            .then((res) => {
+              if (res) {
+                // create jwt
+                const token = jwt.sign({
+                  id: user.id,
+                  email: user.email,
+                }, JWT_SECRET);
+                user.jwt = token;
+                ctx.user = Promise.resolve(user);
+                return user;
+              }
+
+              return Promise.reject('Password incorrect');
+            });
+        }
+      });
+    },
+
   },
 
   Topic: {
@@ -121,33 +99,34 @@ export const resolvers = {
   },
 
   Why: {
-    whatIfs(why) {
-      return why.getWhatIfs();
+    whatIfs(why, args, ctx) {
+      return whyLogic.whatIfs(why, args, ctx);
     },
-    question(why) {
-      // console.log(why.getQuestion())
-      return why.getQuestion();
-      // return Question.findOne({where: {whyId: why.id}})
+    question(why, args, ctx) {
+      return whyLogic.question(why, args, ctx);
     }
   },
   WhatIf: {
-    hows(whatIf) {
-      return whatIf.getHows();
+    hows(whatIf, args, ctx) {
+      return whatIfLogic.hows(whatIf, args, ctx);
     },
-    question(whatIf) {
-      return whatIf.getQuestion();
+    question(whatIf, args, ctx) {
+      return whatIfLogic.question(whatIf, args, ctx);
     }
   },
 
   How: {
-    question(how) {
-      return how.getQuestion();
+    question(how, args, ctx) {
+      return howLogic.question(how, args, ctx);
     },
   },
 
   User: {
-    questions(user) {
-      return user.getQuestions();
+    questions(user, args, ctx) {
+      return userLogic.questions(user, args, ctx);
     },
+    jwt(user, args, ctx) {
+      return userLogic.jwt(user, args, ctx);
+    }
   }
 }

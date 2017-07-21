@@ -1,5 +1,6 @@
 import Sequelize from "sequelize";
 import faker from 'faker';
+import bcrypt from 'bcrypt';
 
 const Conn = new Sequelize('communitymind', null, null, {
   dialect: 'sqlite',
@@ -179,48 +180,51 @@ const questions = [
 //{force: true}
 Conn.sync({ force: true }).then(() => {
 
-  const password = faker.internet.password();
-  return UserModel.create({
-    email: faker.internet.email(),
-    username: faker.internet.userName(),
-    password,
-  }).then((user) => {
-    questions.forEach((whyData) => {
-      // console.log(whyData.why);
-      return user.createQuestion({ question: whyData.why, stars: 0 }).then((whyQuestion) => {
-        return WhyModel.create({}).then((newWhy) => {
-          newWhy.setQuestion(whyQuestion);
+  const password = "testPassword";
+  return bcrypt.hash(password, 10).then((hash) => {
+    return UserModel.create({
+      email: faker.internet.email(),
+      username: faker.internet.userName(),
+      password: hash,
+    }).then((user) => {
+      questions.forEach((whyData) => {
+        // console.log(whyData.why);
+        return user.createQuestion({ question: whyData.why, stars: 0 }).then((whyQuestion) => {
+          return WhyModel.create({}).then((newWhy) => {
+            newWhy.setQuestion(whyQuestion);
 
-          return whyData.whatifs.forEach((whatIfData) => {
-            // console.log(whatIfData.whatif)
-            return user.createQuestion({ question: whatIfData.whatif, stars: 0 }).then((whatIfQuestion) => {
-              // console.log(newWhatIf == null)
+            return whyData.whatifs.forEach((whatIfData) => {
+              // console.log(whatIfData.whatif)
+              return user.createQuestion({ question: whatIfData.whatif, stars: 0 }).then((whatIfQuestion) => {
+                // console.log(newWhatIf == null)
 
-              return WhatIfModel.create({}).then((newWhatIf) => {
-                // whatIfQuestion.setWhatIf(newWhatIf);
-                newWhatIf.setQuestion(whatIfQuestion);
-                newWhy.addWhatIf(newWhatIf);
-              // console.log(newWhy == null)
-                return whatIfData.hows.forEach((how) => {
-                  return user.createQuestion({ question: how, stars: 0 }).then((howQuestion) => {
+                return WhatIfModel.create({}).then((newWhatIf) => {
+                  // whatIfQuestion.setWhatIf(newWhatIf);
+                  newWhatIf.setQuestion(whatIfQuestion);
+                  newWhy.addWhatIf(newWhatIf);
+                  // console.log(newWhy == null)
+                  return whatIfData.hows.forEach((how) => {
+                    return user.createQuestion({ question: how, stars: 0 }).then((howQuestion) => {
 
-                    return HowModel.create({}).then((newHow) => {
-                      newHow.setQuestion(howQuestion);
-                      newWhatIf.addHow(newHow);
+                      return HowModel.create({}).then((newHow) => {
+                        newHow.setQuestion(howQuestion);
+                        newWhatIf.addHow(newHow);
+                      })
+
                     })
-
                   })
                 })
-              })
 
+              })
             })
           })
+
         })
-
       })
-    })
 
+    })
   })
+
 })
 
 const Topic = Conn.models.topic;

@@ -44,7 +44,8 @@ const typeDefs = `
     whys: [Why]
     hows: [How]
     whatIfs: [WhatIf]
-    questions: [Question]
+    questions: [Question] 
+    jwt: String # json web token for access
   }
   
   
@@ -58,11 +59,11 @@ const typeDefs = `
   
   type Mutation {
     addTopic(name: String!): Topic
-    createWhy(userId: ID!, question: String!): Why
-    createWhatIf(userId: ID!, question: String!, whyId: ID!): WhatIf
-    createHow(userId: ID!, question: String!, whatIfId: ID!): How
-    addUser(username: String!, password: String!, email: String!): User
-    login(username: String!, password: String!): User
+    createWhy(question: String!): Why
+    createWhatIf(question: String!, whyId: ID!): WhatIf
+    createHow(question: String!, whatIfId: ID!): How
+    register(username: String!, password: String!, email: String!): User
+    login(email: String!, password: String!): User
   }
 `;
 

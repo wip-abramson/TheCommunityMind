@@ -3,7 +3,10 @@ import {graphiqlExpress} from "graphql-server-express";
 import {schema} from "./src/schema";
 import cors from "cors";
 import graphqlHTTP from "express-graphql";
-import session from 'express-session';
+import jwt from 'express-jwt';
+import bodyParser from 'body-parser';
+import { JWT_SECRET } from './config';
+import { User } from './src/db';
 
 const PORT = 5000
 const server = express();
@@ -17,32 +20,20 @@ server.use('*', cors({origin: 'http://0.0.0.0:8080', credentials: true}))
 
 server.use(express.static('../public'))
 server.use(loggingMiddleware)
-server.use('/graphql', session({
-  secret: 'shhhhhhared-secret',
-  cookie: { maxAge: 60000 },
-  resave: true,
-  saveUninitialized: true
-}), );
-// httpGraphQLHandler
-// const httpGraphQLHandler = async (req, res) => {
-//   const {query, variables, ...rootVals} = req.body;
-//   const authToken = req.user || {};
-//   const result = await graphql(schema, query, {authToken, ...rootVals}, variables);
-//   res.send(result);
-// }
-// server.use('/graphql', function (req, res, done) {
-//   var authToken = req.options.headers.authorization
-//   const user = User.get(authToken);
-//   req.context = {
-//     user: user,
-//   }
-//   done();
-// });
-
-server.use('/graphql', graphqlHTTP((request) => ({
+server.use('/graphql', bodyParser.json(), jwt({
+  secret: JWT_SECRET,
+  credentialsRequired: false,
+}), graphqlHTTP((request) => ({
   schema: schema,
-  rootValue: { session: request.session },
+  context: {
+    user: request.user ?
+      User.findOne({
+        where:  { id: request.user.id }
+      }) : null,
+  },
 })));
+
+
 
 server.use('/graphiql', graphiqlExpress({
   endpointURL: '/graphql'

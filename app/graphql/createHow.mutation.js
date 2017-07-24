@@ -2,8 +2,8 @@ import {gql} from 'react-apollo';
 import QUESTION_FRAGMENT from './question.fragment';
 
 const CREATE_HOW_MUTATION = gql`
-  mutation createHow($userId: ID!, $whatIfId: ID!, $question: String!) {
-    createHow(userId: $userId, whatIfId: $whatIfId, question: $question) {
+  mutation createHow($whatIfId: ID!, $question: String!) {
+    createHow(whatIfId: $whatIfId, question: $question) {
       id
       question {
         ... QuestionFragment

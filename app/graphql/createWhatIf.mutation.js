@@ -2,8 +2,8 @@ import {gql} from 'react-apollo';
 import QUESTION_FRAGMENT from './question.fragment';
 
 const CREATE_WHATIF_MUTATION = gql`
-  mutation createWhatIf($userId: ID!, $whyId: ID!, $question: String!) {
-    createWhatIf(userId: $userId, whyId: $whyId, question: $question) {
+  mutation createWhatIf($whyId: ID!, $question: String!) {
+    createWhatIf(whyId: $whyId, question: $question) {
       id
       question {
         ... QuestionFragment

@@ -20,7 +20,11 @@ const UserModel = Conn.define('user', {
   email: {
     type: Sequelize.STRING,
     allowNull: false
-  }
+  },
+  version: { // version of the password
+    type: Sequelize.INTEGER,
+  },
+
 
 })
 
@@ -43,36 +47,15 @@ const QuestionModel = Conn.define('question', {
 })
 
 const WhyModel = Conn.define('why', {
-  // question: {
-  //   type: Sequelize.STRING,
-  //   allowNull: false
-  // },
-  // stars: {
-  //   type: Sequelize.INTEGER,
-  //   allowNull: false
-  // }
+
 })
 
 const WhatIfModel = Conn.define('whatif', {
-  // question: {
-  //   type: Sequelize.STRING,
-  //   allowNull: false
-  // },
-  // stars: {
-  //   type: Sequelize.INTEGER,
-  //   allowNull: false
-  // }
+
 })
 
 const HowModel = Conn.define('how', {
-  // question: {
-  //   type: Sequelize.STRING,
-  //   allowNull: false
-  // },
-  // stars: {
-  //   type: Sequelize.INTEGER,
-  //   allowNull: false
-  // }
+
 })
 
 // Relationships
@@ -186,6 +169,7 @@ Conn.sync({ force: true }).then(() => {
       email: faker.internet.email(),
       username: faker.internet.userName(),
       password: hash,
+      version: 1,
     }).then((user) => {
       questions.forEach((whyData) => {
         // console.log(whyData.why);

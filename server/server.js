@@ -28,8 +28,8 @@ server.use('/graphql', bodyParser.json(), jwt({
   context: {
     user: request.user ?
       User.findOne({
-        where:  { id: request.user.id }
-      }) : null,
+        where:  { id: request.user.id, version: request.user.version }
+      }) : Promise.resolve(null),
   },
 })));
 

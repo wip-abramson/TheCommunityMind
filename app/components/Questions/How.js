@@ -14,9 +14,9 @@ const mapStateToProps = function (state) {
 
 const createHow = graphql(CREATE_HOW_MUTATION, {
   props: ({ ownProps, mutate }) => ({
-    createQuestion: ({ userId, question }) => {
+    createQuestion: ({ question }) => {
       return mutate({
-        variables: { userId, question, whatIfId: ownProps.currentWhatIf.id },
+        variables: { question, whatIfId: ownProps.currentWhatIf.id },
         optimisticResponse: {
           __typename: 'Mutation',
           createHow: {

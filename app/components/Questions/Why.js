@@ -21,10 +21,10 @@ const mapDispatchToProps = function (dispatch) {
 
 const createWhy = graphql(CREATE_WHY_MUTATION, {
   props: ({ ownProps, mutate }) => ({
-    createQuestion: ({ userId, question }) => {
+    createQuestion: ({ question }) => {
       return mutate({
 
-        variables: { userId, question },
+        variables: { question },
         optimisticResponse: {
           __typename: 'Mutation',
           createWhy: {

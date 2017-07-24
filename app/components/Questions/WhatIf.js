@@ -23,10 +23,10 @@ const mapDispatchToProps = function (dispatch) {
 
 const createWhatIf = graphql(CREATE_WHATIF_MUTATION, {
   props: ({ ownProps, mutate }) => ({
-    createQuestion: ({ userId, question }) => {
+    createQuestion: ({ question }) => {
       return mutate({
 
-        variables: { userId, question, whyId: ownProps.currentWhy.id },
+        variables: { question, whyId: ownProps.currentWhy.id },
         optimisticResponse: {
           __typename: 'Mutation',
           createWhatIf: {

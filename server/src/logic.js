@@ -22,9 +22,11 @@ export const whyLogic = {
   createWhy(_, { question }, ctx) {
     return getAuthenticatedUser(ctx)
       .then(user => {
-        return user.createQuestion({ question, stars: 0 }).then((whyQuestion) => {
-          return Why.create({}).then((newWhy) => {
+        return Why.create({ }).then((newWhy) => {
+          return newWhy.createQuestion({ question, stars: 0, userId: user.id, whyId: newWhy.id }).then((whyQuestion) => {
+            console.log(whyQuestion.question);
             newWhy.setQuestion(whyQuestion);
+            return newWhy;
           });
         });
       });
@@ -47,9 +49,11 @@ export const whatIfLogic = {
   createWhatIf(_, { question, whyId }, ctx) {
     return getAuthenticatedUser(ctx)
       .then(user => {
-        return user.createQuestion({ question, stars: 0 }).then((whatIfQuestion) => {
-          return WhatIf.create({ whyId }).then((newWhatIf) => {
+
+        return WhatIf.create({ whyId }).then((newWhatIf) => {
+          return newWhatIf.createQuestion({ question, stars: 0, whatIfId: newWhatIf.id, userId: user.id }).then((whatIfQuestion) => {
             newWhatIf.setQuestion(whatIfQuestion);
+            return newWhatIf;
           });
         });
       });
@@ -74,9 +78,10 @@ export const howLogic = {
   createHow(_, { question, whatIfId }, ctx) {
     return getAuthenticatedUser(ctx)
       .then(user => {
-        return user.createQuestion({ question, stars: 0}).then((howQuestion) => {
-          return How.create({ whatIfId }).then((newHow) => {
+        return How.create({ whatifId : whatIfId }).then((newHow) => {
+          return newHow.createQuestion({ question, stars: 0, howId: newHow.id, userId: user.id }).then((howQuestion) => {
             newHow.setQuestion(howQuestion);
+            return newHow;
           });
         });
       });
@@ -91,6 +96,27 @@ export const howLogic = {
       },
       order: [['createdAt', 'DESC']],
     })
+  }
+}
+
+export const questionLogic = {
+  deleteQuestion(_, { id }, ctx) {
+    return getAuthenticatedUser(ctx).then((user) => {
+      return Question.findOne({
+          where: {id },
+          include: [{
+            model: User,
+            where: { id: user.id },
+          }],
+
+      }).then(question => question.getUser())
+        .then(user => question.removeUser(user))
+        .then(() => How.destroy({ where: { id: question.howId }}))
+        .then(() => WhatIf.destroy({ where: { id: question.whatIfId }}))
+        .then(() => Why.destroy({ where: { id: question.whyId }}))
+        .then(() => question.destroy())
+
+    });
   }
 }
 

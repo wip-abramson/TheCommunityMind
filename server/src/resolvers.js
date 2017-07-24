@@ -3,7 +3,7 @@ import GraphQLDate from 'graphql-date';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { JWT_SECRET } from '../config';
-import { whyLogic, whatIfLogic, howLogic, userLogic } from './logic';
+import { whyLogic, whatIfLogic, howLogic, userLogic, questionLogic } from './logic';
 
 export const resolvers = {
   Date: GraphQLDate,
@@ -39,6 +39,9 @@ export const resolvers = {
       return howLogic.createHow(_, args, ctx)
 
     },
+    deleteQuestion: (_, args, ctx) => {
+      return questionLogic.deleteQuestion(_, args, ctx);
+    },
     register: (root, { username, password, email }, ctx) => {
       // find user by email
       return User.findOne({ where: { email } }).then((existing) => {
@@ -48,11 +51,13 @@ export const resolvers = {
             email,
             password: hash,
             username: username || email,
+            version: 1,
           })).then((user) => {
             const { id } = user;
-            const token = jwt.sign({ id, email }, JWT_SECRET);
+            const token = jwt.sign({ id, email, version: 1 }, JWT_SECRET);
             user.jwt = token;
             ctx.user = Promise.resolve(user);
+            console.log("user created");
             return user;
           });
         }
@@ -61,8 +66,8 @@ export const resolvers = {
       });
 
     },
-    login: (obj, { email, password }, ctx) => {
-      return User.findOne({ where: { email } }).then((user) => {
+    login: (obj, { username, password }, ctx) => {
+      return User.findOne({ where: { username } }).then((user) => {
         if (user) {
           // validate password
           return bcrypt.compare(password, user.password)
@@ -72,6 +77,7 @@ export const resolvers = {
                 const token = jwt.sign({
                   id: user.id,
                   email: user.email,
+                  version: user.version,
                 }, JWT_SECRET);
                 user.jwt = token;
                 ctx.user = Promise.resolve(user);

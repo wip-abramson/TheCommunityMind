@@ -3,57 +3,105 @@
  */
 import React from 'react'
 import Login from './Login'
-import {compose, graphql} from "react-apollo";
-import {loginMutation} from '../../graphql/mutations';
+import { compose, graphql } from "react-apollo";
+import { loginMutation } from '../../graphql/mutations';
+import { browserHistory } from 'react-router'
+import { connect } from "react-redux";
+import {loginUser} from '../../actions/User';
+
+const mapStateToProps = function () {
+  return {
+    // parentId: state.currentTopic.id
+  }
+};
+const mapDispatchToProps = function (dispatch) {
+  return {
+    loginUser: function (user) {
+      dispatch(loginUser(user))
+    }
+  }
+};
 
 var container = React.createClass({
   getInitialState () {
     return {
-      username: '',
+      email: '',
       password: '',
     }
   },
 
-  handleUsernameChange (event) {
+  handleEmailChange (event) {
     this.setState(Object.assign(
       {},
       this.state,
-      {username: event.target.value}
+      { email: event.target.value }
     ))
   },
   handlePasswordChange (event) {
     this.setState(Object.assign(
       {},
       this.state,
-      {password: event.target.value}
+      { password: event.target.value }
     ))
   },
 
-  submitForm () {
-    console.log("Form", this.state.username, this.state.password)
-    this.props.login({variables: {
-      username: this.state.username,
-      password: this.state.password,
+  submitForm (e) {
+    e.preventDefault()
+    console.log("Form", this.state.email, this.state.password)
+    console.log(this.props.login)
+    this.props.login({ email: this.state.email, password: this.state.password }).then((res) => {
+      // check if user logged in
+      console.log(res);
+      if(res.data.login) {
+        this.props.loginUser(res.data.login)
+        browserHistory.push("/");
+      } else {
 
-    }})
+        console.log("Login failed")
+      }
+    })
+    //   .then((res) => {
+    //   console.log("Has worked?")
+    //   // if (user !== null) {
+    //   //   console.log(user.username)
+    //   //   browserHistory.push("/");
+    //   // } else {
+    //   //   console.log("Login failed")
+    //   // }
+    // })
+
+
+
   },
 
   render () {
-    return(
+    return (
       <Login
-        username={this.state.username}
+        email={this.state.email}
         password={this.state.password}
         onPasswordChange={this.handlePasswordChange}
-        onUsernameChange={this.handleUsernameChange}
+        onEmailChange={this.handleEmailChange}
         submitForm={this.submitForm}
       />
     )
   }
-  })
+})
 
 export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
   graphql(loginMutation, {
-    name: "login"
-  })
+      props: ({ ownProps, mutate }) => ({
+        login: ({ email, password }) => {
+          return mutate({
+            variables: { email, password }
+          })
+        }
+
+      })
+    }
+  )
 )(container);
 

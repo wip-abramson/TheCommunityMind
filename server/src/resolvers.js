@@ -66,10 +66,10 @@ export const resolvers = {
       });
 
     },
-    login: (obj, { username, password }, ctx) => {
-      return User.findOne({ where: { username } }).then((user) => {
+    login: (obj, { email, password }, ctx) => {
+      return User.findOne({ where: { email } }).then((user) => {
         if (user) {
-          // validate password
+          console.log("Logged in")
           return bcrypt.compare(password, user.password)
             .then((res) => {
               if (res) {

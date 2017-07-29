@@ -12,39 +12,31 @@ export default function Login(props) {
     padding: '10px'
   }
 
-  // const handleSubmit = (evt) => {
-  //   console.log("submit form")
-  //   props.login({ email: props.email, password: props.password, }).then(user => {
-  //     if (user !== null) {
-  //       console.log(user.username)
-  //       browserHistory.push("/");
-  //     } else {
-  //       console.log("Login failed")
-  //     }
-  //   })
-  // }
 
   return (
     <div style={center}>
       <form onSubmit={props.submitForm}>
-        <FormGroup controlId="formValidationSuccess1" validationState="success">
-          <ControlLabel>Email</ControlLabel>
-          <FormControl
-            value={props.email}
-            onChange={props.onEmailChange}
-            type="text"
-            placeholder="username"/>
-        </FormGroup>
+        <div>
+          <FormGroup controlId="formValidationSuccess1" validationState="success">
+            <ControlLabel>Email</ControlLabel>
+            <FormControl
+              value={props.email}
+              onChange={props.onEmailChange}
+              type="text"
+              placeholder="email"/>
+          </FormGroup>
 
-        <FormGroup controlId="formValidationSuccess1" validationState="success">
-          <ControlLabel>Password</ControlLabel>
-          <FormControl
-            value={props.password}
-            onChange={props.onPasswordChange}
-            type="password"
-            placeholder="password"
-          />
-        </FormGroup>
+          <FormGroup controlId="formValidationSuccess1" validationState="success">
+            <ControlLabel>Password</ControlLabel>
+            <FormControl
+              value={props.password}
+              onChange={props.onPasswordChange}
+              type="password"
+              placeholder="password"
+            />
+          </FormGroup>
+        </div>
+
 
 
         <FormGroup>

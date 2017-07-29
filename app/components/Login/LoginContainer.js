@@ -48,10 +48,8 @@ var container = React.createClass({
   submitForm (e) {
     e.preventDefault()
     console.log("Form", this.state.email, this.state.password)
-    console.log(this.props.login)
     this.props.login({ email: this.state.email, password: this.state.password }).then((res) => {
       // check if user logged in
-      console.log(res);
       if(res.data.login) {
         this.props.loginUser(res.data.login)
         browserHistory.push("/");
@@ -60,17 +58,6 @@ var container = React.createClass({
         console.log("Login failed")
       }
     })
-    //   .then((res) => {
-    //   console.log("Has worked?")
-    //   // if (user !== null) {
-    //   //   console.log(user.username)
-    //   //   browserHistory.push("/");
-    //   // } else {
-    //   //   console.log("Login failed")
-    //   // }
-    // })
-
-
 
   },
 

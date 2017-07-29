@@ -4,8 +4,8 @@ import Main from "../components/Main/Main";
 import Why from "../components/Questions/Why";
 import WhatIf from "../components/Questions/WhatIf";
 import How from "../components/Questions/How";
-import LoginContainer from "../components/Login/LoginContainer";
-import RegisterContainer from "../components/Register/RegisterContainer";
+import LoginContainer from "../components/Authentication/LoginContainer";
+import RegisterContainer from "../components/Authentication/RegisterContainer";
 
 var AppRouter = function () {
   return (

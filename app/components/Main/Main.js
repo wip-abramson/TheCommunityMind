@@ -9,9 +9,7 @@ const mapStateToProps = function (state) {
     currentUser: state.currentUser,
   }
 };
-const mapDispatchToProps = function (dispatch) {
 
-};
 
 function Main(props) {
   var style = {
@@ -32,7 +30,7 @@ function Main(props) {
 
 export default connect(
     mapStateToProps,
-    mapDispatchToProps,
+    null,
   )(Main);
 
 

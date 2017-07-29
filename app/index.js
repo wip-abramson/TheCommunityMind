@@ -16,9 +16,9 @@ let store = createStore(
   )
 )
 
-let unsubscribe = store.subscribe(() =>
-  console.log(store.getState())
-)
+// let unsubscribe = store.subscribe(() =>
+//   console.log(store.getState())
+// )
 
 
 ReactDOM.render(

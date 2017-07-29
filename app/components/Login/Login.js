@@ -1,15 +1,14 @@
 import React from "react";
-import { FormGroup, FormControl, Button, Checkbox, ControlLabel } from "react-bootstrap";
+import { FormGroup, Button } from "react-bootstrap";
+import FieldGroup from '../generic/FieldGroup';
 
 export default function Login(props) {
   var center = {
-    position: 'relative',
     top: '50%',
-    transform: 'translateY(-50%)',
     margin: 'auto',
     width: '50%',
     border: '3px solid green',
-    padding: '10px'
+    padding: '10px',
   }
 
 
@@ -17,24 +16,23 @@ export default function Login(props) {
     <div style={center}>
       <form onSubmit={props.submitForm}>
         <div>
-          <FormGroup controlId="formValidationSuccess1" validationState="success">
-            <ControlLabel>Email</ControlLabel>
-            <FormControl
-              value={props.email}
-              onChange={props.onEmailChange}
-              type="text"
-              placeholder="email"/>
-          </FormGroup>
+          <FieldGroup
+            id="formValidationSuccess1"
+            label="Email"
+            value={props.email}
+            onChange={props.onEmailChange}
+            type="email"
+            placeholder="email"
+          />
+          <FieldGroup
+            id="formValidationSuccess1"
+            label="Password"
+            value={props.password}
+            onChange={props.onPasswordChange}
+            type="password"
+            placeholder="password"
+          />
 
-          <FormGroup controlId="formValidationSuccess1" validationState="success">
-            <ControlLabel>Password</ControlLabel>
-            <FormControl
-              value={props.password}
-              onChange={props.onPasswordChange}
-              type="password"
-              placeholder="password"
-            />
-          </FormGroup>
         </div>
 
 

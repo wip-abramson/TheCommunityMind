@@ -22,7 +22,7 @@ const mapDispatchToProps = function (dispatch) {
   }
 };
 
-var container = React.createClass({
+let container = React.createClass({
   getInitialState () {
     return {
       email: '',
@@ -46,15 +46,15 @@ var container = React.createClass({
   },
 
   submitForm (e) {
-    e.preventDefault()
-    console.log("Form", this.state.email, this.state.password)
+    e.preventDefault();
+    console.log("Form", this.state.email, this.state.password);
     this.props.login({ email: this.state.email, password: this.state.password }).then((res) => {
       // check if user logged in
       if(res.data.login) {
-        this.props.loginUser(res.data.login)
+        this.props.loginUser(res.data.login);
         browserHistory.push("/");
       } else {
-
+        // show failure to user
         console.log("Login failed")
       }
     })
@@ -72,7 +72,7 @@ var container = React.createClass({
       />
     )
   }
-})
+});
 
 export default compose(
   connect(

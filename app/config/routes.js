@@ -14,13 +14,15 @@ var AppRouter = function () {
         <IndexRoute component={Why}/>
         <Route path='/whatif' component={WhatIf}/>
         <Route path='/how' component={How}/>
+        < Route
+          path='/login'
+          component={LoginContainer}/>
+        < Route
+          path='/register'
+          component={RegisterContainer}/>
       </Route>
-      < Route
-        path='/login'
-        component={LoginContainer}/>
-      < Route
-        path='register'
-        component={RegisterContainer}/>
+
+
 
     </ Router >
   )

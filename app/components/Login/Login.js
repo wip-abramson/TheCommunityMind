@@ -1,4 +1,4 @@
-import React from "react";
+import React, { PropTypes } from "react";
 import { FormGroup, Button } from "react-bootstrap";
 import FieldGroup from '../generic/FieldGroup';
 
@@ -10,7 +10,6 @@ export default function Login(props) {
     border: '3px solid green',
     padding: '10px',
   }
-
 
   return (
     <div style={center}>
@@ -36,7 +35,6 @@ export default function Login(props) {
         </div>
 
 
-
         <FormGroup>
           <Button type="submit">
             Sign in
@@ -47,4 +45,12 @@ export default function Login(props) {
 
   )
 
+}
+
+Login.propTypes = {
+  password: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
+  onPasswordChange: PropTypes.func.isRequired,
+  onEmailChange: PropTypes.func.isRequired,
+  onSubmitForm: PropTypes.func.isRequired,
 }

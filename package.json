@@ -9,7 +9,9 @@
     "test": "jest"
   },
   "jest": {
-    "setupFiles": ["./__test__/jestsetup.js"],
+    "setupFiles": [
+      "./__test__/jestsetup.js"
+    ],
     "snapshotSerializers": [
       "<rootDir>/node_modules/enzyme-to-json/serializer"
     ]
@@ -44,6 +46,7 @@
     "babel-core": "^6.23.1",
     "babel-jest": "^20.0.3",
     "babel-loader": "^6.3.2",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-polyfill": "^6.23.0",
     "babel-preset-es2015": "^6.22.0",
     "babel-preset-react": "^6.23.0",

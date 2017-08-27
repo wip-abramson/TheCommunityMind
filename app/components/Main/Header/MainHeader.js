@@ -1,5 +1,5 @@
 import React from "react";
-import { Nav, Navbar, NavItem } from "react-bootstrap";
+import { Nav, Navbar, NavItem, NavDropdown, MenuItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import AppTitle from "./AppTitle";
 
@@ -27,9 +27,13 @@ var MainHeader = function (props) {
 
 
           </Nav>
-          <Nav pullRight style={style}>
-
-            <NavItem>{props.currentUser.username}</NavItem>
+          <Nav pullRight>
+            <NavDropdown eventKey="4" title={props.currentUser.username} id="nav-dropdown">
+              <MenuItem eventKey="4.1" onSelect={() => {props.viewProfile()}}>Profile</MenuItem>
+              <MenuItem eventKey="4.2" onSelect={() => {props.viewWatchList()}}>Watch list</MenuItem>
+              <MenuItem divider />
+              <MenuItem eventKey="4.4" onSelect={() => {props.logout()}}>Logout</MenuItem>
+            </NavDropdown>
           </Nav>
         </Navbar.Collapse>
       ) : (

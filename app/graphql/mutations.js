@@ -6,6 +6,7 @@ export const addUserMutation = gql`
       id
       username
       email
+      jwt
     }
   }
 `
@@ -15,6 +16,7 @@ export const loginMutation = gql`
     login(email: $email, password: $password) {
       id
       username
+      jwt
     }
   }
 `

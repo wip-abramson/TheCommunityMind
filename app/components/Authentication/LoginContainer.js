@@ -6,14 +6,14 @@ import { compose, graphql } from "react-apollo";
 import { loginMutation } from '../../graphql/mutations';
 import { browserHistory } from 'react-router'
 import { connect } from "react-redux";
-import { loginUser } from '../../actions/User';
+import { loginSuccess } from '../../actions/Auth';
 import Authentication from './AuthenticationUI';
 
 const mapDispatchToProps = function (dispatch) {
   return {
     loginUser: function (user) {
       console.log(user);
-      dispatch(loginUser(user))
+      dispatch(loginSuccess(user))
       browserHistory.push("/");
     }
   }
@@ -28,6 +28,9 @@ let container = React.createClass({
       console.log(res.data.login)
       if (res.data.login) {
         this.props.loginUser(res.data.login);
+
+        var object = {value: res.data.login.jwt, timestamp: new Date().getTime()}
+        localStorage.setItem("token", JSON.stringify(object));
       } else {
         // show failure to user
         console.log("Authentication failed")

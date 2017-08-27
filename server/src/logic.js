@@ -5,6 +5,7 @@ import { Topic, Why, WhatIf, How, User, Question } from "./db";
 
 // reusable function to check for a user with context
 function getAuthenticatedUser(ctx) {
+  console.log("Getting user")
   if (!ctx.user) {
     return Promise.reject('Unauthorized');
   }

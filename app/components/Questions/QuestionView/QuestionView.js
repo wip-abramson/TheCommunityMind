@@ -86,7 +86,7 @@ QuestionView.propTypes = {
     }).isRequired
   }).isRequired),
   loading: PropTypes.bool,
-  error: PropTypes.bool,
+  // error: PropTypes.bool,
   createQuestion: PropTypes.func.isRequired,
 };
 

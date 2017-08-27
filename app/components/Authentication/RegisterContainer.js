@@ -7,13 +7,13 @@ import { compose, graphql } from "react-apollo";
 import { addUserMutation } from '../../graphql/mutations';
 import { browserHistory } from 'react-router';
 import { connect } from "react-redux";
-import { loginUser } from '../../actions/User';
+import { loginSuccess } from '../../actions/Auth';
 import Authentication from './AuthenticationUI'
 
 const mapDispatchToProps = function (dispatch) {
   return {
     loginUser: function (user) {
-      dispatch(loginUser(user));
+      dispatch(loginSuccess(user));
       browserHistory.push("/");
     }
   }
@@ -29,10 +29,12 @@ let container = React.createClass({
       email,
     }).then(res => {
 
-      console.log(res);
+      console.log(res.data.register);
       if (res.data.register) {
         this.props.loginUser(res.data.register);
+        var object = {value: res.data.register.jwt, timestamp: new Date().getTime()}
 
+        localStorage.setItem("token", JSON.stringify(object));
       } else {
         console.log("Register failed", res.data);
         this.setState(Object.assign(

@@ -64,6 +64,7 @@ const typeDefs = `
     createHow(question: String!, whatIfId: ID!): How
     register(username: String!, password: String!, email: String!): User
     login(email: String!, password: String!): User
+    deleteQuestion(id: ID!): Question
   }
 `;
 

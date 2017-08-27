@@ -6,7 +6,7 @@ import {createStore, applyMiddleware, compose} from "redux";
 import {ApolloProvider} from "react-apollo";
 
 
-let store = createStore(
+export const store = createStore(
   App,
   {}, // initial state
   compose(
@@ -15,6 +15,7 @@ let store = createStore(
     (typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined') ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f,
   )
 )
+
 
 // let unsubscribe = store.subscribe(() =>
 //   console.log(store.getState())
@@ -25,4 +26,5 @@ ReactDOM.render(
   <ApolloProvider store={store} client={client}>
     <AppRouter />
   </ApolloProvider>,
-  document.getElementById("app"))
+  document.getElementById("app"));
+

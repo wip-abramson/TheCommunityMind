@@ -1,10 +1,12 @@
 # The Community Mind
 My aim is to create a website for people to share their beautiful questions. 
 
-A Beautiful Question is defined by Warren Berger as "
+A Beautiful Question is defined by Warren Berger as "A beautiful question is an ambitious yet actionable question that can begin to shift the way we perceive or think about something—and that might serve as a catalyst to bring about change."
+
+
 No answers, only questions. With the hope that people can use this site to find a question that interests them. I want it to be a site that inspires unique ideas and solutions by providing people with the questions that they then think through and create their own answers to. I believe everyone is capable of coming up with interesting ideas. Everyone is unique, therefore so are their ideas! I want to help unlock everyone's idea generating potential through this website.
 
-I took my inspiration from the book A More Beautiful Question. I would recommend it to anyone. Here is the website for it: http://amorebeautifulquestion.com/. The tag line for this book is "the power of inquiry to spark breakthrough ideas". My hope is that The Community Mind will harness the power of our collective inquiry.
+I took my inspiration from the book [A More Beautiful Question](http://amorebeautifulquestion.com/). I would recommend it to anyone. The tag line for this book is "the power of inquiry to spark breakthrough ideas". My hope is that The Community Mind will harness the power of our collective inquiry.
 
 Note: This is a side project of mine that I am I using to explore the react ecosystem so it is a bit rough around the edges. However, it is something that I really believe could improve our collective idea generating ability. I would welcome help from anyone who is interested.
 ## Getting Started

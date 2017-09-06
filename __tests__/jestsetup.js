@@ -10,3 +10,4 @@ global.mount = mount;
 console.error = message => {
   throw new Error(message);
 };
+

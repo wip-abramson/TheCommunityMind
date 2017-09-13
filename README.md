@@ -22,9 +22,8 @@ What things you need to install the software and how to install them
 
 Install [nodeJS](https://www.google.com.vn/url?sa=t&rct=j&q=&esrc=s&source=web&cd=8&cad=rja&uact=8&ved=0ahUKEwig8_CohpDWAhVCGJQKHXbnCgcQFghWMAc&url=https%3A%2F%2Fwww.digitalocean.com%2Fcommunity%2Ftutorials%2Fhow-to-install-node-js-on-ubuntu-16-04&usg=AFQjCNGV2WvIIe4IYV2yDaREVAauGb_EgQ)
 
-Install [mysql](https://www.digitalocean.com/community/tutorials/how-to-install-the-latest-mysql-on-ubuntu-16-04)
 
-There may be others let me know if I am missing anything.
+There may be other things I have forgotten let me know if I am missing anything.
 
 ### Installing
 

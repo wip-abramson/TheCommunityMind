@@ -113,6 +113,12 @@ export const resolvers = {
     staredQuestions(user, args, ctx) {
       return userLogic.staredQuestions(user, args, ctx);
     },
+    follows(user, args, ctx) {
+      return userLogic.follows(user, args, ctx);
+    },
+    followers(user, args, ctx) {
+      return userLogic.followers(user, args, ctx);
+    }
 
   }
 }

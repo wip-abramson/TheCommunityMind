@@ -49,7 +49,8 @@ const typeDefs = `
     questions: [Question]!
     jwt: String # json web token for access
     staredQuestions: [Question]!
-
+    followers: [User]
+    follows: [User]
   }
   
   

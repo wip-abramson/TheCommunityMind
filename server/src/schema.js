@@ -13,9 +13,11 @@ const typeDefs = `
   type Question {
     id: ID!
     stars: Int!
+    staredBy: [User]!
     question: String!
     owner: User!
     createdAt: Date!
+    staredByCurrentUser: Boolean!
   }
   
   type Why {
@@ -46,6 +48,7 @@ const typeDefs = `
     whatIfs: [WhatIf]
     questions: [Question] 
     jwt: String # json web token for access
+    staredQuestions: [Question]
   }
   
   
@@ -62,9 +65,10 @@ const typeDefs = `
     createWhy(question: String!): Why
     createWhatIf(question: String!, whyId: ID!): WhatIf
     createHow(question: String!, whatIfId: ID!): How
-    register(username: String!, password: String!, email: String!): User
+    register(username: String, password: String!, email: String!): User
     login(email: String!, password: String!): User
     deleteQuestion(id: ID!): Question
+    starQuestion(id: ID!): Question
   }
 `;
 

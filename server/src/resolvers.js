@@ -1,9 +1,12 @@
-import { Topic, Why, WhatIf, How, User, Question } from "./db";
+import { Topic } from "./db";
 import GraphQLDate from 'graphql-date';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import { JWT_SECRET } from '../config';
-import { whyLogic, whatIfLogic, howLogic, userLogic, questionLogic } from './logic';
+
+import { authLogic } from './logic/AuthLogic';
+import { userLogic } from './logic/UserLogic';
+import { questionLogic } from './logic/QuestionLogic';
+import { whyLogic } from './logic/WhyLogic';
+import { whatIfLogic } from './logic/WhatIfLogic';
+import { howLogic } from './logic/HowLogic';
 
 export const resolvers = {
   Date: GraphQLDate,
@@ -42,53 +45,16 @@ export const resolvers = {
     deleteQuestion: (_, args, ctx) => {
       return questionLogic.deleteQuestion(_, args, ctx);
     },
-    register: (root, { username, password, email }, ctx) => {
+    starQuestion(_, args, ctx) {
+      return questionLogic.starQuestion(_, args, ctx)
+    },
+    register: (_, args, ctx) => {
       // find user by email
-      return User.findOne({ where: { email } }).then((existing) => {
-        if (!existing) {
-          // hash password to create user
-          return bcrypt.hash(password, 10).then(hash => User.create({
-            email,
-            password: hash,
-            username: username || email,
-            version: 1,
-          })).then((user) => {
-            const { id } = user;
-            const token = jwt.sign({ id, email, username, version: 1 }, JWT_SECRET);
-            user.jwt = token;
-            ctx.user = Promise.resolve(user);
-            console.log("user created");
-            return user;
-          });
-        }
-
-        return Promise.reject('Email already exists');
-      });
+      return authLogic.register(_, args, ctx);
 
     },
-    login: (obj, { email, password }, ctx) => {
-      return User.findOne({ where: { email } }).then((user) => {
-        if (user) {
-          console.log("Logged in")
-          return bcrypt.compare(password, user.password)
-            .then((res) => {
-              if (res) {
-                // create jwt
-                const token = jwt.sign({
-                  id: user.id,
-                  email: user.email,
-                  username: user.username,
-                  version: user.version,
-                }, JWT_SECRET);
-                user.jwt = token;
-                ctx.user = Promise.resolve(user);
-                return user;
-              }
-
-              return Promise.reject('Password incorrect');
-            });
-        }
-      });
+    login: (_, args, ctx) => {
+      return authLogic.login(_, args, ctx);
     },
 
   },
@@ -100,8 +66,17 @@ export const resolvers = {
   },
 
   Question: {
-    owner(question) {
-      return question.getUser();
+    owner(question, args, ctx) {
+      return questionLogic.user(question, args, ctx);
+    },
+    staredBy(question, args, ctx) {
+      return questionLogic.staredBy(question, args, ctx);
+    },
+    stars(question, args, ctx) {
+      return questionLogic.stars(question, args, ctx);
+    },
+    staredByCurrentUser(question, args, ctx) {
+      return questionLogic.staredByCurrentUser(question, args, ctx)
     }
   },
 
@@ -134,6 +109,10 @@ export const resolvers = {
     },
     jwt(user, args, ctx) {
       return userLogic.jwt(user, args, ctx);
-    }
+    },
+    staredQuestions(user, args, ctx) {
+      return userLogic.staredQuestions(user, args, ctx);
+    },
+
   }
 }

@@ -24,8 +24,6 @@ const UserModel = Conn.define('user', {
   version: { // version of the password
     type: Sequelize.INTEGER,
   },
-
-
 })
 
 const TopicModel = Conn.define('topic', {
@@ -58,14 +56,22 @@ const HowModel = Conn.define('how', {
 
 })
 
+const QuestionStarModel = Conn.define('question_star', {
+
+})
+
+const FollowModel = Conn.define('follow', {
+
+})
+
+const WatchModel = Conn.define('watch', {
+
+})
+
 // Relationships
 
 UserModel.hasMany(QuestionModel);
 QuestionModel.belongsTo(UserModel);
-// UserModel.hasMany(WhatIfModel);
-// WhatIfModel.belongsTo(UserModel);
-// UserModel.hasMany(HowModel);
-// HowModel.belongsTo(UserModel);
 
 
 TopicModel.hasMany(WhyModel, { as: 'Whys' });
@@ -80,6 +86,17 @@ WhyModel.hasOne(QuestionModel);
 WhatIfModel.hasOne(QuestionModel);
 HowModel.hasOne(QuestionModel);
 
+QuestionModel.belongsToMany(UserModel, {
+  through: QuestionStarModel,
+  as: 'staredQuestions'
+})
+
+
+
+UserModel.belongsToMany(QuestionModel, {
+  through: QuestionStarModel,
+  as: 'staredBy'
+})
 // QuestionModel.belongsTo(WhyModel);
 // QuestionModel.belongsTo(WhatIfModel);
 // QuestionModel.belongsTo(HowModel);
@@ -91,7 +108,27 @@ faker.seed(123); // consistent data every time reload app
 
 const questions = [
   {
-    why: "Why do I need to get a new pair of glasses when my pescription changes",
+    why: "Why does our economy revolve around designing things that break after a few years",
+    whatifs: [
+      {
+        whatif: "What if we changed our designs to a modular approach and open sourced how to repair the parts",
+        hows: [
+          "How would companies make money"
+        ]
+      },
+      {
+        whatif: "What if we built things that lasted as long as possible",
+        hows: []
+      },
+      {
+        whatif: "What if we designed systems that used our waste products based along the natures system of reusability",
+        hows: []
+      }
+    ]
+  },
+
+  {
+    why: "Why do I need to get a new pair of glasses when my perscription changes",
     whatifs: [
       {
         whatif: "What if you could electronically alter the strength of the lenses",
@@ -174,6 +211,8 @@ Conn.sync({ force: true }).then(() => {
       questions.forEach((whyData) => {
         // console.log(whyData.why);
         return user.createQuestion({ question: whyData.why, stars: 0 }).then((whyQuestion) => {
+          QuestionStarModel.create({userId: user.id, questionId: whyQuestion.id})
+          // QuestionStarModel.create({userId: user.id, questionId: whyQuestion.id})
           return WhyModel.create({}).then((newWhy) => {
             newWhy.setQuestion(whyQuestion);
 
@@ -217,5 +256,6 @@ const WhatIf = Conn.models.whatif;
 const How = Conn.models.how;
 const User = Conn.models.user;
 const Question = Conn.models.question;
+const QuestionStar = Conn.models.question_star;
 
-export { Topic, Why, WhatIf, How, User, Question }
+export { Topic, Why, WhatIf, How, User, Question, QuestionStar }

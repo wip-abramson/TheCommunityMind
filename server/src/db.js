@@ -44,35 +44,22 @@ const QuestionModel = Conn.define('question', {
   }
 })
 
-const WhyModel = Conn.define('why', {
+const WhyModel = Conn.define('why', {})
 
-})
+const WhatIfModel = Conn.define('whatif', {})
 
-const WhatIfModel = Conn.define('whatif', {
+const HowModel = Conn.define('how', {})
 
-})
+const QuestionStarModel = Conn.define('question_star', {})
 
-const HowModel = Conn.define('how', {
+const UserFollowModel = Conn.define('follow', {})
 
-})
-
-const QuestionStarModel = Conn.define('question_star', {
-
-})
-
-const FollowModel = Conn.define('follow', {
-
-})
-
-const WatchModel = Conn.define('watch', {
-
-})
+const WatchModel = Conn.define('watch', {})
 
 // Relationships
 
 UserModel.hasMany(QuestionModel);
 QuestionModel.belongsTo(UserModel);
-
 
 TopicModel.hasMany(WhyModel, { as: 'Whys' });
 // WhyModel.belongsToMany(TopicModel);
@@ -91,12 +78,21 @@ QuestionModel.belongsToMany(UserModel, {
   as: 'staredQuestions'
 })
 
-
-
 UserModel.belongsToMany(QuestionModel, {
   through: QuestionStarModel,
   as: 'staredBy'
 })
+
+UserModel.belongsToMany(UserModel, {
+  through: UserFollowModel,
+  as: "follower"
+})
+
+UserModel.belongsToMany(UserModel, {
+  through: UserFollowModel,
+  as: "followed"
+})
+
 // QuestionModel.belongsTo(WhyModel);
 // QuestionModel.belongsTo(WhatIfModel);
 // QuestionModel.belongsTo(HowModel);
@@ -105,6 +101,8 @@ const USERS = 5;
 const QUESTIONS = 5;
 
 faker.seed(123); // consistent data every time reload app
+
+
 
 const questions = [
   {
@@ -165,7 +163,10 @@ const questions = [
         whatif: "What if these cities cleaned the ocean at the same time",
         hows: ["how would it do this", "how could we use any materials recovered"]
       },
-      { whatif: "What id these cities actually existed under the sea", hows: ["how would it withstand the pressure"] },
+      {
+        whatif: "What id these cities actually existed under the sea",
+        hows: ["how would it withstand the pressure"]
+      },
     ],
   },
   {
@@ -182,7 +183,10 @@ const questions = [
   {
     why: "Why am I not happy",
     whatifs: [
-      { whatif: "What if I wrote down everything that made me unhappy", hows: ["How can I use this information"] },
+      {
+        whatif: "What if I wrote down everything that made me unhappy",
+        hows: ["How can I use this information"]
+      },
       {
         whatif: "What if I concentrated on the things that made me happy",
         hows: ["How can I find something that makes me happy"]
@@ -198,57 +202,82 @@ const questions = [
 ]
 
 //{force: true}
-Conn.sync({ force: true }).then(() => {
-
-  const password = "testPassword";
-  return bcrypt.hash(password, 10).then((hash) => {
-    return UserModel.create({
-      email: faker.internet.email(),
-      username: faker.internet.userName(),
-      password: hash,
-      version: 1,
-    }).then((user) => {
-      questions.forEach((whyData) => {
-        // console.log(whyData.why);
-        return user.createQuestion({ question: whyData.why, stars: 0 }).then((whyQuestion) => {
-          QuestionStarModel.create({userId: user.id, questionId: whyQuestion.id})
-          // QuestionStarModel.create({userId: user.id, questionId: whyQuestion.id})
-          return WhyModel.create({}).then((newWhy) => {
-            newWhy.setQuestion(whyQuestion);
-
-            return whyData.whatifs.forEach((whatIfData) => {
-              // console.log(whatIfData.whatif)
-              return user.createQuestion({ question: whatIfData.whatif, stars: 0 }).then((whatIfQuestion) => {
-                // console.log(newWhatIf == null)
-
-                return WhatIfModel.create({}).then((newWhatIf) => {
-                  // whatIfQuestion.setWhatIf(newWhatIf);
-                  newWhatIf.setQuestion(whatIfQuestion);
-                  newWhy.addWhatIf(newWhatIf);
-                  // console.log(newWhy == null)
-                  return whatIfData.hows.forEach((how) => {
-                    return user.createQuestion({ question: how, stars: 0 }).then((howQuestion) => {
-
-                      return HowModel.create({}).then((newHow) => {
-                        newHow.setQuestion(howQuestion);
-                        newWhatIf.addHow(newHow);
-                      })
-
-                    })
-                  })
-                })
-
-              })
-            })
-          })
-
+Conn.sync({ force: true })
+  .then(() => {
+    const passwrd = "tPass2";
+    return bcrypt.hash(passwrd, 10)
+      .then((hash2) => {
+        return UserModel.create({
+          email: faker.internet.email(),
+          username: faker.internet.userName(),
+          password: hash2,
+          version: 1,
         })
+          .then(user2 => {
+
+            const password = "testPassword";
+            return bcrypt.hash(password, 10)
+              .then((hash) => {
+                return UserModel.create({
+                  email: faker.internet.email(),
+                  username: faker.internet.userName(),
+                  password: hash,
+                  version: 1,
+                })
+                  .then((user) => {
+                    UserFollowModel.create({followerId: user2.id, followedId: user.id});
+                    questions.forEach((whyData) => {
+                      // console.log(whyData.why);
+                      return user.createQuestion({ question: whyData.why, stars: 0 })
+                        .then((whyQuestion) => {
+                          QuestionStarModel.create({ userId: user.id, questionId: whyQuestion.id })
+                          // QuestionStarModel.create({userId: user.id, questionId: whyQuestion.id})
+                          return WhyModel.create({})
+                            .then((newWhy) => {
+                              newWhy.setQuestion(whyQuestion);
+
+                              return whyData.whatifs.forEach((whatIfData) => {
+                                // console.log(whatIfData.whatif)
+                                return user.createQuestion({
+                                  question: whatIfData.whatif,
+                                  stars: 0
+                                })
+                                  .then((whatIfQuestion) => {
+                                    // console.log(newWhatIf == null)
+
+                                    return WhatIfModel.create({})
+                                      .then((newWhatIf) => {
+                                        // whatIfQuestion.setWhatIf(newWhatIf);
+                                        newWhatIf.setQuestion(whatIfQuestion);
+                                        newWhy.addWhatIf(newWhatIf);
+                                        // console.log(newWhy == null)
+                                        return whatIfData.hows.forEach((how) => {
+                                          return user.createQuestion({ question: how, stars: 0 })
+                                            .then((howQuestion) => {
+
+                                              return HowModel.create({})
+                                                .then((newHow) => {
+                                                  newHow.setQuestion(howQuestion);
+                                                  newWhatIf.addHow(newHow);
+                                                })
+
+                                            })
+                                        })
+                                      })
+
+                                  })
+                              })
+                            })
+
+                        })
+                    })
+
+                  })
+              })
+          })
       })
 
-    })
   })
-
-})
 
 const Topic = Conn.models.topic;
 const Why = Conn.models.why;
@@ -257,5 +286,6 @@ const How = Conn.models.how;
 const User = Conn.models.user;
 const Question = Conn.models.question;
 const QuestionStar = Conn.models.question_star;
+const UserFollow = Conn.models.follow;
 
-export { Topic, Why, WhatIf, How, User, Question, QuestionStar }
+export { Topic, Why, WhatIf, How, User, Question, QuestionStar, UserFollow }

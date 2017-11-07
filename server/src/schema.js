@@ -7,7 +7,7 @@ const typeDefs = `
   type Topic {
    id: ID!                # "!" denotes a required field
    name: String!
-   whys: [Why]
+   whys: [Why] 
   }
   
   type Question {
@@ -23,13 +23,13 @@ const typeDefs = `
   type Why {
     id: ID!
     question: Question!
-    whatIfs: [WhatIf]
+    whatIfs: [WhatIf]!
   }
   
   type WhatIf {
     id: ID!
     question: Question!
-    hows: [How]
+    hows: [How]!
   }
   
   type How {
@@ -43,12 +43,13 @@ const typeDefs = `
     username: String!
     password: String!
     email: String!
-    whys: [Why]
-    hows: [How]
-    whatIfs: [WhatIf]
-    questions: [Question] 
+    whys: [Why]!
+    hows: [How]!
+    whatIfs: [WhatIf]!
+    questions: [Question]!
     jwt: String # json web token for access
-    staredQuestions: [Question]
+    staredQuestions: [Question]!
+
   }
   
   

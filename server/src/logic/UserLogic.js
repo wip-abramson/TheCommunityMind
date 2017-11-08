@@ -22,71 +22,34 @@ export const userLogic = {
   },
   staredQuestions(user, args, ctx) {
     // No Auth needed because everyone should be able to see a users stared questions
-
-    return UserStarQuestion.findAll({
-      where: { userId: user.id }
+    return Question.findAll({
+      where: { userId: user.id },
+      include: [{ model: User, as: "StaredQuestion" }]
     })
-      .then(questionStars => {
-        return Promise.all(questionStars.map(questionStar => {
-
-          return Question.findOne({ where: { id: questionStar.questionId } })
-            .then(question => {
-              return question;
-            });
-        }))
-      })
   },
 
   follows(user, args, ctx) {
     // Again no Auth req
-    return UserFollow.findAll({
-      where: { followerId: user.id }
+    return User.findAll({
+      include: [{ model: User, as: "Followed", where: {id: user.id} }]
+    }).then(users => {
+      return users;
     })
-      .then(userFollowsRelation => {
-        console.log(userFollowsRelation.length)
-        return Promise.all(userFollowsRelation.map(userFollowRelation => {
-          console.log(userFollowRelation.followedId, "userId")
-          return User.findOne({
-            where: { id: userFollowRelation.followedId }
-          })
-            .then(user => {
-              return user;
-            })
-        }));
-      })
   },
   followers(user, args, ctx) {
     // Again no Auth req
-    return UserFollow.findAll({
-      where: { followedId: user.id }
+    return User.findAll({
+      include: [{ model: User, as: "Follower", where: { id: user.id } }]
+    }).then(users => {
+      return users;
     })
-      .then(userFollowsRelation => {
-        console.log(userFollowsRelation.length)
-
-        return Promise.all(userFollowsRelation.map(userFollowRelation => {
-          console.log(userFollowRelation.followerId, "userId")
-          return User.findOne({
-            where: { id: userFollowRelation.followerId }
-          })
-            .then(user => {
-              return user;
-            })
-        }));
-      })
   },
   watches(user, args, ctx) {
-    return UserWatchQuestion.findAll({
-      where: { userId: user.id }
+    return Question.findAll({
+      where: { userId: user.id },
+      include: [{ model: User, as: "Watched" }]
+    }).then(questions => {
+      return questions;
     })
-      .then(userWatches => {
-        return Promise.all(userWatches.map(userWatch => {
-          return Question.findOne({
-            where: { id: userWatch.questionId }
-          })
-            .then(question => {
-              return question;
-            })
-        }))
-      })
   }
 }

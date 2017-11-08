@@ -1,7 +1,7 @@
 /**
  * Created by will on 07/11/17.
  */
-import { Question, How, Why, WhatIf, User, QuestionStar } from '../db';
+import { Question, How, Why, WhatIf, User, UserStarQuestion } from '../db';
 import { authLogic } from './AuthLogic';
 
 export const questionLogic = {
@@ -26,7 +26,7 @@ export const questionLogic = {
   },
   starQuestion(_, { id }, ctx) {
     return authLogic.getAuthenticatedUser(ctx).then((user) => {
-      return QuestionStar.findOne({
+      return UserStarQuestion.findOne({
         where: { userId: user.id, questionId: id },
       })
         .then((questionStar) => {
@@ -36,7 +36,7 @@ export const questionLogic = {
             return null;
           }
           else {
-            QuestionStar.create({ userId: user.id, questionId: id })
+            UserStarQuestion.create({ userId: user.id, questionId: id })
             console.log("Stared Q")
             return Question.findOne({ where: { id: id } });
           }
@@ -49,7 +49,7 @@ export const questionLogic = {
     return question.getUser();
   },
   staredBy(question) {
-    return QuestionStar.findAll({
+    return UserStarQuestion.findAll({
       where: { questionId: question.id },
     })
       .then((questionStars) => {
@@ -68,14 +68,14 @@ export const questionLogic = {
   },
   stars(question) {
     // return 0;
-    return QuestionStar.count({ where: { questionId: question.id } }).then(count => {
+    return UserStarQuestion.count({ where: { questionId: question.id } }).then(count => {
       return count;
     })
   },
   staredByCurrentUser (question, args, ctx) {
     return authLogic.getAuthenticatedUser(ctx)
       .then(currentUser => {
-        QuestionStar.find({
+        UserStarQuestion.find({
           where: { userId: currentUser.id, questionId: question.id }
         })
           .then(questionStar => {

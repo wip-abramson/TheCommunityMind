@@ -50,11 +50,13 @@ const WhatIfModel = Conn.define('whatif', {})
 
 const HowModel = Conn.define('how', {})
 
-const QuestionStarModel = Conn.define('question_star', {})
+const UserStarQuestionModel = Conn.define('question_star', {})
 
 const UserFollowModel = Conn.define('follow', {})
 
-const WatchModel = Conn.define('watch', {})
+const UserWatchQuestionModel = Conn.define('user_question', {})
+
+
 
 // Relationships
 
@@ -74,24 +76,33 @@ WhatIfModel.hasOne(QuestionModel);
 HowModel.hasOne(QuestionModel);
 
 QuestionModel.belongsToMany(UserModel, {
-  through: QuestionStarModel,
+  through: UserStarQuestionModel,
   as: 'staredQuestions'
 })
 
 UserModel.belongsToMany(QuestionModel, {
-  through: QuestionStarModel,
+  through: UserStarQuestionModel,
   as: 'staredBy'
 })
 
 UserModel.belongsToMany(UserModel, {
   through: UserFollowModel,
-  as: "follower"
+  as: "follower",
+  foreignKey: "followerId"
 })
 
 UserModel.belongsToMany(UserModel, {
   through: UserFollowModel,
-  as: "followed"
+  as: "followed",
+  foreignKey: "followedId"
 })
+
+QuestionModel.belongsToMany(UserModel, {
+  through: UserWatchQuestionModel,
+  as: "watched"
+})
+
+
 
 // QuestionModel.belongsTo(WhyModel);
 // QuestionModel.belongsTo(WhatIfModel);
@@ -132,11 +143,6 @@ const questions = [
         whatif: "What if you could electronically alter the strength of the lenses",
         hows: ["How would this happen"]
       },
-      // {
-      //   whatif: "What if ",
-      //   hows: ["how would it do this", "how could we use any materials recovered"]
-      // },
-      // { whatif: "What id these cities actually existed under the sea", hows: ["how would it withstand the pressure"] },
     ],
   },
   {
@@ -230,7 +236,8 @@ Conn.sync({ force: true })
                       // console.log(whyData.why);
                       return user.createQuestion({ question: whyData.why, stars: 0 })
                         .then((whyQuestion) => {
-                          QuestionStarModel.create({ userId: user.id, questionId: whyQuestion.id })
+                          UserWatchQuestionModel.create({ userId: user.id, questionId: whyQuestion.id })
+                          UserStarQuestionModel.create({ userId: user.id, questionId: whyQuestion.id })
                           // QuestionStarModel.create({userId: user.id, questionId: whyQuestion.id})
                           return WhyModel.create({})
                             .then((newWhy) => {
@@ -285,7 +292,8 @@ const WhatIf = Conn.models.whatif;
 const How = Conn.models.how;
 const User = Conn.models.user;
 const Question = Conn.models.question;
-const QuestionStar = Conn.models.question_star;
+const UserStarQuestion = Conn.models.question_star;
 const UserFollow = Conn.models.follow;
+const UserWatchQuestion = Conn.models.user_question;
 
-export { Topic, Why, WhatIf, How, User, Question, QuestionStar, UserFollow }
+export { Topic, Why, WhatIf, How, User, Question, UserStarQuestion, UserFollow, UserWatchQuestion }

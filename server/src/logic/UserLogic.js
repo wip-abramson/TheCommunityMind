@@ -1,15 +1,15 @@
 /**
  * Created by will on 07/11/17.
  */
-import { Question, QuestionStar, UserFollow, User } from '../db';
-import { AuthLogic } from './AuthLogic';
+import { Question, UserStarQuestion, UserFollow, User, UserWatchQuestion } from '../db';
+import { authLogic } from './AuthLogic';
 
 export const userLogic = {
   jwt(user) {
     return Promise.resolve(user.jwt);
   },
   questions(user, args, ctx) {
-    return AuthLogic.getAuthenticatedUser(ctx)
+    return authLogic.getAuthenticatedUser(ctx)
       .then((currentUser) => {
         if (currentUser.id !== user.id) {
           return Promise.reject('Unauthorized');
@@ -23,7 +23,7 @@ export const userLogic = {
   staredQuestions(user, args, ctx) {
     // No Auth needed because everyone should be able to see a users stared questions
 
-    return QuestionStar.findAll({
+    return UserStarQuestion.findAll({
       where: { userId: user.id }
     })
       .then(questionStars => {
@@ -72,6 +72,21 @@ export const userLogic = {
               return user;
             })
         }));
+      })
+  },
+  watches(user, args, ctx) {
+    return UserWatchQuestion.findAll({
+      where: { userId: user.id }
+    })
+      .then(userWatches => {
+        return Promise.all(userWatches.map(userWatch => {
+          return Question.findOne({
+            where: { id: userWatch.questionId }
+          })
+            .then(question => {
+              return question;
+            })
+        }))
       })
   }
 }

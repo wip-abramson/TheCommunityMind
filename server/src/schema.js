@@ -43,14 +43,15 @@ const typeDefs = `
     username: String!
     password: String!
     email: String!
-    whys: [Why]!
-    hows: [How]!
-    whatIfs: [WhatIf]!
-    questions: [Question]!
+    whys: [Why]
+    hows: [How]
+    whatIfs: [WhatIf]
+    questions: [Question]
     jwt: String # json web token for access
-    staredQuestions: [Question]!
+    staredQuestions: [Question]
     followers: [User]
     follows: [User]
+    watches: [Question]
   }
   
   

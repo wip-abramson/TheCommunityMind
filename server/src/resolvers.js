@@ -118,6 +118,9 @@ export const resolvers = {
     },
     followers(user, args, ctx) {
       return userLogic.followers(user, args, ctx);
+    },
+    watches(user, args, ctx) {
+      return userLogic.watches(user, args, ctx);
     }
 
   }

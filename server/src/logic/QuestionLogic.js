@@ -49,22 +49,29 @@ export const questionLogic = {
     return question.getUser();
   },
   staredBy(question) {
-    return UserStarQuestion.findAll({
-      where: { questionId: question.id },
+    return User.findAll({
+
+      include: [{ model: Question, as: "StaredBy", where: { id: question.id },}]
     })
-      .then((questionStars) => {
-
-        return Promise.all(questionStars.map(questionStar => {
-          return User.findOne({
-            where: { id: questionStar.userId }
-          })
-            .then((user) => {
-
-              return user;
-            })
-        }));
-
-      });
+      .then(users => {
+        return users;
+      })
+    // return UserStarQuestion.findAll({
+    //   where: { questionId: question.id },
+    // })
+    //   .then((questionStars) => {
+    //
+    //     return Promise.all(questionStars.map(questionStar => {
+    //       return User.findOne({
+    //         where: { id: questionStar.userId }
+    //       })
+    //         .then((user) => {
+    //
+    //           return user;
+    //         })
+    //     }));
+    //
+    //   });
   },
   stars(question) {
     // return 0;

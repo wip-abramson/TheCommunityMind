@@ -1,7 +1,7 @@
 /**
  * Created by will on 07/11/17.
  */
-import { Question, UserStarQuestion, UserFollow, User, UserWatchQuestion } from '../db';
+import { Question, User } from '../db';
 import { authLogic } from './AuthLogic';
 
 export const userLogic = {
@@ -46,8 +46,7 @@ export const userLogic = {
   },
   watches(user, args, ctx) {
     return Question.findAll({
-      where: { userId: user.id },
-      include: [{ model: User, as: "Watched" }]
+      include: [{ model: User, as: "Watched", where: { id: user.id } }]
     }).then(questions => {
       return questions;
     })

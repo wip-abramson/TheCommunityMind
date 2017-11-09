@@ -28,18 +28,27 @@ export const questionLogic = {
     return authLogic.getAuthenticatedUser(ctx)
       .then((user) => {
         return Question.findOne({
+          where: {id: id},
           include: [{ model: User, as: "StaredBy", where: { id: user.id } }]
         })
           .then(question => {
             if (question) {
-              question.removeUser(user, { as: "StaredBy" });
-              console.log("destroy Star")
-              return null;
+              question.removeStaredBy(user).then(() => {
+                console.log("destroy Star")
+                return question;
+              });
+
+
             }
             else {
-              question.addUser(user, { as: "StaredBy" });
-              console.log("Stared Q")
-              return question;
+              return Question.findById(id).then(unstaredQuestion => {
+                console.log("Stared Q")
+                return unstaredQuestion.addStaredBy(user).then(() => {
+                  return unstaredQuestion;
+                });
+
+              })
+
             }
           })
 
@@ -64,6 +73,7 @@ export const questionLogic = {
     return User.count({
       include: [{
         model: Question,
+        as: "StaredBy",
         where: { id: question.id }
       }]
     }).then(count => {
@@ -73,11 +83,12 @@ export const questionLogic = {
   staredByCurrentUser (question, args, ctx) {
     return authLogic.getAuthenticatedUser(ctx)
       .then(currentUser => {
-        User.find({
+        return User.findOne({
           where: { id: currentUser.id },
-          include: [{ model: Question, where: { id: question.id } }]
+          include: [{ model: Question, as: "StaredBy", where: { id: question.id } }]
         })
           .then(user => {
+            console.log(user === null, "user found")
             return user ? true : false;
           })
       })
@@ -94,16 +105,45 @@ export const questionLogic = {
         return tags;
       })
   },
-  associateWithTag(_, { questionId, tagId }, ctx) {
+  associateQuestionWithTag(_, { questionId, tagId }, ctx) {
     return authLogic.getAuthenticatedUser(ctx)
       .then(user => {
-        return Question.findById(questionId).then(question => {
-          return Tag.findById(tagId)
-            .then(tag => {
-              question.addTag(tag);
-              return question;
-            })
-        })
+        return Question.findById(questionId)
+          .then(question => {
+            console.log(question.userId, user.id)
+
+            if (question.userId !== user.id) {
+              return Promise.reject("Unauthorized");
+            }
+            return Tag.findById(tagId)
+              .then(tag => {
+                return question.addTag(tag)
+                  .then(() => {
+                    return tag
+                  });
+              })
+          })
+      })
+  },
+  removeTagAssociationWithQuestion(_, { questionId, tagId }, ctx) {
+    return authLogic.getAuthenticatedUser(ctx)
+      .then(user => {
+        return Question.findById(questionId)
+          .then(question => {
+            console.log(question.userId, user.id)
+            if (question.userId !== user.id) {
+              return Promise.reject("Unauthorized");
+            }
+
+            // Should I check if Tag is already associated? Probably
+            return Tag.findById(tagId)
+              .then(tag => {
+                return question.removeTag(tag)
+                  .then(() => {
+                    return tag
+                  });
+              })
+          })
       })
   }
 

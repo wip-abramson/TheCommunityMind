@@ -19,7 +19,7 @@ export const authLogic = {
         if (!user) {
           return Promise.reject('Unauthorized');
         }
-
+        console.log(user.id, "User Authorized");
         return user;
       })
   },
@@ -42,7 +42,7 @@ export const authLogic = {
                 email,
                 username,
                 version: 1,
-                exp: Math.floor(new Date().getTime() / 1000) + 7 * 24 * 60 * 60
+                // exp: Math.floor(new Date().getTime() / 1000) + 7 * 24 * 60 * 60
               }, JWT_SECRET);
               user.jwt = token;
               ctx.user = Promise.resolve(user);
@@ -69,7 +69,7 @@ export const authLogic = {
                   email: user.email,
                   username: user.username,
                   version: user.version,
-                  exp: Math.floor(new Date().getTime() / 1000) + 7 * 24 * 60 * 60,
+                  // exp: Math.floor(new Date().getTime() / 1000) + 7 * 24 * 60 * 60,
                 }, JWT_SECRET);
                 user.jwt = token;
                 ctx.user = Promise.resolve(user);

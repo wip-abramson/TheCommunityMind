@@ -69,8 +69,55 @@ export const userLogic = {
         }
 
         return Tag.findAll({
-          include: [{ model: User, as: "InterestedIn", where: { id: user.id } }]
+          include: [{ model: User, where: { id: user.id } }]
+        }).then(tags => {
+          return tags;
         })
       })
+  },
+  addUserInterest(_, { userId, tagId }, ctx) {
+    return authLogic.getAuthenticatedUser(ctx)
+      .then(currentUser => {
+
+        // not sure if there is a better way but comparing userId to currentUser.id wasn't working
+        return User.findById(userId)
+          .then(user => {
+            if (currentUser.id !== user.id) {
+              console.log("Unauth")
+              return Promise.reject("Unauthorized");
+            }
+
+            return Tag.findById(tagId)
+              .then(tag => {
+                return currentUser.addTag(tag)
+                  .then(() => {
+                    return tag;
+                  });
+              })
+          })
+      })
+  },
+  removeUserInterest(_, { userId, tagId }, ctx) {
+    return authLogic.getAuthenticatedUser(ctx)
+      .then(currentUser => {
+        return User.findById(userId)
+          .then(user => {
+            if (currentUser.id !== user.id) {
+              console.log("Unauth")
+              return Promise.reject("Unauthorized");
+            }
+
+            // Should I check that Tag is already associated with user?
+            return Tag.findById(tagId)
+              .then(tag => {
+                return currentUser.removeTag(tag)
+                  .then(() => {
+                    return tag;
+                  })
+
+              })
+          })
+      })
+
   }
 }

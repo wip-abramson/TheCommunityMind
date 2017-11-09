@@ -274,11 +274,13 @@ Conn.sync({ force: true })
                       console.log(error)
                     })
 
-                    Promise.all(tags.map(tag => {
+                    return Promise.all(tags.map(tag => {
                       return Tag.create(tag);
+
                     })).then(createdTags => {
 
-                      user2.setTags(createdTags);
+                      console.log(createdTags.length)
+                      user.setTags(createdTags);
 
                       // console.log("Added follower")
                       questions.forEach((whyData) => {

@@ -71,7 +71,10 @@ const typeDefs = `
     createWhy(question: String!): Why
     createWhatIf(question: String!, whyId: ID!): WhatIf
     createHow(question: String!, whatIfId: ID!): How
-    associateWithTag(questionId: ID!, tagId: ID!): Question
+    associateQuestionWithTag(questionId: ID!, tagId: ID!): Tag
+    removeTagAssociationWithQuestion(questionId: ID!, tagId: ID!): Tag
+    addUserInterest(userId: ID!, tagId: ID!): Tag
+    removeUserInterest(userId: ID!, tagId: ID!): Tag
     deleteQuestion(id: ID!): Question
     starQuestion(id: ID!): Question
     register(username: String, password: String!, email: String!): User

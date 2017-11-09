@@ -46,8 +46,17 @@ export const resolvers = {
     starQuestion(_, args, ctx) {
       return questionLogic.starQuestion(_, args, ctx)
     },
-    associateWithTag(_, args, ctx) {
-
+    associateQuestionWithTag(_, args, ctx) {
+      return questionLogic.associateQuestionWithTag(_, args, ctx);
+    },
+    removeTagAssociationWithQuestion(_, args, ctx) {
+      return questionLogic.removeTagAssociationWithQuestion(_, args, ctx);
+    },
+    addUserInterest(_, args, ctx) {
+      return userLogic.addUserInterest(_, args, ctx);
+    },
+    removeUserInterest(_, args, ctx) {
+      return userLogic.removeUserInterest(_, args, ctx);
     },
     register: (_, args, ctx) => {
       // find user by email

@@ -26,44 +26,41 @@ const UserModel = Conn.define('user', {
   },
 })
 
-const TopicModel = Conn.define('topic', {
+const QuestionModel = Conn.define('question', {
+  question: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+})
+
+const TagModel = Conn.define('tag', {
   name: {
     type: Sequelize.STRING,
     allowNull: false
   }
 })
 
-const QuestionModel = Conn.define('question', {
-  question: {
-    type: Sequelize.STRING,
-    allowNull: false
-  },
-  stars: {
-    type: Sequelize.INTEGER,
-    allowNull: false
-  }
-})
+const WhyModel = Conn.define('why', {});
 
-const WhyModel = Conn.define('why', {})
+const WhatIfModel = Conn.define('whatif', {});
 
-const WhatIfModel = Conn.define('whatif', {})
+const HowModel = Conn.define('how', {});
 
-const HowModel = Conn.define('how', {})
+const UserStarQuestionModel = Conn.define('question_star', {});
 
-const UserStarQuestionModel = Conn.define('question_star', {})
+const UserFollowModel = Conn.define('follow', {});
 
-const UserFollowModel = Conn.define('follow', {})
+const UserWatchQuestionModel = Conn.define('user_question', {});
 
-const UserWatchQuestionModel = Conn.define('user_question', {})
+const QuestionTagModel = Conn.define('question_tag', {});
 
-
+const UserTagModel = Conn.define('user_tag', {});
 
 // Relationships
 
 UserModel.hasMany(QuestionModel);
 QuestionModel.belongsTo(UserModel);
 
-TopicModel.hasMany(WhyModel, { as: 'Whys' });
 // WhyModel.belongsToMany(TopicModel);
 WhyModel.hasMany(WhatIfModel, { as: 'WhatIfs' });
 WhatIfModel.belongsTo(WhyModel);
@@ -77,32 +74,58 @@ HowModel.hasOne(QuestionModel);
 
 QuestionModel.belongsToMany(UserModel, {
   through: UserStarQuestionModel,
-  as: 'staredQuestions'
-})
+  as: 'StaredBy'
+});
 
 UserModel.belongsToMany(QuestionModel, {
   through: UserStarQuestionModel,
-  as: 'staredBy'
-})
+  as: 'StaredBy'
+});
 
 UserModel.belongsToMany(UserModel, {
   through: UserFollowModel,
-  as: "follower",
+  as: "FollowedBy",
+  foreignKey: "followedById"
+});
+
+UserModel.belongsToMany(UserModel, {
+  through: UserFollowModel,
+  as: "Follower",
   foreignKey: "followerId"
-})
-
-UserModel.belongsToMany(UserModel, {
-  through: UserFollowModel,
-  as: "followed",
-  foreignKey: "followedId"
-})
+});
 
 QuestionModel.belongsToMany(UserModel, {
   through: UserWatchQuestionModel,
-  as: "watched"
+  as: "Watched",
+  foreignKey: "watchedId"
+});
+
+UserModel.belongsToMany(QuestionModel, {
+  through: UserWatchQuestionModel,
+  as: "Watched"
 })
 
+TagModel.belongsToMany(QuestionModel, {
+  through: QuestionTagModel,
+  // as: "AssociatedWith"
+});
 
+QuestionModel.belongsToMany(TagModel, {
+  through: QuestionTagModel,
+  // as: "Questions"
+});
+
+
+
+UserModel.belongsToMany(TagModel, {
+  through: UserTagModel,
+  // as: "Follower"
+})
+
+TagModel.belongsToMany(UserModel, {
+  through: UserTagModel,
+  // as: "InterestedIn"
+})
 
 // QuestionModel.belongsTo(WhyModel);
 // QuestionModel.belongsTo(WhatIfModel);
@@ -112,8 +135,6 @@ const USERS = 5;
 const QUESTIONS = 5;
 
 faker.seed(123); // consistent data every time reload app
-
-
 
 const questions = [
   {
@@ -205,6 +226,21 @@ const questions = [
     ]
   },
 
+];
+
+const tags = [
+  {
+    name: "creativity"
+  },
+  {
+    name: "environment"
+  },
+  {
+    name: "self improvement"
+  },
+  {
+    name: "technology"
+  }
 ]
 
 //{force: true}
@@ -231,69 +267,91 @@ Conn.sync({ force: true })
                   version: 1,
                 })
                   .then((user) => {
-                    UserFollowModel.create({followerId: user2.id, followedId: user.id});
-                    questions.forEach((whyData) => {
-                      // console.log(whyData.why);
-                      return user.createQuestion({ question: whyData.why, stars: 0 })
-                        .then((whyQuestion) => {
-                          UserWatchQuestionModel.create({ userId: user.id, questionId: whyQuestion.id })
-                          UserStarQuestionModel.create({ userId: user.id, questionId: whyQuestion.id })
-                          // QuestionStarModel.create({userId: user.id, questionId: whyQuestion.id})
-                          return WhyModel.create({})
-                            .then((newWhy) => {
-                              newWhy.setQuestion(whyQuestion);
-
-                              return whyData.whatifs.forEach((whatIfData) => {
-                                // console.log(whatIfData.whatif)
-                                return user.createQuestion({
-                                  question: whatIfData.whatif,
-                                  stars: 0
-                                })
-                                  .then((whatIfQuestion) => {
-                                    // console.log(newWhatIf == null)
-
-                                    return WhatIfModel.create({})
-                                      .then((newWhatIf) => {
-                                        // whatIfQuestion.setWhatIf(newWhatIf);
-                                        newWhatIf.setQuestion(whatIfQuestion);
-                                        newWhy.addWhatIf(newWhatIf);
-                                        // console.log(newWhy == null)
-                                        return whatIfData.hows.forEach((how) => {
-                                          return user.createQuestion({ question: how, stars: 0 })
-                                            .then((howQuestion) => {
-
-                                              return HowModel.create({})
-                                                .then((newHow) => {
-                                                  newHow.setQuestion(howQuestion);
-                                                  newWhatIf.addHow(newHow);
-                                                })
-
-                                            })
-                                        })
-                                      })
-
-                                  })
-                              })
-                            })
-
-                        })
+                    console.log(user2.id, "u2")
+                    console.log(user.id, "u1")
+                    user.addFollowedBy(user2).then(() => {
+                    }).catch(error => {
+                      console.log(error)
                     })
 
+                    Promise.all(tags.map(tag => {
+                      return Tag.create(tag);
+                    })).then(createdTags => {
+
+                      user2.setTags(createdTags);
+
+                      // console.log("Added follower")
+                      questions.forEach((whyData) => {
+                        // console.log(whyData.why);
+                        return user.createQuestion({ question: whyData.why, stars: 0 })
+                          .then((whyQuestion) => {
+                          user.addWatched(whyQuestion)
+
+                            console.log("addQuestion")
+                            whyQuestion.addStaredBy(user)
+                            whyQuestion.setTags(createdTags)
+
+                            return WhyModel.create({})
+                              .then((newWhy) => {
+                                newWhy.setQuestion(whyQuestion);
+
+                                return whyData.whatifs.forEach((whatIfData) => {
+                                  // console.log(whatIfData.whatif)
+                                  return user.createQuestion({
+                                    question: whatIfData.whatif,
+                                    stars: 0
+                                  })
+                                    .then((whatIfQuestion) => {
+                                      // console.log(newWhatIf == null)
+
+                                      return WhatIfModel.create({})
+                                        .then((newWhatIf) => {
+                                          // whatIfQuestion.setWhatIf(newWhatIf);
+                                          newWhatIf.setQuestion(whatIfQuestion);
+                                          newWhy.addWhatIf(newWhatIf);
+                                          // console.log(newWhy == null)
+                                          return whatIfData.hows.forEach((how) => {
+                                            return user.createQuestion({ question: how, stars: 0 })
+                                              .then((howQuestion) => {
+
+                                                return HowModel.create({})
+                                                  .then((newHow) => {
+                                                    newHow.setQuestion(howQuestion);
+                                                    newWhatIf.addHow(newHow);
+                                                  })
+
+                                              })
+                                          })
+                                        })
+
+                                    })
+                                })
+                              })
+
+                          })
+                      })
+
+                    })
                   })
               })
           })
       })
 
-  })
+  });
 
-const Topic = Conn.models.topic;
 const Why = Conn.models.why;
 const WhatIf = Conn.models.whatif;
 const How = Conn.models.how;
 const User = Conn.models.user;
 const Question = Conn.models.question;
-const UserStarQuestion = Conn.models.question_star;
-const UserFollow = Conn.models.follow;
-const UserWatchQuestion = Conn.models.user_question;
+const Tag = Conn.models.tag;
 
-export { Topic, Why, WhatIf, How, User, Question, UserStarQuestion, UserFollow, UserWatchQuestion }
+// note only export objects that represent data not join tables
+export {
+  Why,
+  WhatIf,
+  How,
+  User,
+  Question,
+  Tag,
+}

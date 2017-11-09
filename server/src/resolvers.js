@@ -7,13 +7,14 @@ import { questionLogic } from './logic/QuestionLogic';
 import { whyLogic } from './logic/WhyLogic';
 import { whatIfLogic } from './logic/WhatIfLogic';
 import { howLogic } from './logic/HowLogic';
+import { tagLogic } from './logic/TagLogic';
 
 export const resolvers = {
   Date: GraphQLDate,
 
   Query: {
-    topics(){
-      return Topic.findAll();
+    tags: () => {
+      return tagLogic.query(_, args, ctx);
     },
     whys: (_, args, ctx) => {
 
@@ -28,9 +29,6 @@ export const resolvers = {
 
   },
   Mutation: {
-    addTopic: (root, args) => {
-      return Topic.create({ name: args.name })
-    },
     createWhy(_, args, ctx) {
       return whyLogic.createWhy(_, args, ctx);
 
@@ -48,21 +46,31 @@ export const resolvers = {
     starQuestion(_, args, ctx) {
       return questionLogic.starQuestion(_, args, ctx)
     },
+    associateWithTag(_, args, ctx) {
+
+    },
     register: (_, args, ctx) => {
       // find user by email
       return authLogic.register(_, args, ctx);
 
     },
+
     login: (_, args, ctx) => {
       return authLogic.login(_, args, ctx);
     },
 
   },
 
-  Topic: {
-    whys(topic) {
-      return topic.getWhys()
+  Tag: {
+    questions(tag, args, ctx) {
+      tagLogic.questions(tag, args, ctx);
     },
+    followers(tag, args, ctx) {
+      tagLogic.followers(tag, args, ctx);
+    },
+    numberOfFollowers(tag, args, ctx) {
+      tagLogic.numberOfFollowers(tag, args, ctx)
+    }
   },
 
   Question: {
@@ -77,6 +85,9 @@ export const resolvers = {
     },
     staredByCurrentUser(question, args, ctx) {
       return questionLogic.staredByCurrentUser(question, args, ctx)
+    },
+    associatedWith(question, args, ctx) {
+      return questionLogic.associatedWith(question, args, ctx);
     }
   },
 
@@ -121,6 +132,9 @@ export const resolvers = {
     },
     watches(user, args, ctx) {
       return userLogic.watches(user, args, ctx);
+    },
+    interestedIn(user, args, ctx) {
+      return userLogic.interestedIn(user, args, ctx);
     }
 
   }

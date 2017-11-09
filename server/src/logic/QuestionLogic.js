@@ -1,7 +1,7 @@
 /**
  * Created by will on 07/11/17.
  */
-import { Question, How, Why, WhatIf, User, UserStarQuestion } from '../db';
+import { Question, How, Why, WhatIf, User, Tag } from '../db';
 import { authLogic } from './AuthLogic';
 
 export const questionLogic = {
@@ -25,24 +25,25 @@ export const questionLogic = {
 
   },
   starQuestion(_, { id }, ctx) {
-    return authLogic.getAuthenticatedUser(ctx).then((user) => {
-      return UserStarQuestion.findOne({
-        where: { userId: user.id, questionId: id },
-      })
-        .then((questionStar) => {
-          if (questionStar) {
-            questionStar.destroy();
-            console.log("destroy Star")
-            return null;
-          }
-          else {
-            UserStarQuestion.create({ userId: user.id, questionId: id })
-            console.log("Stared Q")
-            return Question.findOne({ where: { id: id } });
-          }
-
+    return authLogic.getAuthenticatedUser(ctx)
+      .then((user) => {
+        return Question.findOne({
+          include: [{ model: User, as: "StaredBy", where: { id: user.id } }]
         })
-    })
+          .then(question => {
+            if (question) {
+              question.removeUser(user, { as: "StaredBy" });
+              console.log("destroy Star")
+              return null;
+            }
+            else {
+              question.addUser(user, { as: "StaredBy" });
+              console.log("Stared Q")
+              return question;
+            }
+          })
+
+      })
   },
   user(question) {
     // console.log(question.user)
@@ -51,47 +52,58 @@ export const questionLogic = {
   staredBy(question) {
     return User.findAll({
 
-      include: [{ model: Question, as: "StaredBy", where: { id: question.id },}]
+      include: [{ model: Question, as: "StaredBy", where: { id: question.id }, }]
     })
       .then(users => {
         return users;
       })
-    // return UserStarQuestion.findAll({
-    //   where: { questionId: question.id },
-    // })
-    //   .then((questionStars) => {
-    //
-    //     return Promise.all(questionStars.map(questionStar => {
-    //       return User.findOne({
-    //         where: { id: questionStar.userId }
-    //       })
-    //         .then((user) => {
-    //
-    //           return user;
-    //         })
-    //     }));
-    //
-    //   });
+
   },
   stars(question) {
     // return 0;
-    return UserStarQuestion.count({ where: { questionId: question.id } }).then(count => {
+    return User.count({
+      include: [{
+        model: Question,
+        where: { id: question.id }
+      }]
+    }).then(count => {
       return count;
     })
   },
   staredByCurrentUser (question, args, ctx) {
     return authLogic.getAuthenticatedUser(ctx)
       .then(currentUser => {
-        UserStarQuestion.find({
-          where: { userId: currentUser.id, questionId: question.id }
+        User.find({
+          where: { id: currentUser.id },
+          include: [{ model: Question, where: { id: question.id } }]
         })
-          .then(questionStar => {
-            return questionStar ? true : false;
+          .then(user => {
+            return user ? true : false;
           })
       })
       .catch(error => {
         console.log(error);
         return false;
+      })
+  },
+  associatedWith(question, args, ctx) {
+    return Tag.findAll({
+      include: [{ model: Question, where: { id: question.id } }]
+    })
+      .then(tags => {
+        return tags;
+      })
+  },
+  associateWithTag(_, { questionId, tagId }, ctx) {
+    return authLogic.getAuthenticatedUser(ctx)
+      .then(user => {
+        return Question.findById(questionId).then(question => {
+          return Tag.findById(tagId)
+            .then(tag => {
+              question.addTag(tag);
+              return question;
+            })
+        })
       })
   }
 

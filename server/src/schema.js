@@ -4,10 +4,12 @@ import {resolvers} from "./resolvers";
 const typeDefs = `
   scalar Date
   
-  type Topic {
+  type Tag {
    id: ID!                # "!" denotes a required field
    name: String!
-   whys: [Why] 
+   followers: [User]
+   numberOfFollowers: Int!
+   questions: [Question]
   }
   
   type Question {
@@ -18,6 +20,7 @@ const typeDefs = `
     owner: User!
     createdAt: Date!
     staredByCurrentUser: Boolean!
+    associatedWith: [Tag]
   }
   
   type Why {
@@ -52,11 +55,12 @@ const typeDefs = `
     followers: [User]
     follows: [User]
     watches: [Question]
+    interestedIn: [Tag]
   }
   
   
   type Query {
-   topics: [Topic]    
+   tags: [Tag]    
    whys(topicId: ID): [Why]
    whatIfs(whyId: ID!): [WhatIf]
    hows(whatIfId: ID!): [How]
@@ -64,14 +68,14 @@ const typeDefs = `
   }
   
   type Mutation {
-    addTopic(name: String!): Topic
     createWhy(question: String!): Why
     createWhatIf(question: String!, whyId: ID!): WhatIf
     createHow(question: String!, whatIfId: ID!): How
-    register(username: String, password: String!, email: String!): User
-    login(email: String!, password: String!): User
+    associateWithTag(questionId: ID!, tagId: ID!): Question
     deleteQuestion(id: ID!): Question
     starQuestion(id: ID!): Question
+    register(username: String, password: String!, email: String!): User
+    login(email: String!, password: String!): User
   }
 `;
 

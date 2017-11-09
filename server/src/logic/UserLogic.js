@@ -32,7 +32,7 @@ export const userLogic = {
     // Again no Auth req
     // return user.getFollowers();
     return User.findAll({
-      include: [{ model: User, as: "FollowedBy", where: {id: user.id} }]
+      include: [{ model: User, as: "FollowedBy", where: { id: user.id } }]
     }).then(users => {
       return users;
     })
@@ -42,18 +42,24 @@ export const userLogic = {
     // console.log(user, "followedId")
     return User.findAll({
 
-      include: [{ model: User, as: "Follower",where: {id: user.id},}]
+      include: [{ model: User, as: "Follower", where: { id: user.id }, }]
     }).then(users => {
       return users;
     })
   },
   watches(user, args, ctx) {
-    // need auth
-    return Question.findAll({
-      include: [{ model: User, as: "Watched", where: { id: user.id } }]
-    }).then(questions => {
-      return questions;
-    })
+    return authLogic.getAuthenticatedUser(ctx)
+      .then(currentUser => {
+        if (currentUser.id !== user.id) {
+          return Promise.reject("Unauthorized")
+        }
+        return Question.findAll({
+          include: [{ model: User, as: "Watched", where: { id: user.id } }]
+        }).then(questions => {
+          return questions;
+        })
+      })
+
   },
   interestedIn(user, args, ctx) {
     return authLogic.getAuthenticatedUser(ctx)
@@ -63,7 +69,7 @@ export const userLogic = {
         }
 
         return Tag.findAll({
-          include: [{model: User, as: "InterestedIn", where: { id: user.id }}]
+          include: [{ model: User, as: "InterestedIn", where: { id: user.id } }]
         })
       })
   }

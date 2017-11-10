@@ -14,14 +14,19 @@ export const questionLogic = {
             model: User,
             where: { id: user.id },
           }],
+        })
+        // destroy the How WhatIf or Why that owns the question - cannot have any without a question
+        // no need to delete associations, they are automatically deleted on delete
+          .then(question => How.destroy({ where: { id: question.howId } })
+            .then(() => Why.destroy({ where: { id: question.whyId } }))
+            .then(() => WhatIf.destroy({ where: { id: question.whatIfId }}))
+            // then finally destroy the question
+            .then(() => question.destroy()
+              .then(destroyedQ => {
 
-        }).then(question => question.getUser())
-          .then(user => question.removeUser(user))
-          .then(() => How.destroy({ where: { id: question.howId } }))
-          .then(() => WhatIf.destroy({ where: { id: question.whatIfId } }))
-          .then(() => Why.destroy({ where: { id: question.whyId } }))
-          .then(() => question.destroy())
-
+                return destroyedQ;
+              }))
+          )
       })
       .catch(error => {
         console.log(error, "Error");
@@ -52,10 +57,8 @@ export const questionLogic = {
                 });
 
               })
-
             }
           })
-
       })
       .catch(error => {
         console.log(error, "Error");

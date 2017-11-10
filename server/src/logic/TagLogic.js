@@ -10,6 +10,13 @@ export const tagLogic = {
         name,
       }
     })
+      .then(tags => {
+        return tags;
+      })
+      .catch(error => {
+        console.log(error, "Error");
+        return Promise.reject(error)
+      })
   },
   followers(tag, args, ctx) {
     // Undecided if I need this - should users be able to see which users follow what?
@@ -19,6 +26,10 @@ export const tagLogic = {
       .then(users => {
         return users
       })
+      .catch(error => {
+        console.log(error, "Error");
+        return Promise.reject(error)
+      })
   },
   questions(tag, args, ctx) {
     return Question.findAll({
@@ -27,6 +38,10 @@ export const tagLogic = {
       .then(questions => {
         return questions;
       })
+      .catch(error => {
+        console.log(error, "Error");
+        return Promise.reject(error)
+      })
   },
   numberOfFollowers(tag, args, ctx) {
     return User.count({
@@ -34,6 +49,10 @@ export const tagLogic = {
     })
       .then(count => {
         return count;
+      })
+      .catch(error => {
+        console.log(error, "Error");
+        return Promise.reject(error)
       })
   }
 }

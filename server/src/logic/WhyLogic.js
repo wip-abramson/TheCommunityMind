@@ -21,18 +21,43 @@ export const whyLogic = {
                 return newWhy;
               });
           });
-      });
+      })
+      .catch(error => {
+        console.log(error, "Error");
+        return Promise.reject(error)
+      })
   },
   whatIfs(why) {
-    return why.getWhatIfs();
+    return why.getWhatIfs()
+      .then(whatIfs => {
+        return whatIfs
+      })
+      .catch(error => {
+        console.log(error, "Error");
+        return Promise.reject(error)
+      })
   },
   question(why) {
     // console.log(why.getQuestion())
-    return why.getQuestion();
+    return why.getQuestion()
+      .then(question => {
+        return question;
+      })
+      .catch(error => {
+        console.log(error, "Error");
+        return Promise.reject(error)
+      })
   },
   query() {
     return Why.findAll({
       order: [['createdAt', 'DESC']],
-    });
+    })
+      .then(whys => {
+        return whys;
+      })
+      .catch(error => {
+        console.log(error, "Error");
+        return Promise.reject(error)
+      })
   }
 }

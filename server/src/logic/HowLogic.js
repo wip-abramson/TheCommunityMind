@@ -21,6 +21,10 @@ export const howLogic = {
                 return newHow;
               });
           });
+      })
+      .catch(error => {
+        console.log(error, "Error");
+        return Promise.reject(error)
       });
   },
   question(how) {
@@ -33,6 +37,13 @@ export const howLogic = {
       },
       order: [['createdAt', 'DESC']],
     })
+      .then(hows => {
+        return hows;
+      })
+      .catch(error => {
+        console.log(error, "Error");
+        return Promise.reject(error)
+      });
   }
 }
 

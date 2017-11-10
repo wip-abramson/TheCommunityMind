@@ -25,10 +25,24 @@ export const whatIfLogic = {
       });
   },
   hows(whatIf) {
-    return whatIf.getHows();
+    return whatIf.getHows()
+      .then(hows => {
+        return hows;
+      })
+      .catch(error => {
+        console.log(error, "Error");
+        return Promise.reject(error)
+      })
   },
   question(whatIf) {
-    return whatIf.getQuestion();
+    return whatIf.getQuestion()
+      .then(question => {
+        return question
+      })
+      .catch(error => {
+        console.log(error, "Error");
+        return Promise.reject(error)
+      })
   },
   query(_, { whyId }, ctx) {
     return WhatIf.findAll({
@@ -36,6 +50,13 @@ export const whatIfLogic = {
         whyId
       },
       order: [['createdAt', 'DESC']],
-    });
+    })
+      .then(whatIfs => {
+        return whatIfs;
+      })
+      .catch(error => {
+        console.log(error, "Error");
+        return Promise.reject(error)
+      })
   }
 }

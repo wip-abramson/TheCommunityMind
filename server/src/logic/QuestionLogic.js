@@ -6,29 +6,34 @@ import { authLogic } from './AuthLogic';
 
 export const questionLogic = {
   deleteQuestion(_, { id }, ctx) {
-    return authLogic.getAuthenticatedUser(ctx).then((user) => {
-      return Question.findOne({
-        where: { id },
-        include: [{
-          model: User,
-          where: { id: user.id },
-        }],
+    return authLogic.getAuthenticatedUser(ctx)
+      .then((user) => {
+        return Question.findOne({
+          where: { id },
+          include: [{
+            model: User,
+            where: { id: user.id },
+          }],
 
-      }).then(question => question.getUser())
-        .then(user => question.removeUser(user))
-        .then(() => How.destroy({ where: { id: question.howId } }))
-        .then(() => WhatIf.destroy({ where: { id: question.whatIfId } }))
-        .then(() => Why.destroy({ where: { id: question.whyId } }))
-        .then(() => question.destroy())
+        }).then(question => question.getUser())
+          .then(user => question.removeUser(user))
+          .then(() => How.destroy({ where: { id: question.howId } }))
+          .then(() => WhatIf.destroy({ where: { id: question.whatIfId } }))
+          .then(() => Why.destroy({ where: { id: question.whyId } }))
+          .then(() => question.destroy())
 
-    });
+      })
+      .catch(error => {
+        console.log(error, "Error");
+        return Promise.reject(error)
+      });
 
   },
   starQuestion(_, { id }, ctx) {
     return authLogic.getAuthenticatedUser(ctx)
       .then((user) => {
         return Question.findOne({
-          where: {id: id},
+          where: { id: id },
           include: [{ model: User, as: "StaredBy", where: { id: user.id } }]
         })
           .then(question => {
@@ -37,7 +42,6 @@ export const questionLogic = {
                 console.log("destroy Star")
                 return question;
               });
-
 
             }
             else {
@@ -53,18 +57,24 @@ export const questionLogic = {
           })
 
       })
+      .catch(error => {
+        console.log(error, "Error");
+        return Promise.reject(error)
+      })
   },
   user(question) {
-    // console.log(question.user)
     return question.getUser();
   },
   staredBy(question) {
     return User.findAll({
-
       include: [{ model: Question, as: "StaredBy", where: { id: question.id }, }]
     })
       .then(users => {
         return users;
+      })
+      .catch(error => {
+        console.log(error, "Error");
+        return Promise.reject(error)
       })
 
   },
@@ -76,9 +86,14 @@ export const questionLogic = {
         as: "StaredBy",
         where: { id: question.id }
       }]
-    }).then(count => {
-      return count;
     })
+      .then(count => {
+        return count;
+      })
+      .catch(error => {
+        console.log(error, "Error");
+        return Promise.reject(error)
+      })
   },
   staredByCurrentUser (question, args, ctx) {
     return authLogic.getAuthenticatedUser(ctx)
@@ -124,6 +139,10 @@ export const questionLogic = {
               })
           })
       })
+      .catch(error => {
+        console.log(error, "Error");
+        return Promise.reject(error)
+      });
   },
   removeTagAssociationWithQuestion(_, { questionId, tagId }, ctx) {
     return authLogic.getAuthenticatedUser(ctx)
@@ -145,6 +164,10 @@ export const questionLogic = {
               })
           })
       })
+      .catch(error => {
+        console.log(error, "Error");
+        return Promise.reject(error)
+      });
   }
 
 }

@@ -18,34 +18,51 @@ export const userLogic = {
           where: { userId: user.id },
           order: [['createdAt', 'DESC']],
         });
+      })
+      .catch(error => {
+        console.log(error, "Error");
+        return Promise.reject(error)
       });
   },
   staredQuestions(user, args, ctx) {
     // No Auth needed because everyone should be able to see a users stared questions
     return Question.findAll({
-
       include: [{ model: User, as: "StaredBy", where: { id: user.id } }]
     })
+      .then(staredQuestions => {
+        return staredQuestions;
+      })
+      .catch(error => {
+        console.log(error, "Error");
+        return Promise.reject(error)
+      })
   },
 
   follows(user, args, ctx) {
     // Again no Auth req
-    // return user.getFollowers();
     return User.findAll({
       include: [{ model: User, as: "FollowedBy", where: { id: user.id } }]
-    }).then(users => {
-      return users;
     })
+      .then(users => {
+        return users;
+      })
+      .catch(error => {
+        console.log(error, "Error");
+        return Promise.reject(error)
+      })
   },
   followers(user, args, ctx) {
     // Again no Auth req
-    // console.log(user, "followedId")
     return User.findAll({
-
       include: [{ model: User, as: "Follower", where: { id: user.id }, }]
-    }).then(users => {
-      return users;
     })
+      .then(users => {
+        return users;
+      })
+      .catch(error => {
+        console.log(error, "Error");
+        return Promise.reject(error)
+      })
   },
   watches(user, args, ctx) {
     return authLogic.getAuthenticatedUser(ctx)
@@ -58,6 +75,10 @@ export const userLogic = {
         }).then(questions => {
           return questions;
         })
+      })
+      .catch(error => {
+        console.log(error, "Error");
+        return Promise.reject(error)
       })
 
   },
@@ -74,6 +95,10 @@ export const userLogic = {
           return tags;
         })
       })
+      .catch(error => {
+        console.log(error, "Error");
+        return Promise.reject(error)
+      });
   },
   addUserInterest(_, { userId, tagId }, ctx) {
     return authLogic.getAuthenticatedUser(ctx)
@@ -83,7 +108,6 @@ export const userLogic = {
         return User.findById(userId)
           .then(user => {
             if (currentUser.id !== user.id) {
-              console.log("Unauth")
               return Promise.reject("Unauthorized");
             }
 
@@ -95,6 +119,10 @@ export const userLogic = {
                   });
               })
           })
+      })
+      .catch(error => {
+        console.log(error, "Error");
+        return Promise.reject(error)
       })
   },
   removeUserInterest(_, { userId, tagId }, ctx) {
@@ -117,6 +145,10 @@ export const userLogic = {
 
               })
           })
+      })
+      .catch(error => {
+        console.log(error, "Error");
+        return Promise.reject(error)
       })
 
   }

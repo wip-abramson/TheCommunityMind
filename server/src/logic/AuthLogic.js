@@ -11,12 +11,14 @@ export const authLogic = {
   getAuthenticatedUser(ctx) {
     console.log("Getting user")
     if (!ctx.user) {
+       console.log("No ctx")
       return Promise.reject('Unauthorized');
     }
 
     return ctx.user
       .then((user) => {
         if (!user) {
+          console.log("no user")
           return Promise.reject('Unauthorized');
         }
         console.log(user.id, "User Authorized");

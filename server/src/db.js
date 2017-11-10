@@ -73,58 +73,84 @@ WhatIfModel.hasOne(QuestionModel);
 HowModel.hasOne(QuestionModel);
 
 QuestionModel.belongsToMany(UserModel, {
-  through: UserStarQuestionModel,
+  through: {
+    model: UserStarQuestionModel,
+    unique: true,
+  },
   as: 'StaredBy'
 });
 
 UserModel.belongsToMany(QuestionModel, {
-  through: UserStarQuestionModel,
+  through: {
+    model: UserStarQuestionModel,
+    unique: true,
+  },
   as: 'StaredBy'
 });
 
 UserModel.belongsToMany(UserModel, {
-  through: UserFollowModel,
+  through: {
+    model: UserFollowModel,
+    unique: true,
+  },
   as: "FollowedBy",
   foreignKey: "followedById"
 });
 
 UserModel.belongsToMany(UserModel, {
-  through: UserFollowModel,
+  through: {
+    model: UserFollowModel,
+    unique: true,
+  },
   as: "Follower",
   foreignKey: "followerId"
 });
 
 QuestionModel.belongsToMany(UserModel, {
-  through: UserWatchQuestionModel,
+  through: {
+    model: UserWatchQuestionModel,
+    unique: true,
+  },
   as: "Watched",
   foreignKey: "watchedId"
 });
 
 UserModel.belongsToMany(QuestionModel, {
-  through: UserWatchQuestionModel,
+  through: {
+    model: UserWatchQuestionModel,
+    unique: true,
+  },
   as: "Watched"
 })
 
 TagModel.belongsToMany(QuestionModel, {
-  through: QuestionTagModel,
-  // as: "AssociatedWith"
+  through: {
+    model: QuestionTagModel,
+    unique: true,
+  },
 });
 
 QuestionModel.belongsToMany(TagModel, {
-  through: QuestionTagModel,
-  // as: "Questions"
+  through: {
+    model: QuestionTagModel,
+    unique: true,
+  },
 });
 
 
 
 UserModel.belongsToMany(TagModel, {
-  through: UserTagModel,
-  // as: "Follower"
+  through: {
+    model: UserTagModel,
+    unique: true,
+  },
 })
 
 TagModel.belongsToMany(UserModel, {
-  through: UserTagModel,
-  // as: "InterestedIn"
+  through: {
+    model: UserTagModel,
+    unique: true,
+  },
 })
 
 // QuestionModel.belongsTo(WhyModel);

@@ -82,7 +82,11 @@ QuestionView.propTypes = {
       owner: PropTypes.shape({
         id: PropTypes.string.isRequired,
         username: PropTypes.string.isRequired,
-      }).isRequired
+      }).isRequired,
+      staredBy: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        username: PropTypes.string.isRequired,
+      }))
     }).isRequired
   }).isRequired),
   loading: PropTypes.bool,

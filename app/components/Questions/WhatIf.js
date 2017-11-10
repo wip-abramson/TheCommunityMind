@@ -63,6 +63,14 @@ const createWhatIf = graphql(CREATE_WHATIF_MUTATION, {
             data
           });
         },
+      }).catch(res => {
+        // catches any error returned from mutation request
+        const errors = res.graphQLErrors.map((error) => {
+          console.log(error.message)
+          return error;
+        });
+        return errors
+        // this.setState({ errors });
       })
     }
   })

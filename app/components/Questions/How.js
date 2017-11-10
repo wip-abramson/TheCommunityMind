@@ -45,6 +45,14 @@ const createHow = graphql(CREATE_HOW_MUTATION, {
           // Write our data back to the cache.
           proxy.writeQuery({ query: HOWS_QUERY, variables: { parentId: ownProps.currentWhatIf.id }, data });
         }
+      }).catch(res => {
+        // catches any error returned from mutation request
+        const errors = res.graphQLErrors.map((error) => {
+          console.log(error.message)
+          return error;
+        });
+        return errors
+        // this.setState({ errors });
       })
     }
   })

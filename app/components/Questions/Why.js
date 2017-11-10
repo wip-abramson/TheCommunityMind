@@ -54,6 +54,14 @@ const createWhy = graphql(CREATE_WHY_MUTATION, {
           // Write our data back to the cache.
           proxy.writeQuery({ query: WHYS_QUERY, data });
         },
+      }).catch(res => {
+        // catches any error returned from mutation request
+        const errors = res.graphQLErrors.map((error) => {
+          console.log(error.message)
+          return error;
+        });
+        return errors
+        // this.setState({ errors });
       })
     }
 

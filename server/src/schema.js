@@ -10,6 +10,7 @@ const typeDefs = `
    followers: [User]
    numberOfFollowers: Int!
    questions: [Question]
+   questionFeed(cursor: String): QuestionFeed
   }
   
   type Question {
@@ -23,22 +24,57 @@ const typeDefs = `
     associatedWith: [Tag]
   }
   
+   
+  type QuestionFeed {
+    cursor: String!
+    
+    questions: [QuestionFeed]!
+  }
+  
   type Why {
     id: ID!
     question: Question!
     whatIfs: [WhatIf]!
+    whatIfFeed(cursor: String): WhatIfFeed
+    createdAt: Date!
+  }
+  
+  type WhyFeed {
+    # Specifies timestamp in list of whys to populate from
+    cursor: String!
+    
+    # list of returned whys
+    whys: [Why]!
   }
   
   type WhatIf {
     id: ID!
     question: Question!
+    createdAt: Date!
     hows: [How]!
+    howFeed(cursor: String): HowFeed
+  }
+  
+  type WhatIfFeed {
+    # Specifies timestamp in list of hows to populate from
+    cursor: String!
+    
+    # list of returned hows
+    whatIfs: [WhatIf]!
   }
   
   type How {
     id: ID!
     question: Question!
+    createdAt: Date!
+  }
+  
+  type HowFeed {
+    # Specifies timestamp in list of hows to populate from
+    cursor: String!
     
+    # list of returned hows
+    hows: [How]!
   }
   
   type User {
@@ -58,13 +94,21 @@ const typeDefs = `
     interestedIn: [Tag]
   }
   
+  type UserFeed {
+    cursor: String!
+    
+    users: [User]!
+  }
+  
   
   type Query {
    tags: [Tag]    
-   whys(topicId: ID): [Why]
+   whys: [Why]
    whatIfs(whyId: ID!): [WhatIf]
    hows(whatIfId: ID!): [How]
-   
+   whyFeed(cursor: String): WhyFeed
+   howFeed(whatIfId: ID!, cursor: String): HowFeed
+   whatIfFeed(whyId: ID!, cursor: String): WhatIfFeed
   }
   
   type Mutation {

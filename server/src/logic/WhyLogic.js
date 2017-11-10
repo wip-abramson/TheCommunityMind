@@ -59,5 +59,52 @@ export const whyLogic = {
         console.log(error, "Error");
         return Promise.reject(error)
       })
+  },
+  paginatedQuery(_, { cursor }, ctx) {
+    // find all whys
+    return this.query().then(whys => {
+      // if no cursor set cursor as time of last created why
+      if (!cursor) {
+        console.log(whys[0].createdAt)
+        cursor = whys[0].createdAt;
+      }
+
+
+      // cursor = parseInt(cursor);
+      console.log(cursor, "cursor")
+      // fix limit of number of whys returned
+      const limit = 2;
+
+      // find index of message created at time held in cursor
+      const newestWhyIndex = whys.findIndex(
+        why => why.createdAt === cursor
+      );
+      console.log(newestWhyIndex, "whyIndex")
+      // We need to return a new cursor to the client so that it
+      // can find the next page. Let's set newCursor to the
+      // createdAt time of the last why in this whyFeed:
+      var newCursor;
+      try {
+        newCursor =
+          whys[newestWhyIndex + limit].createdAt;
+      }
+       catch(error) {
+        newCursor = whys[whys.length - 1].createdAt;
+       }
+
+      const whyFeed = {
+        whys: whys.slice(
+          newestWhyIndex,
+          newestWhyIndex + limit
+        ),
+        cursor: newCursor,
+      }
+
+      return whyFeed;
+
+    })
+
+
+
   }
 }

@@ -26,6 +26,15 @@ export const resolvers = {
     hows(_, args, ctx) {
       return howLogic.query(_, args, ctx);
     },
+    whyFeed(_, args , ctx) {
+      return whyLogic.whyFeed(_, args, ctx);
+    },
+    howFeed(_, args, ctx) {
+      return howLogic.paginatedQuery(_, args, ctx);
+    },
+    whatIfFeed(_, args, ctx) {
+      return whatIfLogic.paginatedQuery(_, args, ctx);
+    }
 
   },
   Mutation: {
@@ -112,6 +121,9 @@ export const resolvers = {
     hows(whatIf, args, ctx) {
       return whatIfLogic.hows(whatIf, args, ctx);
     },
+    // howFeed(whatIf, args, ctx) {
+    //   return howLogic.howFeed(whatIf, args, ctx);
+    // },
     question(whatIf, args, ctx) {
       return whatIfLogic.question(whatIf, args, ctx);
     }

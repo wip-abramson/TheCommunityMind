@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 import QuestionView from "./QuestionView/QuestionView";
 import { updateCurrentWhatIf } from "../../actions/WhatIf";
 import { compose, graphql } from "react-apollo";
-import CREATE_WHATIF_MUTATION from "../../graphql/createWhatIf.mutation";
-import WHATIFS_QUERY from "../../graphql/whatIfs.query";
+import CREATE_WHATIF_MUTATION from "../../graphql/mutations/createWhatIf.mutation";
+import WHATIFS_QUERY from "../../graphql/querys/whatIfs.query";
 
 const mapStateToProps = function (state) {
 

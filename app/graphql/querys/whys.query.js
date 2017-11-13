@@ -1,5 +1,5 @@
 import {gql} from'react-apollo';
-import QUESTION_FRAGMENT from './question.fragment';
+import QUESTION_FRAGMENT from '../fragments/question.fragment';
 
 const WHYS_QUERY = gql`
   query whys {

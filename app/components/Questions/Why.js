@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 import QuestionView from "./QuestionView/QuestionView";
 import { updateCurrentWhy } from "../../actions/Why";
 import { compose, graphql } from "react-apollo";
-import CREATE_WHY_MUTATION from "../../graphql/createWhy.mutation";
-import WHYS_QUERY from "../../graphql/whys.query";
+import CREATE_WHY_MUTATION from "../../graphql/mutations/createWhy.mutation";
+import WHYS_QUERY from "../../graphql/querys/whys.query";
 
 const mapStateToProps = function () {
   return {

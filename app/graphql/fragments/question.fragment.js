@@ -8,6 +8,10 @@ const QUESTION_FRAGMENT = gql`
     id 
     question
     stars
+    staredBy {
+      id
+      username
+    }
     createdAt
     owner {
       id

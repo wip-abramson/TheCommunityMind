@@ -4,7 +4,7 @@
 import React from 'react'
 import { compose, graphql } from "react-apollo";
 // import Register from './Register';
-import { addUserMutation } from '../../graphql/mutations';
+import { addUserMutation } from '../../graphql/mutations/mutations';
 import { browserHistory } from 'react-router';
 import { connect } from "react-redux";
 import { loginSuccess } from '../../actions/Auth';

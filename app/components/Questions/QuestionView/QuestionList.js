@@ -2,23 +2,21 @@
  * Created by will on 23/04/17.
  */
 import React, { PropTypes } from "react";
-import Question from "./Question/Question";
+import QuestionContainer from "./Question/QuestionContainer";
 
 const QuestionList = (props) => {
+  // Maps a list of either Why WhatIfs or Hows to create individual Question components for each
   return (
     <div>
       {props.questions.map(function (question) {
         return (
-          <Question
+          <QuestionContainer
             key={"id-" + question.id}
             onSelectQuestion={props.onSelectQuestion}
-            question={question}
-            stars={question.question.stars}
+            questionType={question}
             link={props.link}
-            value={question.question.question}
-            owner={question.question.owner.username}
           >
-          </Question>)
+          </QuestionContainer>)
       })}
     </div>
   )

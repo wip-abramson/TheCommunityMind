@@ -13,38 +13,55 @@ export default function Question(props) {
     fontSize: 20,
   }
 
-  if (props.link) {
-    return (
-      <div style={style}>
-        <Link
-          onClick={() => {
-            props.onSelectQuestion(props.question)
-          }}
-          to={props.link}>
+  var questionText;
 
-          {formatQuestion(props.value)}
-        </Link>
-        <Star count={props.stars}/>
-        <Owner owner={props.owner}/>
-      </div>
-    )
+  //Only Why and What if questions have a link
+  if (props.link) {
+    questionText = <Link
+      onClick={() => {
+        props.onSelectQuestion(props.questionType)
+      }}
+      to={props.link}>
+
+      {formatQuestion(props.questionType.question.question)}
+    </Link>
   }
   else {
-    return (
-      <div style={style}>
-        {formatQuestion(props.value)}
-        <Star count={props.stars}/>
-        <Owner owner={props.owner}/>
-      </div>
-    )
+    questionText = formatQuestion(props.questionType.question.question)
   }
+
+  return (
+    <div style={style}>
+      {questionText}
+      <Star
+        count={props.questionType.question.stars}
+        starQuestion={() => {
+          props.starQuestion(props.questionType)
+        }}
+        staredByCurrentUser={props.questionType.question.staredByCurrentUser}
+      />
+      <Owner owner={props.questionType.question.owner}/>
+    </div>
+  )
 
 }
 
-Question.PropTypes = {
+Question.propTypes = {
   onSelectQuestion: PropTypes.func.isRequired,
   link: PropTypes.string,
-  question: PropTypes.string.isRequired
+  questionType: PropTypes.shape({
+    question: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      question: PropTypes.string.isRequired,
+      staredByCurrentUser: PropTypes.bool.isRequired,
+      stars: PropTypes.number.isRequired,
+      owner: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        username: PropTypes.string.isRequired,
+      }).isRequired
+    }).isRequired
+  }).isRequired,
+  starQuestion: PropTypes.func.isRequired
 }
 
 function formatQuestion(question) {

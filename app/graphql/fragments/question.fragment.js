@@ -12,6 +12,7 @@ const QUESTION_FRAGMENT = gql`
       id
       username
     }
+    staredByCurrentUser
     createdAt
     owner {
       id

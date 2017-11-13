@@ -10,7 +10,7 @@ const Owner = (props) => {
 
   return (
     <div style={style}>
-      {props.owner}
+      {props.owner.username}
     </div>
   )
 }

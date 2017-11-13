@@ -1,7 +1,7 @@
 import React, { PropTypes } from "react";
 import QuestionInput from "./QuestionInput";
 import QuestionList from "./QuestionList";
-import Question from './Question/Question';
+import QuestionContainer from './Question/QuestionContainer';
 
 function QuestionView(props) {
 
@@ -28,6 +28,7 @@ function QuestionView(props) {
         questions={props.questions}
         onSelectQuestion={props.onSelectQuestion}
         link={props.link}
+        // refetchQuery={props.refetchQuery}
       />
     </div>
   )
@@ -36,18 +37,14 @@ function QuestionView(props) {
 function getCurrentWhyQuestion(question) {
   if (question) {
     return (
-      <Question
-        question={question}
+      <QuestionContainer
+        questionType={question}
         link='/'
         onSelectQuestion={() => {
           return null
         } }
-        stars={question.question.stars}
-        value={question.question.question}
-        owner={question.question.owner.username}
       >
-        {question.question}
-      </Question>
+      </QuestionContainer>
     )
   }
 }
@@ -55,18 +52,14 @@ function getCurrentWhyQuestion(question) {
 function getCurrentWhatIf(question) {
   if (question) {
     return (
-      <Question
-        question={question}
+      <QuestionContainer
+        questionType={question}
         link='/whatif'
         onSelectQuestion={() => {
           return null
         } }
-        stars={question.question.stars}
-        value={question.question.question}
-        owner={question.question.owner.username}
       >
-        {question.question}
-      </Question>
+      </QuestionContainer>
     )
   }
 }
@@ -91,6 +84,9 @@ QuestionView.propTypes = {
   }).isRequired),
   loading: PropTypes.bool,
   // error: PropTypes.bool,
+  refetchQuery: PropTypes.shape({
+
+  }).isRequired,
   createQuestion: PropTypes.func.isRequired,
 };
 

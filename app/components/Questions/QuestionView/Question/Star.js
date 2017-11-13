@@ -5,14 +5,21 @@ import React from "react";
 import FaStarO from "react-icons/fa/star-o";
 
 const Star = (props) => {
+
+  var style = {
+    color: "yellow"
+  }
   return (
     <div>
-      <FaStarO
-        onClick={() => console.log("Star")}
+      <FaStarO style={props.staredByCurrentUser ? style : null}
+        onClick={() => {
+          console.log("Star");
+          props.starQuestion()}
+        }
       />
       {props.count}
     </div>
   )
 }
 
-export default Star;
+export default Star

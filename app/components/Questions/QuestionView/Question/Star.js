@@ -1,7 +1,7 @@
 /**
  * Created by will on 23/04/17.
  */
-import React from "react";
+import React, { PropTypes } from "react";
 import FaStarO from "react-icons/fa/star-o";
 
 const Star = (props) => {
@@ -20,6 +20,12 @@ const Star = (props) => {
       {props.count}
     </div>
   )
+}
+
+Star.propTypes = {
+  staredByCurrentUser: PropTypes.bool.isRequired,
+  starQuestion: PropTypes.func.isRequired,
+  count: PropTypes.number.isRequired,
 }
 
 export default Star

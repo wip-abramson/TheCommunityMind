@@ -120,6 +120,7 @@ const typeDefs = `
     addUserInterest(userId: ID!, tagId: ID!): Tag
     removeUserInterest(userId: ID!, tagId: ID!): Tag
     deleteQuestion(id: ID!): Question
+    editQuestion(id: ID!, newQuestion: String!): Question
     starQuestion(id: ID!): Question
     register(username: String, password: String!, email: String!): User
     login(email: String!, password: String!): User

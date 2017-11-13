@@ -52,6 +52,9 @@ export const resolvers = {
     deleteQuestion: (_, args, ctx) => {
       return questionLogic.deleteQuestion(_, args, ctx);
     },
+    editQuestion: (_, args, ctx) => {
+      return questionLogic.editQuestion(_, args, ctx);
+    },
     starQuestion(_, args, ctx) {
       return questionLogic.starQuestion(_, args, ctx)
     },

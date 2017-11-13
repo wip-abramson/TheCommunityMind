@@ -8,7 +8,7 @@ export const questionLogic = {
   deleteQuestion(_, { id }, ctx) {
     return authLogic.getAuthenticatedUser(ctx)
       .then((user) => {
-        return Question.findOne({
+        return Question.findById({
           where: { id },
           include: [{
             model: User,
@@ -17,15 +17,19 @@ export const questionLogic = {
         })
         // destroy the How WhatIf or Why that owns the question - cannot have any without a question
         // no need to delete associations, they are automatically deleted on delete
-          .then(question => How.destroy({ where: { id: question.howId } })
-            .then(() => Why.destroy({ where: { id: question.whyId } }))
-            .then(() => WhatIf.destroy({ where: { id: question.whatIfId }}))
-            // then finally destroy the question
-            .then(() => question.destroy()
-              .then(destroyedQ => {
-
-                return destroyedQ;
-              }))
+          .then(question => {
+              if (!question) {
+                return Promise.reject("Unauthorized")
+              }
+              return How.destroy({ where: { id: question.howId } })
+                .then(() => Why.destroy({ where: { id: question.whyId } }))
+                .then(() => WhatIf.destroy({ where: { id: question.whatIfId } }))
+                // then finally destroy the question
+                .then(() => question.destroy()
+                  .then(destroyedQ => {
+                    return destroyedQ;
+                  }))
+            }
           )
       })
       .catch(error => {
@@ -33,6 +37,31 @@ export const questionLogic = {
         return Promise.reject(error)
       });
 
+  },
+  editQuestion(_, { id, newQuestion }, ctx) {
+    return authLogic.getAuthenticatedUser(ctx)
+      .then(user => {
+        return Question.findOne({
+          where: { id },
+          include: [{
+            model: User,
+            where: { id: user.id },
+          }],
+        })
+          .then(questionToEdit => {
+            if (!questionToEdit) {
+              return Promise.reject("Unauthorized")
+            }
+            return questionToEdit.update({ question: newQuestion })
+              .then(updatedQuestion => {
+                return updatedQuestion
+              })
+          })
+      })
+      .catch(error => {
+        console.log(error, "Error");
+        return Promise.reject(error)
+      })
   },
   starQuestion(_, { id }, ctx) {
     return authLogic.getAuthenticatedUser(ctx)

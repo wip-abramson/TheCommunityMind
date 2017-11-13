@@ -8,7 +8,7 @@ import HOWS_QUERY from "../../graphql/querys/hows.query";
 const mapStateToProps = function (state) {
   return {
     currentWhy: state.currentWhy,
-    currentWhatIf: state.currentWhatIf
+    currentWhatIf: state.currentWhatIf,
   }
 };
 

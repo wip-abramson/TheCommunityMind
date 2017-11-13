@@ -15,6 +15,7 @@ const QuestionList = (props) => {
             onSelectQuestion={props.onSelectQuestion}
             questionType={question}
             link={props.link}
+            currentUser={props.currentUser}
           >
           </QuestionContainer>)
       })}

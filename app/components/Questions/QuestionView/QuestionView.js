@@ -28,6 +28,7 @@ function QuestionView(props) {
         questions={props.questions}
         onSelectQuestion={props.onSelectQuestion}
         link={props.link}
+        currentUser={props.currentUser}
         // refetchQuery={props.refetchQuery}
       />
     </div>

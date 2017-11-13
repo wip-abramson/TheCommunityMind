@@ -1,7 +1,8 @@
 import React, { PropTypes } from "react";
-import { Link } from "react-router";
 import Star from "./Star";
 import Owner from "./Owner";
+import EditQuestion from './EditQuestion';
+import QuestionText from './QuestionText';
 
 export default function Question(props) {
   var style = {
@@ -13,26 +14,22 @@ export default function Question(props) {
     fontSize: 20,
   }
 
-  var questionText;
+  var editQuestion;
 
-  //Only Why and What if questions have a link
-  if (props.link) {
-    questionText = <Link
-      onClick={() => {
-        props.onSelectQuestion(props.questionType)
-      }}
-      to={props.link}>
+  if (props.currentUser && (props.questionType.question.owner.id == props.currentUser.id)) {
+    editQuestion = <EditQuestion toggleEditable={props.toggleEditable}/>
+  }
 
-      {formatQuestion(props.questionType.question.question)}
-    </Link>
-  }
-  else {
-    questionText = formatQuestion(props.questionType.question.question)
-  }
 
   return (
     <div style={style}>
-      {questionText}
+      <QuestionText
+        editable={props.editable}
+        question={props.questionType.question.question}
+        questionType={props.questionType}
+        link={props.link}
+        editQuestion={props.editQuestion}
+      />
       <Star
         count={props.questionType.question.stars}
         starQuestion={() => {
@@ -41,6 +38,8 @@ export default function Question(props) {
         staredByCurrentUser={props.questionType.question.staredByCurrentUser}
       />
       <Owner owner={props.questionType.question.owner}/>
+
+      {editQuestion}
     </div>
   )
 
@@ -64,11 +63,4 @@ Question.propTypes = {
   starQuestion: PropTypes.func.isRequired
 }
 
-function formatQuestion(question) {
-  console.log(question)
-  if (question.charAt(question.length - 1) !== '?') {
-    question = '"' + question + '?' + '"';
-  }
-  return question.charAt(0).toUpperCase() + question.substring(1)
-}
 

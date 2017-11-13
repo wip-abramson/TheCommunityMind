@@ -6,11 +6,7 @@ import { compose, graphql } from "react-apollo";
 import CREATE_WHY_MUTATION from "../../graphql/mutations/createWhy.mutation";
 import WHYS_QUERY from "../../graphql/querys/whys.query";
 
-const mapStateToProps = function () {
-  return {
-    // parentId: state.currentTopic.id
-  }
-};
+
 const mapDispatchToProps = function (dispatch) {
   return {
     onSelectQuestion: function (why) {
@@ -70,7 +66,7 @@ const createWhy = graphql(CREATE_WHY_MUTATION, {
 
 const Why = compose(
   connect(
-    mapStateToProps,
+    null,
     mapDispatchToProps,
   ),
 
@@ -89,6 +85,7 @@ const Why = compose(
       refetchQuery: WHYS_QUERY,
       currentWhy: null,
       currentWhatIf: null,
+      // currentUser: ownProps.currentUser,
     })
   }),
   createWhy,

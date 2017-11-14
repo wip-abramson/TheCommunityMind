@@ -19,16 +19,11 @@ export const userLogic = {
       });
   },
   questions(user, args, ctx) {
-    return authLogic.getAuthenticatedUser(ctx)
-      .then((currentUser) => {
-        if (currentUser.id !== user.id) {
-          return Promise.reject('Unauthorized');
-        }
-        return Question.findAll({
-          where: { userId: user.id },
-          order: [['createdAt', 'DESC']],
-        });
-      })
+
+    return Question.findAll({
+      where: { userId: user.id },
+      order: [['createdAt', 'DESC']],
+    })
       .catch(error => {
         console.log(error, "Error");
         return Promise.reject(error)

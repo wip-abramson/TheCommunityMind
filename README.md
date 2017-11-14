@@ -55,7 +55,7 @@ npm install
 ```
 npm start
 ```
-5. Navigate to 0.0.0.0:8080 to view the site. 
+5. Navigate to http://0.0.0.0:8080 to view the site. 
 
 6. You can check if the server is running by visiting http://0.0.0.0:5000/graphiql
 

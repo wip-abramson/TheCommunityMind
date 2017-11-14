@@ -104,6 +104,7 @@ const typeDefs = `
   type Query {
    tags: [Tag]    
    whys: [Why]
+   user(userId: ID!): User!
    whatIfs(whyId: ID!): [WhatIf]
    hows(whatIfId: ID!): [How]
    whyFeed(cursor: String): WhyFeed

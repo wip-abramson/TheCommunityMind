@@ -26,6 +26,9 @@ export const resolvers = {
     hows(_, args, ctx) {
       return howLogic.query(_, args, ctx);
     },
+    user(_, args, ctx) {
+      return userLogic.query(_, args, ctx);
+    },
     whyFeed(_, args , ctx) {
       return whyLogic.whyFeed(_, args, ctx);
     },

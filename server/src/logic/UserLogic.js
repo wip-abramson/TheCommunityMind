@@ -8,6 +8,16 @@ export const userLogic = {
   jwt(user) {
     return Promise.resolve(user.jwt);
   },
+  query(_, { userId }, ctx) {
+    return User.findById(userId)
+      .then((user) => {
+        return user;
+      })
+      .catch(error => {
+        console.log(error, "Error");
+        return Promise.reject(error)
+      });
+  },
   questions(user, args, ctx) {
     return authLogic.getAuthenticatedUser(ctx)
       .then((currentUser) => {

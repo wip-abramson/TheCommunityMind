@@ -15,6 +15,7 @@ export default function Question(props) {
   }
 
   var editQuestion;
+  // console.log(props)
 
   if (props.currentUser && (props.questionType.question.owner.id == props.currentUser.id)) {
     editQuestion = <EditQuestion toggleEditable={props.toggleEditable}/>
@@ -29,10 +30,12 @@ export default function Question(props) {
         questionType={props.questionType}
         link={props.link}
         editQuestion={props.editQuestion}
+        toggleEditable={props.toggleEditable}
       />
       <Star
         count={props.questionType.question.stars}
         starQuestion={() => {
+          // props.unAuthorized();
           props.starQuestion(props.questionType)
         }}
         staredByCurrentUser={props.questionType.question.staredByCurrentUser}

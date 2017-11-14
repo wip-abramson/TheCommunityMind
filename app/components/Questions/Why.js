@@ -7,10 +7,18 @@ import CREATE_WHY_MUTATION from "../../graphql/mutations/createWhy.mutation";
 import WHYS_QUERY from "../../graphql/querys/whys.query";
 
 
+import Notifications from 'react-notification-system-redux';
+import { unauthorizedErrorNotification } from '../../notifications/error.notifications';
+
+
 const mapDispatchToProps = function (dispatch) {
   return {
     onSelectQuestion: function (why) {
       dispatch(updateCurrentWhy(why))
+    },
+    unAuthorized: () => {
+      console.log("DISPATCH UNAUTHORIZED")
+      dispatch(Notifications.error(unauthorizedErrorNotification))
     }
   }
 };
@@ -31,6 +39,7 @@ const createWhy = graphql(CREATE_WHY_MUTATION, {
               id: "-1",
               question: question,
               stars: 0,
+              staredByCurrentUser: false,
               createdAt: new Date().toISOString(), // the time is now!
               owner: {
                 __typename: 'User',
@@ -52,8 +61,13 @@ const createWhy = graphql(CREATE_WHY_MUTATION, {
         },
       }).catch(res => {
         // catches any error returned from mutation request
+        // ownProps.unAuthorized();
+
         const errors = res.graphQLErrors.map((error) => {
           console.log(error.message)
+          if (error.message === "Unauthorized") {
+            ownProps.unAuthorized();
+          }
           return error;
         });
         return errors

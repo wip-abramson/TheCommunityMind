@@ -6,6 +6,10 @@ import { compose, graphql } from "react-apollo";
 import CREATE_WHATIF_MUTATION from "../../graphql/mutations/createWhatIf.mutation";
 import WHATIFS_QUERY from "../../graphql/querys/whatIfs.query";
 
+
+import Notifications from 'react-notification-system-redux';
+import { unauthorizedErrorNotification } from '../../notifications/error.notifications';
+
 const mapStateToProps = function (state) {
 
   return {
@@ -17,6 +21,10 @@ const mapDispatchToProps = function (dispatch) {
   return {
     onSelectQuestion: function (whatIf) {
       dispatch(updateCurrentWhatIf(whatIf))
+    },
+    unAuthorized: () => {
+      console.log("DISPATCH UNAUTHORIZED")
+      dispatch(Notifications.error(unauthorizedErrorNotification))
     }
   }
 };
@@ -37,6 +45,7 @@ const createWhatIf = graphql(CREATE_WHATIF_MUTATION, {
               id: "-1",
               question: question,
               stars: 0,
+              staredByCurrentUser: false,
               createdAt: new Date().toISOString(), // the time is now!
               owner: {
                 __typename: 'User',
@@ -66,7 +75,9 @@ const createWhatIf = graphql(CREATE_WHATIF_MUTATION, {
       }).catch(res => {
         // catches any error returned from mutation request
         const errors = res.graphQLErrors.map((error) => {
-          console.log(error.message)
+          if (error.message === "Unauthorized") {
+            ownProps.unAuthorized();
+          }
           return error;
         });
         return errors

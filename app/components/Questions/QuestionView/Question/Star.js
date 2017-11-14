@@ -2,16 +2,17 @@
  * Created by will on 23/04/17.
  */
 import React, { PropTypes } from "react";
-import FaStarO from "react-icons/fa/star-o";
+import FaStar from "react-icons/fa/star";
 
 const Star = (props) => {
 
   var style = {
-    color: "yellow"
+    color: "gold",
+    cursor: "pointer"
   }
   return (
     <div>
-      <FaStarO style={props.staredByCurrentUser ? style : null}
+      <FaStar style={props.staredByCurrentUser ? style : {"cursor": "pointer"}}
         onClick={() => {
           console.log("Star");
           props.starQuestion()}

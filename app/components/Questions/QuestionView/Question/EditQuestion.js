@@ -6,8 +6,12 @@ import React, { PropTypes } from 'react'
 import FaPencil from 'react-icons/fa/pencil';
 
 const EditQuestion = (props) => {
+
+  var style= {
+    cursor: "pointer"
+  }
   return <div>
-    <FaPencil onClick={props.toggleEditable}/>
+    <FaPencil style={style} onClick={props.toggleEditable}/>
   </div>
 }
 

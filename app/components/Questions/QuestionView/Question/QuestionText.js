@@ -13,6 +13,17 @@ class QuestionText extends React.Component {
 
     this.handleChange = this.handleChange.bind(this)
     this.handleKeyPress = this.handleKeyPress.bind(this)
+
+    this.setWrapperRef = this.setWrapperRef.bind(this);
+    this.handleClickOutside = this.handleClickOutside.bind(this);
+  }
+
+  componentDidMount() {
+    document.addEventListener('mousedown', this.handleClickOutside);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('mousedown', this.handleClickOutside);
   }
 
   handleChange(event) {
@@ -27,11 +38,28 @@ class QuestionText extends React.Component {
     }
   }
 
+  /**
+   * Set the wrapper ref
+   */
+  setWrapperRef(node) {
+    this.wrapperRef = node;
+  }
+
+  /**
+   * When click outside of edit question text input, question turns back to uneditable
+   */
+  handleClickOutside(event) {
+    if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
+      this.props.toggleEditable();
+    }
+  }
+
   render() {
     var textComponent;
 
     if (this.props.editable) {
       textComponent = <input onKeyPress={this.handleKeyPress}
+                             ref={this.setWrapperRef}
                              value={this.state.value}
                              onChange={this.handleChange}/>
     }

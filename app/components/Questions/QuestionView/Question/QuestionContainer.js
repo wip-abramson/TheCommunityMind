@@ -5,6 +5,11 @@ import React from 'react'
 import { compose, graphql } from "react-apollo";
 import { connect } from "react-redux";
 
+
+import Notifications from 'react-notification-system-redux';
+import { unauthorizedErrorNotification } from '../../../../notifications/error.notifications';
+
+
 import STAR_QUESTION_MUTATION from '../../../../graphql/mutations/starQuestion.mutation';
 import EDIT_QUESTION_MUTATION from '../../../../graphql/mutations/editQuestion.mutation';
 
@@ -16,10 +21,20 @@ const mapStateToProps = function (state) {
   }
 };
 
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    unAuthorized: () => {
+      console.log("DISPATCH UNAUTHORIZED")
+      dispatch(Notifications.error(unauthorizedErrorNotification))
+    }
+  }
+}
+
 const starQuestion = graphql(STAR_QUESTION_MUTATION, {
   props: ({ ownProps, mutate }) => ({
     starQuestion: ({ question }) => {
-      console.log("Star Question")
+      console.log("Star Question", question)
       return mutate({
         variables: { id: question.id },
         optimisticResponse: {
@@ -43,9 +58,14 @@ const starQuestion = graphql(STAR_QUESTION_MUTATION, {
 
       })
         .catch(res => {
+
+
           // catches any error returned from mutation request
           const errors = res.graphQLErrors.map((error) => {
             console.log(error.message)
+            if (error.message === "Unauthorized") {
+              ownProps.unAuthorized();
+            }
             return error;
           });
           return errors
@@ -64,13 +84,16 @@ const editQuestion = graphql(EDIT_QUESTION_MUTATION, {
 
       })
         .catch(res => {
+          // unlikley to be unauthorized as never show edit button to unauthorized users
+          ownProps.unAuthorized();
+
           // catches any error returned from mutation request
-          const errors = res.graphQLErrors.map((error) => {
-            console.log("Failed")
-            console.log(error.message)
-            return error;
-          });
-          return errors
+          // const errors = res.graphQLErrors.map((error) => {
+          //   console.log("Failed")
+          //   console.log(error.message)
+          //   return error;
+          // });
+          // return errors
           // this.setState({ errors });
         })
     }
@@ -87,6 +110,7 @@ let container = React.createClass({
 
     this.editQuestion = this.editQuestion.bind(this);
     this.toggleEditable = this.toggleEditable.bind(this);
+
   },
 
   editQuestion(question, id) {
@@ -119,7 +143,7 @@ let container = React.createClass({
 const QuestionContainer = compose(
   connect(
     mapStateToProps,
-    null
+    mapDispatchToProps,
   ),
   starQuestion,
   editQuestion

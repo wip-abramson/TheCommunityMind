@@ -5,12 +5,26 @@ import { compose, graphql } from "react-apollo";
 import CREATE_HOW_MUTATION from "../../graphql/mutations/createHow.mutation";
 import HOWS_QUERY from "../../graphql/querys/hows.query";
 
+
+import Notifications from 'react-notification-system-redux';
+import { unauthorizedErrorNotification } from '../../notifications/error.notifications';
+
 const mapStateToProps = function (state) {
   return {
     currentWhy: state.currentWhy,
     currentWhatIf: state.currentWhatIf,
   }
 };
+
+// repeaed across Why, WhatIf and How - is there a better way?
+const mapDispatchToProps = (dispatch) => {
+  return {
+    unAuthorized: () => {
+      console.log("DISPATCH UNAUTHORIZED")
+      dispatch(Notifications.error(unauthorizedErrorNotification))
+    }
+  }
+}
 
 const createHow = graphql(CREATE_HOW_MUTATION, {
   props: ({ ownProps, mutate }) => ({
@@ -27,6 +41,7 @@ const createHow = graphql(CREATE_HOW_MUTATION, {
               id: "-1",
               question: question,
               stars: 0,
+              staredByCurrentUser: false,
               createdAt: new Date().toISOString(), // the time is now!
               owner: {
                 __typename: 'User',
@@ -48,7 +63,10 @@ const createHow = graphql(CREATE_HOW_MUTATION, {
       }).catch(res => {
         // catches any error returned from mutation request
         const errors = res.graphQLErrors.map((error) => {
-          console.log(error.message)
+          // What about other errors?
+          if (error.message === "Unauthorized") {
+            ownProps.unAuthorized();
+          }
           return error;
         });
         return errors
@@ -61,7 +79,7 @@ const createHow = graphql(CREATE_HOW_MUTATION, {
 const How = compose(
   connect(
     mapStateToProps,
-    {}
+    mapDispatchToProps
   ),
   graphql(HOWS_QUERY, {
     options: (props) => ({

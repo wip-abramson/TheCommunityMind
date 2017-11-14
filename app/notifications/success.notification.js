@@ -10,3 +10,9 @@ export const loginSuccessNotification = {
   //   callback: () => alert('clicked!')
   // }
 }
+
+export const registerSuccessNotification = {
+  title: 'Register Success',
+  position: 'tc',
+  autoDismiss: 3,
+}

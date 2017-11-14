@@ -10,11 +10,16 @@ import { connect } from "react-redux";
 import { loginSuccess } from '../../actions/Auth';
 import Authentication from './AuthenticationUI'
 
+import Notifications from 'react-notification-system-redux';
+import { registerSuccessNotification } from '../../notifications/success.notification';
+
 const mapDispatchToProps = function (dispatch) {
   return {
     loginUser: function (user) {
       dispatch(loginSuccess(user));
       browserHistory.push("/");
+      registerSuccessNotification.message = "Welcome " + user.username;
+      dispatch(Notifications.success(registerSuccessNotification));
     }
   }
 };

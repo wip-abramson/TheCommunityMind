@@ -26,10 +26,7 @@ networkInterface.use([{
 
       // console.log(jwtDecode(tokenObj.value))
       // jwtDecode(tokenObj).then()
-
-      store.dispatch(loginSuccess(jwtDecode(tokenObj.value)));
-    } else {
-      store.dispatch(signOut());
+        store.dispatch(loginSuccess(jwtDecode(tokenObj.value)));
 
     }
     next();

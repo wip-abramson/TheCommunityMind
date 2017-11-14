@@ -1,4 +1,5 @@
 const path = require('path')
+// import 'react-notifications/lib/notifications.css';
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
   template: __dirname + "/app/index.html",

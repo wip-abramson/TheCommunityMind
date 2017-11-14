@@ -26,8 +26,7 @@ Install [nodeJS](https://www.google.com.vn/url?sa=t&rct=j&q=&esrc=s&source=web&c
 There may be other things I have forgotten let me know if I am missing anything.
 
 ### Installing
-
-A step by step series of examples that tell you have to get a development env running
+Ho to check out the current development
 
 1. Clone this repository
 

@@ -21,6 +21,10 @@ const UserModel = Conn.define('user', {
     type: Sequelize.STRING,
     allowNull: false
   },
+  bio: {
+    type: Sequelize.STRING,
+    allowNull: true
+  },
   version: { // version of the password
     type: Sequelize.INTEGER,
   },

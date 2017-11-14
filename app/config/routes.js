@@ -6,6 +6,7 @@ import WhatIf from "../components/Questions/WhatIf";
 import How from "../components/Questions/How";
 import LoginContainer from "../components/Authentication/LoginContainer";
 import RegisterContainer from "../components/Authentication/RegisterContainer";
+import UserProfileContainer from "../components/UserProfile/UserProfileContainer";
 
 var AppRouter = function () {
   return (
@@ -20,6 +21,9 @@ var AppRouter = function () {
         < Route
           path='/register'
           component={RegisterContainer}/>
+        <Route
+          path='/profile'
+          component={UserProfileContainer}/>
       </Route>
 
 

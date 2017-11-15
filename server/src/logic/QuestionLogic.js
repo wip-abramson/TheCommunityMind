@@ -102,6 +102,40 @@ export const questionLogic = {
         return Promise.reject(error)
       })
   },
+  watchQuestion(_, { id }, ctx) {
+    return authLogic.getAuthenticatedUser(ctx)
+      .then(user => {
+        return Question.findById(id)
+          .then(question => {
+            return user.addWatched(question)
+              .then(() => {
+                return question;
+              })
+          })
+      })
+      .catch(error => {
+        console.log(error, "Error");
+        return Promise.reject(error)
+      })
+  },
+  unwatchQuestion(_, { id }, ctx) {
+    return authLogic.getAuthenticatedUser(ctx)
+      .then(user => {
+        return Question.findOne({
+          where: { id: id },
+          include: [{ model: User, as: "Watched", where: { id: user.id } }]
+        })
+          .then(question => {
+            if (! question) {
+              return Promise.reject("User is not watching this question")
+            }
+            return user.addWatched(question)
+              .then(() => {
+                return question;
+              })
+          })
+      })
+  },
   user(question) {
     return question.getUser();
   },

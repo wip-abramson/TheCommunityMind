@@ -124,6 +124,7 @@ const typeDefs = `
     followUser(id: ID!): User
     unfollowUser(id: ID!): User
     watchQuestion(id: ID!): Question
+    unwatchQuestion(id: ID!): Question
     deleteQuestion(id: ID!): Question
     editQuestion(id: ID!, newQuestion: String!): Question
     starQuestion(id: ID!): Question

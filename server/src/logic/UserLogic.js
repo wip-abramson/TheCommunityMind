@@ -8,8 +8,8 @@ export const userLogic = {
   jwt(user) {
     return Promise.resolve(user.jwt);
   },
-  query(_, { userId }, ctx) {
-    return User.findById(userId)
+  query(_, { id }, ctx) {
+    return User.findById(id)
       .then((user) => {
         return user;
       })
@@ -68,6 +68,57 @@ export const userLogic = {
         console.log(error, "Error");
         return Promise.reject(error)
       })
+  },
+  followUser(_, { userId }, ctx) {
+    return authLogic.getAuthenticatedUser(ctx)
+      .then(currentUser => {
+        if (currentUser.id === userId) {
+          return Promise.reject("User cannot follow itself")
+        }
+        return User.findById(userId)
+          .then(user => {
+            user.addFollowedBy(currentUser);
+            return user;
+          })
+      })
+      .catch(error => {
+        console.log(error, "Error");
+        return Promise.reject(error)
+      })
+  },
+  unfollowUser(_, { userId }, ctx) {
+    return authLogic.getAuthenticatedUser(ctx)
+      .then(currentUser => {
+        if (currentUser.id === userId) {
+          return Promise.reject("User cannot follow itself")
+        }
+        return User.findById(userId)
+          .then(user => {
+            user.removeFollowedBy(currentUser);
+            return user;
+          })
+      })
+      .catch(error => {
+        console.log(error, "Error");
+        return Promise.reject(error)
+      })
+  },
+  followedByCurrentUser(user, args, ctx) {
+    return authLogic.getAuthenticatedUser(ctx)
+      .then(currentUser => {
+        return User.findOne({
+          where: { id: user.id },
+          include: [{ model: User, as: "FollowedBy", where: { id: currentUser.id } }]
+        }).then(user => {
+          // console.log(user)
+          return user ? true : false;
+        })
+
+      })
+      .catch(error => {
+        return false;
+      })
+
   },
   watches(user, args, ctx) {
     return authLogic.getAuthenticatedUser(ctx)

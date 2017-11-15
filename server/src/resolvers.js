@@ -27,6 +27,7 @@ export const resolvers = {
       return howLogic.query(_, args, ctx);
     },
     user(_, args, ctx) {
+      console.log("USER QUERY")
       return userLogic.query(_, args, ctx);
     },
     whyFeed(_, args , ctx) {
@@ -72,6 +73,12 @@ export const resolvers = {
     },
     removeUserInterest(_, args, ctx) {
       return userLogic.removeUserInterest(_, args, ctx);
+    },
+    followUser(_, args, ctx) {
+      return userLogic.followUser(_, args, ctx);
+    },
+    unfollowUser(_, args, ctx) {
+      return userLogic.unfollowUser(_, args, ctx);
     },
     register: (_, args, ctx) => {
       // find user by email
@@ -162,6 +169,9 @@ export const resolvers = {
     },
     interestedIn(user, args, ctx) {
       return userLogic.interestedIn(user, args, ctx);
+    },
+    followedByCurrentUser(user, args, ctx) {
+      return userLogic.followedByCurrentUser(user, args, ctx);
     }
 
   }

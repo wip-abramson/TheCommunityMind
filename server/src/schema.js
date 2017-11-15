@@ -90,6 +90,7 @@ const typeDefs = `
     staredQuestions: [Question]
     followers: [User]
     follows: [User]
+    followedByCurrentUser: Boolean!
     watches: [Question]
     interestedIn: [Tag]
   }
@@ -104,7 +105,7 @@ const typeDefs = `
   type Query {
    tags: [Tag]    
    whys: [Why]
-   user(userId: ID!): User!
+   user(id: ID!): User
    whatIfs(whyId: ID!): [WhatIf]
    hows(whatIfId: ID!): [How]
    whyFeed(cursor: String): WhyFeed
@@ -120,6 +121,8 @@ const typeDefs = `
     removeTagAssociationWithQuestion(questionId: ID!, tagId: ID!): Tag
     addUserInterest(userId: ID!, tagId: ID!): Tag
     removeUserInterest(userId: ID!, tagId: ID!): Tag
+    followUser(userId: ID!): User
+    unfollowUser(userId: ID!): User
     deleteQuestion(id: ID!): Question
     editQuestion(id: ID!, newQuestion: String!): Question
     starQuestion(id: ID!): Question

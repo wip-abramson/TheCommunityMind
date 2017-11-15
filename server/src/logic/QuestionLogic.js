@@ -129,7 +129,7 @@ export const questionLogic = {
             if (!question) {
               return Promise.reject("User is not watching this question")
             }
-            return user.addWatched(question)
+            return user.removeWatched(question)
               .then(() => {
                 return question;
               })
@@ -177,7 +177,6 @@ export const questionLogic = {
           include: [{ model: Question, as: "StaredBy", where: { id: question.id } }]
         })
           .then(user => {
-            console.log(user === null, "user found")
             return user ? true : false;
           })
       })

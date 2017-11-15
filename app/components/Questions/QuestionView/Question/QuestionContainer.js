@@ -11,13 +11,15 @@ import { unauthorizedErrorNotification } from '../../../../notifications/error.n
 
 
 import STAR_QUESTION_MUTATION from '../../../../graphql/mutations/starQuestion.mutation';
+import UNSTAR_QUESTION_MUTATION from '../../../../graphql/mutations/unstarQuestion.mutation';
+
 import EDIT_QUESTION_MUTATION from '../../../../graphql/mutations/editQuestion.mutation';
 
 import Question from './Question';
 
 const mapStateToProps = function (state) {
   return {
-    currentUser: state.auth.currentUser ? state.auth.currentUser : {},
+    currentUser: state.auth.currentUser
   }
 };
 
@@ -47,19 +49,8 @@ const starQuestion = graphql(STAR_QUESTION_MUTATION, {
             staredByCurrentUser: true
           }
         },
-
-        // update: (proxy, { data: { query: ownProps.refetchQuery } }) => {
-        //   const data = proxy.readQuery({ query: query, variables: { parentId: ownProps.currentWhatIf.id } });
-        //   // Add how from the mutation to the beginning.
-        //   data.hows.unshift(createHow);
-        //   // Write our data back to the cache.
-        //   proxy.writeQuery({ query: HOWS_QUERY, variables: { parentId: ownProps.currentWhatIf.id }, data });
-        // }
-
       })
         .catch(res => {
-
-
           // catches any error returned from mutation request
           const errors = res.graphQLErrors.map((error) => {
             console.log(error.message)
@@ -69,11 +60,41 @@ const starQuestion = graphql(STAR_QUESTION_MUTATION, {
             return error;
           });
           return errors
-          // this.setState({ errors });
         })
     }
   })
-})
+});
+
+const unstarQuestion = graphql(UNSTAR_QUESTION_MUTATION, {
+  props: ({ ownProps, mutate }) => ({
+    unstarQuestion: ({ question }) => {
+      return mutate({
+        variables: { id: question.id },
+        optimisticResponse: {
+          __typename: 'Mutation',
+          unstarQuestion: {
+            id: question.id,
+            __typename: 'Question',
+            stars: question.stars - 1,
+            question: question.question,
+            staredByCurrentUser: false
+          }
+        },
+      })
+        .catch(res => {
+          // catches any error returned from mutation request
+          const errors = res.graphQLErrors.map((error) => {
+            console.log(error.message)
+            if (error.message === "Unauthorized") {
+              ownProps.unAuthorized();
+            }
+            return error;
+          });
+          return errors
+        })
+    }
+  })
+});
 
 const editQuestion = graphql(EDIT_QUESTION_MUTATION, {
   props: ({ ownProps, mutate }) => ({
@@ -130,6 +151,7 @@ let container = React.createClass({
         onSelectQuestion={this.props.onSelectQuestion}
         questionType={this.props.questionType}
         starQuestion={this.props.starQuestion}
+        unstarQuestion={this.props.unstarQuestion}
         editable={this.state.editable}
         editQuestion={this.editQuestion}
         toggleEditable={this.toggleEditable}
@@ -146,6 +168,7 @@ const QuestionContainer = compose(
     mapDispatchToProps,
   ),
   starQuestion,
+  unstarQuestion,
   editQuestion
 )(container);
 

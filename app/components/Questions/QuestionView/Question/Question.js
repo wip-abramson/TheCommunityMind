@@ -3,6 +3,7 @@ import Star from "./Star";
 import Owner from "./Owner";
 import EditQuestion from './EditQuestion';
 import QuestionText from './QuestionText';
+import WathQuestion from './WatchQuestion';
 
 export default function Question(props) {
   var style = {
@@ -15,7 +16,13 @@ export default function Question(props) {
   }
 
   var editQuestion;
+  var watchQuestion;
   // console.log(props)
+
+  if (props.currentUser) {
+    watchQuestion = <WathQuestion/>
+
+  }
 
   if (props.currentUser && (props.questionType.question.owner.id == props.currentUser.id)) {
     editQuestion = <EditQuestion toggleEditable={props.toggleEditable}/>
@@ -31,6 +38,7 @@ export default function Question(props) {
         link={props.link}
         editQuestion={props.editQuestion}
         toggleEditable={props.toggleEditable}
+        onSelectQuestion={props.onSelectQuestion}
       />
       <Star
         count={props.questionType.question.stars}
@@ -38,11 +46,16 @@ export default function Question(props) {
           // props.unAuthorized();
           props.starQuestion(props.questionType)
         }}
+        unstarQuestion={() => {
+          props.unstarQuestion(props.questionType)
+        }}
         staredByCurrentUser={props.questionType.question.staredByCurrentUser}
       />
       <Owner owner={props.questionType.question.owner}/>
 
+
       {editQuestion}
+      {watchQuestion}
     </div>
   )
 
@@ -63,7 +76,8 @@ Question.propTypes = {
       }).isRequired
     }).isRequired
   }).isRequired,
-  starQuestion: PropTypes.func.isRequired
+  starQuestion: PropTypes.func.isRequired,
+  unstarQuestion: PropTypes.func.isRequired,
 }
 
 

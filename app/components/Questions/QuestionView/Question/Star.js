@@ -14,8 +14,13 @@ const Star = (props) => {
     <div>
       <FaStar style={props.staredByCurrentUser ? style : {"cursor": "pointer"}}
         onClick={() => {
-          console.log("Star");
-          props.starQuestion()}
+          if (props.staredByCurrentUser) {
+            props.unstarQuestion();
+          }
+          else {
+            props.starQuestion()
+          }
+          }
         }
       />
       {props.count}
@@ -26,6 +31,7 @@ const Star = (props) => {
 Star.propTypes = {
   staredByCurrentUser: PropTypes.bool.isRequired,
   starQuestion: PropTypes.func.isRequired,
+  unstarQuestion: PropTypes.func.isRequired,
   count: PropTypes.number.isRequired,
 }
 

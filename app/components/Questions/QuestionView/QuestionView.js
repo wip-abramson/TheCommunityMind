@@ -20,7 +20,6 @@ function QuestionView(props) {
       <QuestionInput
         placeholder={props.placeholder}
         createQuestion={props.createQuestion}
-        refetchQuery={props.refetchQuery}
         parentId={props.parentId}
       >
       </QuestionInput>
@@ -29,7 +28,7 @@ function QuestionView(props) {
         onSelectQuestion={props.onSelectQuestion}
         link={props.link}
         currentUser={props.currentUser}
-        // refetchQuery={props.refetchQuery}
+        refetchQuery={props.refetchQuery}
       />
     </div>
   )

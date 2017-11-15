@@ -12,6 +12,8 @@ import { unauthorizedErrorNotification } from '../../../../notifications/error.n
 
 import STAR_QUESTION_MUTATION from '../../../../graphql/mutations/starQuestion.mutation';
 import UNSTAR_QUESTION_MUTATION from '../../../../graphql/mutations/unstarQuestion.mutation';
+import WATCH_QUESTION_MUTATION from '../../../../graphql/mutations/watchQuestion.mutation';
+import UNWATCH_QUESTION_MUTATION from '../../../../graphql/mutations/unwatchQuestion.mutation';
 
 import EDIT_QUESTION_MUTATION from '../../../../graphql/mutations/editQuestion.mutation';
 
@@ -96,6 +98,66 @@ const unstarQuestion = graphql(UNSTAR_QUESTION_MUTATION, {
   })
 });
 
+const watchQuestion = graphql(WATCH_QUESTION_MUTATION, {
+  props: ({ ownProps, mutate }) => ({
+    watchQuestion: ({ question }) => {
+      return mutate({
+        variables: { id: question.id },
+        optimisticResponse: {
+          __typename: 'Mutation',
+          watchQuestion: {
+            id: question.id,
+            __typename: 'Question',
+            question: question.question,
+            watchedByCurrentUser: true,
+          }
+        },
+      })
+        .catch(res => {
+          // catches any error returned from mutation request
+          const errors = res.graphQLErrors.map((error) => {
+            console.log(error.message)
+            if (error.message === "Unauthorized") {
+              ownProps.unAuthorized();
+            }
+            return error;
+          });
+          return errors
+        })
+    }
+  })
+});
+
+const unwatchQuestion = graphql(UNWATCH_QUESTION_MUTATION, {
+  props: ({ ownProps, mutate }) => ({
+    unwatchQuestion: ({ question }) => {
+      return mutate({
+        variables: { id: question.id },
+        optimisticResponse: {
+          __typename: 'Mutation',
+          unwatchQuestion: {
+            id: question.id,
+            __typename: 'Question',
+            question: question.question,
+            watchedByCurrentUser: false,
+          }
+        },
+      })
+        .catch(res => {
+          // catches any error returned from mutation request
+          const errors = res.graphQLErrors.map((error) => {
+            console.log(error.message)
+            if (error.message === "Unauthorized") {
+              ownProps.unAuthorized();
+            }
+            return error;
+          });
+          return errors
+        })
+    }
+  })
+})
+
 const editQuestion = graphql(EDIT_QUESTION_MUTATION, {
   props: ({ ownProps, mutate }) => ({
     editQuestion: ( id, newQuestion) => {
@@ -157,6 +219,8 @@ let container = React.createClass({
         toggleEditable={this.toggleEditable}
         currentUser={this.props.currentUser}
         link={this.props.link}
+        watchQuestion={this.props.watchQuestion}
+        unwatchQuestion={this.props.unwatchQuestion}
       />
     )
   }
@@ -169,7 +233,9 @@ const QuestionContainer = compose(
   ),
   starQuestion,
   unstarQuestion,
-  editQuestion
+  editQuestion,
+  watchQuestion,
+  unwatchQuestion
 )(container);
 
 export default QuestionContainer;

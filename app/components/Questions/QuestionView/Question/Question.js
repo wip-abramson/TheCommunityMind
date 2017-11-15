@@ -3,7 +3,7 @@ import Star from "./Star";
 import Owner from "./Owner";
 import EditQuestion from './EditQuestion';
 import QuestionText from './QuestionText';
-import WathQuestion from './WatchQuestion';
+import WatchQuestion from './WatchQuestion';
 
 export default function Question(props) {
   var style = {
@@ -20,7 +20,11 @@ export default function Question(props) {
   // console.log(props)
 
   if (props.currentUser) {
-    watchQuestion = <WathQuestion/>
+    watchQuestion = <WatchQuestion
+      watchedByCurrentUser={props.questionType.question.watchedByCurrentUser}
+      watchQuestion={() => {props.watchQuestion(props.questionType)}}
+      unwatchQuestion={() => {props.unwatchQuestion(props.questionType)}}
+    />
 
   }
 

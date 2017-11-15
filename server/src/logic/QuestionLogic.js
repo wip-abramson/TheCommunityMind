@@ -66,26 +66,34 @@ export const questionLogic = {
   starQuestion(_, { id }, ctx) {
     return authLogic.getAuthenticatedUser(ctx)
       .then((user) => {
+        return Question.findById(id).then(unstaredQuestion => {
+          console.log("Stared Q")
+          return unstaredQuestion.addStaredBy(user).then(() => {
+            return unstaredQuestion;
+          });
+        })
+      })
+      .catch(error => {
+        console.log(error, "Error");
+        return Promise.reject(error)
+      })
+  },
+  unstarQuestion(_, { id }, ctx) {
+    return authLogic.getAuthenticatedUser(ctx)
+      .then((user) => {
         return Question.findOne({
           where: { id: id },
           include: [{ model: User, as: "StaredBy", where: { id: user.id } }]
         })
           .then(question => {
             if (question) {
-              question.removeStaredBy(user).then(() => {
+              return question.removeStaredBy(user).then(() => {
                 console.log("destroy Star")
                 return question;
               });
-
             }
             else {
-              return Question.findById(id).then(unstaredQuestion => {
-                console.log("Stared Q")
-                return unstaredQuestion.addStaredBy(user).then(() => {
-                  return unstaredQuestion;
-                });
-
-              })
+              Promise.reject("Question not stared by current user");
             }
           })
       })

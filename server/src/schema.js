@@ -123,9 +123,11 @@ const typeDefs = `
     removeUserInterest(userId: ID!, tagId: ID!): Tag
     followUser(id: ID!): User
     unfollowUser(id: ID!): User
+    watchQuestion(id: ID!): Question
     deleteQuestion(id: ID!): Question
     editQuestion(id: ID!, newQuestion: String!): Question
     starQuestion(id: ID!): Question
+    unstarQuestion(id: ID!): Question
     register(username: String, password: String!, email: String!): User
     login(email: String!, password: String!): User
   }

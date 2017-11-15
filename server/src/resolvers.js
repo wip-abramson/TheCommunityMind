@@ -62,6 +62,9 @@ export const resolvers = {
     starQuestion(_, args, ctx) {
       return questionLogic.starQuestion(_, args, ctx)
     },
+    unstarQuestion(_, args, ctx) {
+      return questionLogic.unstarQuestion(_, args, ctx);
+    },
     associateQuestionWithTag(_, args, ctx) {
       return questionLogic.associateQuestionWithTag(_, args, ctx);
     },

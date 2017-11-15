@@ -9,6 +9,7 @@ const QUESTION_FRAGMENT = gql`
     question
     stars
     staredByCurrentUser
+    watchedByCurrentUser
     createdAt
     owner {
       id

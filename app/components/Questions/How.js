@@ -65,7 +65,7 @@ const createHow = graphql(CREATE_HOW_MUTATION, {
         const errors = res.graphQLErrors.map((error) => {
           // What about other errors?
           if (error.message === "Unauthorized") {
-            ownProps.unAuthorized();
+            this.props.unAuthorized();
           }
           return error;
         });

@@ -86,7 +86,6 @@ const Why = compose(
 
   graphql(WHYS_QUERY, {
     options: (props) => ({
-      // variables: {parentId: props.parentId},
       pollInterval: 5000
     }),
     props: ({ ownProps, data: { loading, error, whys } }) => ({

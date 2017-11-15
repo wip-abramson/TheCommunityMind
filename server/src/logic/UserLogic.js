@@ -69,16 +69,19 @@ export const userLogic = {
         return Promise.reject(error)
       })
   },
-  followUser(_, { userId }, ctx) {
+  followUser(_, { id }, ctx) {
     return authLogic.getAuthenticatedUser(ctx)
       .then(currentUser => {
-        if (currentUser.id === userId) {
+        if (currentUser.id === id) {
           return Promise.reject("User cannot follow itself")
         }
-        return User.findById(userId)
+        return User.findById(id)
           .then(user => {
-            user.addFollowedBy(currentUser);
-            return user;
+            return user.addFollowedBy(currentUser)
+              .then(() => {
+                // console.log(followedUser, "FOLLOWED")
+                return user;
+              })
           })
       })
       .catch(error => {
@@ -86,16 +89,18 @@ export const userLogic = {
         return Promise.reject(error)
       })
   },
-  unfollowUser(_, { userId }, ctx) {
+  unfollowUser(_, { id }, ctx) {
     return authLogic.getAuthenticatedUser(ctx)
       .then(currentUser => {
-        if (currentUser.id === userId) {
+        if (currentUser.id === id) {
           return Promise.reject("User cannot follow itself")
         }
-        return User.findById(userId)
+        return User.findById(id)
           .then(user => {
-            user.removeFollowedBy(currentUser);
-            return user;
+            return user.removeFollowedBy(currentUser)
+              .then(() => {
+                return user;
+              })
           })
       })
       .catch(error => {

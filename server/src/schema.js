@@ -121,8 +121,8 @@ const typeDefs = `
     removeTagAssociationWithQuestion(questionId: ID!, tagId: ID!): Tag
     addUserInterest(userId: ID!, tagId: ID!): Tag
     removeUserInterest(userId: ID!, tagId: ID!): Tag
-    followUser(userId: ID!): User
-    unfollowUser(userId: ID!): User
+    followUser(id: ID!): User
+    unfollowUser(id: ID!): User
     deleteQuestion(id: ID!): Question
     editQuestion(id: ID!, newQuestion: String!): Question
     starQuestion(id: ID!): Question

@@ -5,9 +5,10 @@ import { gql } from 'react-apollo'
 
 const FOLLOW_USER_MUTATION = gql`
   mutation followUser($userId: ID!) {
-    followUser(userId: $userId) {
+    followUser(id: $userId) {
       id
       username
+      followedByCurrentUser
     }
   }
 `;

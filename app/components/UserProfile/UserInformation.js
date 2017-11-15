@@ -18,10 +18,13 @@ export default (props) => {
   if (props.error) {
     return <p>{props.error.message}</p>;
   }
-
+  console.log(props.user)
   var btn;
   if (props.user.id == props.currentUser.id) {
     btn = <Button bsStyle="primary">Edit</Button>
+  }
+  else if (props.user.followedByCurrentUser){
+    btn = <Button bsStyle="primary">Unfollow</Button>
   }
   else {
     btn = <Button bsStyle="primary">Follow</Button>

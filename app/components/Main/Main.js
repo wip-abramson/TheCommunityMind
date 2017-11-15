@@ -1,14 +1,19 @@
 import React from 'react'
 import MainHeader from './Header/MainHeader'
-import FullDiv from '../generic/FullDiv'
+import FullDiv from '../generic/FullDiv';
 import { Grid } from 'react-bootstrap'
 import { connect } from 'react-redux'
 import { signOut } from '../../actions/Auth';
 import { withApollo } from 'react-apollo';
 
+import Notifications from 'react-notification-system-redux';
+
+
+
 const mapStateToProps = function (state) {
   return {
     currentUser: state.auth.currentUser,
+    notifications: state.notifications,
   }
 };
 
@@ -25,6 +30,23 @@ let Main = React.createClass({
     padding: 20
   },
 
+
+  //Optional styling
+  notificationStyle: {
+    NotificationItem: { // Override the notification item
+      DefaultStyle: { // Applied to every notification, regardless of the notification level
+        margin: '10px 5px 2px 1px'
+      },
+
+      success: { // Applied only to the success notification item
+        color: 'green'
+      },
+      error: {
+        color: 'red'
+      }
+    }
+  },
+
   logout() {
     // should i clear it all?
     console.log("Loggin out")
@@ -34,11 +56,9 @@ let Main = React.createClass({
 
   },
 
-  viewProfile() {
-    console.log("Viewing Profile")
-  },
 
   viewWatchList() {
+
     console.log("Viewing watch list")
   },
 
@@ -55,6 +75,10 @@ let Main = React.createClass({
 
           {this.props.children}
         </Grid>
+        <Notifications
+          notifications={this.props.notifications}
+          style={this.notificationStyle}
+        />
 
       </FullDiv>
     )

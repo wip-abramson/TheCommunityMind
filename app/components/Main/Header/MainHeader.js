@@ -29,7 +29,9 @@ var MainHeader = function (props) {
           </Nav>
           <Nav pullRight>
             <NavDropdown eventKey="4" title={props.currentUser.username} id="nav-dropdown">
-              <MenuItem eventKey="4.1" onSelect={() => {props.viewProfile()}}>Profile</MenuItem>
+              <LinkContainer to={{pathname: "/profile", query: {userId: props.currentUser.id}}}>
+                <MenuItem>Profile</MenuItem>
+              </LinkContainer>
               <MenuItem eventKey="4.2" onSelect={() => {props.viewWatchList()}}>Watch list</MenuItem>
               <MenuItem divider />
               <MenuItem eventKey="4.4" onSelect={() => {props.logout()}}>Logout</MenuItem>

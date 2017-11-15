@@ -124,7 +124,10 @@ export const resolvers = {
       return questionLogic.stars(question, args, ctx);
     },
     staredByCurrentUser(question, args, ctx) {
-      return questionLogic.staredByCurrentUser(question, args, ctx)
+      return questionLogic.staredByCurrentUser(question, args, ctx);
+    },
+    watchedByCurrentUser(question, args, ctx) {
+      return questionLogic.watchedByCurrentUser(question, args, ctx);
     },
     associatedWith(question, args, ctx) {
       return questionLogic.associatedWith(question, args, ctx);

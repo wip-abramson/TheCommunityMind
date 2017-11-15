@@ -21,6 +21,7 @@ const typeDefs = `
     owner: User!
     createdAt: Date!
     staredByCurrentUser: Boolean!
+    watchedByCurrentUser: Boolean!
     associatedWith: [Tag]
   }
   

@@ -126,7 +126,7 @@ export const questionLogic = {
           include: [{ model: User, as: "Watched", where: { id: user.id } }]
         })
           .then(question => {
-            if (! question) {
+            if (!question) {
               return Promise.reject("User is not watching this question")
             }
             return user.addWatched(question)
@@ -179,6 +179,22 @@ export const questionLogic = {
           .then(user => {
             console.log(user === null, "user found")
             return user ? true : false;
+          })
+      })
+      .catch(error => {
+        console.log(error);
+        return false;
+      })
+  },
+  watchedByCurrentUser(question, args, ctx) {
+    return authLogic.getAuthenticatedUser(ctx)
+      .then(user => {
+        return Question.findOne({
+          where: { id: question.id },
+          include: [{ model: User, as: "Watched", where: { id: user.id } }]
+        })
+          .then(question => {
+            return question ? true : false;
           })
       })
       .catch(error => {

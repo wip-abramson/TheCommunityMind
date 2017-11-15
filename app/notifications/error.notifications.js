@@ -27,3 +27,9 @@ export const loginFailedNotification = {
   }
 }
 
+export const registerFailedNotification = {
+  message: 'Please try again',
+  position: 'tc',
+  autoDismiss: 3,
+}
+

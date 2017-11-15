@@ -12,6 +12,8 @@ import Authentication from './AuthenticationUI'
 
 import Notifications from 'react-notification-system-redux';
 import { registerSuccessNotification } from '../../notifications/success.notification';
+import { registerFailedNotification } from '../../notifications/error.notifications';
+
 
 const mapDispatchToProps = function (dispatch) {
   return {
@@ -20,14 +22,20 @@ const mapDispatchToProps = function (dispatch) {
       browserHistory.push("/");
       registerSuccessNotification.message = "Welcome " + user.username;
       dispatch(Notifications.success(registerSuccessNotification));
+    },
+    registerFailed: function(title) {
+
+      registerFailedNotification.title = title;
+      dispatch(Notifications.error(registerFailedNotification));
+
     }
+
   }
 };
 
 let container = React.createClass({
 
   register (email, password, username) {
-    console.log(email,username,password)
     this.props.addUser({
       username,
       password,
@@ -42,12 +50,18 @@ let container = React.createClass({
         localStorage.setItem("token", JSON.stringify(object));
       } else {
         console.log("Register failed", res.data);
-        this.setState(Object.assign(
-          {},
-          this.state,
-          { error: "Failed to register"}
-        ));
+
+        this.props.registerFailed("Register Failed!")
       }
+    }).catch(res => {
+
+
+      const errors = res.graphQLErrors.map((error) => {
+        this.props.registerFailed(error.message);
+        return error;
+      });
+      return errors
+      // this.setState({ errors });
     })
 
   },

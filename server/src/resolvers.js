@@ -184,6 +184,15 @@ export const resolvers = {
     },
     followedByCurrentUser(user, args, ctx) {
       return userLogic.followedByCurrentUser(user, args, ctx);
+    },
+    whys(user, args, ctx) {
+      return userLogic.whys(user, args, ctx);
+    },
+    whatIfs(user, args, ctx) {
+      return userLogic.whatIfs(user, args, ctx);
+    },
+    hows(user, args, ctx) {
+      return userLogic.hows(user, args, ctx);
     }
 
   }

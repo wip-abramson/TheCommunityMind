@@ -1,7 +1,7 @@
 /**
  * Created by will on 07/11/17.
  */
-import { Question, User, Tag } from '../db';
+import { Question, User, Tag, Why, WhatIf, How } from '../db';
 import { authLogic } from './AuthLogic';
 
 export const userLogic = {
@@ -28,6 +28,21 @@ export const userLogic = {
         console.log(error, "Error");
         return Promise.reject(error)
       });
+  },
+  whys(user, args, ctx) {
+    return Why.findAll({
+      include: [{ model: Question, where: { userId: user.id } }]
+    })
+  },
+  whatIfs(user, args, ctx) {
+    return WhatIf.findAll({
+      include: [{ model: Question, where: { userId: user.id } }]
+    })
+  },
+  hows(user, args, ctx) {
+    return How.findAll({
+      include: [{ model: Question, where: { userId: user.id } }]
+    })
   },
   staredQuestions(user, args, ctx) {
     // No Auth needed because everyone should be able to see a users stared questions
@@ -213,4 +228,5 @@ export const userLogic = {
       })
 
   }
+
 }

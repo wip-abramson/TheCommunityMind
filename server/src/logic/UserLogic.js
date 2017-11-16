@@ -20,10 +20,40 @@ export const userLogic = {
   },
   questions(user, args, ctx) {
 
-    return Question.findAll({
-      where: { userId: user.id },
-      order: [['createdAt', 'DESC']],
+    return Why.findAll({
+      include: [{ model: Question, where: { userId: user.id }, order: [['createdAt', 'DESC']] }]
+
     })
+      .then(whys => {
+        console.log(whys.length);
+        return WhatIf.findAll({
+          include: [{ model: Question, where: { userId: user.id }, order: [['createdAt', 'DESC']] }]
+
+        })
+          .then(whatIfs => {
+            console.log(whatIfs.length);
+
+            return How.findAll({
+              include: [{
+                model: Question,
+                where: { userId: user.id },
+                order: [['createdAt', 'DESC']]
+              }]
+
+            }).then(hows => {
+              // console.log(hows[1]);
+
+              var questionType =  whys.concat(whatIfs, hows);
+              console.log(questionType.length);
+              questionType.sort((a, b) => {
+                a = new Date(a.createdAt);
+                b = new Date(b.createdAt);
+                return a>b ? -1 : a<b ? 1 : 0;
+              })
+              return questionType;
+            })
+          })
+      })
       .catch(error => {
         console.log(error, "Error");
         return Promise.reject(error)

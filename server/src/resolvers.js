@@ -195,5 +195,22 @@ export const resolvers = {
       return userLogic.hows(user, args, ctx);
     }
 
+  },
+
+  QuestionType: {
+    __resolveType(obj, context, info){
+      console.log("QTYPE")
+      console.log(obj.whatifId)
+      // console.log(obj.dataValues[whatIfId])
+      if(obj.whatifId){
+        return 'How';
+      }
+
+      if(obj.whyId){
+        return 'WhatIf';
+      }
+
+      return 'Why';
+    },
   }
 }

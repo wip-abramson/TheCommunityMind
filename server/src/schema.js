@@ -32,7 +32,13 @@ const typeDefs = `
     questions: [QuestionFeed]!
   }
   
-  type Why {
+  interface QuestionType {
+    id: ID!
+    question: Question!
+    createdAt: Date!
+  }
+  
+  type Why implements QuestionType{
     id: ID!
     question: Question!
     whatIfs: [WhatIf]!
@@ -48,7 +54,7 @@ const typeDefs = `
     whys: [Why]!
   }
   
-  type WhatIf {
+  type WhatIf implements QuestionType{
     id: ID!
     question: Question!
     createdAt: Date!
@@ -64,7 +70,7 @@ const typeDefs = `
     whatIfs: [WhatIf]!
   }
   
-  type How {
+  type How implements QuestionType{
     id: ID!
     question: Question!
     createdAt: Date!
@@ -86,7 +92,7 @@ const typeDefs = `
     whys: [Why]
     hows: [How]
     whatIfs: [WhatIf]
-    questions: [Question]
+    questions: [QuestionType]
     jwt: String # json web token for access
     staredQuestions: [Question]
     followers: [User]

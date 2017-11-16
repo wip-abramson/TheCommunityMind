@@ -14,6 +14,7 @@ import Notifications from 'react-notification-system-redux';
 import { unauthorizedErrorNotification } from '../../notifications/error.notifications';
 
 import UserInformation from './UserInformation'
+import UserQuestionsContainer from './UserQuestionsContainer';
 
 const mapStateToProps = function (state) {
   return {
@@ -92,6 +93,34 @@ const unfollowUser = graphql(UNFOLLOW_USER_MUTATION, {
   })
 })
 
+class container extends React.Component {
+
+  render () {
+    if (this.props.loading) {
+      return <p>Loading ...</p>;
+    }
+    if (this.props.error) {
+      return <p>{this.props.error.message}</p>;
+    }
+    return (
+      <div>
+        <UserInformation
+          user={this.props.user}
+          currentUser={this.props.currentUser}
+          followUser={this.props.followUser}
+          unfollowUser={this.props.unfollowUser}
+        />
+        <UserQuestionsContainer
+          whys={this.props.user.whys}
+          whatIfs={this.props.user.whatIfs}
+          hows={this.props.user.hows}
+        />
+      </div>
+
+    )
+  }
+}
+
 export default compose(
   connect(
     mapStateToProps,
@@ -111,6 +140,6 @@ export default compose(
   }),
   followUser,
   unfollowUser,
-)(UserInformation)
+)(container)
 
 

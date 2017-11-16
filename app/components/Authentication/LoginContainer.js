@@ -22,7 +22,8 @@ const mapDispatchToProps = function (dispatch) {
       loginSuccessNotification.message = "Welcome back " + user.username
       dispatch(Notifications.success(loginSuccessNotification));
     },
-    loginFailed: function() {
+    loginFailed: function(message) {
+      loginFailedNotification.message = message;
       dispatch(Notifications.error(loginFailedNotification));
     }
 
@@ -50,6 +51,9 @@ let container = React.createClass({
         console.log("Authentication failed")
       }
     })
+      .catch(error => {
+        console.log(error, "login failed")
+      })
   },
 
   render () {
@@ -77,9 +81,25 @@ export default compose(
           return mutate({
             variables: { email, password }
           })
+            .catch(res => {
+              // catches any error returned from mutation request
+              // ownProps.unAuthorized();
+
+              const errors = res.graphQLErrors.map((error) => {
+                console.log(error.message)
+
+
+                ownProps.loginFailed(error.message);
+
+                return error;
+              });
+              return errors
+              // this.setState({ errors });
+            })
         }
 
       })
+
     }
   )
 )(container);

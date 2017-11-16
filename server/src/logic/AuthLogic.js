@@ -81,6 +81,9 @@ export const authLogic = {
               return Promise.reject('Password incorrect');
             });
         }
+        else {
+          return Promise.reject("Email does not exist")
+        }
       });
   },
 }

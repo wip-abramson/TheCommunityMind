@@ -17,11 +17,11 @@ export default (props) => {
   }
   console.log(props.user, "USER")
   var btn;
-  if (props.user.id == props.currentUser.id) {
+  if (props.currentUser && (props.user.id == props.currentUser.id)) {
     btn = <Button bsStyle="primary">Edit</Button>
   }
   else if (props.user.followedByCurrentUser) {
-    btn = <Button bsStyle="primary" onClick={() => {
+    btn = <Button bStyle="primary" onClick={() => {
       props.unfollowUser(props.user);
     }}>Unfollow</Button>
   }

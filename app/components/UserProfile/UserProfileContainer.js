@@ -10,11 +10,23 @@ import USER_QUERY from '../../graphql/querys/user.query'
 import FOLLOW_USER_MUTATION from '../../graphql/mutations/followUser.mutation'
 import UNFOLLOW_USER_MUTATION from '../../graphql/mutations/unfollowUser.mutation';
 
+import Notifications from 'react-notification-system-redux';
+import { unauthorizedErrorNotification } from '../../notifications/error.notifications';
+
 import UserInformation from './UserInformation'
 
 const mapStateToProps = function (state) {
   return {
     currentUser: state.auth.currentUser,
+  }
+};
+
+const mapDispatchToProps = function (dispatch) {
+  return {
+    unAuthorized: () => {
+      console.log("DISPATCH UNAUTHORIZED")
+      dispatch(Notifications.error(unauthorizedErrorNotification))
+    }
   }
 };
 
@@ -83,7 +95,7 @@ const unfollowUser = graphql(UNFOLLOW_USER_MUTATION, {
 export default compose(
   connect(
     mapStateToProps,
-    null
+    mapDispatchToProps
   ),
   graphql(USER_QUERY, {
     options: (props) => ({

@@ -9,7 +9,7 @@ export const unauthorizedErrorNotification = {
   title: 'Unauthorized!',
   message: 'Login to access this feature',
   position: 'tr',
-  autoDismiss: 0,
+  autoDismiss: 5,
   action: {
     label: 'Login',
     callback: () => browserHistory.push('/login')

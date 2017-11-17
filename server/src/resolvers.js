@@ -173,8 +173,14 @@ export const resolvers = {
     follows(user, args, ctx) {
       return userLogic.follows(user, args, ctx);
     },
+    followsCount(user, args, ctx) {
+      return userLogic.followsCount(user, args, ctx);
+    },
     followers(user, args, ctx) {
       return userLogic.followers(user, args, ctx);
+    },
+    followersCount(user, args, ctx) {
+      return userLogic.followersCount(user, args, ctx);
     },
     watches(user, args, ctx) {
       return userLogic.watches(user, args, ctx);

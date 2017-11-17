@@ -95,7 +95,9 @@ const typeDefs = `
     questions: [QuestionType]
     jwt: String # json web token for access
     staredQuestions: [Question]
+    followersCount: Int!
     followers: [User]
+    followsCount: Int!
     follows: [User]
     followedByCurrentUser: Boolean!
     watches: [Question]

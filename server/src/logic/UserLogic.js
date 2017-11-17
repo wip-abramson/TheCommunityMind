@@ -101,9 +101,33 @@ export const userLogic = {
         return Promise.reject(error)
       })
   },
+  followsCount(user, args, ctx) {
+    return User.count({
+      include: [{ model: User, as: "FollowedBy", where: { id: user.id } }]
+    })
+      .then(users => {
+        return users;
+      })
+      .catch(error => {
+        console.log(error, "Error");
+        return Promise.reject(error)
+      })
+  },
   followers(user, args, ctx) {
     // Again no Auth req
     return User.findAll({
+      include: [{ model: User, as: "Follower", where: { id: user.id }, }]
+    })
+      .then(users => {
+        return users;
+      })
+      .catch(error => {
+        console.log(error, "Error");
+        return Promise.reject(error)
+      })
+  },
+  followersCount(user, args, ctx) {
+    return User.count({
       include: [{ model: User, as: "Follower", where: { id: user.id }, }]
     })
       .then(users => {

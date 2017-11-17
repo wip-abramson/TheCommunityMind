@@ -2,9 +2,10 @@
  * Created by will on 16/11/17.
  */
 import React from 'react';
+import PropTypes from 'prop-types';
 import QuestionList from '../Questions/QuestionView/QuestionList';
 
-export default (props) => {
+const UserQuestions = (props) => {
 
   var questionLst;
   if (props.questionView === "LATEST") {
@@ -35,3 +36,42 @@ export default (props) => {
     </div>
   )
 }
+
+UserQuestions.propTypes = {
+  whys: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      question: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        question: PropTypes.string.isRequired
+      }).isRequired,
+    }).isRequired,
+  ),
+  whatIfs: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      question: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        question: PropTypes.string.isRequired
+      }).isRequired,
+    }).isRequired,
+  ),
+  hows: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      question: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        question: PropTypes.string.isRequired
+      }).isRequired,
+    }).isRequired,
+  ),
+  latestQuestions: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      question: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        question: PropTypes.string.isRequired
+      }).isRequired,
+    }).isRequired,
+  ),
+  onViewChange: PropTypes.func.isRequired,
+
+}
+
+export default UserQuestions;

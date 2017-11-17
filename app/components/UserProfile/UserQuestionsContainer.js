@@ -3,7 +3,10 @@
  */
 import React from 'react'
 import PropTypes from 'prop-types'
+
 import UserQuestions from './UserQuestions';
+
+import { LATEST } from './viewLabels';
 
 class UserQuestionsContainer extends React.Component {
 
@@ -11,7 +14,7 @@ class UserQuestionsContainer extends React.Component {
     super(props);
 
     this.state = {
-      questionView: "WHYS",
+      questionView: LATEST,
     }
 
     this.changeView = this.changeView.bind(this);

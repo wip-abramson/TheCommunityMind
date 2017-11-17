@@ -39,14 +39,8 @@ const USER_QUERY = gql`
         id
         question
       }
-      followers {
-        id
-        username
-      }
-      follows {
-        id
-        username
-      }
+      followsCount
+      followersCount
       followedByCurrentUser
     }
   }

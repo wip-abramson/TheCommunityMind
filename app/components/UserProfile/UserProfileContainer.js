@@ -41,6 +41,7 @@ const followUser = graphql(FOLLOW_USER_MUTATION, {
           followUser: {
             id: user.id,
             __typename: 'User',
+            followersCount: user.followersCount +1,
             followedByCurrentUser: true,
             username: user.username,
           }
@@ -72,6 +73,7 @@ const unfollowUser = graphql(UNFOLLOW_USER_MUTATION, {
           unfollowUser: {
             id: user.id,
             __typename: 'User',
+            followersCount: user.followersCount -1,
             followedByCurrentUser: false,
             username: user.username,
           }

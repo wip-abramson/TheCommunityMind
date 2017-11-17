@@ -8,6 +8,7 @@ const UNFOLLOW_USER_MUTATION = gql`
     unfollowUser(id: $userId) {
       id
       username
+      followersCount
       followedByCurrentUser
     }
   }

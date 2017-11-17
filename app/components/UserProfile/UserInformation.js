@@ -36,8 +36,8 @@ export default (props) => {
       <FaUser size={70}/>
       <p>My user bio</p>
       {btn}
-      <p>12 Followers</p>
-      <p>20 Following</p>
+      <p>{props.user.followersCount} Followers</p>
+      <p>{props.user.followsCount} Following</p>
     </div>
   )
 }

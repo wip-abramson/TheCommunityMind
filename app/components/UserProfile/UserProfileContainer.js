@@ -114,6 +114,7 @@ class container extends React.Component {
           whys={this.props.user.whys}
           whatIfs={this.props.user.whatIfs}
           hows={this.props.user.hows}
+          latestQuestions={this.props.user.questions}
         />
       </div>
 

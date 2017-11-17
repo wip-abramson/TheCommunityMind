@@ -1,7 +1,7 @@
 /**
  * Created by will on 13/11/17.
  */
-import React from 'react'
+import React, {PropTypes} from 'react'
 import { compose, graphql } from "react-apollo";
 import { connect } from "react-redux";
 
@@ -224,7 +224,11 @@ let container = React.createClass({
       />
     )
   }
-})
+});
+
+container.propTypes = {
+  onSelectQuestion: PropTypes.func.isRequired,
+}
 
 const QuestionContainer = compose(
   connect(

@@ -27,6 +27,7 @@ class UserQuestionsContainer extends React.Component {
         whys={this.props.whys}
         whatIfs={this.props.whatIfs}
         hows={this.props.hows}
+        latestQuestions={this.props.latestQuestions}
         questionView={this.state.questionView}
         onViewChange={this.changeView}
       />

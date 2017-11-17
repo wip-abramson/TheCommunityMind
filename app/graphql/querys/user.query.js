@@ -28,6 +28,13 @@ const USER_QUERY = gql`
           ... QuestionFragment
         }
       }
+      questions {
+       id
+        question {
+          ... QuestionFragment
+          
+        }
+      }
       staredQuestions {
         id
         question

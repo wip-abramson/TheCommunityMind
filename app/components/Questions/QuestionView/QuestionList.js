@@ -5,13 +5,14 @@ import React, { PropTypes } from "react";
 import QuestionContainer from "./Question/QuestionContainer";
 
 const QuestionList = (props) => {
+  var id =1;
   // Maps a list of either Why WhatIfs or Hows to create individual Question components for each
   return (
     <div>
       {props.questions.map(function (question) {
         return (
           <QuestionContainer
-            key={"id-" + question.id}
+            key={"id-" + question.id + (id++)}
             onSelectQuestion={props.onSelectQuestion}
             questionType={question}
             link={props.link}
@@ -36,6 +37,8 @@ QuestionList.propTypes = {
       }).isRequired
     }).isRequired
   }).isRequired),
+  onSelectQuestion: PropTypes.func.isRequired,
+  link: PropTypes.bool,
 };
 
 export default QuestionList;

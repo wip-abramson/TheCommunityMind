@@ -6,6 +6,23 @@ import QuestionInputContainer from './QuestionInput/QuestionInputContainer';
 
 function QuestionView(props) {
 
+  function getQuestionInput() {
+    if (props.currentUser) {
+      return props.currentWhy ?
+        <QuestionInput
+          placeholder={props.placeholder}
+          createQuestion={props.createQuestion}
+          parentId={props.parentId}
+        >
+        </QuestionInput>
+        :
+        <QuestionInputContainer
+          placeholder={props.placeholder}
+          createQuestion={props.createQuestion}
+        />
+    }
+  }
+
   if (props.loading) {
     return <p>Loading ...</p>;
   }
@@ -18,18 +35,8 @@ function QuestionView(props) {
 
       {getCurrentWhatIf(props.currentWhatIf)}
 
-      {props.currentWhy ?
-        <QuestionInput
-          placeholder={props.placeholder}
-          createQuestion={props.createQuestion}
-          parentId={props.parentId}
-        >
-        </QuestionInput>
-        :
-        <QuestionInputContainer
-          placeholder={props.placeholder}
-          createQuestion={props.createQuestion}
-        />}
+      {getQuestionInput()}
+
 
 
       <QuestionList

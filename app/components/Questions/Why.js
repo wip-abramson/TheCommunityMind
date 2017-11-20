@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import QuestionView from "./QuestionView/QuestionView";
+import QuestionViewContainer from "./QuestionView/QuestionViewContainer";
 import { updateCurrentWhy } from "../../actions/Why";
 import { compose, graphql } from "react-apollo";
 import CREATE_WHY_MUTATION from "../../graphql/mutations/createWhy.mutation";
@@ -104,6 +104,6 @@ const Why = compose(
   }),
   createWhy,
 
-)(QuestionView);
+)(QuestionViewContainer);
 
 export default Why;

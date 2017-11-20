@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import QuestionView from "./QuestionView/QuestionView";
+import QuestionViewContainer from "./QuestionView/QuestionViewContainer";
 import { updateCurrentWhatIf } from "../../actions/WhatIf";
 import { compose, graphql } from "react-apollo";
 import CREATE_WHATIF_MUTATION from "../../graphql/mutations/createWhatIf.mutation";
@@ -110,6 +110,6 @@ const WhatIf = compose(
     })
   }),
   createWhatIf,
-)(QuestionView);
+)(QuestionViewContainer);
 
 export default WhatIf;

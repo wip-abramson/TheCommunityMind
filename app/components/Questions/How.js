@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import QuestionView from "./QuestionView/QuestionView";
+import QuestionViewContainer from "./QuestionView/QuestionViewContainer";
 import { compose, graphql } from "react-apollo";
 import CREATE_HOW_MUTATION from "../../graphql/mutations/createHow.mutation";
 import HOWS_QUERY from "../../graphql/querys/hows.query";
@@ -97,6 +97,6 @@ const How = compose(
     })
   }),
   createHow,
-)(QuestionView);
+)(QuestionViewContainer);
 
 export default How;

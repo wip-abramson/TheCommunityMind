@@ -9,6 +9,7 @@ const STAR_QUESTION_MUTATION = gql`
        id
        question
        staredByCurrentUser
+       watchedByCurrentUser
        stars
      }
    }

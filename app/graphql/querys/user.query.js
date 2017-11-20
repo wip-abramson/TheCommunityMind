@@ -37,7 +37,9 @@ const USER_QUERY = gql`
       }
       staredQuestions {
         id
-        question
+        question {
+          ... QuestionFragment
+        }
       }
       followsCount
       followersCount

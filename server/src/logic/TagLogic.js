@@ -2,13 +2,14 @@
  * Created by will on 08/11/17.
  */
 import { Tag, User, Question } from '../db';
+import { authLogic } from './AuthLogic';
 
 export const tagLogic = {
   query(_, { name }, ctx) {
     return Tag.findAll({
-      where: {
-        name,
-      }
+      // where: {
+      //   name,
+      // }
     })
       .then(tags => {
         return tags;
@@ -17,6 +18,23 @@ export const tagLogic = {
         console.log(error, "Error");
         return Promise.reject(error)
       })
+  },
+  findOrCreateTag(_, { name }, ctx) {
+    return authLogic.getAuthenticatedUser(ctx)
+      .then(user => {
+        return Tag.findOrCreate({
+          where: { name: name.toLowerCase() }
+        })
+          .then(tag => {
+            console.log(tag[0].name)
+            return tag[0];
+          })
+      })
+      .catch(error => {
+        console.log(error, "Error");
+        return Promise.reject(error)
+      })
+
   },
   followers(tag, args, ctx) {
     // Undecided if I need this - should users be able to see which users follow what?

@@ -13,7 +13,7 @@ export const resolvers = {
   Date: GraphQLDate,
 
   Query: {
-    tags: () => {
+    tags: (_, args, ctx) => {
       return tagLogic.query(_, args, ctx);
     },
     whys: (_, args, ctx) => {
@@ -52,6 +52,9 @@ export const resolvers = {
     createHow: (_, args, ctx) => {
       return howLogic.createHow(_, args, ctx)
 
+    },
+    findOrCreateTag(_, args, ctx) {
+      return tagLogic.findOrCreateTag(_, args, ctx);
     },
     deleteQuestion: (_, args, ctx) => {
       return questionLogic.deleteQuestion(_, args, ctx);

@@ -2,10 +2,10 @@
  * Created by will on 07/11/17.
  */
 import { authLogic } from './AuthLogic';
-import { Why } from '../db';
+import { Why, Tag } from '../db';
 
 export const whyLogic = {
-  createWhy(_, { question }, ctx) {
+  createWhy(_, { question, tagIds }, ctx) {
     return authLogic.getAuthenticatedUser(ctx)
       .then(user => {
         return Why.create({})
@@ -17,8 +17,19 @@ export const whyLogic = {
               whyId: newWhy.id
             })
               .then((whyQuestion) => {
-                newWhy.setQuestion(whyQuestion);
-                return newWhy;
+                return Tag.findAll({
+                  where: { id: tagIds }
+                })
+                  .then(tags => {
+                    console.log("FOUND TAGS", tags.length)
+                    return whyQuestion.setTags(tags)
+                      .then(() => {
+                      console.log("WHY CREATED", newWhy.id)
+                        return newWhy;
+                      })
+
+                  })
+
               });
           });
       })
@@ -69,7 +80,6 @@ export const whyLogic = {
         cursor = whys[0].createdAt;
       }
 
-
       // cursor = parseInt(cursor);
       console.log(cursor, "cursor")
       // fix limit of number of whys returned
@@ -88,9 +98,9 @@ export const whyLogic = {
         newCursor =
           whys[newestWhyIndex + limit].createdAt;
       }
-       catch(error) {
+      catch (error) {
         newCursor = whys[whys.length - 1].createdAt;
-       }
+      }
 
       const whyFeed = {
         whys: whys.slice(
@@ -103,8 +113,6 @@ export const whyLogic = {
       return whyFeed;
 
     })
-
-
 
   }
 }

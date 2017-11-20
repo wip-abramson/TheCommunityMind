@@ -123,9 +123,10 @@ const typeDefs = `
   }
   
   type Mutation {
-    createWhy(question: String!): Why
+    createWhy(question: String!, tagIds: [ID]!): Why
     createWhatIf(question: String!, whyId: ID!): WhatIf
     createHow(question: String!, whatIfId: ID!): How
+    findOrCreateTag(name: String!): Tag!
     associateQuestionWithTag(questionId: ID!, tagId: ID!): Tag
     removeTagAssociationWithQuestion(questionId: ID!, tagId: ID!): Tag
     addUserInterest(userId: ID!, tagId: ID!): Tag

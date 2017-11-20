@@ -25,10 +25,10 @@ const mapDispatchToProps = function (dispatch) {
 
 const createWhy = graphql(CREATE_WHY_MUTATION, {
   props: ({ ownProps, mutate }) => ({
-    createQuestion: ({ question }) => {
+    createQuestion: ( question, tagIds) => {
       return mutate({
 
-        variables: { question },
+        variables: { question, tagIds },
         optimisticResponse: {
           __typename: 'Mutation',
           createWhy: {
@@ -40,6 +40,7 @@ const createWhy = graphql(CREATE_WHY_MUTATION, {
               question: question,
               stars: 0,
               staredByCurrentUser: false,
+              watchedByCurrentUser: false,
               createdAt: new Date().toISOString(), // the time is now!
               owner: {
                 __typename: 'User',
@@ -54,7 +55,7 @@ const createWhy = graphql(CREATE_WHY_MUTATION, {
           // Read the data from our cache for this query.
           const data = proxy.readQuery({ query: WHYS_QUERY });
           // Add why from the mutation to the beginning.
-
+          console.log(createWhy)
           data.whys.unshift(createWhy);
           // Write our data back to the cache.
           proxy.writeQuery({ query: WHYS_QUERY, data });

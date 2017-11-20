@@ -48,14 +48,15 @@ const starQuestion = graphql(STAR_QUESTION_MUTATION, {
             __typename: 'Question',
             stars: question.stars + 1,
             question: question.question,
-            staredByCurrentUser: true
+            staredByCurrentUser: true,
+            watchedByCurrentUser: question.watchedByCurrentUser,
           }
         },
       })
         .catch(res => {
           // catches any error returned from mutation request
           const errors = res.graphQLErrors.map((error) => {
-            console.log(error.message)
+            console.log(error.message, "STAR ERROR")
             if (error.message === "Unauthorized") {
               ownProps.unAuthorized();
             }

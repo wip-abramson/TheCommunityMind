@@ -2,6 +2,7 @@ import React, { PropTypes } from "react";
 import QuestionInput from "./QuestionInput";
 import QuestionList from "./QuestionList";
 import QuestionContainer from './Question/QuestionContainer';
+import QuestionInputContainer from './QuestionInput/QuestionInputContainer';
 
 function QuestionView(props) {
 
@@ -17,12 +18,20 @@ function QuestionView(props) {
 
       {getCurrentWhatIf(props.currentWhatIf)}
 
-      <QuestionInput
-        placeholder={props.placeholder}
-        createQuestion={props.createQuestion}
-        parentId={props.parentId}
-      >
-      </QuestionInput>
+      {props.currentWhy ?
+        <QuestionInput
+          placeholder={props.placeholder}
+          createQuestion={props.createQuestion}
+          parentId={props.parentId}
+        >
+        </QuestionInput>
+        :
+        <QuestionInputContainer
+          placeholder={props.placeholder}
+          createQuestion={props.createQuestion}
+        />}
+
+
       <QuestionList
         questions={props.questions}
         onSelectQuestion={props.onSelectQuestion}
@@ -84,9 +93,7 @@ QuestionView.propTypes = {
   }).isRequired),
   loading: PropTypes.bool,
   // error: PropTypes.bool,
-  refetchQuery: PropTypes.shape({
-
-  }).isRequired,
+  refetchQuery: PropTypes.shape({}).isRequired,
   createQuestion: PropTypes.func.isRequired,
 };
 

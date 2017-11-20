@@ -94,7 +94,7 @@ const typeDefs = `
     whatIfs: [WhatIf]
     questions: [QuestionType]
     jwt: String # json web token for access
-    staredQuestions: [Question]
+    staredQuestions: [QuestionType]
     followersCount: Int!
     followers: [User]
     followsCount: Int!

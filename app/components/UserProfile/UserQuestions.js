@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 
 import QuestionList from '../Questions/QuestionView/QuestionList';
 
-import { LATEST, WHY, WHATIF, HOW } from './viewLabels';
+import { LATEST, WHY, WHATIF, HOW, STAR } from './viewLabels';
 
 const UserQuestions = (props) => {
 
@@ -26,6 +26,10 @@ const UserQuestions = (props) => {
     questionLst =  <QuestionList questions={props.hows} onSelectQuestion={() => {}}/>
 
   }
+  if (props.questionView === STAR) {
+    questionLst =  <QuestionList questions={props.staredQuestions} onSelectQuestion={() => {}}/>
+
+  }
   return (
     <div>
       <button onClick={() => {props.onViewChange(LATEST)}}>Latest</button>
@@ -33,6 +37,9 @@ const UserQuestions = (props) => {
       <button onClick={() => {props.onViewChange(WHY)}}>Whys</button>
       <button onClick={() => {props.onViewChange(WHATIF)}}>WhatIfs</button>
       <button onClick={() => {props.onViewChange(HOW)}}>Hows</button>
+
+      <button onClick={() => {props.onViewChange(STAR)}}>Stared Questions</button>
+
 
       {questionLst}
 

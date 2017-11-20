@@ -76,9 +76,27 @@ export const userLogic = {
   },
   staredQuestions(user, args, ctx) {
     // No Auth needed because everyone should be able to see a users stared questions
-    return Question.findAll({
-      include: [{ model: User, as: "StaredBy", where: { id: user.id } }]
+    return Why.findAll({
+      include: [{model:Question, include: [{ model: User, as: "StaredBy", where: { id: user.id }}] }]
+    }).then (whys => {
+      return WhatIf.findAll({
+        include: [{model:Question, include: [{ model: User, as: "StaredBy", where: { id: user.id }}] }]
+      }).then (whatIfs => {
+        return How.findAll({
+          include: [{model:Question, include: [{ model: User, as: "StaredBy", where: { id: user.id }}] }]
+        }).then (hows => {
+          var questionType =  whys.concat(whatIfs, hows);
+          console.log(questionType.length);
+          questionType.sort((a, b) => {
+            a = new Date(a.createdAt);
+            b = new Date(b.createdAt);
+            return a>b ? -1 : a<b ? 1 : 0;
+          })
+          return questionType;
+        })
+      })
     })
+
       .then(staredQuestions => {
         return staredQuestions;
       })

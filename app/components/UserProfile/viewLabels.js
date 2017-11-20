@@ -5,3 +5,4 @@ export const LATEST = "LATEST";
 export const WHY = "WHY";
 export const WHATIF = "WHATIF";
 export const HOW = "HOW";
+export const STAR = "STAR"

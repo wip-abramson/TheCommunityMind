@@ -10,4 +10,4 @@ const FullDiv = function (props) {
     </div>)
 }
 
-module.exports = FullDiv;
+export default FullDiv;

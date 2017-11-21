@@ -9,6 +9,7 @@ var MainHeader = function (props) {
 
   }
   return (
+  <div>
     <Navbar collapseOnSelect>
       <Navbar.Header>
         <LinkContainer to="/" onlyActiveOnIndex>
@@ -58,6 +59,8 @@ var MainHeader = function (props) {
       }
 
     </Navbar>
+  </div>
+
   )
 }
 

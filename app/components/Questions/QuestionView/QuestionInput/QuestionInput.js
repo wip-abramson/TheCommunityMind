@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import {FormGroup, Col, Button, Row, FormControl} from 'react-bootstrap';
-import Thread from '../../../Thread/Thread';
+import Thread from '../../../ThreadItem/ThreadItem';
 
 const QuestionInput = ({ questionText, questionThreads, placeholder, onKeyPress, onTextChange, onSubmit, removeThread}) => {
 

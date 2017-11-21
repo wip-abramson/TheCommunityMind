@@ -38,7 +38,6 @@ function QuestionView(props) {
       {getQuestionInput()}
 
 
-
       <QuestionList
         questions={props.questions}
         onSelectQuestion={props.onSelectQuestion}
@@ -53,14 +52,18 @@ function QuestionView(props) {
 function getCurrentWhyQuestion(question) {
   if (question) {
     return (
-      <QuestionContainer
-        questionType={question}
-        link='/'
-        onSelectQuestion={() => {
-          return null
-        } }
-      >
-      </QuestionContainer>
+      <div>
+        <QuestionContainer
+          questionType={question}
+          link='/'
+          onSelectQuestion={() => {
+            return null
+          } }
+        >
+        </QuestionContainer>
+        <br/>
+      </div>
+
     )
   }
 }
@@ -68,14 +71,18 @@ function getCurrentWhyQuestion(question) {
 function getCurrentWhatIf(question) {
   if (question) {
     return (
-      <QuestionContainer
-        questionType={question}
-        link='/whatif'
-        onSelectQuestion={() => {
-          return null
-        } }
-      >
-      </QuestionContainer>
+      <div>
+        <QuestionContainer
+          questionType={question}
+          link='/whatif'
+          onSelectQuestion={() => {
+            return null
+          } }
+        >
+        </QuestionContainer>
+        <br/>
+
+      </div>
     )
   }
 }

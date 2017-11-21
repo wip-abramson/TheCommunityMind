@@ -38,7 +38,7 @@ QuestionList.propTypes = {
     }).isRequired
   }).isRequired),
   onSelectQuestion: PropTypes.func.isRequired,
-  link: PropTypes.bool,
+  link: PropTypes.string,
 };
 
 export default QuestionList;

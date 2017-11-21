@@ -9,13 +9,6 @@ const QuestionInput = ({ questionText, questionThreads, placeholder, onKeyPress,
 
   return (
     <div style={{padding: "30px", border: "1px solid black", borderRadius: "20px", margin: "5px"}}>
-      {/*<form onSubmit={function (e) {*/}
-        {/*e.preventDefault()*/}
-        {/*if (!questionText.trim()) {*/}
-          {/*return;*/}
-        {/*}*/}
-        {/*console.log(questionText);*/}
-      {/*}}>*/}
 
         <FormControl
           type="text"
@@ -24,7 +17,7 @@ const QuestionInput = ({ questionText, questionThreads, placeholder, onKeyPress,
           onChange={(e) => onTextChange(e)}
           />
 
-        <p>Connect your question to the community mind by adding up to five threads</p>
+        <p>Link your question into the community mind by adding up to five threads</p>
         <div>
           {questionThreads.map((thread) => {
             console.log(thread.name)

@@ -112,6 +112,7 @@ const typeDefs = `
   
   
   type Query {
+   topTags: [Tag]
    tags: [Tag]    
    whys: [Why]
    user(id: ID!): User

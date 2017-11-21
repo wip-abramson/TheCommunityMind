@@ -13,6 +13,9 @@ export const resolvers = {
   Date: GraphQLDate,
 
   Query: {
+    topTags: (_, args, ctx) => {
+      return tagLogic.topTags(_, args, ctx);
+    },
     tags: (_, args, ctx) => {
       return tagLogic.query(_, args, ctx);
     },
@@ -30,7 +33,7 @@ export const resolvers = {
       console.log("USER QUERY")
       return userLogic.query(_, args, ctx);
     },
-    whyFeed(_, args , ctx) {
+    whyFeed(_, args, ctx) {
       return whyLogic.whyFeed(_, args, ctx);
     },
     howFeed(_, args, ctx) {
@@ -211,11 +214,11 @@ export const resolvers = {
       console.log("QTYPE")
       console.log(obj.whatifId)
       // console.log(obj.dataValues[whatIfId])
-      if(obj.whatifId){
+      if (obj.whatifId) {
         return 'How';
       }
 
-      if(obj.whyId){
+      if (obj.whyId) {
         return 'WhatIf';
       }
 

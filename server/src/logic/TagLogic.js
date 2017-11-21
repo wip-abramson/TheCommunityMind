@@ -19,6 +19,24 @@ export const tagLogic = {
         return Promise.reject(error)
       })
   },
+  topTags(_, args, ctx) {
+    return authLogic.getAuthenticatedUser(ctx)
+      .then(user => {
+        Tag.findAll({
+          include: [{ model: User, where: { id: user.id } }]
+        })
+          .then(tags => {
+            return rankedTags(tags);
+          })
+      })
+      .catch(error => {
+        console.log("No User Logged in, Returning top general tags");
+        return Tag.findAll()
+          .then(tags => {
+            return rankedTags(tags);
+          })
+      })
+  },
   findOrCreateTag(_, { name }, ctx) {
     return authLogic.getAuthenticatedUser(ctx)
       .then(user => {
@@ -73,4 +91,40 @@ export const tagLogic = {
         return Promise.reject(error)
       })
   }
+}
+
+const rankedTags = (tags) => {
+
+  const tagLimit = 5;
+
+  return Promise.all(tags.map(tag => {
+    return User.count({
+      include: [{ model: Tag, where: { id: tag.id } }]
+    })
+      .then(numberOfFollowers => {
+        return Question.count({
+          include: [{ model: Tag, where: { id: tag.id } }]
+        })
+          .then(numberOfQuestions => {
+            return {
+              tag: tag,
+              // work out the tag ranking number atm just add the two numbers
+              tagRanking: numberOfQuestions + numberOfFollowers
+            }
+          })
+
+      })
+  }))
+
+    .then(calculatedTags => {
+      calculatedTags.forEach((calcTag => console.log("TAG RANKING", calcTag.tagRanking, calcTag.tag.name)));
+      calculatedTags.sort((a, b) => {
+
+        return b.tagRanking - a.tagRanking;
+      })
+      var topTags = calculatedTags.slice(0, tagLimit);
+
+      return topTags.map(topTag => topTag.tag);
+    })
+
 }

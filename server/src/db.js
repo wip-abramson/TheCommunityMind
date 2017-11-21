@@ -214,15 +214,15 @@ const questions = [
     whatifs: [
       {
         whatif: "What if we thought of development in the sea like building a spacestation",
-        hows: ["How would it survive potential collisions"]
+        hows: ["How would they survive potential collisions"]
       },
       {
         whatif: "What if these cities cleaned the ocean at the same time",
         hows: ["how would it do this", "how could we use any materials recovered"]
       },
       {
-        whatif: "What id these cities actually existed under the sea",
-        hows: ["how would it withstand the pressure"]
+        whatif: "What if these cities actually existed under the sea",
+        hows: ["how would they withstand the pressure"]
       },
     ],
   },
@@ -230,8 +230,8 @@ const questions = [
     why: "Why don't people question their reality more",
     whatifs: [
       {
-        whatif: "What if we encourages questions whenever they are asked",
-        hows: ["How can we show our appreciation for each question"]
+        whatif: "What if we encouraged questions whenever they are asked",
+        hows: ["How can we show our appreciation for each question", "How can we ensure we don't write of anyone's questions before thinking about it"]
       },
       { whatif: "What if we admit when we don't know the answer", hows: [] },
 
@@ -250,7 +250,7 @@ const questions = [
       },
       {
         whatif: "what if I changed my environment",
-        hows: ["How can I identify the envirnment that makes me least happy"]
+        hows: ["How can I identify the environment that makes me least happy"]
       }
 
     ]

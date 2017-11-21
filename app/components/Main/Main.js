@@ -1,7 +1,7 @@
 import React from 'react'
 import MainHeader from './Header/MainHeader'
 import FullDiv from '../generic/FullDiv';
-import { Grid } from 'react-bootstrap'
+import { Grid, Row } from 'react-bootstrap'
 import { connect } from 'react-redux'
 import { signOut } from '../../actions/Auth';
 import { withApollo } from 'react-apollo';
@@ -71,8 +71,9 @@ let Main = React.createClass({
           viewProfile={this.viewProfile}
           viewWatchList={this.viewWatchList}
         ></MainHeader>
-        <Grid style={this.style}>
 
+
+        <Grid style={this.style}>
           {this.props.children}
         </Grid>
         <Notifications

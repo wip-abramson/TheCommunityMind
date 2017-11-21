@@ -22,7 +22,7 @@ export const tagLogic = {
   topTags(_, args, ctx) {
     return authLogic.getAuthenticatedUser(ctx)
       .then(user => {
-        Tag.findAll({
+        return Tag.findAll({
           include: [{ model: User, where: { id: user.id } }]
         })
           .then(tags => {
@@ -96,7 +96,9 @@ export const tagLogic = {
 const rankedTags = (tags) => {
 
   const tagLimit = 5;
-
+  if (!tags) {
+    return [];
+  }
   return Promise.all(tags.map(tag => {
     return User.count({
       include: [{ model: Tag, where: { id: tag.id } }]

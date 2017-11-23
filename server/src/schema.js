@@ -1,5 +1,177 @@
-import {makeExecutableSchema} from "graphql-tools";
+// import {
+//   graphql,
+//   GraphQLSchema,
+//   GraphQLObjectType,
+//   GraphQLString,
+//   GraphQLScalarType,
+//   GraphQLBoolean,
+//   GraphQLID,
+//   GraphQLEnumType,
+//   GraphQLInt,
+//   GraphQLList
+// } from 'graphql';
 import {resolvers} from "./resolvers";
+// import {resolver, relay} from 'graphql-sequelize';
+import { makeExecutableSchema } from 'graphql-tools'
+
+// import { Conn, Tag, User, Why, WhatIf, How, Question } from './db';
+//
+// const { sequelizeConnection, sequelizeNodeInterface } = relay;
+// const {
+//   nodeInterface,
+//   nodeField,
+//   nodeTypeMapper
+// } = sequelizeNodeInterface(Conn);
+
+// const Date = new GraphQLScalarType();
+
+// const tagType = new GraphQLObjectType({
+//   name: Tag.name,
+//   fields: {
+//     id: {
+//       type: GraphQLID
+//     },
+//     name: {
+//       type: GraphQLString
+//     },
+//     followers: {
+//       type: () => new GraphQLList(userType)
+//     },
+//     interfaces: [nodeInterface]
+//   }
+// })
+//
+//
+//
+// const userType =  new GraphQLObjectType({
+//   name: User.name,
+//   fields: {
+//     id: {
+//       type: GraphQLID
+//     },
+//     username: {
+//       type: GraphQLString,
+//       required: true
+//     },
+//     password: {
+//       type: GraphQLString
+//     },
+//     interestedIn: {
+//       type: () => new GraphQLList(tagType)
+//     }
+//   }
+// });
+
+// const userTaskConnection = sequelizeConnection({
+//   name: 'userTask',
+//   nodeType: tagType,
+//   target: User.Tasks | Task, // Can be an association for parent related connections or a model for "anonymous" connections
+//   // if no orderBy is specified the model primary key will be used.
+//   orderBy: new GraphQLEnumType({
+//     name: 'UserTaskOrderBy',
+//     values: {
+//       AGE: {value: ['createdAt', 'DESC']}, // The first ENUM value will be the default order. The direction will be used for `first`, will automatically be inversed for `last` lookups.
+//       TITLE: {value:  ['title', 'ASC']},
+//       CUSTOM: {value:  [function (source, args, context, info) {}, 'ASC']} // build and return custom order for sequelize orderBy option
+//     }
+//   }),
+//   where: function (key, value, currentWhere) {
+//     // for custom args other than connectionArgs return a sequelize where parameter
+//
+//     return {[key]: value};
+//   },
+//   connectionFields: {
+//     total: {
+//       type: GraphQLInt,
+//       resolve: ({source}) => {
+//         /*
+//          * We return a object containing the source, edges and more as the connection result
+//          * You there for need to extract source from the usual source argument
+//          */
+//         return source.countTasks();
+//       }
+//     }
+//   },
+//   edgeFields: {
+//     wasCreatedByUser: {
+//       type: GraphQLBoolean,
+//       resolve: (edge) => {
+//         /*
+//          * We attach the connection source to edges
+//          */
+//         return edge.node.createdBy === edge.source.id;
+//       }
+//     }
+//   }
+// });
+
+// const userTagConnection = sequelizeConnection({
+//   name: "userTag",
+//   nodeType: tagType,
+//   target: User.Tags || Tag,
+//
+//   orderBy: new GraphQLEnumType({
+//     name: 'UserTaskOrderBy',
+//     values: {
+//       AGE: {value: ['createdAt', 'DESC']}, // The first ENUM value will be the default order. The direction will be used for `first`, will automatically be inversed for `last` lookups.
+//       TITLE: {value:  ['title', 'ASC']},
+//       CUSTOM: {value:  [function (source, args, context, info) {}, 'ASC']} // build and return custom order for sequelize orderBy option
+//     }
+//   }),
+//   where: function (key, value, currentWhere) {
+//     // for custom args other than connectionArgs return a sequelize where parameter
+//
+//     return {[key]: value};
+//   },
+//   connectionFields: {
+//     total: {
+//       type: GraphQLInt,
+//       resolve: ({source}) => {
+//         /*
+//          * We return a object containing the source, edges and more as the connection result
+//          * You there for need to extract source from the usual source argument
+//          */
+//         return source.countTasks();
+//       }
+//     }
+//   },
+//   edgeFields: {
+//     wasCreatedByUser: {
+//       type: GraphQLBoolean,
+//       resolve: (edge) => {
+//         /*
+//          * We attach the connection source to edges
+//          */
+//         return edge.node.createdBy === edge.source.id;
+//       }
+//     }
+//   }
+//
+// })
+//
+// nodeTypeMapper.mapTypes({
+//   [User.name]: userType,
+//   [Tag.name]: tagType,
+//
+// });
+//
+// const testSchema = new GraphQLSchema({
+//   query: new GraphQLObjectType({
+//     name: 'RootType',
+//     fields: {
+//       user: {
+//         type: userType,
+//         args: {
+//           id: {
+//             type: GraphQLID
+//           }
+//         },
+//         resolve: resolver(User)
+//       },
+//       node: nodeField
+//     }
+//   })
+// });
 
 const typeDefs = `
   scalar Date
@@ -11,6 +183,11 @@ const typeDefs = `
    numberOfFollowers: Int!
    questions: [Question]
    questionFeed(cursor: String): QuestionFeed
+  }
+  
+  type PageInfo {
+    hasNextPage: Boolean!
+    hasPreviousPage: Boolean!
   }
   
   type Question {
@@ -36,6 +213,27 @@ const typeDefs = `
     id: ID!
     question: Question!
     createdAt: Date!
+  }
+  
+  type QuestionTypeConnection {
+    edges: [WhyEdge]
+    pageInfo: PageInfo
+  }
+  
+  type QuestionTypeEdge {
+    cursor: String!
+    pageInfo: PageInfo
+    node: QuestionType!
+  }
+  
+  type WhyConnection {
+    edges: [WhyEdge]
+    pageInfo: PageInfo
+  }
+  
+  type WhyEdge {
+    cursor: String!
+    node: Why!
   }
   
   type Why implements QuestionType{
@@ -114,7 +312,7 @@ const typeDefs = `
   type Query {
    topTags: [Tag]
    tags: [Tag]    
-   whys: [Why]
+   whys(first: Int, after: String, last: Int, before: String): WhyConnection!
    user(id: ID!): User
    whatIfs(whyId: ID!): [WhatIf]
    hows(whatIfId: ID!): [How]

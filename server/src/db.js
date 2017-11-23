@@ -386,4 +386,5 @@ export {
   User,
   Question,
   Tag,
+  Conn,
 }

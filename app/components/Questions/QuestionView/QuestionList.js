@@ -12,9 +12,9 @@ const QuestionList = (props) => {
       {props.questions.map(function (question) {
         return (
           <QuestionContainer
-            key={"id-" + question.id + (id++)}
+            key={"id-" + question.node.id + (id++)}
             onSelectQuestion={props.onSelectQuestion}
-            questionType={question}
+            questionType={question.node}
             link={props.link}
             currentUser={props.currentUser}
           >

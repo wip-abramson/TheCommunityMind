@@ -39,7 +39,7 @@ function QuestionView(props) {
 
 
       <QuestionList
-        questions={props.questions}
+        questions={props.questions.edges}
         onSelectQuestion={props.onSelectQuestion}
         link={props.link}
         currentUser={props.currentUser}

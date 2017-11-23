@@ -2,7 +2,7 @@
  * Created by will on 07/11/17.
  */
 import { authLogic } from './AuthLogic';
-import { Why, Tag } from '../db';
+import { Conn, Why, Tag } from '../db';
 
 export const whyLogic = {
   createWhy(_, { question, tagIds }, ctx) {
@@ -24,7 +24,7 @@ export const whyLogic = {
                     console.log("FOUND TAGS", tags.length)
                     return whyQuestion.setTags(tags)
                       .then(() => {
-                      console.log("WHY CREATED", newWhy.id)
+                        console.log("WHY CREATED", newWhy.id)
                         return newWhy;
                       })
 
@@ -59,19 +59,84 @@ export const whyLogic = {
         return Promise.reject(error)
       })
   },
-  query() {
+  query(_, { first, last, before, after }) {
+    console.log(first, after)
+
+    const where = {};
+    var order;
+
+    // because we return messages from newest -> oldest
+    // before actually means newer (id > cursor)
+    // after actually means older (id < cursor)
+
+    if (before) {
+      // convert base-64 to utf8 createdAt
+      where.createdAt = { $gt: Buffer.from(before, 'base64').toString() };
+      order =  [['createdAt', 'ASC']]
+
+    }
+    if (after) {
+      where.createdAt = { $lt: Buffer.from(after, 'base64').toString() };
+      order = [['createdAt', 'DESC']]
+    }
+
+    console.log(where.createdAt)
+
     return Why.findAll({
-      order: [['createdAt', 'DESC']],
+      where,
+      order,
+      limit: first || last,
     })
       .then(whys => {
-        return whys;
-      })
+          console.log(whys.length)
+          const edges = whys.map(why => {
+            console.log(Date.parse(why.createdAt));
+            console.log(why.createdAt, Buffer.from(why.createdAt.toString("fff")).toString("base64"))
+            return  ({
+
+              cursor: Buffer.from(why.createdAt.toString()).toString('base64'), // convert createdAt to cursor
+              node: why
+            })
+          });
+
+          return {
+            edges,
+            pageInfo: {
+              hasNextPage () {
+                if (whys.length < (last || first)) {
+                  return Promise.resolve(false);
+                }
+
+                return Why.findOne({
+                  where: {
+                    createdAt: {
+                      [before ? '$gt' : '$lt']: whys[whys.length - 1].createdAt,
+                    },
+                  },
+                  order: [['createdAt', 'DESC']],
+                })
+                  .then(why => !!why);
+              },
+              hasPreviousPage  () {
+                return Why.findOne({
+                  where: {
+                    createdAt: where.createdAt,
+                  },
+                  order: [['createdAt', 'DESC']],
+                })
+                  .then(why => !!why);
+              }
+            }
+          }
+        }
+      )
       .catch(error => {
         console.log(error, "Error");
         return Promise.reject(error)
       })
   },
-  paginatedQuery(_, { cursor }, ctx) {
+  paginatedQuery(_, { cursor }, ctx)
+  {
     // find all whys
     return this.query().then(whys => {
       // if no cursor set cursor as time of last created why

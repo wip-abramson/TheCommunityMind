@@ -140,6 +140,16 @@ export const resolvers = {
     }
   },
 
+  PageInfo: {
+    // we will have each connection supply its own hasNextPage/hasPreviousPage functions!
+    hasNextPage(connection, args) {
+      return connection.hasNextPage();
+    },
+    hasPreviousPage(connection, args) {
+      return connection.hasPreviousPage();
+    },
+  },
+
   Why: {
     whatIfs(why, args, ctx) {
       return whyLogic.whatIfs(why, args, ctx);

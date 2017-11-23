@@ -74,7 +74,9 @@ export const userLogic = {
       include: [{ model: Question, where: { userId: user.id } }]
     })
   },
-  staredQuestions(user, args, ctx) {
+  staredQuestions(user, { first, last, before, after }, ctx) {
+
+
     // No Auth needed because everyone should be able to see a users stared questions
     return Why.findAll({
       include: [{model:Question, include: [{ model: User, as: "StaredBy", where: { id: user.id }}] }]

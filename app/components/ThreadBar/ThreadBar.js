@@ -3,6 +3,8 @@
  */
 import React from 'react';
 
+import { Link } from 'react-router';
+
 const ThreadBar = (props) => {
   if (props.loading) {
     return <p>Loading ...</p>;
@@ -13,13 +15,14 @@ const ThreadBar = (props) => {
   // console.log(props.tags.length);
   return (
     <div style={{padding: "10px"}}>
-      <button>Home</button>
+      <Link to="/">Home</Link>
       {props.tags.map(tag => {
-        return <button>{tag.name[0].toUpperCase() + tag.name.slice(1)}</button>
+        var linkTo = "/thread/" + tag.name;
+        return <Link to={linkTo}>{tag.name[0].toUpperCase() + tag.name.slice(1)}</Link>
       })}
 
-      <button>Popular in the Community</button>
-      <button>More ...</button>
+      <Link to="/popular">Popular in the Community</Link>
+      <Link to="/threads">More ...</Link>
     </div>
   )
 

@@ -3,6 +3,7 @@
  */
 import { authLogic } from './AuthLogic';
 import { How } from '../db';
+import { paginationLogic } from './PaginationLogic';
 
 export const howLogic = {
   createHow(_, { question, whatIfId }, ctx) {
@@ -32,29 +33,16 @@ export const howLogic = {
   },
   query(_, { whatIfId, first, after, last, before }, ctx) {
 
-    const where = { whatIfId: whatIfId };
-    var order;
+    const args = paginationLogic.buildArgs(first, after, last, before);
+    args.where ? args.where.whatifId = whatIfId : args.where = { whatifId: whatIfId}
 
-    // because we return messages from newest -> oldest
-    // before actually means newer (id > cursor)
-    // after actually means older (id < cursor)
+    return this.buildPaginatedHows(args, before);
 
-    if (before) {
-      // convert base-64 to utf8 createdAt
-      where.createdAt = { $gt: Buffer.from(before, 'base64').toString() };
-      order =  [['createdAt', 'ASC']]
+  },
 
-    }
-    if (after) {
-      where.createdAt = { $lt: Buffer.from(after, 'base64').toString() };
-      order = [['createdAt', 'DESC']]
-    }
+  buildPaginatedHows(args, before) {
 
-    return How.findAll({
-      where,
-      order,
-      limit: first || last
-    })
+    return How.findAll(args)
       .then(hows => {
         console.log(hows.length)
 
@@ -69,7 +57,7 @@ export const howLogic = {
           edges,
           pageInfo: {
             hasNextPage() {
-              if (hows.length < (last || first)) {
+              if (hows.length < args.limit) {
                 return Promise.resolve(false);
               }
 
@@ -86,7 +74,7 @@ export const howLogic = {
             hasPreviousPage  () {
               return How.findOne({
                 where: {
-                  createdAt: where.createdAt,
+                  createdAt: args.where.createdAt,
                 },
                 order: [['createdAt', 'DESC']],
               })
@@ -101,7 +89,8 @@ export const howLogic = {
         console.log(error, "Error");
         return Promise.reject(error)
       });
-  },
+  }
+
 
 }
 

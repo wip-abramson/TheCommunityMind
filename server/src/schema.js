@@ -124,9 +124,9 @@ const typeDefs = `
     username: String!
     password: String!
     email: String!
-    whys: [Why]
-    hows: [How]
-    whatIfs: [WhatIf]
+    whys(first: Int, after: String, last: Int, before: String): WhyConnection!
+    hows(first: Int, after: String, last: Int, before: String): HowConnection!
+    whatIfs(first: Int, after: String, last: Int, before: String): WhatIfConnection!
     questions(first: Int, after: String, last: Int, before: String): QuestionTypeConnection
     jwt: String # json web token for access
     staredQuestions(first: Int, after: String, last: Int, before: String): QuestionTypeConnection
@@ -139,11 +139,6 @@ const typeDefs = `
     interestedIn: [Tag]
   }
   
-  type UserFeed {
-    cursor: String!
-    
-    users: [User]!
-  }
   
   
   type Query {

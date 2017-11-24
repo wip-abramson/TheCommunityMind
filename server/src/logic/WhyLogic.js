@@ -3,6 +3,7 @@
  */
 import { authLogic } from './AuthLogic';
 import { Conn, Why, Tag } from '../db';
+import { paginationLogic } from './PaginationLogic';
 
 export const whyLogic = {
   createWhy(_, { question, tagIds }, ctx) {
@@ -61,31 +62,16 @@ export const whyLogic = {
   },
   query(_, { first, last, before, after }) {
 
-    const where = {};
-    var order;
+    const args = paginationLogic.buildArgs(first, last, before, after);
 
-    // because we return messages from newest -> oldest
-    // before actually means newer (id > cursor)
-    // after actually means older (id < cursor)
+    return this.buildPaginatedWhys(args, before);
+  },
 
-    if (before) {
-      // convert base-64 to utf8 createdAt
-      where.createdAt = { $gt: Buffer.from(before, 'base64').toString() };
-      order =  [['createdAt', 'ASC']]
+  buildPaginatedWhys(args, before) {
 
-    }
-    if (after) {
-      where.createdAt = { $lt: Buffer.from(after, 'base64').toString() };
-      order = [['createdAt', 'DESC']]
-    }
+    var isCursor = args.where.createdAt ? true : false;
 
-    console.log(where.createdAt)
-
-    return Why.findAll({
-      where,
-      order,
-      limit: first || last,
-    })
+    return Why.findAll(args)
       .then(whys => {
           const edges = whys.map(why => {
 
@@ -100,7 +86,7 @@ export const whyLogic = {
             edges,
             pageInfo: {
               hasNextPage () {
-                if (whys.length < (last || first)) {
+                if (whys.length < args.limit) {
                   return Promise.resolve(false);
                 }
 
@@ -115,9 +101,10 @@ export const whyLogic = {
                   .then(why => !!why);
               },
               hasPreviousPage  () {
+                const where = isCursor ? { createdAt: args.where.createdAt} : {}
                 return Why.findOne({
                   where: {
-                    createdAt: where.createdAt,
+                    createdAt: args.where.createdAt,
                   },
                   order: [['createdAt', 'DESC']],
                 })
@@ -131,6 +118,6 @@ export const whyLogic = {
         console.log(error, "Error");
         return Promise.reject(error)
       })
-  },
+  }
 
 }

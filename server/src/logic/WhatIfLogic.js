@@ -3,6 +3,7 @@
  */
 import { authLogic } from './AuthLogic'
 import { WhatIf } from '../db';
+import { paginationLogic } from './PaginationLogic';
 
 export const whatIfLogic = {
   createWhatIf(_, { question, whyId }, ctx) {
@@ -44,38 +45,23 @@ export const whatIfLogic = {
         return Promise.reject(error)
       })
   },
-  query(_, { whyId, first, last, before, after }, ctx) {
+  query(_, { whyId, first, after, last, before }, ctx) {
 
-    const where = { whyId: whyId };
-    var order;
 
-    // because we return messages from newest -> oldest
-    // before actually means newer (id > cursor)
-    // after actually means older (id < cursor)
+    const args = paginationLogic.buildArgs(first, after, last, before);
+    args.where ? args.where.whyId = whyId : args.where = { whyId: whyId };
 
-    if (before) {
-      // convert base-64 to utf8 createdAt
-      where.createdAt = { $gt: Buffer.from(before, 'base64').toString() };
-      order =  [['createdAt', 'ASC']]
 
-    }
-    if (after) {
-      where.createdAt = { $lt: Buffer.from(after, 'base64').toString() };
-      order = [['createdAt', 'DESC']]
-    }
+    return this.buildPaginatedWhatIfs(args, before);
 
-    console.log(where.createdAt)
+  },
 
-    return WhatIf.findAll({
-      where,
-      order,
-      limit: first || last
-    })
+  buildPaginatedWhatIfs(args, before) {
+    return WhatIf.findAll(args)
       .then(whatIfs => {
         const edges = whatIfs.map(whatIf => {
 
           return  ({
-
             cursor: Buffer.from(whatIf.createdAt.toString()).toString('base64'), // convert createdAt to cursor
             node: whatIf
           })
@@ -85,7 +71,7 @@ export const whatIfLogic = {
           edges,
           pageInfo: {
             hasNextPage () {
-              if (whatIfs.length < (last || first)) {
+              if (whatIfs.length < args.limit) {
                 return Promise.resolve(false);
               }
 
@@ -102,7 +88,7 @@ export const whatIfLogic = {
             hasPreviousPage  () {
               return WhatIf.findOne({
                 where: {
-                  createdAt: where.createdAt,
+                  createdAt: args.where.createdAt,
                 },
                 order: [['createdAt', 'DESC']],
               })
@@ -115,5 +101,5 @@ export const whatIfLogic = {
         console.log(error, "Error");
         return Promise.reject(error)
       })
-  },
-}
+  }
+};

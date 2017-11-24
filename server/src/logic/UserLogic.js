@@ -3,6 +3,10 @@
  */
 import { Question, User, Tag, Why, WhatIf, How } from '../db';
 import { authLogic } from './AuthLogic';
+import { paginationLogic } from './PaginationLogic';
+import { whyLogic } from './WhyLogic';
+import { whatIfLogic } from './WhatIfLogic';
+import { howLogic } from './HowLogic';
 
 export const userLogic = {
   jwt(user) {
@@ -20,9 +24,9 @@ export const userLogic = {
   },
   questions(user, { first, after, last, before }, ctx) {
 
-    const args = setPaginationQueryArgs(first, after, last, before);
 
-    args.include = [{ model: Question, where: { userId: user.id }, order: [['createdAt', 'DESC']] }]
+    const args = paginationLogic.buildArgs(first, after, last, before);
+    args.include = [{ model: Question, where: { userId: user.id }, order: [['createdAt', 'DESC']] }];
 
     return findAllQuestions(args)
       .then(allQuestions => paginate(first, after, last, before, allQuestions))
@@ -32,26 +36,33 @@ export const userLogic = {
         return Promise.reject(error)
       });
   },
-  whys(user, args, ctx) {
-    return Why.findAll({
-      include: [{ model: Question, where: { userId: user.id } }]
-    })
+  whys(user, {first, after, last, before}, ctx) {
+
+    const args = paginationLogic.buildArgs(first, after, last, before);
+    args.include = [{ model: Question, where: { userId: user.id } }];
+
+    return whyLogic.buildPaginatedWhys(args, before);
+
   },
-  whatIfs(user, args, ctx) {
-    return WhatIf.findAll({
-      include: [{ model: Question, where: { userId: user.id } }]
-    })
+  whatIfs(user, {first, after, last, before}, ctx) {
+    const args = paginationLogic.buildArgs(first, after, last, before);
+    args.include = [{ model: Question, where: { userId: user.id } }];
+
+    return whatIfLogic.buildPaginatedWhatIfs(args, before)
   },
-  hows(user, args, ctx) {
-    return How.findAll({
-      include: [{ model: Question, where: { userId: user.id } }]
-    })
+  hows(user, {first, after, last, before}, ctx) {
+    const args = paginationLogic.buildArgs(first, after, last, before);
+    args.include = [{ model: Question, where: { userId: user.id } }];
+
+    return howLogic.buildPaginatedHows(args, before)
   },
   staredQuestions(user, { first, after, last, before }, ctx) {
 
-    const args = setPaginationQueryArgs(first, after, last, before);
+    const staredQArgs = {};
+    staredQArgs.include =[{model:Question, include: [{ model: User, as: "StaredBy", where: { id: user.id }}] }];
 
-    args.include =[{model:Question, include: [{ model: User, as: "StaredBy", where: { id: user.id }}] }];
+    const args = paginationLogic.buildArgs(first, after, last, before, staredQArgs);
+
 
 
     return findAllQuestions(args)
@@ -327,29 +338,6 @@ function paginate(first, after, last, before, items) {
       hasNextPage: () => hasNextPage
     }
   }
-}
-
-function setPaginationQueryArgs(first, after, last, before) {
-  const args = {}
-
-  args.limit = first || last;
-
-  // because we return messages from newest -> oldest
-  // before actually means newer (id > cursor)
-  // after actually means older (id < cursor)
-
-  if (before) {
-    // convert base-64 to utf8 createdAt
-    args.where.createdAt = { $gt: Buffer.from(before, 'base64').toString() };
-    args.order = [['createdAt', 'ASC']]
-
-  }
-  if (after) {
-    args.where.createdAt = { $lt: Buffer.from(after, 'base64').toString() };
-    args.order = [['createdAt', 'DESC']]
-  }
-
-  return args;
 }
 
 function findAllQuestions(args) {

@@ -30,67 +30,78 @@ export const howLogic = {
   question(how) {
     return how.getQuestion();
   },
-  query(_, { whatIfId }, ctx) {
+  query(_, { whatIfId, first, after, last, before }, ctx) {
+
+    const where = { whatIfId: whatIfId };
+    var order;
+
+    // because we return messages from newest -> oldest
+    // before actually means newer (id > cursor)
+    // after actually means older (id < cursor)
+
+    if (before) {
+      // convert base-64 to utf8 createdAt
+      where.createdAt = { $gt: Buffer.from(before, 'base64').toString() };
+      order =  [['createdAt', 'ASC']]
+
+    }
+    if (after) {
+      where.createdAt = { $lt: Buffer.from(after, 'base64').toString() };
+      order = [['createdAt', 'DESC']]
+    }
+
     return How.findAll({
-      where: {
-        whatIfId
-      },
-      order: [['createdAt', 'DESC']],
+      where,
+      order,
+      limit: first || last
     })
       .then(hows => {
         console.log(hows.length)
-        return hows;
+
+        const edges =  hows.map(how => {
+          return ({
+            node : how,
+            cursor: Buffer.from(how.createdAt.toString()).toString('base64'), // convert createdAt to cursor
+          })
+        })
+
+        return {
+          edges,
+          pageInfo: {
+            hasNextPage() {
+              if (hows.length < (last || first)) {
+                return Promise.resolve(false);
+              }
+
+              return How.findOne({
+                where: {
+                  createdAt: {
+                    [before ? '$gt' : '$lt']: hows[hows.length - 1].createdAt,
+                  },
+                },
+                order: [['createdAt', 'DESC']],
+              })
+                .then(how => !!how);
+            },
+            hasPreviousPage  () {
+              return How.findOne({
+                where: {
+                  createdAt: where.createdAt,
+                },
+                order: [['createdAt', 'DESC']],
+              })
+                .then(how => !!how);
+            }
+
+          }
+        }
+
       })
       .catch(error => {
         console.log(error, "Error");
         return Promise.reject(error)
       });
   },
-  paginatedQuery(_, { whatIfId, cursor }, ctx) {
-    return this.query(_, { whatIfId }, ctx).then(hows => {
-      // if no cursor set cursor as time of last created hoq
-      if (!cursor) {
-        console.log(hows.length)
-        console.log(hows[0].createdAt)
-        cursor = hows[0].createdAt;
-      }
 
-      console.log(cursor, "cursor")
-      // fix limit of number of whys returned
-      const limit = 2;
-
-      // find index of message created at time held in cursor
-      const newestHowIndex = hows.findIndex(
-        how => how.createdAt === cursor
-      );
-      console.log(newestHowIndex, "howIndex")
-
-      var howFeed = {};
-      // We need to return a new cursor to the client so that it
-      // can find the next page. Let's set newCursor to the
-      // createdAt time of the last how in this howFeed:
-      var newCursor;
-      try {
-        newCursor =
-          hows[newestHowIndex + limit].createdAt;
-      }
-      catch(error) {
-        // will throw error if newestHowIndex+limit bigger than size of list
-        // so set cursor as time last of last how in the list
-        newCursor =
-          hows[hows.length - 1].createdAt;
-      }
-
-      howFeed = {
-        hows: hows.slice(
-          newestHowIndex,
-          newestHowIndex + limit
-        ),
-        cursor: newCursor,
-      }
-
-      return howFeed;
-    })
-  }
 }
 

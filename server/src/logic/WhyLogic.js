@@ -21,10 +21,10 @@ export const whyLogic = {
                   where: { id: tagIds }
                 })
                   .then(tags => {
-                    console.log("FOUND TAGS", tags.length)
+                    console.log("FOUND TAGS", tags.length);
                     return whyQuestion.setTags(tags)
                       .then(() => {
-                        console.log("WHY CREATED", newWhy.id)
+                        console.log("WHY CREATED", newWhy.id);
                         return newWhy;
                       })
 
@@ -60,7 +60,6 @@ export const whyLogic = {
       })
   },
   query(_, { first, last, before, after }) {
-    console.log(first, after)
 
     const where = {};
     var order;
@@ -88,10 +87,8 @@ export const whyLogic = {
       limit: first || last,
     })
       .then(whys => {
-          console.log(whys.length)
           const edges = whys.map(why => {
-            console.log(Date.parse(why.createdAt));
-            console.log(why.createdAt, Buffer.from(why.createdAt.toString("fff")).toString("base64"))
+
             return  ({
 
               cursor: Buffer.from(why.createdAt.toString()).toString('base64'), // convert createdAt to cursor
@@ -135,49 +132,5 @@ export const whyLogic = {
         return Promise.reject(error)
       })
   },
-  paginatedQuery(_, { cursor }, ctx)
-  {
-    // find all whys
-    return this.query().then(whys => {
-      // if no cursor set cursor as time of last created why
-      if (!cursor) {
-        console.log(whys[0].createdAt)
-        cursor = whys[0].createdAt;
-      }
 
-      // cursor = parseInt(cursor);
-      console.log(cursor, "cursor")
-      // fix limit of number of whys returned
-      const limit = 2;
-
-      // find index of message created at time held in cursor
-      const newestWhyIndex = whys.findIndex(
-        why => why.createdAt === cursor
-      );
-      console.log(newestWhyIndex, "whyIndex")
-      // We need to return a new cursor to the client so that it
-      // can find the next page. Let's set newCursor to the
-      // createdAt time of the last why in this whyFeed:
-      var newCursor;
-      try {
-        newCursor =
-          whys[newestWhyIndex + limit].createdAt;
-      }
-      catch (error) {
-        newCursor = whys[whys.length - 1].createdAt;
-      }
-
-      const whyFeed = {
-        whys: whys.slice(
-          newestWhyIndex,
-          newestWhyIndex + limit
-        ),
-        cursor: newCursor,
-      }
-
-      return whyFeed;
-
-    })
-
-  }
 }

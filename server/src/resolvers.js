@@ -33,15 +33,7 @@ export const resolvers = {
       console.log("USER QUERY")
       return userLogic.query(_, args, ctx);
     },
-    whyFeed(_, args, ctx) {
-      return whyLogic.whyFeed(_, args, ctx);
-    },
-    howFeed(_, args, ctx) {
-      return howLogic.paginatedQuery(_, args, ctx);
-    },
-    whatIfFeed(_, args, ctx) {
-      return whatIfLogic.paginatedQuery(_, args, ctx);
-    }
+
 
   },
   Mutation: {

@@ -18,42 +18,15 @@ export const userLogic = {
         return Promise.reject(error)
       });
   },
-  questions(user, args, ctx) {
+  questions(user, { first, after, last, before }, ctx) {
 
-    return Why.findAll({
-      include: [{ model: Question, where: { userId: user.id }, order: [['createdAt', 'DESC']] }]
+    const args = setPaginationQueryArgs(first, after, last, before);
 
-    })
-      .then(whys => {
-        console.log(whys.length);
-        return WhatIf.findAll({
-          include: [{ model: Question, where: { userId: user.id }, order: [['createdAt', 'DESC']] }]
+    args.include = [{ model: Question, where: { userId: user.id }, order: [['createdAt', 'DESC']] }]
 
-        })
-          .then(whatIfs => {
-            console.log(whatIfs.length);
+    return findAllQuestions(args)
+      .then(allQuestions => paginate(first, after, last, before, allQuestions))
 
-            return How.findAll({
-              include: [{
-                model: Question,
-                where: { userId: user.id },
-                order: [['createdAt', 'DESC']]
-              }]
-
-            }).then(hows => {
-              // console.log(hows[1]);
-
-              var questionType =  whys.concat(whatIfs, hows);
-              console.log(questionType.length);
-              questionType.sort((a, b) => {
-                a = new Date(a.createdAt);
-                b = new Date(b.createdAt);
-                return a>b ? -1 : a<b ? 1 : 0;
-              })
-              return questionType;
-            })
-          })
-      })
       .catch(error => {
         console.log(error, "Error");
         return Promise.reject(error)
@@ -74,34 +47,16 @@ export const userLogic = {
       include: [{ model: Question, where: { userId: user.id } }]
     })
   },
-  staredQuestions(user, { first, last, before, after }, ctx) {
+  staredQuestions(user, { first, after, last, before }, ctx) {
+
+    const args = setPaginationQueryArgs(first, after, last, before);
+
+    args.include =[{model:Question, include: [{ model: User, as: "StaredBy", where: { id: user.id }}] }];
 
 
-    // No Auth needed because everyone should be able to see a users stared questions
-    return Why.findAll({
-      include: [{model:Question, include: [{ model: User, as: "StaredBy", where: { id: user.id }}] }]
-    }).then (whys => {
-      return WhatIf.findAll({
-        include: [{model:Question, include: [{ model: User, as: "StaredBy", where: { id: user.id }}] }]
-      }).then (whatIfs => {
-        return How.findAll({
-          include: [{model:Question, include: [{ model: User, as: "StaredBy", where: { id: user.id }}] }]
-        }).then (hows => {
-          var questionType =  whys.concat(whatIfs, hows);
-          console.log(questionType.length);
-          questionType.sort((a, b) => {
-            a = new Date(a.createdAt);
-            b = new Date(b.createdAt);
-            return a>b ? -1 : a<b ? 1 : 0;
-          })
-          return questionType;
-        })
-      })
-    })
+    return findAllQuestions(args)
+      .then(allQuestions => paginate(first, after, last, before, allQuestions))
 
-      .then(staredQuestions => {
-        return staredQuestions;
-      })
       .catch(error => {
         console.log(error, "Error");
         return Promise.reject(error)
@@ -302,5 +257,122 @@ export const userLogic = {
       })
 
   }
+
+}
+
+function paginate(first, after, last, before, items) {
+
+  var hasNextPage = false;
+  var hasPreviousPage = false;
+  var limitedItems = [];
+  if (before) {
+    // convert base-64 to utf8 createdAt
+    var createdAt = Buffer.from(before, 'base64').toString()
+
+    const itemIndex = items.findIndex(
+      item => item.createdAt.toString() === createdAt
+    );
+    console.log(itemIndex);
+
+    if (itemIndex - last > 0) {
+      hasPreviousPage = true;
+    }
+
+    if (itemIndex !== items.length - 1) {
+      hasNextPage = true;
+    }
+
+    var limitedItems = items.slice(hasPreviousPage ? itemIndex - last : 0, itemIndex);
+
+  }
+  else if (after) {
+    var createdAt = Buffer.from(after, 'base64').toString();
+
+    const itemIndex = items.findIndex(
+      item => item.createdAt.toString() === createdAt
+    );
+    console.log(itemIndex);
+
+    if (itemIndex !== 0) {
+      hasPreviousPage = true;
+    }
+
+    if (itemIndex + first < items.length) {
+      hasNextPage = true;
+    }
+
+    var limitedItems = items.slice(itemIndex, itemIndex + first);
+
+  }
+  else {
+    var number = first ? first : last;
+
+    var limitedItems = items.slice(0, number);
+
+    if (number < items.length) {
+      hasNextPage = true;
+    }
+
+  }
+
+  var edges = limitedItems.map(node => ({
+    cursor: Buffer.from(node.createdAt.toString()).toString('base64'), // convert createdAt to cursor
+    node
+  }))
+
+  return {
+    edges,
+    pageInfo: {
+      hasPreviousPage: () => hasPreviousPage,
+      hasNextPage: () => hasNextPage
+    }
+  }
+}
+
+function setPaginationQueryArgs(first, after, last, before) {
+  const args = {}
+
+  args.limit = first || last;
+
+  // because we return messages from newest -> oldest
+  // before actually means newer (id > cursor)
+  // after actually means older (id < cursor)
+
+  if (before) {
+    // convert base-64 to utf8 createdAt
+    args.where.createdAt = { $gt: Buffer.from(before, 'base64').toString() };
+    args.order = [['createdAt', 'ASC']]
+
+  }
+  if (after) {
+    args.where.createdAt = { $lt: Buffer.from(after, 'base64').toString() };
+    args.order = [['createdAt', 'DESC']]
+  }
+
+  return args;
+}
+
+function findAllQuestions(args) {
+  return Why.findAll(args)
+    .then(whys => {
+      return WhatIf.findAll(args)
+        .then(whatIfs => {
+          return How.findAll(args)
+            .then(hows => {
+              var allQuestions = whys.concat(whatIfs, hows);
+
+              console.log(allQuestions.length);
+              allQuestions.sort((a, b) => {
+                a = new Date(a.createdAt);
+                b = new Date(b.createdAt);
+                return a > b ? -1 : a < b ? 1 : 0;
+              })
+
+              return allQuestions;
+              // return paginate(first, after, last, before, questionType);
+
+            })
+        })
+    })
 
 }

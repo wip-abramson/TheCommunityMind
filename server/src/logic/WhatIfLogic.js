@@ -44,63 +44,76 @@ export const whatIfLogic = {
         return Promise.reject(error)
       })
   },
-  query(_, { whyId }, ctx) {
+  query(_, { whyId, first, last, before, after }, ctx) {
+
+    const where = { whyId: whyId };
+    var order;
+
+    // because we return messages from newest -> oldest
+    // before actually means newer (id > cursor)
+    // after actually means older (id < cursor)
+
+    if (before) {
+      // convert base-64 to utf8 createdAt
+      where.createdAt = { $gt: Buffer.from(before, 'base64').toString() };
+      order =  [['createdAt', 'ASC']]
+
+    }
+    if (after) {
+      where.createdAt = { $lt: Buffer.from(after, 'base64').toString() };
+      order = [['createdAt', 'DESC']]
+    }
+
+    console.log(where.createdAt)
+
     return WhatIf.findAll({
-      where: {
-        whyId
-      },
-      order: [['createdAt', 'DESC']],
+      where,
+      order,
+      limit: first || last
     })
       .then(whatIfs => {
-        return whatIfs;
+        const edges = whatIfs.map(whatIf => {
+
+          return  ({
+
+            cursor: Buffer.from(whatIf.createdAt.toString()).toString('base64'), // convert createdAt to cursor
+            node: whatIf
+          })
+        });
+
+        return {
+          edges,
+          pageInfo: {
+            hasNextPage () {
+              if (whatIfs.length < (last || first)) {
+                return Promise.resolve(false);
+              }
+
+              return WhatIf.findOne({
+                where: {
+                  createdAt: {
+                    [before ? '$gt' : '$lt']: whatIfs[whatIfs.length - 1].createdAt,
+                  },
+                },
+                order: [['createdAt', 'DESC']],
+              })
+                .then(whatIf => !!whatIf);
+            },
+            hasPreviousPage  () {
+              return WhatIf.findOne({
+                where: {
+                  createdAt: where.createdAt,
+                },
+                order: [['createdAt', 'DESC']],
+              })
+                .then(whatIf => !!whatIf);
+            }
+          }
+        }
       })
       .catch(error => {
         console.log(error, "Error");
         return Promise.reject(error)
       })
   },
-  paginatedQuery(_, { whyId, cursor }, ctx) {
-    return this.query(_, { whyId }, ctx).then(whatIfs => {
-      // if no cursor set cursor as time of last created whatIfs
-      if (!cursor) {
-        console.log(whatIfs[0].createdAt)
-        cursor = whatIfs[0].createdAt;
-      }
-
-
-      // cursor = parseInt(cursor);
-      console.log(cursor, "cursor")
-      // fix limit of number of whatIfs returned
-      const limit = 2;
-
-      // find index of message created at time held in cursor
-      const newestWhatIfIndex = whatIfs.findIndex(
-        whatIf => whatIf.createdAt === cursor
-      );
-      console.log(newestWhatIfIndex, "whatIfIndex")
-      // We need to return a new cursor to the client so that it
-      // can find the next page. Let's set newCursor to the
-      // createdAt time of the last whatIf in this whatIfFeed:
-      var newCursor;
-      try {
-        newCursor =
-          whatIfs[newestWhatIfIndex + limit].createdAt;
-      }
-      catch(error) {
-        newCursor = whatIfs[whatIfs.length - 1].createdAt;
-      }
-
-      const whatIfFeed = {
-        whatIfs: whatIfs.slice(
-          newestWhatIfIndex,
-          newestWhatIfIndex + limit
-        ),
-        cursor: newCursor,
-      }
-
-      return whatIfFeed;
-
-    })
-
-  }
 }

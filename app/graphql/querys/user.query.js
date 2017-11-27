@@ -6,39 +6,58 @@ import QUESTION_FRAGMENT from '../fragments/question.fragment';
 
 
 const USER_QUERY = gql`
-  query user($userId: ID!) {
+  query user($userId: ID!, $first: Int, $after: String, $last: Int, $before: String) {
     user(id: $userId) {
       id
       username
       whys {
-        id
-        question {
-          ... QuestionFragment
+        edges {
+          node {
+            id 
+            question {
+              ... QuestionFragment 
+            }
+          }
         }
       }
       whatIfs {
-        id
-        question {
-          ... QuestionFragment
+        edges {
+          node {
+            id 
+            question {
+              ... QuestionFragment 
+            }
+          }
         }
       }
       hows {
-        id
-        question {
-          ... QuestionFragment
+        edges {
+          node {
+            id 
+            question {
+              ... QuestionFragment 
+            }
+          }
         }
       }
-      questions {
-       id
-        question {
-          ... QuestionFragment
-          
+      questions(first: $first, after: $after, last: $last, before: $before) {
+        edges {
+          node {
+            id 
+            question {
+              ... QuestionFragment 
+            }
+          }
         }
       }
-      staredQuestions {
-        id
-        question {
-          ... QuestionFragment
+      staredQuestions(first: $first, after: $after, last: $last, before: $before) {
+        edges {
+          node {
+            id 
+            question {
+              ... QuestionFragment 
+            }
+          }
         }
       }
       followsCount

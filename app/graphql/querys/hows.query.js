@@ -4,9 +4,13 @@ import QUESTION_FRAGMENT from '../fragments/question.fragment';
 const HOWS_QUERY = gql`
   query hows($parentId: ID!) {
     hows(whatIfId: $parentId) {
-      id
-      question {
-        ... QuestionFragment
+      edges {
+        node {
+          id 
+          question {
+            ... QuestionFragment 
+          }
+        }
       }
     }
   }

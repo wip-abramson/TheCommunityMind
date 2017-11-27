@@ -27,11 +27,11 @@ class UserQuestionsContainer extends React.Component {
   render() {
     return (
       <UserQuestions
-        whys={this.props.whys}
-        whatIfs={this.props.whatIfs}
-        hows={this.props.hows}
-        latestQuestions={this.props.latestQuestions}
-        staredQuestions={this.props.staredQuestions}
+        whys={this.props.whys.edges}
+        whatIfs={this.props.whatIfs.edges}
+        hows={this.props.hows.edges}
+        latestQuestions={this.props.latestQuestions.edges}
+        staredQuestions={this.props.staredQuestions.edges}
         questionView={this.state.questionView}
         onViewChange={this.changeView}
       />

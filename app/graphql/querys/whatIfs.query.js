@@ -4,9 +4,13 @@ import QUESTION_FRAGMENT from '../fragments/question.fragment';
 const WHATIFS_QUERY = gql`
   query whatIfs($parentId: ID!) {
     whatIfs(whyId: $parentId) {
-      id
-      question {
-        ... QuestionFragment
+      edges {
+        node {
+          id 
+          question {
+            ... QuestionFragment 
+          }
+        }
       }
     }
   }

@@ -39,7 +39,7 @@ function QuestionView(props) {
 
 
       <QuestionList
-        questions={props.questions.edges}
+        questions={props.connection.edges}
         onSelectQuestion={props.onSelectQuestion}
         link={props.link}
         currentUser={props.currentUser}
@@ -89,22 +89,10 @@ function getCurrentWhatIf(question) {
 
 QuestionView.propTypes = {
   onSelectQuestion: PropTypes.func,
-  questions: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    question: PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      question: PropTypes.string.isRequired,
-      stars: PropTypes.number.isRequired,
-      owner: PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        username: PropTypes.string.isRequired,
-      }).isRequired,
-      staredBy: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        username: PropTypes.string.isRequired,
-      }))
-    }).isRequired
-  }).isRequired),
+  connection: PropTypes.shape({
+    edges: PropTypes.array,
+
+  }),
   loading: PropTypes.bool,
   // error: PropTypes.bool,
   refetchQuery: PropTypes.shape({}).isRequired,

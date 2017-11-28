@@ -11,6 +11,8 @@ const HOWS_QUERY = gql`
             ... QuestionFragment 
           }
         }
+        
+        cursor
       }
     }
   }

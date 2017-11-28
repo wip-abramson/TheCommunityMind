@@ -11,7 +11,9 @@ const WHYS_QUERY = gql`
           question {
             ... QuestionFragment 
           }
+          
         }
+        cursor
       }
       
     }

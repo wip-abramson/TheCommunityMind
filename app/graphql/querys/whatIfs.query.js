@@ -2,8 +2,8 @@ import {gql} from 'react-apollo';
 import QUESTION_FRAGMENT from '../fragments/question.fragment';
 
 const WHATIFS_QUERY = gql`
-  query whatIfs($parentId: ID!) {
-    whatIfs(whyId: $parentId) {
+  query whatIfs($parentId: ID!, $first: Int, $after: String, $last: Int, $before: String) {
+    whatIfs(whyId: $parentId, first: $first, after: $after, last: $last, before: $before) {
       edges {
         node {
           id 
@@ -11,6 +11,7 @@ const WHATIFS_QUERY = gql`
             ... QuestionFragment 
           }
         }
+        cursor
       }
     }
   }

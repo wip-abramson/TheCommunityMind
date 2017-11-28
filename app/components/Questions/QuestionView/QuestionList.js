@@ -1,20 +1,22 @@
 /**
  * Created by will on 23/04/17.
  */
-import React, { PropTypes } from "react";
+import React from "react";
+import PropTypes from 'prop-types'
 import QuestionContainer from "./Question/QuestionContainer";
 
 const QuestionList = (props) => {
   var id =1;
-  // Maps a list of either Why WhatIfs or Hows to create individual Question components for each
+  // Maps a list of either Why WhatIf or How edges to create individual Question components for each question stored in the edge
   return (
     <div>
-      {props.questions.map(function (question) {
+      {props.edges.map(function (edge) {
         return (
           <QuestionContainer
-            key={"id-" + question.node.id + (id++)}
+            key={"id-" + edge.node.id + (id+5)}
             onSelectQuestion={props.onSelectQuestion}
-            questionType={question.node}
+            // question type is either a Why, WhatIf or How type depending on what this is a list of
+            questionType={edge.node}
             link={props.link}
             currentUser={props.currentUser}
           >
@@ -25,18 +27,21 @@ const QuestionList = (props) => {
 };
 
 QuestionList.propTypes = {
-  questions: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    question: PropTypes.shape({
+  edges: PropTypes.arrayOf(PropTypes.shape({
+    node:  PropTypes.shape({
       id: PropTypes.string.isRequired,
-      question: PropTypes.string.isRequired,
-      stars: PropTypes.number.isRequired,
-      owner: PropTypes.shape({
+      question: PropTypes.shape({
         id: PropTypes.string.isRequired,
-        username: PropTypes.string.isRequired,
+        question: PropTypes.string.isRequired,
+        stars: PropTypes.number.isRequired,
+        owner: PropTypes.shape({
+          id: PropTypes.string.isRequired,
+          username: PropTypes.string.isRequired,
+        }).isRequired
       }).isRequired
-    }).isRequired
-  }).isRequired),
+    }).isRequired,
+    cursor: PropTypes.string,
+  })),
   onSelectQuestion: PropTypes.func.isRequired,
   link: PropTypes.string,
 };

@@ -6,14 +6,18 @@ import PropTypes from 'prop-types'
 import QuestionContainer from "./Question/QuestionContainer";
 
 const QuestionList = (props) => {
-  var id =1;
   // Maps a list of either Why WhatIf or How edges to create individual Question components for each question stored in the edge
+  var id =1;
+
   return (
+
     <div>
-      {props.edges.map(function (edge) {
+      {
+
+        props.edges.map(function (edge) {
         return (
           <QuestionContainer
-            key={"id-" + edge.node.id + (id+5)}
+            key={"id-" + (id ++)}
             onSelectQuestion={props.onSelectQuestion}
             // question type is either a Why, WhatIf or How type depending on what this is a list of
             questionType={edge.node}

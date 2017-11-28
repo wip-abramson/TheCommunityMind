@@ -58,10 +58,9 @@ export const userLogic = {
   },
   staredQuestions(user, { first, after, last, before }, ctx) {
 
-    const staredQArgs = {};
-    staredQArgs.include =[{model:Question, include: [{ model: User, as: "StaredBy", where: { id: user.id }}] }];
+    const args = paginationLogic.buildArgs(first, after, last, before);
+    args.include =[{model:Question, include: [{ model: User, as: "StaredBy", where: { id: user.id }}] }];
 
-    const args = paginationLogic.buildArgs(first, after, last, before, staredQArgs);
 
 
 

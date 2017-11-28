@@ -46,7 +46,7 @@ QuestionList.propTypes = {
     }).isRequired,
     cursor: PropTypes.string,
   })),
-  onSelectQuestion: PropTypes.func.isRequired,
+  onSelectQuestion: PropTypes.func,
   link: PropTypes.string,
 };
 

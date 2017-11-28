@@ -8,9 +8,7 @@ function QuestionInput(props) {
   }
 
   const handleSubmit = (evt) => {
-    props.createQuestion(evt.trim(), []).then(res => {
-      evt = "";
-    });
+    props.createQuestion(evt.trim());
   }
   return (
 

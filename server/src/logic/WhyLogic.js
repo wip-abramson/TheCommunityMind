@@ -2,7 +2,7 @@
  * Created by will on 07/11/17.
  */
 import { authLogic } from './AuthLogic';
-import { Conn, Why, Tag } from '../db';
+import { Why, Tag } from '../db';
 import { paginationLogic } from './PaginationLogic';
 
 export const whyLogic = {
@@ -26,7 +26,8 @@ export const whyLogic = {
                     return whyQuestion.setTags(tags)
                       .then(() => {
                         console.log("WHY CREATED", newWhy.id);
-                        return newWhy;
+
+                        return newWhy
                       })
 
                   })

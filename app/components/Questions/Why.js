@@ -23,6 +23,8 @@ const mapDispatchToProps = function (dispatch) {
   }
 };
 
+const ITEMS_PER_PAGE = 10;
+
 const createWhy = graphql(CREATE_WHY_MUTATION, {
   props: ({ ownProps, mutate }) => ({
     createQuestion: ( question, tagIds) => {
@@ -32,33 +34,51 @@ const createWhy = graphql(CREATE_WHY_MUTATION, {
         optimisticResponse: {
           __typename: 'Mutation',
           createWhy: {
-            __typename: 'Why',
-            id: "-1",
-            question: {
-              __typename: 'Question',
+
+              __typename: 'Why',
               id: "-1",
-              question: question,
-              stars: 0,
-              staredByCurrentUser: false,
-              watchedByCurrentUser: false,
-              createdAt: new Date().toISOString(), // the time is now!
-              owner: {
-                __typename: 'User',
-                id: "-1", // still faking the user
-                username: 'Justyn.Kautzer' // still faking the user
-              },
+              question: {
+                __typename: 'Question',
+                id: "-1",
+                question: question,
+                stars: 0,
+                staredByCurrentUser: false,
+                watchedByCurrentUser: false,
+                createdAt: new Date().toISOString(), // the time is now!
+                owner: {
+                  __typename: 'User',
+                  id: "-1", // still faking the user
+                  username: 'Justyn.Kautzer' // still faking the user
+                },
+
+
             },
 
           },
         },
         update: (proxy, { data: { createWhy } }) => {
           // Read the data from our cache for this query.
-          const data = proxy.readQuery({ query: WHYS_QUERY });
+          const query = { query: WHYS_QUERY,
+            variables: {
+            first: ITEMS_PER_PAGE,
+            // after: null,
+            // before: null,
+            // last: null
+          }
+          }
+          const data = proxy.readQuery(query);
           // Add why from the mutation to the beginning.
-          console.log(createWhy)
-          data.whys.unshift(createWhy);
+
+          const whyEdge = {
+            __typename: "WhyEdge",
+            node: createWhy,
+            cursor: Buffer.from(createWhy.question.createdAt.toString()).toString('base64')
+          };
+
+          data.whys.edges.unshift(whyEdge);
           // Write our data back to the cache.
-          proxy.writeQuery({ query: WHYS_QUERY, data });
+          query.data = data;
+          proxy.writeQuery(query);
         },
       }).catch(res => {
         // catches any error returned from mutation request
@@ -87,12 +107,13 @@ const Why = compose(
 
   graphql(WHYS_QUERY, {
     options: (props) => ({
-      pollInterval: 5000
+      variables: {first: ITEMS_PER_PAGE},
+      // pollInterval: 5000
     }),
-    props: ({ ownProps, data: { loading, error, whys } }) => ({
+    props: ({ ownProps, data: { fetchMore, loading, error, whys } }) => ({
       loading,
       error,
-      questions: whys,
+      connection: whys,
       onSelectQuestion: ownProps.onSelectQuestion,
       placeholder: "Why ...?",
       link: "/whatif",
@@ -100,6 +121,29 @@ const Why = compose(
       currentWhy: null,
       currentWhatIf: null,
       // currentUser: ownProps.currentUser,
+      loadMoreEntries() {
+        fetchMore({
+          variables: {
+            after: whys.edges[whys.edges.length - 1].cursor,
+
+          },
+          updateQuery: (previousResult, { fetchMoreResult }) => {
+            // we will make an extra call to check if no more entries
+            if (!fetchMoreResult) {
+              return previousResult;
+            }
+            // push results (older whys) to end of whys list
+            return update(previousResult, {
+
+                whys: {
+                  edges: { $push: fetchMoreResult.whys.edges },
+                  pageInfo: { $set: fetchMoreResult.whys.pageInfo },
+                },
+
+            });
+          }
+        })
+      }
     })
   }),
   createWhy,

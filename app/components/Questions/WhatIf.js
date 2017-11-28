@@ -31,7 +31,7 @@ const mapDispatchToProps = function (dispatch) {
 
 const createWhatIf = graphql(CREATE_WHATIF_MUTATION, {
   props: ({ ownProps, mutate }) => ({
-    createQuestion: ({ question }) => {
+    createQuestion: (question) => {
       return mutate({
 
         variables: { question, whyId: ownProps.currentWhy.id },
@@ -46,6 +46,7 @@ const createWhatIf = graphql(CREATE_WHATIF_MUTATION, {
               question: question,
               stars: 0,
               staredByCurrentUser: false,
+              watchedByCurrentUser: false,
               createdAt: new Date().toISOString(), // the time is now!
               owner: {
                 __typename: 'User',
@@ -58,19 +59,30 @@ const createWhatIf = graphql(CREATE_WHATIF_MUTATION, {
         },
         update: (proxy, { data: { createWhatIf } }) => {
           // Read the data from our cache for this query.
-          const data = proxy.readQuery({
+          const query = {
             query: WHATIFS_QUERY,
-            variables: { parentId: ownProps.currentWhy.id }
-          });
-          // Add whatId from the mutation to the beginning.
+            variables: {
+              parentId: ownProps.currentWhy.id,
+              // first: null,
+              // after: null,
+              // before: null,
+              // last: null
+            }
+          };
 
-          data.whatIfs.unshift(createWhatIf);
+          const data = proxy.readQuery(query);
+          // Add whatIfEdge from the mutation to the beginning.
+
+          const whatIfEdge = {
+            __typename: "WhatIfEdge",
+            node: createWhatIf,
+            cursor: Buffer.from(createWhatIf.question.createdAt.toString()).toString('base64')
+          };
+
+          data.whatIfs.edges.unshift(whatIfEdge);
           // Write our data back to the cache.
-          proxy.writeQuery({
-            query: WHATIFS_QUERY,
-            variables: { parentId: ownProps.currentWhy.id },
-            data
-          });
+          query.data = data;
+          proxy.writeQuery(query);
         },
       }).catch(res => {
         // catches any error returned from mutation request
@@ -100,7 +112,7 @@ const WhatIf = compose(
     props: ({ ownProps, data: { loading, error, whatIfs } }) => ({
       loading,
       error,
-      questions: whatIfs,
+      connection: whatIfs,
       onSelectQuestion: ownProps.onSelectQuestion,
       placeholder: "What If ...?",
       link: "/how",

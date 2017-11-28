@@ -2,8 +2,8 @@ import {gql} from 'react-apollo';
 import QUESTION_FRAGMENT from '../fragments/question.fragment';
 
 const HOWS_QUERY = gql`
-  query hows($parentId: ID!) {
-    hows(whatIfId: $parentId) {
+  query hows($parentId: ID!, $first: Int, $after: String, $last: Int, $before: String) {
+    hows(whatIfId: $parentId, first: $first, after: $after, last: $last, before: $before) {
       edges {
         node {
           id 

@@ -27,11 +27,11 @@ class UserQuestionsContainer extends React.Component {
   render() {
     return (
       <UserQuestions
-        whys={this.props.whys.edges}
-        whatIfs={this.props.whatIfs.edges}
-        hows={this.props.hows.edges}
-        latestQuestions={this.props.latestQuestions.edges}
-        staredQuestions={this.props.staredQuestions.edges}
+        whyEdges={this.props.whys.edges}
+        whatIfEdges={this.props.whatIfs.edges}
+        howEdges={this.props.hows.edges}
+        latestQuestionEdges={this.props.latestQuestions.edges}
+        staredQuestionEdges={this.props.staredQuestions.edges}
         questionView={this.state.questionView}
         onViewChange={this.changeView}
       />
@@ -41,38 +41,21 @@ class UserQuestionsContainer extends React.Component {
 }
 
 UserQuestionsContainer.propTypes = {
-  whys: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      question: PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        question: PropTypes.string.isRequired
-      }).isRequired,
-    }).isRequired,
-  ),
-  whatIfs: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      question: PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        question: PropTypes.string.isRequired
-      }).isRequired,
-    }).isRequired,
-  ),
-  hows: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      question: PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        question: PropTypes.string.isRequired
-      }).isRequired,
-    }).isRequired,
-  ),
-  latestQuestions: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      question: PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        question: PropTypes.string.isRequired
-      }).isRequired,
-    }).isRequired,
-  )
+  whys: PropTypes.shape({
+    edges: PropTypes.array
+  }),
+  whatIfs: PropTypes.shape({
+    edges: PropTypes.array
+  }),
+  hows: PropTypes.shape({
+    edges: PropTypes.array
+  }),
+  latestQuestions: PropTypes.shape({
+    edges: PropTypes.array
+  }),
+  staredQuestions: PropTypes.shape({
+    edges: PropTypes.array
+  })
 }
 
 export default UserQuestionsContainer;

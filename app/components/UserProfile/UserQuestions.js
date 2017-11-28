@@ -12,22 +12,22 @@ const UserQuestions = (props) => {
 
   var questionLst;
   if (props.questionView === LATEST) {
-    questionLst = <QuestionList questions={props.latestQuestions} onSelectQuestion={() => {}}/>
+    questionLst = <QuestionList edges={props.latestQuestionEdges} onSelectQuestion={() => {}}/>
   }
   if (props.questionView === WHY ) {
-    questionLst =  <QuestionList questions={props.whys} onSelectQuestion={() => {}}/>
+    questionLst =  <QuestionList edges={props.whyEdges} onSelectQuestion={() => {}}/>
 
   }
   if (props.questionView === WHATIF) {
-    questionLst =  <QuestionList questions={props.whatIfs} onSelectQuestion={() => {}}/>
+    questionLst =  <QuestionList edges={props.whatIfEdges} onSelectQuestion={() => {}}/>
 
   }
   if (props.questionView === HOW) {
-    questionLst =  <QuestionList questions={props.hows} onSelectQuestion={() => {}}/>
+    questionLst =  <QuestionList edges={props.howEdges} onSelectQuestion={() => {}}/>
 
   }
   if (props.questionView === STAR) {
-    questionLst =  <QuestionList questions={props.staredQuestions} onSelectQuestion={() => {}}/>
+    questionLst =  <QuestionList edges={props.staredQuestionEdges} onSelectQuestion={() => {}}/>
 
   }
   return (
@@ -48,38 +48,63 @@ const UserQuestions = (props) => {
 }
 
 UserQuestions.propTypes = {
-  whys: PropTypes.arrayOf(PropTypes.shape({
+  whyEdges: PropTypes.arrayOf(PropTypes.shape({
+      node: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        question: PropTypes.shape({
+          id: PropTypes.string.isRequired,
+          question: PropTypes.string.isRequired
+        }).isRequired,
+      }).isRequired,
+      cursor: PropTypes.string,
+
+    }).isRequired,
+  ),
+  whatIfEdges: PropTypes.arrayOf(PropTypes.shape({
+      node: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        question: PropTypes.shape({
+          id: PropTypes.string.isRequired,
+          question: PropTypes.string.isRequired
+        }).isRequired,
+      }).isRequired,
+      cursor: PropTypes.string,
+
+    }).isRequired
+  ),
+  howEdges: PropTypes.arrayOf(PropTypes.shape({
+      node: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        question: PropTypes.shape({
+          id: PropTypes.string.isRequired,
+          question: PropTypes.string.isRequired
+        }).isRequired,
+      }).isRequired,
+      cursor: PropTypes.string,
+    }).isRequired
+  ),
+  latestQuestionEdges: PropTypes.arrayOf(PropTypes.shape({
+      node: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        question: PropTypes.shape({
+          id: PropTypes.string.isRequired,
+          question: PropTypes.string.isRequired
+        }).isRequired,
+      }).isRequired,
+      cursor: PropTypes.string,
+
+    }).isRequired,
+  ),
+  staredQuestionEdges: PropTypes.arrayOf(PropTypes.shape({
+    node: PropTypes.shape({
       id: PropTypes.string.isRequired,
       question: PropTypes.shape({
         id: PropTypes.string.isRequired,
         question: PropTypes.string.isRequired
       }).isRequired,
     }).isRequired,
-  ),
-  whatIfs: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      question: PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        question: PropTypes.string.isRequired
-      }).isRequired,
-    }).isRequired,
-  ),
-  hows: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      question: PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        question: PropTypes.string.isRequired
-      }).isRequired,
-    }).isRequired,
-  ),
-  latestQuestions: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      question: PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        question: PropTypes.string.isRequired
-      }).isRequired,
-    }).isRequired,
-  ),
+    cursor: PropTypes.string,
+  })),
   onViewChange: PropTypes.func.isRequired,
 
 }

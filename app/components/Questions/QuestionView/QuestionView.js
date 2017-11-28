@@ -40,7 +40,7 @@ function QuestionView(props) {
 
 
       <QuestionList
-        questions={props.connection.edges}
+        edges={props.connection.edges}
         onSelectQuestion={props.onSelectQuestion}
         link={props.link}
         currentUser={props.currentUser}

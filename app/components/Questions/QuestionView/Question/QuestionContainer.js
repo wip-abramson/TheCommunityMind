@@ -228,7 +228,7 @@ let container = React.createClass({
 });
 
 container.propTypes = {
-  onSelectQuestion: PropTypes.func.isRequired,
+  onSelectQuestion: PropTypes.func,
 }
 
 const QuestionContainer = compose(

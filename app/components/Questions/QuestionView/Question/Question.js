@@ -66,7 +66,7 @@ export default function Question(props) {
 }
 
 Question.propTypes = {
-  onSelectQuestion: PropTypes.func.isRequired,
+  onSelectQuestion: PropTypes.func,
   link: PropTypes.string,
   questionType: PropTypes.shape({
     question: PropTypes.shape({

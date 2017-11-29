@@ -13,6 +13,9 @@ const WHATIFS_QUERY = gql`
         }
         cursor
       }
+      pageInfo {
+        hasNextPage
+      }
     }
   }
   ${QUESTION_FRAGMENT}

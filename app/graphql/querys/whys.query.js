@@ -15,6 +15,9 @@ const WHYS_QUERY = gql`
         }
         cursor
       }
+      pageInfo {
+        hasNextPage
+      }
       
     }
   }

@@ -14,6 +14,9 @@ const HOWS_QUERY = gql`
         
         cursor
       }
+      pageInfo {
+        hasNextPage
+      }
     }
   }
   ${QUESTION_FRAGMENT}

@@ -44,14 +44,13 @@ export const howLogic = {
 
     return How.findAll(args)
       .then(hows => {
-        console.log(hows.length)
 
         const edges =  hows.map(how => {
           return ({
             node : how,
             cursor: Buffer.from(how.id.toString()).toString('base64'), // convert id to cursor
           })
-        })
+        });
 
         return {
           edges,
@@ -60,20 +59,21 @@ export const howLogic = {
               if (hows.length < args.limit) {
                 return Promise.resolve(false);
               }
-
               return How.findOne({
                 where: {
+                  whatifId: args.where.whatifId,
                   id: {
                     [before ? '$gt' : '$lt']: hows[hows.length - 1].id,
                   },
                 },
                 order: [['createdAt', 'DESC']],
               })
-                .then(how => !!how);
+                .then(how => {return !!how});
             },
             hasPreviousPage  () {
               return How.findOne({
                 where: {
+                  whatifId: args.where.whatifId,
                   id: args.where.id,
                 },
                 order: [['createdAt', 'DESC']],

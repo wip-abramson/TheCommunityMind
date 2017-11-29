@@ -77,6 +77,7 @@ export const whatIfLogic = {
 
               return WhatIf.findOne({
                 where: {
+                  whyId: args.where.whyId,
                   id: {
                     [before ? '$gt' : '$lt']: whatIfs[whatIfs.length - 1].id,
                   },
@@ -88,6 +89,7 @@ export const whatIfLogic = {
             hasPreviousPage  () {
               return WhatIf.findOne({
                 where: {
+                  whyId: args.where.whyId,
                   id: args.where.id,
                 },
                 order: [['createdAt', 'DESC']],

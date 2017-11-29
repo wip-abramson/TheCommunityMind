@@ -5,6 +5,8 @@ import { updateCurrentWhy } from "../../actions/Why";
 import { compose, graphql } from "react-apollo";
 import CREATE_WHY_MUTATION from "../../graphql/mutations/createWhy.mutation";
 import WHYS_QUERY from "../../graphql/querys/whys.query";
+import update from 'immutability-helper';
+
 
 
 import Notifications from 'react-notification-system-redux';
@@ -23,7 +25,7 @@ const mapDispatchToProps = function (dispatch) {
   }
 };
 
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = 2;
 
 const createWhy = graphql(CREATE_WHY_MUTATION, {
   props: ({ ownProps, mutate }) => ({

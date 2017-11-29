@@ -4,7 +4,7 @@ import QuestionViewContainer from "./QuestionView/QuestionViewContainer";
 import { compose, graphql } from "react-apollo";
 import CREATE_HOW_MUTATION from "../../graphql/mutations/createHow.mutation";
 import HOWS_QUERY from "../../graphql/querys/hows.query";
-
+import update from 'immutability-helper';
 
 import Notifications from 'react-notification-system-redux';
 import { unauthorizedErrorNotification } from '../../notifications/error.notifications';
@@ -16,15 +16,16 @@ const mapStateToProps = function (state) {
   }
 };
 
-// repeaed across Why, WhatIf and How - is there a better way?
+// repeated across Why, WhatIf and How - is there a better way?
 const mapDispatchToProps = (dispatch) => {
   return {
     unAuthorized: () => {
-      console.log("DISPATCH UNAUTHORIZED")
       dispatch(Notifications.error(unauthorizedErrorNotification))
     }
   }
-}
+};
+
+const ITEMS_PER_PAGE = 2;
 
 const createHow = graphql(CREATE_HOW_MUTATION, {
   props: ({ ownProps, mutate }) => ({
@@ -55,7 +56,10 @@ const createHow = graphql(CREATE_HOW_MUTATION, {
           },
         },
         update: (proxy, { data: { createHow } }) => {
-          const query = { query: HOWS_QUERY, variables: { parentId: ownProps.currentWhatIf.id } };
+          const query = {
+            query: HOWS_QUERY,
+            variables: { parentId: ownProps.currentWhatIf.id, first: ITEMS_PER_PAGE }
+          };
           const data = proxy.readQuery(query);
           // Add how from the mutation to the beginning.
           const howEdge = {
@@ -80,7 +84,6 @@ const createHow = graphql(CREATE_HOW_MUTATION, {
           return error;
         });
         return errors
-        // this.setState({ errors });
       })
     }
   })
@@ -93,10 +96,9 @@ const How = compose(
   ),
   graphql(HOWS_QUERY, {
     options: (props) => ({
-      variables: { parentId: props.currentWhatIf.id },
-      pollInterval: 5000
+      variables: { parentId: props.currentWhatIf.id, first: ITEMS_PER_PAGE },
     }),
-    props: ({ ownProps, data: { loading, error, hows } }) => ({
+    props: ({ ownProps, data: { fetchMore, loading, error, hows } }) => ({
       loading,
       error,
       connection: hows,
@@ -104,6 +106,29 @@ const How = compose(
       refetchQuery: HOWS_QUERY,
       currentWhy: ownProps.currentWhy,
       currentWhatIf: ownProps.currentWhatIf,
+      loadMoreEntries() {
+        fetchMore({
+          variables: {
+            after: hows.edges[hows.edges.length - 1].cursor,
+
+          },
+          updateQuery: (previousResult, { fetchMoreResult }) => {
+            // we will make an extra call to check if no more entries
+            if (!fetchMoreResult) {
+              return previousResult;
+            }
+            // push results (older whys) to end of whys list
+            return update(previousResult, {
+
+              hows: {
+                edges: { $push: fetchMoreResult.hows.edges },
+                pageInfo: { $set: fetchMoreResult.hows.pageInfo },
+              },
+
+            });
+          }
+        })
+      },
     })
   }),
   createHow,

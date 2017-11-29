@@ -148,6 +148,12 @@ const typeDefs = `
    user(id: ID!): User
    whatIfs(whyId: ID!, first: Int, after: String, last: Int, before: String): WhatIfConnection!
    hows(whatIfId: ID!, first: Int, after: String, last: Int, before: String): HowConnection!
+   userWhys(userId: ID!, first: Int, after: String, last: Int, before: String): WhyConnection!
+   userWhatIfs(userId: ID!, first: Int, after: String, last: Int, before: String): WhatIfConnection!
+   userHows(userId: ID!, first: Int, after: String, last: Int, before: String): HowConnection!
+   userStaredQuestions(userId: ID!, first: Int, after: String, last: Int, before: String): QuestionTypeConnection!
+   userQuestions(userId: ID!, first: Int, after: String, last: Int, before: String): QuestionTypeConnection!
+
    }
   
   type Mutation {

@@ -30,9 +30,23 @@ export const resolvers = {
       return howLogic.query(_, args, ctx);
     },
     user(_, args, ctx) {
-      console.log("USER QUERY")
       return userLogic.query(_, args, ctx);
     },
+    userWhys(_, args, ctx) {
+      return userLogic.userWhys(_, args, ctx);
+    },
+    userWhatIfs(_, args, ctx) {
+      return userLogic.userWhatIfs(_, args, ctx);
+    },
+    userHows(_, args, ctx) {
+      return userLogic.userHows(_, args, ctx);
+    },
+    userStaredQuestions(_, args, ctx) {
+      return userLogic.userStaredQuestions(_, args, ctx);
+    },
+    userQuestions(_, args, ctx) {
+      return userLogic.userQuestions(_, args, ctx);
+    }
 
 
   },

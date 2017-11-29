@@ -213,8 +213,7 @@ export const resolvers = {
 
   QuestionType: {
     __resolveType(obj, context, info){
-      console.log("QTYPE")
-      console.log(obj.whatifId)
+
       // console.log(obj.dataValues[whatIfId])
       if (obj.whatifId) {
         return 'How';

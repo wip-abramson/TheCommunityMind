@@ -25,7 +25,7 @@ export const userLogic = {
   questions(user, { first, after, last, before }, ctx) {
 
 
-    const args = {}
+    const args = {};
     args.limit = (first || last) + 1;
 
     const where = {};

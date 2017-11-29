@@ -9,7 +9,7 @@ export const paginationLogic = {
 
     args.limit = first || last;
 
-    args.where = {}
+    args.where = {};
 
     // because we return messages from newest -> oldest
     // before actually means newer (id > cursor)
@@ -19,12 +19,13 @@ export const paginationLogic = {
 
     if (before) {
       // convert base-64 to utf8 createdAt
-      args.where.createdAt = { $gt: Buffer.from(before, 'base64').toString() };
-      args.order =  [['createdAt', 'ASC']]
+      args.where.id = { $gt: Buffer.from(before, 'base64').toString() };
+      // args.order =  [['createdAt', 'ASC']]
 
     }
     if (after) {
-      args.where.createdAt = { $lt: Buffer.from(after, 'base64').toString() };
+      args.where.id = { $lt: Buffer.from(after, 'base64').toString() };
+      console.log(args.where.id);
     }
 
 

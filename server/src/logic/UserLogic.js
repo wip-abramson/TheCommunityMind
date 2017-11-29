@@ -25,8 +25,28 @@ export const userLogic = {
   questions(user, { first, after, last, before }, ctx) {
 
 
-    const args = paginationLogic.buildArgs(first, after, last, before);
-    args.include = [{ model: Question, where: { userId: user.id }, order: [['createdAt', 'DESC']] }];
+    const args = {}
+    args.limit = (first || last) + 1;
+
+    const where = {};
+    // because we return messages from newest -> oldest
+    // before actually means newer (id > cursor)
+    // after actually means older (id < cursor)
+    args.order = [['createdAt', 'DESC']];
+
+
+    if (before) {
+      // convert base-64 to utf8 createdAt
+      where.id = { $gt: Buffer.from(before, 'base64').toString() };
+      args.order =  [['createdAt', 'ASC']]
+
+    }
+    if (after) {
+      where.id = { $lt: Buffer.from(after, 'base64').toString() };
+      console.log(where.id, "WHERE");
+    }
+    where.userId = user.id;
+    args.include = [{ model: Question, where: where, order: [['createdAt', 'DESC']] }];
 
     return findAllQuestions(args)
       .then(allQuestions => paginate(first, after, last, before, allQuestions))
@@ -58,14 +78,37 @@ export const userLogic = {
   },
   staredQuestions(user, { first, after, last, before }, ctx) {
 
-    const args = paginationLogic.buildArgs(first, after, last, before);
-    args.include =[{model:Question, include: [{ model: User, as: "StaredBy", where: { id: user.id }}] }];
+    const args = {};
+
+    // add one to the limit in case only Why, WhatIf or How contains all the Q's
+    args.limit = (first || last) + 1;
+
+    const where = {};
+    // because we return messages from newest -> oldest
+    // before actually means newer (id > cursor)
+    // after actually means older (id < cursor)
+    args.order = [['createdAt', 'DESC']];
+
+
+    if (before) {
+      // convert base-64 to utf8 createdAt
+      where.id = { $gt: Buffer.from(before, 'base64').toString() };
+      args.order =  [['createdAt', 'ASC']]
+
+    }
+    if (after) {
+      where.id = { $lt: Buffer.from(after, 'base64').toString() };
+      // console.log(args.where.id);
+    }
+
+    // const args = paginationLogic.buildArgs(first, after, last, before);
+    args.include =[{model:Question, where: where, include: [{ model: User, as: "StaredBy", where: { id: user.id }}] }];
 
 
 
 
     return findAllQuestions(args)
-      .then(allQuestions => paginate(first, after, last, before, allQuestions))
+      .then(allQuestions =>  paginate(first, after, last, before, allQuestions))
 
       .catch(error => {
         console.log(error, "Error");
@@ -270,63 +313,50 @@ export const userLogic = {
 
 }
 
-function paginate(first, after, last, before, items) {
+function paginate(first, after, last, before, questions) {
 
   var hasNextPage = false;
   var hasPreviousPage = false;
   var limitedItems = [];
+
+  const itemLimit = first || last;
+
   if (before) {
-    // convert base-64 to utf8 createdAt
-    var createdAt = Buffer.from(before, 'base64').toString()
 
-    const itemIndex = items.findIndex(
-      item => item.createdAt.toString() === createdAt
-    );
-    console.log(itemIndex);
-
-    if (itemIndex - last > 0) {
+    if (questions.length - itemLimit > 0) {
       hasPreviousPage = true;
     }
 
-    if (itemIndex !== items.length - 1) {
-      hasNextPage = true;
-    }
+    hasNextPage = true;
 
-    var limitedItems = items.slice(hasPreviousPage ? itemIndex - last : 0, itemIndex);
+    limitedItems = questions.slice(hasPreviousPage ? questions.length - itemLimit : 0, questions.length);
 
   }
   else if (after) {
-    var createdAt = Buffer.from(after, 'base64').toString();
 
-    const itemIndex = items.findIndex(
-      item => item.createdAt.toString() === createdAt
-    );
-    console.log(itemIndex);
+    // not quite right
+    hasPreviousPage = true;
 
-    if (itemIndex !== 0) {
-      hasPreviousPage = true;
-    }
 
-    if (itemIndex + first < items.length) {
+    if (itemLimit < questions.length) {
       hasNextPage = true;
     }
 
-    var limitedItems = items.slice(itemIndex, itemIndex + first);
+    limitedItems = questions.slice(0, itemLimit);
 
   }
   else {
-    var number = first ? first : last;
 
-    var limitedItems = items.slice(0, number);
+    limitedItems = questions.slice(0, itemLimit);
 
-    if (number < items.length) {
+    if (itemLimit < questions.length) {
       hasNextPage = true;
     }
 
   }
-
+  console.log(limitedItems.length, "LIMITEMS")
   var edges = limitedItems.map(node => ({
-    cursor: Buffer.from(node.createdAt.toString()).toString('base64'), // convert createdAt to cursor
+    cursor: Buffer.from(node.question.id.toString()).toString('base64'), // convert question id to cursor
     node
   }))
 
@@ -348,18 +378,18 @@ function findAllQuestions(args) {
             .then(hows => {
               var allQuestions = whys.concat(whatIfs, hows);
 
-              console.log(allQuestions.length);
+              // console.log(allQuestions.length);
               allQuestions.sort((a, b) => {
-                a = new Date(a.createdAt);
-                b = new Date(b.createdAt);
+                a = new Date(a.question.id);
+                b = new Date(b.question.id);
                 return a > b ? -1 : a < b ? 1 : 0;
               })
-
+              console.log("ALLQS", allQuestions.length)
               return allQuestions;
               // return paginate(first, after, last, before, questionType);
 
             })
         })
     })
-
+// NEED TO DEFINE HAS NEXT AND HAS PREV IN THIS PART. Via search in db!!
 }

@@ -57,7 +57,7 @@ const typeDefs = `
   }
   
   type QuestionTypeConnection {
-    edges: [WhyEdge]
+    edges: [QuestionTypeEdge]
     pageInfo: PageInfo
   }
   

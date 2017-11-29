@@ -26,6 +26,8 @@ const QuestionList = (props) => {
           >
           </QuestionContainer>)
       })}
+      {props.hasNextPage ? <button onClick={() => {props.loadMoreEntries()}}>Load More</button> : null}
+
     </div>
   )
 };
@@ -48,6 +50,8 @@ QuestionList.propTypes = {
   })),
   onSelectQuestion: PropTypes.func,
   link: PropTypes.string,
+  hasNextPage: PropTypes.bool.isRequired,
+  loadMoreEntries: PropTypes.func.isRequired,
 };
 
 export default QuestionList;

@@ -44,7 +44,8 @@ function QuestionView(props) {
         onSelectQuestion={props.onSelectQuestion}
         link={props.link}
         currentUser={props.currentUser}
-        refetchQuery={props.refetchQuery}
+        hasNextPage={props.connection.pageInfo.hasNextPage}
+        loadMoreEntries={props.loadMoreEntries}
       />
     </div>
   )
@@ -96,7 +97,7 @@ QuestionView.propTypes = {
   }),
   loading: PropTypes.bool,
   // error: PropTypes.bool,
-  refetchQuery: PropTypes.shape({}).isRequired,
+  // refetchQuery: PropTypes.shape({}).isRequired,
   createQuestion: PropTypes.func.isRequired,
 };
 

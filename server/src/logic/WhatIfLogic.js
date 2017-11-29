@@ -62,7 +62,7 @@ export const whatIfLogic = {
         const edges = whatIfs.map(whatIf => {
 
           return  ({
-            cursor: Buffer.from(whatIf.createdAt.toString()).toString('base64'), // convert createdAt to cursor
+            cursor: Buffer.from(whatIf.id.toString()).toString('base64'), // convert id to cursor
             node: whatIf
           })
         });
@@ -77,8 +77,8 @@ export const whatIfLogic = {
 
               return WhatIf.findOne({
                 where: {
-                  createdAt: {
-                    [before ? '$gt' : '$lt']: whatIfs[whatIfs.length - 1].createdAt,
+                  id: {
+                    [before ? '$gt' : '$lt']: whatIfs[whatIfs.length - 1].id,
                   },
                 },
                 order: [['createdAt', 'DESC']],
@@ -88,7 +88,7 @@ export const whatIfLogic = {
             hasPreviousPage  () {
               return WhatIf.findOne({
                 where: {
-                  createdAt: args.where.createdAt,
+                  id: args.where.id,
                 },
                 order: [['createdAt', 'DESC']],
               })

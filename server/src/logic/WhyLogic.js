@@ -63,14 +63,14 @@ export const whyLogic = {
   },
   query(_, { first, last, before, after }) {
 
-    const args = paginationLogic.buildArgs(first, last, before, after);
+    const args = paginationLogic.buildArgs(first, after, before, last);
 
     return this.buildPaginatedWhys(args, before);
   },
 
   buildPaginatedWhys(args, before) {
 
-    var isCursor = args.where.createdAt ? true : false;
+    var isCursor = args.where.id ? true : false;
 
     return Why.findAll(args)
       .then(whys => {
@@ -78,7 +78,7 @@ export const whyLogic = {
 
             return  ({
 
-              cursor: Buffer.from(why.createdAt.toString()).toString('base64'), // convert createdAt to cursor
+              cursor: Buffer.from(why.id.toString()).toString('base64'), // convert createdAt to cursor
               node: why
             })
           });
@@ -93,8 +93,8 @@ export const whyLogic = {
 
                 return Why.findOne({
                   where: {
-                    createdAt: {
-                      [before ? '$gt' : '$lt']: whys[whys.length - 1].createdAt,
+                    id: {
+                      [before ? '$gt' : '$lt']: whys[whys.length - 1].id,
                     },
                   },
                   order: [['createdAt', 'DESC']],
@@ -102,10 +102,10 @@ export const whyLogic = {
                   .then(why => !!why);
               },
               hasPreviousPage  () {
-                const where = isCursor ? { createdAt: args.where.createdAt} : {}
+                // const where = isCursor ? { id: args.where.id} : {}
                 return Why.findOne({
                   where: {
-                    createdAt: args.where.createdAt,
+                    id: args.where.id,
                   },
                   order: [['createdAt', 'DESC']],
                 })

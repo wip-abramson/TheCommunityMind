@@ -49,7 +49,7 @@ export const howLogic = {
         const edges =  hows.map(how => {
           return ({
             node : how,
-            cursor: Buffer.from(how.createdAt.toString()).toString('base64'), // convert createdAt to cursor
+            cursor: Buffer.from(how.id.toString()).toString('base64'), // convert id to cursor
           })
         })
 
@@ -63,8 +63,8 @@ export const howLogic = {
 
               return How.findOne({
                 where: {
-                  createdAt: {
-                    [before ? '$gt' : '$lt']: hows[hows.length - 1].createdAt,
+                  id: {
+                    [before ? '$gt' : '$lt']: hows[hows.length - 1].id,
                   },
                 },
                 order: [['createdAt', 'DESC']],
@@ -74,7 +74,7 @@ export const howLogic = {
             hasPreviousPage  () {
               return How.findOne({
                 where: {
-                  createdAt: args.where.createdAt,
+                  id: args.where.id,
                 },
                 order: [['createdAt', 'DESC']],
               })

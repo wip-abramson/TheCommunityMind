@@ -4,30 +4,35 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import QuestionList from '../Questions/QuestionView/QuestionList';
+import UserWhysList from './QuestionLists/UserWhysList';
+import UserWhatIfsList from './QuestionLists/UserWhatIfsList';
+import UserHowsList from './QuestionLists/UserHowsList';
+import UserQuestionsList from './QuestionLists/UserQuestionsList';
+import StaredQuestionsList from './QuestionLists/StaredQuestionsList';
 
 import { LATEST, WHY, WHATIF, HOW, STAR } from './viewLabels';
 
 const UserQuestions = (props) => {
 
+  console.log("USERQUESTIONS")
   var questionLst;
   if (props.questionView === LATEST) {
-    questionLst = <QuestionList edges={props.latestQuestionEdges} onSelectQuestion={() => {}}/>
+    questionLst = <UserQuestionsList userId={props.userId}/>
   }
   if (props.questionView === WHY ) {
-    questionLst =  <QuestionList edges={props.whyEdges} onSelectQuestion={() => {}}/>
+    questionLst =  <UserWhysList userId={props.userId}/>
 
   }
   if (props.questionView === WHATIF) {
-    questionLst =  <QuestionList edges={props.whatIfEdges} onSelectQuestion={() => {}}/>
+    questionLst =  <UserWhatIfsList userId={props.userId}/>
 
   }
   if (props.questionView === HOW) {
-    questionLst =  <QuestionList edges={props.howEdges} onSelectQuestion={() => {}}/>
+    questionLst =  <UserHowsList userId={props.userId}/>
 
   }
   if (props.questionView === STAR) {
-    questionLst =  <QuestionList edges={props.staredQuestionEdges} onSelectQuestion={() => {}}/>
+    questionLst =  <StaredQuestionsList userId={props.userId}/>
 
   }
   return (
@@ -48,63 +53,7 @@ const UserQuestions = (props) => {
 }
 
 UserQuestions.propTypes = {
-  whyEdges: PropTypes.arrayOf(PropTypes.shape({
-      node: PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        question: PropTypes.shape({
-          id: PropTypes.string.isRequired,
-          question: PropTypes.string.isRequired
-        }).isRequired,
-      }).isRequired,
-      cursor: PropTypes.string,
-
-    }).isRequired,
-  ),
-  whatIfEdges: PropTypes.arrayOf(PropTypes.shape({
-      node: PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        question: PropTypes.shape({
-          id: PropTypes.string.isRequired,
-          question: PropTypes.string.isRequired
-        }).isRequired,
-      }).isRequired,
-      cursor: PropTypes.string,
-
-    }).isRequired
-  ),
-  howEdges: PropTypes.arrayOf(PropTypes.shape({
-      node: PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        question: PropTypes.shape({
-          id: PropTypes.string.isRequired,
-          question: PropTypes.string.isRequired
-        }).isRequired,
-      }).isRequired,
-      cursor: PropTypes.string,
-    }).isRequired
-  ),
-  latestQuestionEdges: PropTypes.arrayOf(PropTypes.shape({
-      node: PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        question: PropTypes.shape({
-          id: PropTypes.string.isRequired,
-          question: PropTypes.string.isRequired
-        }).isRequired,
-      }).isRequired,
-      cursor: PropTypes.string,
-
-    }).isRequired,
-  ),
-  staredQuestionEdges: PropTypes.arrayOf(PropTypes.shape({
-    node: PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      question: PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        question: PropTypes.string.isRequired
-      }).isRequired,
-    }).isRequired,
-    cursor: PropTypes.string,
-  })),
+  userId: PropTypes.String,
   onViewChange: PropTypes.func.isRequired,
 
 }

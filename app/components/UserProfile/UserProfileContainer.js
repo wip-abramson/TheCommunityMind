@@ -113,11 +113,7 @@ class container extends React.Component {
           unfollowUser={this.props.unfollowUser}
         />
         <UserQuestionsContainer
-          whys={this.props.user.whys}
-          whatIfs={this.props.user.whatIfs}
-          hows={this.props.user.hows}
-          latestQuestions={this.props.user.questions}
-          staredQuestions={this.props.user.staredQuestions}
+          user={this.props.user}
         />
       </div>
 
@@ -132,7 +128,7 @@ export default compose(
   ),
   graphql(USER_QUERY, {
     options: (props) => ({
-      variables: { userId: props.location.query.userId },
+      variables: { userId: props.location.query.userId, first: 10 },
       // pollInterval: 100000
     }),
     props: ({ ownProps, data: { loading, error, user } }) => ({

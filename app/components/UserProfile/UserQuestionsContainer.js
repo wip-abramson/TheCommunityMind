@@ -15,7 +15,7 @@ class UserQuestionsContainer extends React.Component {
 
     this.state = {
       questionView: LATEST,
-    }
+    };
 
     this.changeView = this.changeView.bind(this);
   }
@@ -27,11 +27,7 @@ class UserQuestionsContainer extends React.Component {
   render() {
     return (
       <UserQuestions
-        whyEdges={this.props.whys.edges}
-        whatIfEdges={this.props.whatIfs.edges}
-        howEdges={this.props.hows.edges}
-        latestQuestionEdges={this.props.latestQuestions.edges}
-        staredQuestionEdges={this.props.staredQuestions.edges}
+        userId={this.props.user.id}
         questionView={this.state.questionView}
         onViewChange={this.changeView}
       />
@@ -41,20 +37,8 @@ class UserQuestionsContainer extends React.Component {
 }
 
 UserQuestionsContainer.propTypes = {
-  whys: PropTypes.shape({
-    edges: PropTypes.array
-  }),
-  whatIfs: PropTypes.shape({
-    edges: PropTypes.array
-  }),
-  hows: PropTypes.shape({
-    edges: PropTypes.array
-  }),
-  latestQuestions: PropTypes.shape({
-    edges: PropTypes.array
-  }),
-  staredQuestions: PropTypes.shape({
-    edges: PropTypes.array
+  user: PropTypes.shape({
+    id: PropTypes.string.isRequired
   })
 }
 

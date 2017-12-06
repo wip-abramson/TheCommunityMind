@@ -66,6 +66,24 @@ export const whatIfLogic = {
             node: whatIf
           })
         });
+        // if no whatifs then no next or prev page
+        if(whatIfs.length == 0) {
+          return {
+            edges,
+            pageInfo: {
+              hasNextPage() {
+                return false;
+              },
+              hasPreviousPage() {
+                return false;
+              }
+            }
+          }
+        }
+
+        args.where.id = {
+          [before ? '$gt' : '$lt']: whatIfs[whatIfs.length - 1].id,
+        };
 
         return {
           edges,
@@ -74,26 +92,11 @@ export const whatIfLogic = {
               if (whatIfs.length < args.limit) {
                 return Promise.resolve(false);
               }
-
-              return WhatIf.findOne({
-                where: {
-                  whyId: args.where.whyId,
-                  id: {
-                    [before ? '$gt' : '$lt']: whatIfs[whatIfs.length - 1].id,
-                  },
-                },
-                order: [['createdAt', 'DESC']],
-              })
+              return WhatIf.findOne(args)
                 .then(whatIf => !!whatIf);
             },
             hasPreviousPage  () {
-              return WhatIf.findOne({
-                where: {
-                  whyId: args.where.whyId,
-                  id: args.where.id,
-                },
-                order: [['createdAt', 'DESC']],
-              })
+              return WhatIf.findOne(args)
                 .then(whatIf => !!whatIf);
             }
           }

@@ -51,7 +51,23 @@ export const howLogic = {
             cursor: Buffer.from(how.id.toString()).toString('base64'), // convert id to cursor
           })
         });
+        if (hows.length !== 0) {
+          return {
+            edges,
+            pageInfo: {
+              hasNextPage() {
+                return false;
+              },
+              hasPreviousPage() {
+                return false;
+              }
+            }
+          }
+        }
 
+        args.where.id = {
+          [before ? '$gt' : '$lt']: hows[hows.length - 1].id,
+        };
         return {
           edges,
           pageInfo: {
@@ -59,25 +75,15 @@ export const howLogic = {
               if (hows.length < args.limit) {
                 return Promise.resolve(false);
               }
-              return How.findOne({
-                where: {
-                  whatifId: args.where.whatifId,
-                  id: {
-                    [before ? '$gt' : '$lt']: hows[hows.length - 1].id,
-                  },
-                },
-                order: [['createdAt', 'DESC']],
-              })
+              return How.findOne(
+                args
+              )
                 .then(how => {return !!how});
             },
             hasPreviousPage  () {
-              return How.findOne({
-                where: {
-                  whatifId: args.where.whatifId,
-                  id: args.where.id,
-                },
-                order: [['createdAt', 'DESC']],
-              })
+              return How.findOne(
+                args
+              )
                 .then(how => !!how);
             }
 

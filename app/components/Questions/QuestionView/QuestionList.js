@@ -9,6 +9,7 @@ const QuestionList = (props) => {
   // Maps a list of either Why WhatIf or How edges to create individual Question components for each question stored in the edge
   var id =1;
 
+
   return (
 
     <div>
@@ -22,7 +23,6 @@ const QuestionList = (props) => {
             // question type is either a Why, WhatIf or How type depending on what this is a list of
             questionType={edge.node}
             link={props.link}
-            currentUser={props.currentUser}
           >
           </QuestionContainer>)
       })}

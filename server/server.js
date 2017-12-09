@@ -40,4 +40,4 @@ server.use('/graphiql', graphiqlExpress({
 }));
 
 
-server.listen(PORT, () => console.log(`GraphQL Server is now running on http://0.0.0.0:${PORT}`));
+server.listen(process.env.PORT || PORT, () => console.log(`GraphQL Server is now running on http://0.0.0.0:${PORT}`));

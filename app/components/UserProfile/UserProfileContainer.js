@@ -66,6 +66,7 @@ const followUser = graphql(FOLLOW_USER_MUTATION, {
 const unfollowUser = graphql(UNFOLLOW_USER_MUTATION, {
   props: ({ ownProps, mutate }) => ({
     unfollowUser: (user) => {
+
       return mutate({
         variables: { userId: user.id },
         optimisticResponse: {
@@ -98,6 +99,7 @@ const unfollowUser = graphql(UNFOLLOW_USER_MUTATION, {
 class container extends React.Component {
 
   render () {
+    console.log("RENDER")
     if (this.props.loading) {
       return <p>Loading ...</p>;
     }

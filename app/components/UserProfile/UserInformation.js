@@ -6,7 +6,6 @@ import { Button } from 'react-bootstrap';
 import FaUser from 'react-icons/fa/user';
 
 export default (props) => {
-  // console.log(props.user)
   // var user = props.user;
 
   if (props.loading) {

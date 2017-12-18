@@ -5,15 +5,10 @@ import EditQuestion from './EditQuestion';
 import QuestionText from './QuestionText';
 import WatchQuestion from './WatchQuestion';
 
+import styles from './question.css';
+
 export default function Question(props) {
-  var style = {
-    border: "2px solid #032760",
-    padding: 10,
-    background: "#ffeffc",
-    margin: 5,
-    borderRadius: 25,
-    fontSize: 20,
-  }
+  console.log(styles)
 
   var editQuestion;
   var watchQuestion;
@@ -22,8 +17,12 @@ export default function Question(props) {
   if (props.currentUser) {
     watchQuestion = <WatchQuestion
       watchedByCurrentUser={props.questionType.question.watchedByCurrentUser}
-      watchQuestion={() => {props.watchQuestion(props.questionType)}}
-      unwatchQuestion={() => {props.unwatchQuestion(props.questionType)}}
+      watchQuestion={() => {
+        props.watchQuestion(props.questionType)
+      }}
+      unwatchQuestion={() => {
+        props.unwatchQuestion(props.questionType)
+      }}
     />
 
   }
@@ -32,34 +31,44 @@ export default function Question(props) {
     editQuestion = <EditQuestion toggleEditable={props.toggleEditable}/>
   }
 
-
   return (
-    <div style={style}>
-      <QuestionText
-        editable={props.editable}
-        question={props.questionType.question.question}
-        questionType={props.questionType}
-        link={props.link}
-        editQuestion={props.editQuestion}
-        toggleEditable={props.toggleEditable}
-        onSelectQuestion={props.onSelectQuestion}
-      />
-      <Star
-        count={props.questionType.question.stars}
-        starQuestion={() => {
-          // props.unAuthorized();
-          props.starQuestion(props.questionType)
-        }}
-        unstarQuestion={() => {
-          props.unstarQuestion(props.questionType)
-        }}
-        staredByCurrentUser={props.questionType.question.staredByCurrentUser}
-      />
-      <Owner owner={props.questionType.question.owner}/>
+    <div className={styles.questionBox}>
+      <div className={styles.questionText}>
+        <QuestionText
+                      editable={props.editable}
+                      question={props.questionType.question.question}
+                      questionType={props.questionType}
+                      link={props.link}
+                      editQuestion={props.editQuestion}
+                      toggleEditable={props.toggleEditable}
+                      onSelectQuestion={props.onSelectQuestion}
+        />
+      </div>
+      <div>
+        <Owner  owner={props.questionType.question.owner}/>
+
+        <div className={styles.iconRow}>
 
 
-      {editQuestion}
-      {watchQuestion}
+          {watchQuestion}
+          {editQuestion}
+
+          <Star
+            count={props.questionType.question.stars}
+            starQuestion={() => {
+              // props.unAuthorized();
+              props.starQuestion(props.questionType)
+            }}
+            unstarQuestion={() => {
+              props.unstarQuestion(props.questionType)
+            }}
+            staredByCurrentUser={props.questionType.question.staredByCurrentUser}
+          />
+
+
+        </div>
+      </div>
+
     </div>
   )
 

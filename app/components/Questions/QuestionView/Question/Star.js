@@ -8,11 +8,12 @@ const Star = (props) => {
 
   var style = {
     color: "gold",
-    cursor: "pointer"
+    cursor: "pointer",
+    marginRight: 10
   }
   return (
-    <div>
-      <FaStar style={props.staredByCurrentUser ? style : {"cursor": "pointer"}}
+    <div style={{textAlign: "bottom"}}>
+      <FaStar style={props.staredByCurrentUser ? style : {"cursor": "pointer", marginRight: "10px"}}
         onClick={() => {
           if (props.staredByCurrentUser) {
             props.unstarQuestion();

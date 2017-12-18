@@ -100,7 +100,7 @@ const createWhatIf = graphql(CREATE_WHATIF_MUTATION, {
     })
 });
 
-const ITEMS_PER_PAGE = 2;
+const ITEMS_PER_PAGE = 5;
 
 const WhatIf = compose(
   connect(

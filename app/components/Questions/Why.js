@@ -25,7 +25,7 @@ const mapDispatchToProps = function (dispatch) {
   }
 };
 
-const ITEMS_PER_PAGE = 2;
+const ITEMS_PER_PAGE = 5;
 
 const createWhy = graphql(CREATE_WHY_MUTATION, {
   props: ({ ownProps, mutate }) => ({

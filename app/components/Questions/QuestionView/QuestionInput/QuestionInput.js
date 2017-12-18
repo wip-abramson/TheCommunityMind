@@ -15,6 +15,9 @@ const QuestionInput = ({ questionText, questionThreads, placeholder, onKeyPress,
           placeholder={placeholder}
           value={questionText}
           onChange={(e) => onTextChange(e)}
+          onKeyUp={(e) => {if (e.keyCode === 13){
+            onSubmit();
+          } } }
           />
 
         <p>Link your question into the community mind by adding up to five threads</p>

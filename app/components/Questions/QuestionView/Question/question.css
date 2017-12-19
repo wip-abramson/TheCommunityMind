@@ -7,7 +7,7 @@
     background: #ffeffc;
     margin: 5px;
     border-radius: 25px;
-    font-size: 20px;
+    font-size: 30px;
     /*margin-left: 50px;*/
     width: 100%;
 }
@@ -16,6 +16,11 @@
     flex: 9;
 }
 
+.askQuestion {
+    border-left: 1px solid black;
+    padding: 10px;
+    margin: 10px;
+}
 
 
 .iconRow {

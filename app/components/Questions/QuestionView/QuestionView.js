@@ -1,28 +1,10 @@
 import React from "react";
 import PropTypes from 'prop-types';
-import QuestionInput from "./QuestionInput";
 import QuestionList from "./QuestionList";
 import QuestionContainer from './Question/QuestionContainer';
-import QuestionInputContainer from './QuestionInput/QuestionInputContainer';
 
 function QuestionView(props) {
-
-  function getQuestionInput() {
-    if (props.currentUser) {
-      return props.currentWhy ?
-        <QuestionInput
-          placeholder={props.placeholder}
-          createQuestion={props.createQuestion}
-          parentId={props.parentId}
-        >
-        </QuestionInput>
-        :
-        <QuestionInputContainer
-          placeholder={props.placeholder}
-          createQuestion={props.createQuestion}
-        />
-    }
-  }
+  props.setQuestionType();
 
   if (props.loading) {
     return <p>Loading ...</p>;
@@ -35,9 +17,6 @@ function QuestionView(props) {
       {getCurrentWhyQuestion(props.currentWhy)}
 
       {getCurrentWhatIf(props.currentWhatIf)}
-
-      {getQuestionInput()}
-
 
       <QuestionList
         edges={props.connection.edges}

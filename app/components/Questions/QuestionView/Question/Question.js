@@ -1,4 +1,7 @@
-import React, { PropTypes } from "react";
+import React from "react";
+import PropTypes from 'prop-types'
+import FaQuestionCircle from 'react-icons/fa/question-circle'
+
 import Star from "./Star";
 import Owner from "./Owner";
 import EditQuestion from './EditQuestion';
@@ -8,10 +11,10 @@ import WatchQuestion from './WatchQuestion';
 import styles from './question.css';
 
 export default function Question(props) {
-  console.log(styles)
 
-  var editQuestion;
-  var watchQuestion;
+  let editQuestion;
+  let watchQuestion;
+  let askQuestion;
   // console.log(props)
 
   if (props.currentUser) {
@@ -23,7 +26,12 @@ export default function Question(props) {
       unwatchQuestion={() => {
         props.unwatchQuestion(props.questionType)
       }}
+
     />
+    askQuestion = <div className={styles.askQuestion}>
+
+      <FaQuestionCircle size={70}/>
+    </div>
 
   }
 
@@ -35,17 +43,17 @@ export default function Question(props) {
     <div className={styles.questionBox}>
       <div className={styles.questionText}>
         <QuestionText
-                      editable={props.editable}
-                      question={props.questionType.question.question}
-                      questionType={props.questionType}
-                      link={props.link}
-                      editQuestion={props.editQuestion}
-                      toggleEditable={props.toggleEditable}
-                      onSelectQuestion={props.onSelectQuestion}
+          editable={props.editable}
+          question={props.questionType.question.question}
+          questionType={props.questionType}
+          link={props.link}
+          editQuestion={props.editQuestion}
+          toggleEditable={props.toggleEditable}
+          onSelectQuestion={props.onSelectQuestion}
         />
       </div>
       <div>
-        <Owner  owner={props.questionType.question.owner}/>
+        <Owner owner={props.questionType.question.owner}/>
 
         <div className={styles.iconRow}>
 
@@ -68,6 +76,8 @@ export default function Question(props) {
 
         </div>
       </div>
+      {askQuestion}
+
 
     </div>
   )

@@ -72,4 +72,7 @@ const createHow = graphql(CREATE_HOW_MUTATION, {
   })
 });
 
-export default compose(createHow)(SimpleQuestionInput);
+const HowQuestionInput = ({createQuestion}) =>
+  <SimpleQuestionInput placeholder="How ...?" createQuestion={createQuestion}/>;
+
+export default compose(createHow)(HowQuestionInput);

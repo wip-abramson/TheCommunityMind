@@ -79,4 +79,8 @@ const createWhatIf = graphql(CREATE_WHATIF_MUTATION, {
   })
 });
 
-export default compose(createWhatIf)(SimpleQuestionInput);
+const WhatIfQuestionInput = ({createQuestion}) =>
+  <SimpleQuestionInput placeholder="What if ...?" createQuestion={createQuestion}/>;
+
+
+export default compose(createWhatIf)(WhatIfQuestionInput);

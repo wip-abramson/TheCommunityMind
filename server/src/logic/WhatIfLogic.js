@@ -67,7 +67,7 @@ export const whatIfLogic = {
           })
         });
         // if no whatifs then no next or prev page
-        if(whatIfs.length == 0) {
+        if(whatIfs.length === 0) {
           return {
             edges,
             pageInfo: {

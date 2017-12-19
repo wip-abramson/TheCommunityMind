@@ -51,7 +51,7 @@ export const howLogic = {
             cursor: Buffer.from(how.id.toString()).toString('base64'), // convert id to cursor
           })
         });
-        if (hows.length !== 0) {
+        if (hows.length === 0) {
           return {
             edges,
             pageInfo: {

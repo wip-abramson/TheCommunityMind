@@ -20,7 +20,7 @@ var AppTitle = function () {
       <Link to='/'>
 
         <div style={noMargin}>
-          <img src="public/imgs/thecommunitymind_logo1@0.75x.png" style={imgstyle}/>
+          <img src="public/imgs/thecommunitymind_logo1@0.5x.png" style={imgstyle}/>
         </div>
       </Link>
   )

@@ -2,6 +2,7 @@ import React from "react";
 import { Nav, Navbar, NavItem, NavDropdown, MenuItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import AppTitle from "./AppTitle";
+import FaQuestionCircle from 'react-icons/fa/question-circle'
 
 var MainHeader = function (props) {
   var style = {
@@ -10,7 +11,7 @@ var MainHeader = function (props) {
   }
   return (
   <div>
-    <Navbar collapseOnSelect>
+    <Navbar className="navbar-fixed-top" collapseOnSelect>
       <Navbar.Header>
         <LinkContainer to="/" onlyActiveOnIndex>
           <Navbar.Brand>
@@ -23,22 +24,31 @@ var MainHeader = function (props) {
         <Navbar.Toggle />
       </Navbar.Header>
       {props.currentUser ? (
-        <Navbar.Collapse>
-          <Nav style={style}>
-
-
-          </Nav>
+        <div>
           <Nav pullRight>
-            <NavDropdown eventKey="4" title={props.currentUser.username} id="nav-dropdown">
-              <LinkContainer to={{pathname: "/profile", query: {userId: props.currentUser.id}}}>
-                <MenuItem>Profile</MenuItem>
-              </LinkContainer>
-              <MenuItem eventKey="4.2" onSelect={() => {props.viewWatchList()}}>Watch list</MenuItem>
-              <MenuItem divider />
-              <MenuItem eventKey="4.4" onSelect={() => {props.logout()}}>Logout</MenuItem>
-            </NavDropdown>
+
+            <NavItem >
+              <FaQuestionCircle size={70}/>
+            </NavItem>
           </Nav>
-        </Navbar.Collapse>
+          <Navbar.Collapse>
+            <Nav pullRight>
+              <NavDropdown eventKey="4" title={props.currentUser.username} id="nav-dropdown">
+                <LinkContainer to={{pathname: "/profile", query: {userId: props.currentUser.id}}}>
+                  <MenuItem>Profile</MenuItem>
+                </LinkContainer>
+                <MenuItem eventKey="4.2" onSelect={() => {props.viewWatchList()}}>Watch list</MenuItem>
+                <MenuItem divider />
+                <MenuItem eventKey="4.4" onSelect={() => {props.logout()}}>Logout</MenuItem>
+              </NavDropdown>
+            </Nav>
+          </Navbar.Collapse>
+        </div>
+
+
+
+
+
       ) : (
         <Navbar.Collapse>
           <Nav style={style}>

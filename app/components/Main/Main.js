@@ -10,7 +10,7 @@ import { browserHistory } from 'react-router'
 
 import Notifications from 'react-notification-system-redux';
 
-import AskQuestionPopup from '../AskQuestionPopup/AskQuestionPopup';
+import AskQuestionPopupContainer from '../AskQuestionPopup/AskQuestionPopupContainer';
 
 
 
@@ -66,7 +66,7 @@ let Main = React.createClass({
   },
 
   showAskQuestionPopup() {
-    showAskQuestionPopup(this.props.currentWhy, this.props.currentWhatIf)
+    this.props.showAskQuestionPopup(this.props.currentWhy, this.props.currentWhatIf)
   },
 
   viewProfile() {
@@ -92,7 +92,7 @@ let Main = React.createClass({
 
 
         <Grid style={this.style}>
-          <AskQuestionPopup/>
+          <AskQuestionPopupContainer/>
           {this.props.children}
         </Grid>
         <Notifications

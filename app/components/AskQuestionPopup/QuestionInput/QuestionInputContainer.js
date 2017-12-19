@@ -4,7 +4,7 @@
 import React from 'react';
 import { compose, graphql } from "react-apollo";
 
-import FIND_OR_CREATE_THREAD from '../../../../graphql/mutations/findOrCreateThread.mutation';
+import FIND_OR_CREATE_THREAD from '../../../graphql/mutations/findOrCreateThread.mutation';
 
 import QuestionInput from './QuestionInput';
 

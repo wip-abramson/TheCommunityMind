@@ -1,12 +1,15 @@
 import React from 'react'
 import MainHeader from './Header/MainHeader'
 import FullDiv from '../generic/FullDiv';
-import { Grid, Row } from 'react-bootstrap'
+import { Grid } from 'react-bootstrap'
 import { connect } from 'react-redux'
 import { signOut } from '../../actions/Auth';
 import { withApollo } from 'react-apollo';
+import { browserHistory } from 'react-router'
 
 import Notifications from 'react-notification-system-redux';
+
+import AskQuestionPopup from '../AskQuestionPopup/AskQuestionPopup';
 
 
 
@@ -27,7 +30,7 @@ const mapDispatchToProps = function (dispatch) {
 
 let Main = React.createClass({
   style: {
-    padding: 20
+    padding: "70px 20px"
   },
 
 
@@ -56,6 +59,10 @@ let Main = React.createClass({
 
   },
 
+  viewProfile() {
+    browserHistory.push({pathname: "/profile", query: {userId: this.props.currentUser.id}})
+  },
+
 
   viewWatchList() {
 
@@ -74,6 +81,7 @@ let Main = React.createClass({
 
 
         <Grid style={this.style}>
+          <AskQuestionPopup/>
           {this.props.children}
         </Grid>
         <Notifications

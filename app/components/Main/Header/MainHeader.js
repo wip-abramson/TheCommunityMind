@@ -28,7 +28,7 @@ var MainHeader = function (props) {
           <Nav pullRight>
 
             <NavItem >
-              <FaQuestionCircle size={70}/>
+              <FaQuestionCircle onClick={props.onQuestionClick} size={70}/>
             </NavItem>
           </Nav>
           <Navbar.Collapse>

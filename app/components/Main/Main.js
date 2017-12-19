@@ -4,6 +4,7 @@ import FullDiv from '../generic/FullDiv';
 import { Grid } from 'react-bootstrap'
 import { connect } from 'react-redux'
 import { signOut } from '../../actions/Auth';
+import { showAskQuestionPopup } from '../../actions/AskQuestionPopup';
 import { withApollo } from 'react-apollo';
 import { browserHistory } from 'react-router'
 
@@ -17,6 +18,8 @@ const mapStateToProps = function (state) {
   return {
     currentUser: state.auth.currentUser,
     notifications: state.notifications,
+    currentWhy: state.currentWhy,
+    currentWhatIf: state.currentWhatIf
   }
 };
 
@@ -24,9 +27,12 @@ const mapDispatchToProps = function (dispatch) {
   return {
     logout: () => {
       dispatch(signOut());
+    },
+    showAskQuestionPopup: (currentWhy, currentWhatIf) => {
+      dispatch(showAskQuestionPopup(currentWhy, currentWhatIf));
     }
   }
-}
+};
 
 let Main = React.createClass({
   style: {
@@ -59,6 +65,10 @@ let Main = React.createClass({
 
   },
 
+  showAskQuestionPopup() {
+    showAskQuestionPopup(this.props.currentWhy, this.props.currentWhatIf)
+  },
+
   viewProfile() {
     browserHistory.push({pathname: "/profile", query: {userId: this.props.currentUser.id}})
   },
@@ -77,6 +87,7 @@ let Main = React.createClass({
           logout={this.logout}
           viewProfile={this.viewProfile}
           viewWatchList={this.viewWatchList}
+          onQuestionClick={this.showAskQuestionPopup}
         ></MainHeader>
 
 

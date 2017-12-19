@@ -3,11 +3,18 @@
  */
 import React from 'react';
 import { compose, graphql } from "react-apollo";
+import { connect } from "react-redux";
 
-import SimpleQuestionInput from './QuestionInput/SimpleQuestionInput';
+import QuestionInputContainer from './QuestionInput/QuestionInputContainer';
 
 import CREATE_HOW_MUTATION from "../../graphql/mutations/createHow.mutation";
 import HOWS_QUERY from "../../graphql/querys/hows.query";
+
+const mapStateToProps = function (state) {
+  return {
+    currentWhatIf: state.currentWhatIf,
+  }
+};
 
 
 const createHow = graphql(CREATE_HOW_MUTATION, {
@@ -72,7 +79,10 @@ const createHow = graphql(CREATE_HOW_MUTATION, {
   })
 });
 
-const HowQuestionInput = ({createQuestion}) =>
-  <SimpleQuestionInput placeholder="How ...?" createQuestion={createQuestion}/>;
 
-export default compose(createHow)(HowQuestionInput);
+export default compose(
+  connect(
+    mapStateToProps,
+  ),
+  createHow
+)(QuestionInputContainer);

@@ -5,8 +5,17 @@ import React from 'react';
 import { compose, graphql } from "react-apollo";
 import CREATE_WHATIF_MUTATION from "../../graphql/mutations/createWhatIf.mutation";
 import WHATIFS_QUERY from "../../graphql/querys/whatIfs.query";
+import { connect } from 'react-redux';
 
-import SimpleQuestionInput from './QuestionInput/SimpleQuestionInput';
+
+import QuestionInputContainer from './QuestionInput/QuestionInputContainer';
+
+const mapStateToProps = function (state) {
+
+  return {
+    currentWhy: state.currentWhy,
+  }
+};
 
 const createWhatIf = graphql(CREATE_WHATIF_MUTATION, {
   props: ({ ownProps, mutate }) => ({
@@ -42,7 +51,7 @@ const createWhatIf = graphql(CREATE_WHATIF_MUTATION, {
             query: WHATIFS_QUERY,
             variables: {
               parentId: ownProps.currentWhy.id,
-              first: ITEMS_PER_PAGE,
+              first: 5,
               // after: null,
               // before: null,
               // last: null
@@ -79,8 +88,11 @@ const createWhatIf = graphql(CREATE_WHATIF_MUTATION, {
   })
 });
 
-const WhatIfQuestionInput = ({createQuestion}) =>
-  <SimpleQuestionInput placeholder="What if ...?" createQuestion={createQuestion}/>;
 
 
-export default compose(createWhatIf)(WhatIfQuestionInput);
+export default compose(
+  connect(
+    mapStateToProps,
+  ),
+  createWhatIf
+)(QuestionInputContainer);

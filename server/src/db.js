@@ -274,102 +274,102 @@ const tags = [
 ]
 
 //{force: true}
-Conn.sync({ force: true })
-  .then(() => {
-    const passwrd = "tPass2";
-    return bcrypt.hash(passwrd, 10)
-      .then((hash2) => {
-        return UserModel.create({
-          email: faker.internet.email(),
-          username: faker.internet.userName(),
-          password: hash2,
-          version: 1,
-        })
-          .then(user2 => {
-
-            const password = "testPassword";
-            return bcrypt.hash(password, 10)
-              .then((hash) => {
-                return UserModel.create({
-                  email: faker.internet.email(),
-                  username: faker.internet.userName(),
-                  password: hash,
-                  version: 1,
-                })
-                  .then((user) => {
-                    console.log(user2.id, "u2")
-                    console.log(user.id, "u1")
-                    user.addFollowedBy(user2).then(() => {
-                    }).catch(error => {
-                      console.log(error)
-                    })
-
-                    return Promise.all(tags.map(tag => {
-                      return Tag.create(tag);
-
-                    })).then(createdTags => {
-
-                      console.log(createdTags.length)
-                      user.setTags(createdTags);
-
-                      // console.log("Added follower")
-                      questions.forEach((whyData) => {
-                        // console.log(whyData.why);
-                        return user.createQuestion({ question: whyData.why, stars: 0 })
-                          .then((whyQuestion) => {
-                          user.addWatched(whyQuestion)
-
-                            console.log("addQuestion")
-                            whyQuestion.addStaredBy(user)
-                            whyQuestion.setTags(createdTags)
-
-                            return WhyModel.create({})
-                              .then((newWhy) => {
-                                newWhy.setQuestion(whyQuestion);
-
-                                return whyData.whatifs.forEach((whatIfData) => {
-                                  // console.log(whatIfData.whatif)
-                                  return user.createQuestion({
-                                    question: whatIfData.whatif,
-                                    stars: 0
-                                  })
-                                    .then((whatIfQuestion) => {
-                                      // console.log(newWhatIf == null)
-
-                                      return WhatIfModel.create({})
-                                        .then((newWhatIf) => {
-                                          // whatIfQuestion.setWhatIf(newWhatIf);
-                                          newWhatIf.setQuestion(whatIfQuestion);
-                                          newWhy.addWhatIf(newWhatIf);
-                                          // console.log(newWhy == null)
-                                          return whatIfData.hows.forEach((how) => {
-                                            return user.createQuestion({ question: how, stars: 0 })
-                                              .then((howQuestion) => {
-
-                                                return HowModel.create({})
-                                                  .then((newHow) => {
-                                                    newHow.setQuestion(howQuestion);
-                                                    newWhatIf.addHow(newHow);
-                                                  })
-
-                                              })
-                                          })
-                                        })
-
-                                    })
-                                })
-                              })
-
-                          })
-                      })
-
-                    })
-                  })
-              })
-          })
-      })
-
-  });
+Conn.sync();
+// Conn.sync({ force: true })
+//   .then(() => {
+//     const passwrd = "tPass2";
+//     return bcrypt.hash(passwrd, 10)
+//       .then((hash2) => {
+//         return UserModel.create({
+//           email: faker.internet.email(),
+//           username: faker.internet.userName(),
+//           password: hash2,
+//           version: 1,
+//         })
+//           .then(user2 => {
+//
+//             const password = "testPassword";
+//             return bcrypt.hash(password, 10)
+//               .then((hash) => {
+//                 return UserModel.create({
+//                   email: faker.internet.email(),
+//                   username: faker.internet.userName(),
+//                   password: hash,
+//                   version: 1,
+//                 })
+//                   .then((user) => {
+//                     console.log(user2.id, "u2")
+//                     console.log(user.id, "u1")
+//                     user.addFollowedBy(user2).then(() => {
+//                     }).catch(error => {
+//                       console.log(error)
+//                     })
+//
+//                     return Promise.all(tags.map(tag => {
+//                       return Tag.create(tag);
+//
+//                     })).then(createdTags => {
+//
+//                       console.log(createdTags.length)
+//                       user.setTags(createdTags);
+//
+//                       // console.log("Added follower")
+//                       questions.forEach((whyData) => {
+//                         // console.log(whyData.why);
+//                         return user.createQuestion({ question: whyData.why, stars: 0 })
+//                           .then((whyQuestion) => {
+//                           user.addWatched(whyQuestion)
+//
+//                             console.log("addQuestion")
+//                             whyQuestion.addStaredBy(user)
+//                             whyQuestion.setTags(createdTags)
+//
+//                             return WhyModel.create({})
+//                               .then((newWhy) => {
+//                                 newWhy.setQuestion(whyQuestion);
+//
+//                                 return whyData.whatifs.forEach((whatIfData) => {
+//                                   // console.log(whatIfData.whatif)
+//                                   return user.createQuestion({
+//                                     question: whatIfData.whatif,
+//                                     stars: 0
+//                                   })
+//                                     .then((whatIfQuestion) => {
+//                                       // console.log(newWhatIf == null)
+//
+//                                       return WhatIfModel.create({})
+//                                         .then((newWhatIf) => {
+//                                           // whatIfQuestion.setWhatIf(newWhatIf);
+//                                           newWhatIf.setQuestion(whatIfQuestion);
+//                                           newWhy.addWhatIf(newWhatIf);
+//                                           // console.log(newWhy == null)
+//                                           return whatIfData.hows.forEach((how) => {
+//                                             return user.createQuestion({ question: how, stars: 0 })
+//                                               .then((howQuestion) => {
+//
+//                                                 return HowModel.create({})
+//                                                   .then((newHow) => {
+//                                                     newHow.setQuestion(howQuestion);
+//                                                     newWhatIf.addHow(newHow);
+//                                                   })
+//
+//                                               })
+//                                           })
+//                                         })
+//
+//                                     })
+//                                 })
+//                               })
+//                           })
+//                       })
+//
+//                     })
+//                   })
+//               })
+//           })
+//       })
+//
+//   });
 
 const Why = Conn.models.why;
 const WhatIf = Conn.models.whatif;

@@ -7,11 +7,14 @@ import { FormGroup, Col, Button, Row, FormControl } from 'react-bootstrap';
 import { WHY } from '../../../actions/AskQuestionPopup';
 import Thread from '../../ThreadItem/ThreadItem';
 
+import styles from './questionInput.css';
+
 const QuestionInput = ({ questionText, questionThreads, placeholder, onKeyPress, onTextChange, onSubmit, removeThread, questionType }) => {
 
   return (
     <div
-      style={{ padding: "30px", border: "1px solid black", borderRadius: "20px", margin: "5px" }}>
+      // style={{ padding: "30px", border: "1px solid black", borderRadius: "20px", margin: "5px" }}
+    >
 
       <FormControl
         type="text"
@@ -24,25 +27,29 @@ const QuestionInput = ({ questionText, questionThreads, placeholder, onKeyPress,
           }
         } }
       />
-      {questionType === WHY ? <div>
-        <p>Link your question into the community mind by adding up to five threads</p>
-        <div>
-          {questionThreads.map((thread) => {
-            return <Thread key={thread.id} thread={thread} removeThread={removeThread}></Thread>
-          })}
-          {(questionThreads.length < 5) ? <input placeholder="Add Thread ..." onKeyUp={(e) => {
-            onKeyPress(e);
-          }}/> : null}
+      <div className={styles.flexRow}>
+        {questionType === WHY ? <div>
+          <p>Link your question into the community mind by adding up to five threads</p>
+          <div>
+            {questionThreads.map((thread) => {
+              return <Thread key={thread.id} thread={thread} removeThread={removeThread}></Thread>
+            })}
+            {(questionThreads.length < 5) ? <input placeholder="Add Thread ..." onKeyUp={(e) => {
+              onKeyPress(e);
+            }}/> : null}
 
 
-        </div>
-      </div> : null}
+          </div>
+        </div> : null}
+
+        {/*<div className={styles.submitBtn}>*/}
+          <Button  className={styles.submitBtn} onClick={onSubmit}>
+            Submit
+          </Button>
+        {/*</div>*/}
 
 
-      <div style={{ float: "right", marginBottom: "30px", paddingBottom: "20px" }}>
-        <Button onClick={onSubmit}>
-          Submit
-        </Button>
+
       </div>
 
       {/*</form>*/}

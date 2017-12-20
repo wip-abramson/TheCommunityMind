@@ -4,7 +4,7 @@ import FullDiv from '../generic/FullDiv';
 import { Grid } from 'react-bootstrap'
 import { connect } from 'react-redux'
 import { signOut } from '../../actions/Auth';
-import { showAskQuestionPopup } from '../../actions/AskQuestionPopup';
+import { showAskQuestionPopup, hideAskQuestionPopup } from '../../actions/AskQuestionPopup';
 import { withApollo } from 'react-apollo';
 import { browserHistory } from 'react-router'
 
@@ -30,6 +30,9 @@ const mapDispatchToProps = function (dispatch) {
     },
     showAskQuestionPopup: (currentWhy, currentWhatIf) => {
       dispatch(showAskQuestionPopup(currentWhy, currentWhatIf));
+    },
+    hideAskQuestionPopup: () => {
+      dispatch(hideAskQuestionPopup())
     }
   }
 };
@@ -80,6 +83,8 @@ let Main = React.createClass({
   },
 
   render() {
+    this.props.hideAskQuestionPopup();
+
     return (
       <FullDiv>
         <MainHeader

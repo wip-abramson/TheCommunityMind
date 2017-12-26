@@ -10,7 +10,7 @@ module.exports = {
     production: {
       user: 'ubuntu',
       host: 'ec2-35-176-133-98.eu-west-2.compute.amazonaws.com',
-      key: '~/.ssh/id_rsa.pem',
+      key: '~/.ssh/TCM_key.pem',
       ref: 'origin/master',
       repo: 'git@github.com:wip-abramson/TheCommunityMind.git',
       path: '/home/ubuntu/TCM',

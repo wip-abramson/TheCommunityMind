@@ -13,7 +13,7 @@ module.exports = {
       key: '~/.ssh/TCM_key.pem',
       ref: 'origin/master',
       repo: 'git@github.com:wip-abramson/TheCommunityMind.git',
-      path: '/home/ubuntu/TCM/server',
+      path: '~/home/ubuntu/TCM/server',
       'post-deploy': 'npm install && pm2 startOrRestart ecosystem.config.js'
     }
   }

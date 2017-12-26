@@ -14,7 +14,7 @@ module.exports = {
       ref: 'origin/master',
       repo: 'git@github.com:wip-abramson/TheCommunityMind.git',
       path: '/home/ubuntu/TheCommunityMind',
-      'post-deploy': 'npm install && pm2 startOrRestart ecosystem.config.js'
+      'post-deploy': 'cd server && npm install && pm2 startOrRestart ecosystem.config.js'
     }
   }
 }

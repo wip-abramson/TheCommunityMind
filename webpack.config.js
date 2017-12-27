@@ -16,13 +16,16 @@ module.exports = {
     'webpack/hot/only-dev-server',
   ],
   output: {
-    path: __dirname + "dist",
+    path: __dirname + "/dist",
     filename: 'index_bundle.js'
   },
   module: {
     loaders: [
-      {test: /\.jsx?/, loader: 'babel-loader', exclude: path.resolve(__dirname) + 'node_modules'},
-      {test: /\.(png|jpg)$/, loader: "url-loader?mimetype=image/jpg"},
+      { test: /\.jsx?/, loader: 'babel-loader', exclude: path.resolve(__dirname) + 'node_modules' },
+      {
+        test: /\.(png|jpg)$/, loader: "url-loader?mimetype=image/jpg",
+        loader: 'file-loader?name=assets/[name].[hash].[ext]'
+      },
       {
         test: /\.css$/,
         loader: 'style-loader',
@@ -30,11 +33,10 @@ module.exports = {
       {
         test: /\.css$/,
         loader: 'css-loader',
-            query: {
-              modules: true,
-              localIdentName: '[name]__[local]___[hash:base64:5]'
-            }
-
+        query: {
+          modules: true,
+          localIdentName: '[name]__[local]___[hash:base64:5]'
+        }
 
       }
     ]

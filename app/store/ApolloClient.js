@@ -8,7 +8,7 @@ import { store } from './store';
 
 
 const networkInterface = createNetworkInterface({
-  uri: 'http://0.0.0.0:5000/graphql',
+  uri: 'http://thecommunitymind.com/graphql',
 });
 
 

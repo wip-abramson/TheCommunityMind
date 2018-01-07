@@ -3,7 +3,7 @@
     display: flex;
     flex-direction: row;
     border: 2px solid #032760;
-    padding: 20px 10px 10px 30px;
+    /*padding: 20px 10px 10px 30px;*/
     background: #ffeffc;
     margin: 5px;
     border-radius: 25px;
@@ -14,12 +14,16 @@
 
 .questionText {
     flex: 9;
+    padding: 22px;
+
+
 }
+
 
 .askQuestion {
     border-left: 1px solid black;
-    padding: 10px;
     margin: 10px;
+    padding-left: 5px;
 }
 
 
@@ -32,7 +36,3 @@
 
 }
 
-.owner {
-    float: right;
-
-}

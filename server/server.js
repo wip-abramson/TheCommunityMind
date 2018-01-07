@@ -16,7 +16,7 @@ function loggingMiddleware(req, res, next) {
   next();
 }
 
-server.use(cors())
+server.use('*', cors())
 
 server.use(express.static('../public'))
 server.use(loggingMiddleware)
@@ -32,19 +32,6 @@ server.use('/graphql', bodyParser.json(), jwt({
       }) : Promise.resolve(null),
   },
 })));
-
-server.use("/graphql", function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Content-Type, Authorization, Content-Length, X-Requested-With"
-  );
-  if (req.method === "OPTIONS") {
-    res.sendStatus(200);
-  } else {
-    next();
-  }
-});
 
 
 

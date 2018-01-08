@@ -16,7 +16,8 @@ function loggingMiddleware(req, res, next) {
   next();
 }
 
-server.use('*', cors())
+server.use(cors({origin: "*",     allowedHeaders: [ 'Accept-Version', 'Authorization', 'Credentials', 'Content-Type' ]
+}))
 
 server.use(express.static('../public'))
 server.use(loggingMiddleware)

@@ -22,7 +22,7 @@ server.use(cors({origin: "*",     allowedHeaders: [ 'Accept-Version', 'Authoriza
 server.use(express.static('../public'))
 server.use(loggingMiddleware)
 server.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
+  // res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type,Accept-Version, Authorization, Accept");
   next();
 });

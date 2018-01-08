@@ -16,16 +16,16 @@ function loggingMiddleware(req, res, next) {
   next();
 }
 
-server.use(cors({origin: "*",     allowedHeaders: [ 'Accept-Version', 'Authorization', 'Content-Type' ]
-}))
+// // server.use(cors({origin: "*",     allowedHeaders: [ 'Accept-Version', 'Authorization', 'Content-Type' ]
+// }))
 
 server.use(express.static('../public'))
 server.use(loggingMiddleware)
-server.use(function(req, res, next) {
-  // res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type,Accept-Version, Authorization, Accept");
-  next();
-});
+// server.use(function(req, res, next) {
+//   // res.header("Access-Control-Allow-Origin", "*");
+//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type,Accept-Version, Authorization, Accept");
+//   next();
+// });
 server.use('/graphql', bodyParser.json(), jwt({
   secret: JWT_SECRET,
   credentialsRequired: false,

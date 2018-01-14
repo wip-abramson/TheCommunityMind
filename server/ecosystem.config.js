@@ -3,6 +3,7 @@ module.exports = {
     "name"        : "TheCommunityMind",
     "script"      : "./server.js",
     "watch"       : false,
+    "ignore_watch" : ["node_modules", "./mind.sqlite"],
     "exec_interpreter" : "babel-node",
     "exec_mode"        : "fork"
   }],

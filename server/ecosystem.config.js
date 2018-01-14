@@ -2,7 +2,7 @@ module.exports = {
   "apps" : [{
     "name"        : "TheCommunityMind",
     "script"      : "./server.js",
-    "watch"       : true,
+    "watch"       : false,
     "exec_interpreter" : "babel-node",
     "exec_mode"        : "fork"
   }],

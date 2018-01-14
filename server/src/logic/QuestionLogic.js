@@ -93,7 +93,7 @@ export const questionLogic = {
               });
             }
             else {
-              Promise.reject("Question not stared by current user");
+              return Promise.reject("Question not stared by current user");
             }
           })
       })

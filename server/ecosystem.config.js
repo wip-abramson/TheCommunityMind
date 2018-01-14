@@ -4,6 +4,7 @@ module.exports = {
     "script"      : "./server.js",
     "watch"       : false,
     "error_file"      : "err.log",
+    "autorestart": false,
     "ignore_watch" : ["node_modules", "./mind.sqlite"],
     "exec_interpreter" : "babel-node",
     "exec_mode"        : "fork"

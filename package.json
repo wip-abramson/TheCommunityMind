@@ -4,8 +4,8 @@
   "description": "Web app that harneses the power of questioning to inspire ideas",
   "main": "index.js",
   "scripts": {
-    "production": "webpack -p",
-    "start": "webpack-dev-server --host 0.0.0.0 --port 8080 --inline --content-base app --history-api-fallback",
+    "production": "NODE_ENV=production webpack -p",
+    "start": "NODE_ENV=development webpack-dev-server --host 0.0.0.0 --port 8080 --inline --content-base app --history-api-fallback",
     "test": "jest"
   },
   "jest": {

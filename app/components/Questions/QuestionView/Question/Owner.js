@@ -7,7 +7,7 @@ import { Link } from 'react-router'
 const Owner = (props) => {
   var style = {
     fontSize: 18,
-    padding: "10px 10px 4px 3px"
+    padding: "10px 10px 0px 15px"
   }
 
   return (

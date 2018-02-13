@@ -12,20 +12,15 @@ const Star = (props) => {
     marginRight: 10
   }
   return (
-    <div style={{textAlign: "bottom"}}>
+    <span>
       <FaStar style={props.staredByCurrentUser ? style : {"cursor": "pointer", marginRight: "10px"}}
         onClick={() => {
-          if (props.staredByCurrentUser) {
-            props.unstarQuestion();
-          }
-          else {
-            props.starQuestion()
-          }
+          props.staredByCurrentUser ? props.unstarQuestion() : props.starQuestion();
           }
         }
       />
       {props.count}
-    </div>
+    </span>
   )
 }
 

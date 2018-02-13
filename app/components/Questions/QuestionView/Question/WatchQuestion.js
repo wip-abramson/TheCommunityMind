@@ -12,7 +12,7 @@ const WatchQuestion = (props) => {
     color: "red",
     cursor: "pointer"
   }
-  return <div>
+  return <span>
     <FaEye
       style={props.watchedByCurrentUser ? style :  {"cursor": "pointer"}}
       onClick={() => {
@@ -26,7 +26,7 @@ const WatchQuestion = (props) => {
       }}
     />
 
-  </div>
+  </span>
 
 }
 

@@ -3,7 +3,6 @@ import {Router, Route, browserHistory, IndexRoute} from "react-router";
 
 import Main from "../components/Main/Main";
 import Home from '../components/Home/Home';
-// import ThreadPage from '../components/ThreadPage/ThreadPage';
 import Why from "../components/Questions/Why";
 import WhatIf from "../components/Questions/WhatIf";
 import How from "../components/Questions/How";

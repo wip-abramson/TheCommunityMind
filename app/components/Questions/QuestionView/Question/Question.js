@@ -28,10 +28,8 @@ export default function Question(props) {
       }}
 
     />
-    askQuestion = <div className={styles.askQuestion}>
+    askQuestion = <FaQuestionCircle/>
 
-      <FaQuestionCircle size={70}/>
-    </div>
 
   }
 
@@ -41,6 +39,7 @@ export default function Question(props) {
 
   return (
     <div className={styles.questionBox}>
+      <Owner owner={props.questionType.question.owner}/>
       <div className={styles.questionText}>
         <QuestionText
           editable={props.editable}
@@ -53,30 +52,35 @@ export default function Question(props) {
         />
       </div>
       <div>
-        <Owner owner={props.questionType.question.owner}/>
 
         <div className={styles.iconRow}>
 
+            <Star
+              count={props.questionType.question.stars}
+              starQuestion={() => {
+                // props.unAuthorized();
+                props.starQuestion(props.questionType)
+              }}
+              unstarQuestion={() => {
+                props.unstarQuestion(props.questionType)
+              }}
+              staredByCurrentUser={props.questionType.question.staredByCurrentUser}
+            />
 
-          {watchQuestion}
-          {editQuestion}
 
-          <Star
-            count={props.questionType.question.stars}
-            starQuestion={() => {
-              // props.unAuthorized();
-              props.starQuestion(props.questionType)
-            }}
-            unstarQuestion={() => {
-              props.unstarQuestion(props.questionType)
-            }}
-            staredByCurrentUser={props.questionType.question.staredByCurrentUser}
-          />
+            {watchQuestion}
+
+            {editQuestion}
+
+          <span className={styles.questionIcon}>
+            {askQuestion}
+
+          </span>
 
 
         </div>
+
       </div>
-      {askQuestion}
 
 
     </div>

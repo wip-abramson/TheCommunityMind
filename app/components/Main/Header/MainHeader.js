@@ -7,7 +7,6 @@ import FaQuestionCircle from 'react-icons/fa/question-circle'
 var MainHeader = function (props) {
   var style = {
     marginTop: 10
-
   }
   return (
   <div>
@@ -28,11 +27,11 @@ var MainHeader = function (props) {
           <Nav pullRight>
 
             <NavItem >
-              <FaQuestionCircle onClick={props.onQuestionClick} size={70}/>
+              <FaQuestionCircle onClick={props.onQuestionClick} size={100}/>
             </NavItem>
           </Nav>
           <Navbar.Collapse>
-            <Nav pullRight>
+            <Nav>
               <NavDropdown eventKey="4" title={props.currentUser.username} id="nav-dropdown">
                 <LinkContainer to={{pathname: "/profile", query: {userId: props.currentUser.id}}}>
                   <MenuItem>Profile</MenuItem>

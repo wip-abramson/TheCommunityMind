@@ -10,9 +10,9 @@ const EditQuestion = (props) => {
   var style= {
     cursor: "pointer"
   }
-  return <div>
+  return <span>
     <FaPencil style={style} onClick={props.toggleEditable}/>
-  </div>
+  </span>
 }
 
 // EditQuestion.propTypes = {

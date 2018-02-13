@@ -1,7 +1,7 @@
 .questionBox {
 
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     border: 2px solid #032760;
     /*padding: 20px 10px 10px 30px;*/
     background: #ffeffc;
@@ -14,8 +14,9 @@
 
 .questionText {
     flex: 9;
-    padding: 22px;
-
+    /*padding: 22px;*/
+    padding-left: 10px;
+    text-decoration: none;
 
 }
 
@@ -28,11 +29,19 @@
 
 
 .iconRow {
-    justify-self: flex-end;
-    display: flex;
-    flex-direction: row;
-    flex: 1;
+    /*justify-self: flex-end;*/
+    display: inline-block;
+    /*flex-direction: row;*/
+    padding-left: 10px;
     width: 100%;
+}
 
+.icon {
+    /*flex: 1;*/
+}
+
+.questionIcon {
+    float: right;
+    display: block;
 }
 

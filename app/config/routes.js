@@ -7,6 +7,7 @@ import Home from '../components/Home/Home';
 import Why from "../components/Questions/Why";
 import WhatIf from "../components/Questions/WhatIf";
 import How from "../components/Questions/How";
+import LandingPage from "../components/LandingPage/LandingPage";
 import LoginContainer from "../components/Authentication/LoginContainer";
 import RegisterContainer from "../components/Authentication/RegisterContainer";
 import UserProfileContainer from "../components/UserProfile/UserProfileContainer";
@@ -15,6 +16,7 @@ var AppRouter = function () {
   return (
     <Router history={browserHistory}>
       <Route path='/' component={Main}>
+        <Route path='/Landing' component={LandingPage}/>
         <Route component={Home}>
           <IndexRoute component={Why}/>
           {/*<Route path="/thread/:name" component={ThreadPage}/>*/}
@@ -22,6 +24,7 @@ var AppRouter = function () {
         </Route>
         <Route path='/whatif' component={WhatIf}/>
         <Route path='/how' component={How}/>
+
         < Route
           path='/login'
           component={LoginContainer}/>

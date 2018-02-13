@@ -1,6 +1,7 @@
 import React from 'react'
 import MainHeader from './Header/MainHeader'
 import FullDiv from '../generic/FullDiv';
+import { browserHistory } from 'react-router';
 import { Grid, Row } from 'react-bootstrap'
 import { connect } from 'react-redux'
 import { signOut } from '../../actions/Auth';
@@ -45,6 +46,13 @@ let Main = React.createClass({
         color: 'red'
       }
     }
+  },
+
+
+  componentDidMount() {
+      if (!this.props.currentUser) {
+          browserHistory.push("/landing");
+      }
   },
 
   logout() {

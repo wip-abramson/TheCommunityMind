@@ -17,7 +17,7 @@ module.exports = {
       ref: 'origin/master',
       repo: 'git@github.com:wip-abramson/TheCommunityMind.git',
       path: '/home/ubuntu/TheCommunityMind',
-      'post-deploy': 'npm i && npm run production && cp -a ./dist/ /usr/share/nginx/dist/ && cd server && npm i && pm2 startOrRestart ecosystem.config.js'
+      'post-deploy': 'npm i && npm run production && sudo cp -a ./dist/. /usr/share/nginx/dist/ && cd server && npm i && pm2 startOrRestart ecosystem.config.js'
     }
   }
 }

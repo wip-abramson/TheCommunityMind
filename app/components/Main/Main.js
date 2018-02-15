@@ -38,9 +38,9 @@ const mapDispatchToProps = function (dispatch) {
 };
 
 let Main = React.createClass({
-  // style: {
-  //   padding: "70px 20px"
-  // },
+  style: {
+    padding: "70px 20px"
+  },
 
 
   //Optional styling

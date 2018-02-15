@@ -4,7 +4,6 @@ import QuestionList from "./QuestionList";
 import QuestionContainer from './Question/QuestionContainer';
 
 function QuestionView(props) {
-  props.setQuestionType();
 
   if (props.loading) {
     return <p>Loading ...</p>;
@@ -20,7 +19,7 @@ function QuestionView(props) {
 
       <QuestionList
         edges={props.connection.edges}
-        onSelectQuestion={props.onSelectQuestion}
+        ctQuestion={props.ctQuestion}
         link={props.link}
         currentUser={props.currentUser}
         hasNextPage={props.connection.pageInfo.hasNextPage}
@@ -37,7 +36,7 @@ function getCurrentWhyQuestion(question) {
         <QuestionContainer
           questionType={question}
           link='/'
-          onSelectQuestion={() => {
+          ctQuestion={() => {
             return null
           } }
         >
@@ -56,7 +55,7 @@ function getCurrentWhatIf(question) {
         <QuestionContainer
           questionType={question}
           link='/whatif'
-          onSelectQuestion={() => {
+          ctQuestion={() => {
             return null
           } }
         >
@@ -69,7 +68,7 @@ function getCurrentWhatIf(question) {
 }
 
 QuestionView.propTypes = {
-  onSelectQuestion: PropTypes.func,
+  ctQuestion: PropTypes.func,
   connection: PropTypes.shape({
     edges: PropTypes.array,
 

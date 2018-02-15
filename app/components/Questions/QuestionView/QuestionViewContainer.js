@@ -23,3 +23,21 @@ export default connect(
   null
 )(QuestionView)
 
+let container = React.createClass({
+
+  componentDidMount() {
+    this.props.setQuestionType();
+  },
+
+  render() {
+    return (
+      <QuestionView
+        createQuestion={this.props.createQuestion}
+        onSelectQuestion={this.props.onSelectQuestion}
+        connection={this.props.connection}
+        loading={this.props.loading}
+      />
+    )
+  }
+})
+

@@ -14,7 +14,7 @@ export default function Question(props) {
 
   let editQuestion;
   let watchQuestion;
-  let askQuestion;
+  // let askQuestion;
   // console.log(props)
 
   if (props.currentUser) {
@@ -28,7 +28,7 @@ export default function Question(props) {
       }}
 
     />
-    askQuestion = <FaQuestionCircle/>
+    // askQuestion = <FaQuestionCircle/>
 
 
   }
@@ -72,10 +72,10 @@ export default function Question(props) {
 
             {editQuestion}
 
-          <span className={styles.questionIcon}>
-            {askQuestion}
+          {/*<span className={styles.questionIcon}>*/}
+            {/*{askQuestion}*/}
 
-          </span>
+          {/*</span>*/}
 
 
         </div>

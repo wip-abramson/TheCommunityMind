@@ -28,8 +28,8 @@ const mapDispatchToProps = function (dispatch) {
     logout: () => {
       dispatch(signOut());
     },
-    showAskQuestionPopup: (currentWhy, currentWhatIf) => {
-      dispatch(showAskQuestionPopup(currentWhy, currentWhatIf));
+    showAskQuestionPopup: () => {
+      dispatch(showAskQuestionPopup(null));
     },
     hideAskQuestionPopup: () => {
       dispatch(hideAskQuestionPopup())

@@ -9,9 +9,9 @@ export const WHY = "WHY";
 export const WHATIF = "WHATIF";
 export const HOW = "HOW";
 
-export function showAskQuestionPopup(currentWhy, currentWhatIf) {
+export function showAskQuestionPopup(question) {
   console.log("SHOW ASK Q POPUP")
-  return { type: SHOW_POPUP, currentWhy: currentWhy, currentWhatIf: currentWhatIf }
+  return { type: SHOW_POPUP, question: question }
 }
 
 export function hideAskQuestionPopup() {

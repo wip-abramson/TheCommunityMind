@@ -7,16 +7,14 @@ export function askQuestionPopup(state = {}, action) {
   switch (action.type) {
     case SHOW_POPUP:
       return Object.assign({}, state, {
+        question: action.question,
         visible: true,
-        currentWhy: action.currentWhy,
-        currentWhatIf: action.currentWhatIf
       });
     case HIDE_POPUP:
-      return Object.assign({}, state, { currentWhy: null, currentWhatIf: null, visible: false });
+      return Object.assign({}, state, { question: null, visible: false });
     case SET_QUESTION_TYPE:
       return Object.assign({}, state, { questionType: action.questionType });
     default:
-      console.log("DEFAULT")
       return state;
   }
 }

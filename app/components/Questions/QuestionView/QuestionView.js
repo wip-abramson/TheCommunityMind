@@ -4,7 +4,7 @@ import QuestionList from "./QuestionList";
 import QuestionContainer from './Question/QuestionContainer';
 
 function QuestionView(props) {
-
+  props.setQuestionType();
   if (props.loading) {
     return <p>Loading ...</p>;
   }
@@ -18,6 +18,7 @@ function QuestionView(props) {
       {getCurrentWhatIf(props.currentWhatIf)}
 
       <QuestionList
+        onSelectQuestion={props.onSelectQuestion}
         edges={props.connection.edges}
         ctQuestion={props.ctQuestion}
         link={props.link}

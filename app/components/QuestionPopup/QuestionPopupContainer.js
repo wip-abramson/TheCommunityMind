@@ -4,13 +4,13 @@
 import React from 'react';
 import { connect } from 'react-redux'
 
-import { hideAskQuestionPopup } from '../../actions/AskQuestionPopup';
+import { hideQuestionPopup } from '../../actions/QuestionPopup';
 
-import AskQuestionPopup from './AskQuestionPopup';
+import QuestionPopup from './QuestionPopup';
 
 const mapStateToProps = function (state) {
   return {
-    askQuestionPopup: state.askQuestionPopup,
+    questionPopup: state.questionPopup,
     currentWhy: state.currentWhy,
     currentWhatIf: state.currentWhatIf,
   }
@@ -18,8 +18,8 @@ const mapStateToProps = function (state) {
 
 const mapDispatchToProps = function (dispatch) {
   return {
-    hideAskQuestionPopup: () => {
-      dispatch(hideAskQuestionPopup());
+    hideQuestionPopup: () => {
+      dispatch(hideQuestionPopup());
     }
   }
 };
@@ -27,4 +27,4 @@ const mapDispatchToProps = function (dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(AskQuestionPopup)
+)(QuestionPopup)

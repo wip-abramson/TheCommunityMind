@@ -4,7 +4,7 @@
 import React, {PropTypes} from 'react'
 import { compose, graphql } from "react-apollo";
 import { connect } from "react-redux";
-import { showAskQuestionPopup } from '../../../../actions/AskQuestionPopup';
+import { showQuestionPopup } from '../../../../actions/QuestionPopup';
 
 
 
@@ -34,8 +34,8 @@ const mapDispatchToProps = (dispatch) => {
       console.log("DISPATCH UNAUTHORIZED")
       dispatch(Notifications.error(unauthorizedErrorNotification))
     },
-    showAskQuestionPopup: (question) => {
-      dispatch(showAskQuestionPopup(question));
+    showQuestionPopup: (question) => {
+      dispatch(showQuestionPopup(question));
     },
   }
 }
@@ -200,7 +200,7 @@ let container = React.createClass({
   },
 
   editQuestion() {
-    this.props.showAskQuestionPopup(this.props.questionType.question);
+    this.props.showQuestionPopup(this.props.questionType.question);
   },
 
 

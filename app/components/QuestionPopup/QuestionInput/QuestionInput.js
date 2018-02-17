@@ -4,7 +4,7 @@
 import React from 'react';
 import { FormGroup, Col, Button, Row, FormControl } from 'react-bootstrap';
 
-import { WHY } from '../../../actions/AskQuestionPopup';
+import { WHY } from '../../../actions/QuestionPopup';
 import Thread from '../../ThreadItem/ThreadItem';
 
 import styles from './questionInput.css';

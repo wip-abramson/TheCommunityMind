@@ -14,7 +14,6 @@ const QuestionList = (props) => {
 
     <div>
       {
-
         props.edges.map(function (edge) {
         return (
           <QuestionContainer

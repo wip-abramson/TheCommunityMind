@@ -15,7 +15,7 @@ import { unauthorizedErrorNotification } from '../../notifications/error.notific
 
 import UserInformation from './UserInformation'
 import UserQuestionsContainer from './UserQuestionsContainer';
-import { setQuestionType, WHY } from '../../actions/AskQuestionPopup';
+import { setQuestionType, WHY } from '../../actions/QuestionPopup';
 
 const mapStateToProps = function (state) {
   return {

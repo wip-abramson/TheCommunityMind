@@ -4,13 +4,13 @@ import FullDiv from '../generic/FullDiv';
 import { Grid } from 'react-bootstrap'
 import { connect } from 'react-redux'
 import { signOut } from '../../actions/Auth';
-import { showAskQuestionPopup, hideAskQuestionPopup } from '../../actions/AskQuestionPopup';
+import { showQuestionPopup, hideQuestionPopup } from '../../actions/QuestionPopup';
 import { withApollo } from 'react-apollo';
 import { browserHistory } from 'react-router'
 
 import Notifications from 'react-notification-system-redux';
 
-import AskQuestionPopupContainer from '../AskQuestionPopup/AskQuestionPopupContainer';
+import QuestionPopupContainer from '../QuestionPopup/QuestionPopupContainer';
 
 
 
@@ -28,11 +28,11 @@ const mapDispatchToProps = function (dispatch) {
     logout: () => {
       dispatch(signOut());
     },
-    showAskQuestionPopup: () => {
-      dispatch(showAskQuestionPopup(null));
+    showQuestionPopup: () => {
+      dispatch(showQuestionPopup(null));
     },
-    hideAskQuestionPopup: () => {
-      dispatch(hideAskQuestionPopup())
+    hideQuestionPopup: () => {
+      dispatch(hideQuestionPopup())
     }
   }
 };
@@ -68,8 +68,8 @@ let Main = React.createClass({
 
   },
 
-  showAskQuestionPopup() {
-    this.props.showAskQuestionPopup(this.props.currentWhy, this.props.currentWhatIf)
+  showQuestionPopup() {
+    this.props.showQuestionPopup(this.props.currentWhy, this.props.currentWhatIf)
   },
 
   viewProfile() {
@@ -83,7 +83,7 @@ let Main = React.createClass({
   },
 
   render() {
-    this.props.hideAskQuestionPopup();
+    this.props.hideQuestionPopup();
 
     return (
       <FullDiv>
@@ -92,12 +92,12 @@ let Main = React.createClass({
           logout={this.logout}
           viewProfile={this.viewProfile}
           viewWatchList={this.viewWatchList}
-          onQuestionClick={this.showAskQuestionPopup}
+          onQuestionClick={this.showQuestionPopup}
         ></MainHeader>
 
 
         <Grid style={this.style}>
-          <AskQuestionPopupContainer/>
+          <QuestionPopupContainer/>
           {this.props.children}
         </Grid>
         <Notifications

@@ -25,10 +25,6 @@ export default connect(
 
 let container = React.createClass({
 
-  componentDidMount() {
-    this.props.setQuestionType();
-  },
-
   render() {
     return (
       <QuestionView
@@ -36,6 +32,7 @@ let container = React.createClass({
         onSelectQuestion={this.props.onSelectQuestion}
         connection={this.props.connection}
         loading={this.props.loading}
+        setQuestionType={this.props.setQuestionType}
       />
     )
   }

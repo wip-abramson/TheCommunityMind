@@ -14,8 +14,6 @@ export default function Question(props) {
 
   let editQuestion;
   let watchQuestion;
-  // let askQuestion;
-  // console.log(props)
 
   if (props.currentUser) {
     watchQuestion = <WatchQuestion

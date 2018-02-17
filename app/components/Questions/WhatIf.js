@@ -9,7 +9,7 @@ import { unauthorizedErrorNotification } from '../../notifications/error.notific
 import QuestionViewContainer from "./QuestionView/QuestionViewContainer";
 
 import { updateCurrentWhatIf } from "../../actions/WhatIf";
-import {setQuestionType, WHATIF } from '../../actions/AskQuestionPopup';
+import {setQuestionType, WHATIF } from '../../actions/QuestionPopup';
 
 import WHATIFS_QUERY from "../../graphql/querys/whatIfs.query";
 

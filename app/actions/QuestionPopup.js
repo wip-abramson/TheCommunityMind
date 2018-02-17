@@ -9,15 +9,16 @@ export const WHY = "WHY";
 export const WHATIF = "WHATIF";
 export const HOW = "HOW";
 
-export function showAskQuestionPopup(question) {
+export function showQuestionPopup(question) {
   console.log("SHOW ASK Q POPUP")
   return { type: SHOW_POPUP, question: question }
 }
 
-export function hideAskQuestionPopup() {
+export function hideQuestionPopup() {
   return { type: HIDE_POPUP }
 }
 
+// not sure if this belongs here. Possibly should be its own state item
 export function setQuestionType(questionType) {
   return { type: SET_QUESTION_TYPE, questionType: questionType}
 }

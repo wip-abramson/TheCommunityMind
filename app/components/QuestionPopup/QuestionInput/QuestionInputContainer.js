@@ -64,7 +64,7 @@ class QuestionInputContainer extends React.Component {
       this.setState({questionText: "", questionThreads: []})
 
     })
-    this.props.hideAskQuestionPopup();
+    this.props.hideQuestionPopup();
 
 
   }

@@ -8,7 +8,7 @@ import { unauthorizedErrorNotification } from '../../notifications/error.notific
 
 import QuestionViewContainer from "./QuestionView/QuestionViewContainer";
 import { updateCurrentWhy } from "../../actions/Why";
-import { setQuestionType, WHY } from '../../actions/AskQuestionPopup';
+import { setQuestionType, WHY } from '../../actions/QuestionPopup';
 
 import WHYS_QUERY from "../../graphql/querys/whys.query";
 

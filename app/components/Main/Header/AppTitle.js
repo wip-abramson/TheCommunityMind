@@ -2,7 +2,7 @@ import React from "react";
 import {Link} from 'react-router';
 
 
-var AppTitle = function () {
+var AppTitle = function (props) {
 
 
   var noMargin = {
@@ -13,7 +13,7 @@ var AppTitle = function () {
   }
 
   return (
-      <Link to='/'>
+      <Link to='/' onClick={props.hideQuestionPopup}>
 
         <div style={noMargin}>
           <img src="public/imgs/thecommunitymind_logo1@0.5x.png"/>

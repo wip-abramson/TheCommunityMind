@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from 'prop-types'
 import { Nav, Navbar, NavItem, NavDropdown, MenuItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import AppTitle from "./AppTitle";
@@ -16,7 +17,7 @@ var MainHeader = function (props) {
         <LinkContainer to="/" onlyActiveOnIndex>
           <Navbar.Brand>
 
-            <AppTitle/>
+            <AppTitle hideQuestionPopup={props.hideQuestionPopup}/>
 
 
           </Navbar.Brand>
@@ -70,8 +71,17 @@ var MainHeader = function (props) {
 
     </Navbar>
   </div>
-
   )
+};
+
+MainHeader.propTypes = {
+  viewWatchList: PropTypes.func.isRequired,
+  logout: PropTypes.func.isRequired,
+  onQuestionClick: PropTypes.func.isRequired,
+  currentUser: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    username: PropTypes.string.isRequired,
+  })
 }
 
 export default MainHeader;

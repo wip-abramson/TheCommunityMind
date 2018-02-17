@@ -83,7 +83,7 @@ let Main = React.createClass({
   },
 
   render() {
-    this.props.hideQuestionPopup();
+    // this.props.hideQuestionPopup();
 
     return (
       <FullDiv>
@@ -93,6 +93,7 @@ let Main = React.createClass({
           viewProfile={this.viewProfile}
           viewWatchList={this.viewWatchList}
           onQuestionClick={this.showQuestionPopup}
+          hideQuestionPopup={this.props.hideQuestionPopup}
         ></MainHeader>
 
 

@@ -7,16 +7,16 @@ import FaPencil from 'react-icons/fa/pencil';
 
 const EditQuestion = (props) => {
 
-  var style= {
+  let style= {
     cursor: "pointer"
-  }
+  };
   return <span>
-    <FaPencil style={style} onClick={props.toggleEditable}/>
+    <FaPencil style={style} onClick={props.editQuestionPopup}/>
   </span>
-}
+};
 
-// EditQuestion.propTypes = {
-//   ownedByCurrentUser: PropTypes.bool.isRequired,
-// }
+EditQuestion.propTypes = {
+  editQuestionPopup: PropTypes.func.isRequired,
+};
 
 export default EditQuestion;

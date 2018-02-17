@@ -34,7 +34,7 @@ export default function Question(props) {
   }
 
   if (props.currentUser && (props.questionType.question.owner.id == props.currentUser.id)) {
-    editQuestion = <EditQuestion toggleEditable={props.toggleEditable}/>
+    editQuestion = <EditQuestion editQuestionPopup={props.editQuestion}/>
   }
 
   return (
@@ -42,12 +42,12 @@ export default function Question(props) {
       <Owner owner={props.questionType.question.owner}/>
       <div className={styles.questionText}>
         <QuestionText
-          editable={props.editable}
+          // editable={props.editable}
           question={props.questionType.question.question}
           questionType={props.questionType}
           link={props.link}
           editQuestion={props.editQuestion}
-          toggleEditable={props.toggleEditable}
+          // toggleEditable={props.toggleEditable}
           onSelectQuestion={props.onSelectQuestion}
         />
       </div>

@@ -4,6 +4,8 @@
 import React, {PropTypes} from 'react'
 import { compose, graphql } from "react-apollo";
 import { connect } from "react-redux";
+import { showAskQuestionPopup } from '../../../../actions/AskQuestionPopup';
+
 
 
 import Notifications from 'react-notification-system-redux';
@@ -31,7 +33,10 @@ const mapDispatchToProps = (dispatch) => {
     unAuthorized: () => {
       console.log("DISPATCH UNAUTHORIZED")
       dispatch(Notifications.error(unauthorizedErrorNotification))
-    }
+    },
+    showAskQuestionPopup: (question) => {
+      dispatch(showAskQuestionPopup(question));
+    },
   }
 }
 
@@ -56,7 +61,6 @@ const starQuestion = graphql(STAR_QUESTION_MUTATION, {
         .catch(res => {
           // catches any error returned from mutation request
           const errors = res.graphQLErrors.map((error) => {
-            console.log(error.message, "STAR ERROR")
             if (error.message === "Unauthorized") {
               ownProps.unAuthorized();
             }
@@ -159,31 +163,31 @@ const unwatchQuestion = graphql(UNWATCH_QUESTION_MUTATION, {
   })
 })
 
-const editQuestion = graphql(EDIT_QUESTION_MUTATION, {
-  props: ({ ownProps, mutate }) => ({
-    editQuestion: ( id, newQuestion) => {
-      console.log(id, newQuestion, "Edit")
-      return mutate({
-        variables: { id: id, question: newQuestion },
-
-      })
-        .catch(res => {
-          // unlikley to be unauthorized as never show edit button to unauthorized users
-          ownProps.unAuthorized();
-
-          // catches any error returned from mutation request
-          // const errors = res.graphQLErrors.map((error) => {
-          //   console.log("Failed")
-          //   console.log(error.message)
-          //   return error;
-          // });
-          // return errors
-          // this.setState({ errors });
-        })
-    }
-  })
-
-})
+// const editQuestion = graphql(EDIT_QUESTION_MUTATION, {
+//   props: ({ ownProps, mutate }) => ({
+//     editQuestion: ( id, newQuestion) => {
+//       console.log(id, newQuestion, "Edit")
+//       return mutate({
+//         variables: { id: id, question: newQuestion },
+//
+//       })
+//         .catch(res => {
+//           // unlikley to be unauthorized as never show edit button to unauthorized users
+//           ownProps.unAuthorized();
+//
+//           // catches any error returned from mutation request
+//           // const errors = res.graphQLErrors.map((error) => {
+//           //   console.log("Failed")
+//           //   console.log(error.message)
+//           //   return error;
+//           // });
+//           // return errors
+//           // this.setState({ errors });
+//         })
+//     }
+//   })
+//
+// })
 
 let container = React.createClass({
 
@@ -193,20 +197,12 @@ let container = React.createClass({
     }
 
     this.editQuestion = this.editQuestion.bind(this);
-    this.toggleEditable = this.toggleEditable.bind(this);
-
   },
 
-  editQuestion(question, id) {
-    this.setState({ editable: false })
-    console.log(question, id)
-    console.log(id)
-    this.props.editQuestion(id, question);
+  editQuestion() {
+    this.props.showAskQuestionPopup(this.props.questionType.question);
   },
 
-  toggleEditable() {
-    this.setState({ editable: !this.state.editable })
-  },
 
   render() {
     return (
@@ -215,9 +211,7 @@ let container = React.createClass({
         questionType={this.props.questionType}
         starQuestion={this.props.starQuestion}
         unstarQuestion={this.props.unstarQuestion}
-        editable={this.state.editable}
         editQuestion={this.editQuestion}
-        toggleEditable={this.toggleEditable}
         currentUser={this.props.currentUser}
         link={this.props.link}
         watchQuestion={this.props.watchQuestion}
@@ -238,7 +232,6 @@ const QuestionContainer = compose(
   ),
   starQuestion,
   unstarQuestion,
-  editQuestion,
   watchQuestion,
   unwatchQuestion
 )(container);

@@ -9,7 +9,7 @@ import { unauthorizedErrorNotification } from '../../notifications/error.notific
 import QuestionViewContainer from "./QuestionView/QuestionViewContainer";
 
 import { updateCurrentWhatIf } from "../../actions/WhatIf";
-import {setQuestionType, WHATIF } from '../../actions/QuestionPopup';
+import {setQuestionType, WHATIF, HOW } from '../../actions/QuestionPopup';
 
 import WHATIFS_QUERY from "../../graphql/querys/whatIfs.query";
 
@@ -24,6 +24,7 @@ const mapStateToProps = function (state) {
 const mapDispatchToProps = function (dispatch) {
   return {
     onSelectQuestion: function (whatIf) {
+      dispatch(setQuestionType(HOW))
       dispatch(updateCurrentWhatIf(whatIf))
     },
     setQuestionType: () => {
@@ -53,7 +54,6 @@ const WhatIf = compose(
       error,
       connection: whatIfs,
       onSelectQuestion: ownProps.onSelectQuestion,
-      placeholder: "What If ...?",
       link: "/how",
       // refetchQuery: WHATIFS_QUERY,
       currentWhy: ownProps.currentWhy,

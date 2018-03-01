@@ -48,7 +48,6 @@ const How = compose(
       loading,
       error,
       connection: hows,
-      placeholder: "How ...?",
       refetchQuery: HOWS_QUERY,
       currentWhy: ownProps.currentWhy,
       currentWhatIf: ownProps.currentWhatIf,

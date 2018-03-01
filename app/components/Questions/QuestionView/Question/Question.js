@@ -40,12 +40,10 @@ export default function Question(props) {
       <Owner owner={props.questionType.question.owner}/>
       <div className={styles.questionText}>
         <QuestionText
-          // editable={props.editable}
           question={props.questionType.question.question}
           questionType={props.questionType}
           link={props.link}
           editQuestion={props.editQuestion}
-          // toggleEditable={props.toggleEditable}
           onSelectQuestion={props.onSelectQuestion}
         />
       </div>

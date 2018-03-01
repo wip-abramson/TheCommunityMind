@@ -8,7 +8,7 @@ import { unauthorizedErrorNotification } from '../../notifications/error.notific
 
 import QuestionViewContainer from "./QuestionView/QuestionViewContainer";
 import { updateCurrentWhy } from "../../actions/Why";
-import { setQuestionType, WHY } from '../../actions/QuestionPopup';
+import { setQuestionType, WHY, WHATIF } from '../../actions/QuestionPopup';
 
 import WHYS_QUERY from "../../graphql/querys/whys.query";
 
@@ -17,6 +17,7 @@ import WHYS_QUERY from "../../graphql/querys/whys.query";
 const mapDispatchToProps = function (dispatch) {
   return {
     onSelectQuestion: (why) => {
+      dispatch(setQuestionType(WHATIF))
       dispatch(updateCurrentWhy(why))
     },
     setQuestionType: () => {
@@ -47,7 +48,6 @@ const Why = compose(
       error,
       connection: whys,
       onSelectQuestion: ownProps.onSelectQuestion,
-      placeholder: "Why ...?",
       link: "/whatif",
       refetchQuery: WHYS_QUERY,
       currentWhy: null,

@@ -25,10 +25,12 @@ export default connect(
 
 let container = React.createClass({
 
+  componentDidMount () {
+    console.log("MOUNTED")
+  },
   render() {
     return (
       <QuestionView
-        createQuestion={this.props.createQuestion}
         onSelectQuestion={this.props.onSelectQuestion}
         connection={this.props.connection}
         loading={this.props.loading}

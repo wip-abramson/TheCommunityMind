@@ -1,12 +1,9 @@
 /**
  * Created by will on 07/11/17.
  */
-import { Question, User, Tag, Why, WhatIf, How } from '../db';
+import { Question, User, Tag } from '../db';
 import { authLogic } from './AuthLogic';
 import { paginationLogic } from './PaginationLogic';
-import { whyLogic } from './WhyLogic';
-import { whatIfLogic } from './WhatIfLogic';
-import { howLogic } from './HowLogic';
 
 export const userLogic = {
   jwt(user) {
@@ -25,26 +22,6 @@ export const userLogic = {
   questions(user, { first, after, last, before }, ctx) {
     return this.userQuestions(user, { userId: user.id, first, after, last, before }, ctx);
 
-  },
-  whys(user, { first, after, last, before }, ctx) {
-
-    const args = paginationLogic.buildArgs(first, after, last, before);
-    args.include = [{ model: Question, where: { userId: user.id } }];
-
-    return whyLogic.buildPaginatedWhys(args, before);
-
-  },
-  whatIfs(user, { first, after, last, before }, ctx) {
-    const args = paginationLogic.buildArgs(first, after, last, before);
-    args.include = [{ model: Question, where: { userId: user.id } }];
-
-    return whatIfLogic.buildPaginatedWhatIfs(args, before)
-  },
-  hows(user, { first, after, last, before }, ctx) {
-    const args = paginationLogic.buildArgs(first, after, last, before);
-    args.include = [{ model: Question, where: { userId: user.id } }];
-
-    return howLogic.buildPaginatedHows(args, before)
   },
   staredQuestions(user, { first, after, last, before }, ctx) {
     return this.userStaredQuestions(user, { userId: user.id, first, after, last, before }, ctx);

@@ -1,10 +1,23 @@
 /**
  * Created by will on 07/11/17.
  */
-import { Question, How, Why, WhatIf, User, Tag } from '../db';
+import { Question, User, Tag } from '../db';
 import { authLogic } from './AuthLogic';
+import { paginationLogic } from './PaginationLogic';
 
 export const questionLogic = {
+  createQuestion(_, { questionText, parentId }, ctx) {
+    return authLogic.getAuthenticatedUser(ctx)
+      .then(user => {
+        return Question.create({
+          questionText,
+          stars: 0,
+          userId: user.id,
+          parentId
+
+        })
+      });
+  },
   deleteQuestion(_, { id }, ctx) {
     return authLogic.getAuthenticatedUser(ctx)
       .then((user) => {
@@ -257,6 +270,75 @@ export const questionLogic = {
         console.log(error, "Error");
         return Promise.reject(error)
       });
+  },
+  parentQuestions(question, { first, before, last, after }, ctx) {
+    const args = paginationLogic.buildArgs(first, after, last, before);
+    args.include = [{ model: Question, as: "ChildQuestion", where: { id: question.id }, }]
+
+    return this.buildPaginatedQuestions(args, before)
+
+  },
+  childQuestions(question, {  whyId, first, after, last, before }, ctx) {
+    const args = paginationLogic.buildArgs(first, after, last, before);
+    args.include = [{ model: Question, as: "ParentQuestion", where: { id: question.id }, }]
+
+    return this.buildPaginatedQuestions(args, before)
+  },
+  query(_, { first, after, last, before }, ctx) {
+    const args = paginationLogic.buildArgs(first, after, last, before);
+
+    return this.buildPaginatedQuestions(args, before)
+  },
+  buildPaginatedQuestions(args, before) {
+    return Question.findAll(args)
+      .then(questions => {
+        const edges = questions.map(question => {
+
+          return  ({
+            cursor: Buffer.from(question.id.toString()).toString('base64'), // convert id to cursor
+            node: question
+          })
+        });
+        // if no whatifs then no next or prev page
+        if(questions.length === 0) {
+          return {
+            edges,
+            pageInfo: {
+              hasNextPage() {
+                return false;
+              },
+              hasPreviousPage() {
+                return false;
+              }
+            }
+          }
+        }
+
+        args.where.id = {
+          [before ? '$gt' : '$lt']: questions[questions.length - 1].id,
+        };
+
+        return {
+          edges,
+          pageInfo: {
+            hasNextPage () {
+              if (questions.length < args.limit) {
+                return Promise.resolve(false);
+              }
+              return Question.findOne(args)
+                .then(question => !!question);
+            },
+            hasPreviousPage  () {
+              return Question.findOne(args)
+                .then(question => !!question);
+            }
+          }
+        }
+      })
+      .catch(error => {
+        console.log(error, "Error");
+        return Promise.reject(error)
+      })
   }
 
 }

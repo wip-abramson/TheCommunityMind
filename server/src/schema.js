@@ -1,15 +1,4 @@
-// import {
-//   graphql,
-//   GraphQLSchema,
-//   GraphQLObjectType,
-//   GraphQLString,
-//   GraphQLScalarType,
-//   GraphQLBoolean,
-//   GraphQLID,
-//   GraphQLEnumType,
-//   GraphQLInt,
-//   GraphQLList
-// } from 'graphql';
+
 import {resolvers} from "./resolvers";
 import { makeExecutableSchema } from 'graphql-tools'
 

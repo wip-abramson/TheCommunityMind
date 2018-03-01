@@ -1,4 +1,3 @@
-import { Topic } from "./db";
 import GraphQLDate from 'graphql-date';
 
 import { authLogic } from './logic/AuthLogic';

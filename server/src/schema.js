@@ -70,7 +70,7 @@ const typeDefs = `
    topTags: [Tag]
    tags: [Tag]    
    user(id: ID!): User
-   questions(first: Int, after: String, last: Int, before: String): QuestionConnection!
+   questions(parentId: Int, first: Int, after: String, last: Int, before: String): QuestionConnection!
    userStaredQuestions(userId: ID!, first: Int, after: String, last: Int, before: String): QuestionConnection!
    userQuestions(userId: ID!, first: Int, after: String, last: Int, before: String): QuestionConnection!
 

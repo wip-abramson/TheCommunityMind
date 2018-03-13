@@ -1,8 +1,7 @@
 import express from "express";
-import {graphiqlExpress} from "graphql-server-express";
+import {graphiqlExpress, graphqlExpress} from "graphql-server-express";
 import {schema} from "./src/schema";
 import cors from "cors";
-import graphqlHTTP from "express-graphql";
 import jwt from 'express-jwt';
 import bodyParser from 'body-parser';
 import { JWT_SECRET } from './config';
@@ -13,17 +12,21 @@ const server = express();
 
 function loggingMiddleware(req, res, next) {
   // console.log('header:', req.header);
+  // console.log(res)
   next();
 }
 
-server.use('*', cors({origin: 'http://0.0.0.0:8080'}))
+server.use('*', cors())
 
 server.use(express.static('../public'))
 server.use(loggingMiddleware)
 server.use('/graphql', bodyParser.json(), jwt({
   secret: JWT_SECRET,
   credentialsRequired: false,
-}), graphqlHTTP((request) => ({
+}), graphqlExpress((request) => {
+  // console.log("HERE", request)
+  console.log(schema);
+  return ({
   schema: schema,
   context: {
     user: request.user ?
@@ -31,7 +34,9 @@ server.use('/graphql', bodyParser.json(), jwt({
         where:  { id: request.user.id, version: request.user.version }
       }) : Promise.resolve(null),
   },
-})));
+})}));
+
+// server.use('/graphql', bodyParser.json, graphqlExpress({ schema }));
 
 
 

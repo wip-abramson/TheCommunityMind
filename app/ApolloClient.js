@@ -1,10 +1,10 @@
 /**
  * Created by will on 10/11/17.
  */
-import { loginSuccess, signOut } from '../actions/Auth';
+import { loginSuccess, signOut } from './actions/Auth';
 import { ApolloClient, createNetworkInterface } from "react-apollo";
 import jwtDecode from 'jwt-decode';
-import { store } from './store';
+import { store } from './store/store';
 
 
 const networkInterface = createNetworkInterface({

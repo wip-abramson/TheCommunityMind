@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import AppRouter from "./config/routes";
 import { store } from './store/store';
-import { apolloClient } from "./store/ApolloClient";
+import { apolloClient } from "./ApolloClient";
 import { ApolloProvider } from "react-apollo";
 
 // let unsubscribe = store.subscribe(() =>

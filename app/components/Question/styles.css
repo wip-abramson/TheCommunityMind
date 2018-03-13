@@ -36,6 +36,9 @@
     width: 100%;
 }
 
+.topRow {
+
+}
 .icon {
     /*flex: 1;*/
 }
@@ -44,4 +47,14 @@
     float: right;
     display: block;
 }
+
+icon {
+    cursor: pointer;
+    marginRight: 10
+}
+
+starred {
+    color: gold;
+}
+
 

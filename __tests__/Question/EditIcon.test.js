@@ -2,7 +2,7 @@
  * Created by will on 13/03/18.
  */
 import React from 'react';
-import EditIcon from '../app/components/Question/icons/EditIcon';
+import EditIcon from '../../app/components/Question/Components/EditIcon';
 import FaEdit from 'react-icons/lib/fa/edit';
 
 describe("EditIcon component", () => {
@@ -26,7 +26,7 @@ describe("EditIcon component", () => {
     expect(wrapper.find(FaEdit).length).toEqual(0);
   });
 
-  it('calls editQuestion on click', () => {
+  it('calls editQuestion on icon click', () => {
     let props = {
       canEdit: true,
       editQuestion: jest.fn()

@@ -12,8 +12,7 @@
     width: 100%;
 }
 
-.questionText {
-    flex: 9;
+.question {
     /*padding: 22px;*/
     padding-left: 10px;
     text-decoration: none;
@@ -43,9 +42,8 @@
     /*flex: 1;*/
 }
 
-.questionIcon {
+.askQuestionIcon {
     float: right;
-    display: block;
 }
 
 icon {
@@ -55,6 +53,10 @@ icon {
 
 starred {
     color: gold;
+}
+
+span {
+    padding: 5px;
 }
 
 

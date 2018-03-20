@@ -7,19 +7,18 @@ import FaEye from 'react-icons/lib/fa/eye';
 
 import styles from '../styles.css';
 
-const ThinkIcon =  ({ canThink, thinkAboutQuestion }) =>
+const ThinkIcon =  ({ canThink, thinkAboutQuestion, forgetAboutQuestion }) =>
   <span>
-    { canThink ?
-      <FaEye
-        className={styles.icon}
-        onClick={thinkAboutQuestion}
-      />
-      : null }
+    <FaEye
+      className={styles.icon}
+      onClick={canThink ? thinkAboutQuestion : forgetAboutQuestion}
+    />
   </span>;
 
 ThinkIcon.propTypes = {
   canThink: PropTypes.bool.isRequired,
   thinkAboutQuestion: PropTypes.func.isRequired,
+  forgetAboutQuestion: PropTypes.func.isRequired,
 };
 
 export default ThinkIcon;

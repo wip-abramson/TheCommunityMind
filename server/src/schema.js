@@ -22,14 +22,15 @@ const typeDefs = `
   type Question {
     id: ID!
     stars: Int!
-    staredBy: [User]!
+    starredBy: [User]!
     questionText: String!
     parentQuestions(first: Int, after: String, last: Int, before: String): QuestionConnection!
     childQuestions(first: Int, after: String, last: Int, before: String): QuestionConnection!
     owner: User!
     createdAt: Date!
-    staredByCurrentUser: Boolean!
+    starredByCurrentUser: Boolean!
     watchedByCurrentUser: Boolean!
+    ownedByCurrentUser: Boolean!
     associatedWith: [Tag]
   }
   
@@ -54,7 +55,7 @@ const typeDefs = `
     email: String!
     questions(first: Int, after: String, last: Int, before: String): QuestionConnection
     jwt: String # json web token for access
-    staredQuestions(first: Int, after: String, last: Int, before: String): QuestionConnection
+    starredQuestions(first: Int, after: String, last: Int, before: String): QuestionConnection
     followersCount: Int!
     followers: [User]
     followsCount: Int!
@@ -71,7 +72,7 @@ const typeDefs = `
    tags: [Tag]    
    user(id: ID!): User
    questions(parentId: Int, first: Int, after: String, last: Int, before: String): QuestionConnection!
-   userStaredQuestions(userId: ID!, first: Int, after: String, last: Int, before: String): QuestionConnection!
+   userStarredQuestions(userId: ID!, first: Int, after: String, last: Int, before: String): QuestionConnection!
    userQuestions(userId: ID!, first: Int, after: String, last: Int, before: String): QuestionConnection!
 
    }

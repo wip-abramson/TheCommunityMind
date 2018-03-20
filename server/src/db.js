@@ -65,7 +65,7 @@ QuestionModel.belongsToMany(UserModel, {
     model: UserStarQuestionModel,
     unique: true,
   },
-  as: 'StaredBy'
+  as: 'starredBy'
 });
 
 UserModel.belongsToMany(QuestionModel, {
@@ -73,7 +73,7 @@ UserModel.belongsToMany(QuestionModel, {
     model: UserStarQuestionModel,
     unique: true,
   },
-  as: 'StaredBy'
+  as: 'StarredBy'
 });
 
 QuestionModel.belongsToMany(QuestionModel, {
@@ -306,7 +306,7 @@ Conn.sync({ force: true })
                             user.addWatched(topQuestion);
 
                             console.log("addQuestion");
-                            topQuestion.addStaredBy(user);
+                            topQuestion.addStarredBy(user);
                             topQuestion.setTags(createdTags);
 
                             return topQuestionData.questions.forEach((secondQuestionData) => {

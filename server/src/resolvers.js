@@ -18,8 +18,8 @@ export const resolvers = {
     user(_, args, ctx) {
       return userLogic.query(_, args, ctx);
     },
-    userStaredQuestions(_, args, ctx) {
-      return userLogic.userStaredQuestions(_, args, ctx);
+    userStarredQuestions(_, args, ctx) {
+      return userLogic.userStarredQuestions(_, args, ctx);
     },
     userQuestions(_, args, ctx) {
       return userLogic.userQuestions(_, args, ctx);
@@ -102,17 +102,20 @@ export const resolvers = {
     owner(question, args, ctx) {
       return questionLogic.user(question, args, ctx);
     },
-    staredBy(question, args, ctx) {
-      return questionLogic.staredBy(question, args, ctx);
+    starredBy(question, args, ctx) {
+      return questionLogic.starredBy(question, args, ctx);
     },
     stars(question, args, ctx) {
       return questionLogic.stars(question, args, ctx);
     },
-    staredByCurrentUser(question, args, ctx) {
-      return questionLogic.staredByCurrentUser(question, args, ctx);
+    starredByCurrentUser(question, args, ctx) {
+      return questionLogic.starredByCurrentUser(question, args, ctx);
     },
     watchedByCurrentUser(question, args, ctx) {
       return questionLogic.watchedByCurrentUser(question, args, ctx);
+    },
+    ownedByCurrentUser(question, args, ctx) {
+      return questionLogic.ownedByCurrentUser(question, args, ctx);
     },
     associatedWith(question, args, ctx) {
       return questionLogic.associatedWith(question, args, ctx);
@@ -142,8 +145,8 @@ export const resolvers = {
     jwt(user, args, ctx) {
       return userLogic.jwt(user, args, ctx);
     },
-    staredQuestions(user, args, ctx) {
-      return userLogic.staredQuestions(user, args, ctx);
+    starredQuestions(user, args, ctx) {
+      return userLogic.starredQuestions(user, args, ctx);
     },
     follows(user, args, ctx) {
       return userLogic.follows(user, args, ctx);

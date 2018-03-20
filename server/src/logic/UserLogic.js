@@ -23,8 +23,8 @@ export const userLogic = {
     return this.userQuestions(user, { userId: user.id, first, after, last, before }, ctx);
 
   },
-  staredQuestions(user, { first, after, last, before }, ctx) {
-    return this.userStaredQuestions(user, { userId: user.id, first, after, last, before }, ctx);
+  starredQuestions(user, { first, after, last, before }, ctx) {
+    return this.userStarredQuestions(user, { userId: user.id, first, after, last, before }, ctx);
   },
 
 
@@ -242,7 +242,7 @@ export const userLogic = {
 
     return howLogic.buildPaginatedHows(args, before)
   },
-  userStaredQuestions(_, { userId, first, after, last, before }, ctx) {
+  userStarredQuestions(_, { userId, first, after, last, before }, ctx) {
     const args = {};
 
     // add one to the limit in case only Why, WhatIf or How contains all the Q's
@@ -269,7 +269,7 @@ export const userLogic = {
     args.include = [{
       model: Question,
       where: where,
-      include: [{ model: User, as: "StaredBy", where: { id: userId } }]
+      include: [{ model: User, as: "starredBy", where: { id: userId } }]
     }];
 
     return findAllQuestions(args)

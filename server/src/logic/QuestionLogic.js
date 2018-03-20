@@ -101,7 +101,7 @@ export const questionLogic = {
           .then(question => {
             if (question) {
               return question.removeStaredBy(user).then(() => {
-                console.log("destroy Star")
+                console.log("destroy StarIcon")
                 return question;
               });
             }
@@ -182,7 +182,7 @@ export const questionLogic = {
         return Promise.reject(error)
       })
   },
-  staredByCurrentUser (question, args, ctx) {
+  starredByCurrentUser (question, args, ctx) {
     return authLogic.getAuthenticatedUser(ctx)
       .then(currentUser => {
         return User.findOne({
@@ -204,6 +204,21 @@ export const questionLogic = {
         return Question.findOne({
           where: { id: question.id },
           include: [{ model: User, as: "Watched", where: { id: user.id } }]
+        })
+          .then(question => {
+            return question ? true : false;
+          })
+      })
+      .catch(error => {
+        console.log(error);
+        return false;
+      })
+  },
+  ownedByCurrentUser(question, args, ctx) {
+    return authLogic.getAuthenticatedUser(ctx)
+      .then(user => {
+        return Question.findOne({
+          where: { id: question.id, userId: user.id },
         })
           .then(question => {
             return question ? true : false;

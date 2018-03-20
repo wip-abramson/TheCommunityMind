@@ -8,7 +8,7 @@ const STAR_QUESTION_MUTATION = gql`
     starQuestion(id: $id){
        id
        question
-       staredByCurrentUser
+       starredByCurrentUser
        watchedByCurrentUser
        stars
      }

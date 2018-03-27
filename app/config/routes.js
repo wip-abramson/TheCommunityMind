@@ -3,6 +3,7 @@ import {Router, Route, browserHistory, IndexRoute} from "react-router";
 
 import Main from "../components/Main/Main";
 import Home from '../components/Home/Home';
+import QuestionsView from '../components/Questions/QuestionsView'
 import Why from "../components/Questions/Why";
 import WhatIf from "../components/Questions/WhatIf";
 import How from "../components/Questions/How";
@@ -15,10 +16,12 @@ var AppRouter = function () {
     <Router history={browserHistory}>
       <Route path='/' component={Main}>
         <Route component={Home}>
-          <IndexRoute component={Why}/>
+          <IndexRoute component={QuestionsView}/>
           {/*<Route path="/thread/:name" component={ThreadPage}/>*/}
           <Route path="popular" component={Why}/>
         </Route>
+        <Route path='question/:id' component={QuestionsView}/>
+
         <Route path='/whatif' component={WhatIf}/>
         <Route path='/how' component={How}/>
         < Route

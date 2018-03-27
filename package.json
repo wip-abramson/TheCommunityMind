@@ -9,12 +9,16 @@
     "test": "jest"
   },
   "jest": {
+    "verbose": true,
     "setupFiles": [
-      "./__test__/jestsetup.js"
+      "./testSetup.js"
     ],
-    "snapshotSerializers": [
-      "<rootDir>/node_modules/enzyme-to-json/serializer"
-    ]
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest"
+    },
+    "moduleNameMapper": {
+      "\\.(s?css|less)$": "identity-obj-proxy"
+    }
   },
   "author": "Will Abramson",
   "license": "ISC",

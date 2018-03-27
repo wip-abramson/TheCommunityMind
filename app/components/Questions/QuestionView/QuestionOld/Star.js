@@ -2,7 +2,7 @@
  * Created by will on 23/04/17.
  */
 import React, { PropTypes } from "react";
-import FaStar from "react-icons/fa/star";
+import FaStar from "react-icons/lib/fa/star";
 
 const Star = (props) => {
 

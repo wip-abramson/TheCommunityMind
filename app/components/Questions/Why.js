@@ -10,7 +10,7 @@ import QuestionViewContainer from "./QuestionView/QuestionViewContainer";
 import { updateCurrentWhy } from "../../actions/Why";
 import { setQuestionType, WHY, WHATIF } from '../../actions/QuestionPopup';
 
-import WHYS_QUERY from "../../graphql/querys/whys.query";
+import QUESTIONS_QUERY from "../../graphql/querys/questions.query";
 
 
 
@@ -38,25 +38,25 @@ const Why = compose(
     mapDispatchToProps,
   ),
 
-  graphql(WHYS_QUERY, {
+  graphql(QUESTIONS_QUERY, {
     options: (props) => ({
       variables: {first: ITEMS_PER_PAGE},
       // pollInterval: 5000
     }),
-    props: ({ ownProps, data: { fetchMore, loading, error, whys } }) => ({
+    props: ({ ownProps, data: { fetchMore, loading, error, questions } }) => ({
       loading,
       error,
-      connection: whys,
+      connection: questions,
       onSelectQuestion: ownProps.onSelectQuestion,
       link: "/whatif",
-      refetchQuery: WHYS_QUERY,
+      refetchQuery: QUESTIONS_QUERY,
       currentWhy: null,
       currentWhatIf: null,
       // currentUser: ownProps.currentUser,
       loadMoreEntries() {
         fetchMore({
           variables: {
-            after: whys.edges[whys.edges.length - 1].cursor,
+            after: questions.edges[questions.edges.length - 1].cursor,
 
           },
           updateQuery: (previousResult, { fetchMoreResult }) => {
@@ -67,9 +67,9 @@ const Why = compose(
             // push results (older whys) to end of whys list
             return update(previousResult, {
 
-                whys: {
-                  edges: { $push: fetchMoreResult.whys.edges },
-                  pageInfo: { $set: fetchMoreResult.whys.pageInfo },
+              questions: {
+                  edges: { $push: fetchMoreResult.questions.edges },
+                  pageInfo: { $set: fetchMoreResult.questions.pageInfo },
                 },
 
             });

@@ -3,29 +3,34 @@
  */
 import React from "react";
 import PropTypes from 'prop-types'
-import QuestionContainer from "./Question/QuestionContainer";
+import QuestionContainer from "./QuestionOld/QuestionContainer";
 
 const QuestionList = (props) => {
   // Maps a list of either Why WhatIf or How edges to create individual Question components for each question stored in the edge
   var id =1;
-
+  if (props.error) {
+    return <div>error</div>
+  }
+  if (props.loading) {
+    return <div>loading</div>
+  }
 
   return (
 
     <div>
       {
-        props.edges.map(function (edge) {
+        props.connection.edges.map(function (edge) {
         return (
           <QuestionContainer
             key={"id-" + (id ++)}
             onSelectQuestion={props.onSelectQuestion}
             // question type is either a Why, WhatIf or How type depending on what this is a list of
-            questionType={edge.node}
+            question={edge.node}
             link={props.link}
           >
           </QuestionContainer>)
       })}
-      {props.hasNextPage ? <button onClick={() => {props.loadMoreEntries()}}>Load More</button> : null}
+      {props.connection.pageInfo.hasNextPage ? <button onClick={() => {props.loadMoreEntries()}}>Load More</button> : null}
 
     </div>
   )

@@ -19,7 +19,7 @@ import UNWATCH_QUESTION_MUTATION from '../../../../graphql/mutations/unwatchQues
 
 import EDIT_QUESTION_MUTATION from '../../../../graphql/mutations/editQuestion.mutation';
 
-import Question from './Question';
+import Question from '../../../Question/Question';
 
 const mapStateToProps = function (state) {
   return {
@@ -42,8 +42,8 @@ const mapDispatchToProps = (dispatch) => {
 
 const starQuestion = graphql(STAR_QUESTION_MUTATION, {
   props: ({ ownProps, mutate }) => ({
-    starQuestion: ({ question }) => {
-      console.log("Star Question", question)
+    starQuestion: (question) => {
+      console.log("StarIcon Question", question)
       return mutate({
         variables: { id: question.id },
         optimisticResponse: {
@@ -52,8 +52,8 @@ const starQuestion = graphql(STAR_QUESTION_MUTATION, {
             id: question.id,
             __typename: 'Question',
             stars: question.stars + 1,
-            question: question.question,
-            staredByCurrentUser: true,
+            question: question.questionText,
+            starredByCurrentUser: true,
             watchedByCurrentUser: question.watchedByCurrentUser,
           }
         },
@@ -74,7 +74,7 @@ const starQuestion = graphql(STAR_QUESTION_MUTATION, {
 
 const unstarQuestion = graphql(UNSTAR_QUESTION_MUTATION, {
   props: ({ ownProps, mutate }) => ({
-    unstarQuestion: ({ question }) => {
+    unstarQuestion: (question) => {
       return mutate({
         variables: { id: question.id },
         optimisticResponse: {
@@ -83,8 +83,8 @@ const unstarQuestion = graphql(UNSTAR_QUESTION_MUTATION, {
             id: question.id,
             __typename: 'Question',
             stars: question.stars - 1,
-            question: question.question,
-            staredByCurrentUser: false
+            question: question.questionText,
+            starredByCurrentUser: false
           }
         },
       })
@@ -105,7 +105,7 @@ const unstarQuestion = graphql(UNSTAR_QUESTION_MUTATION, {
 
 const watchQuestion = graphql(WATCH_QUESTION_MUTATION, {
   props: ({ ownProps, mutate }) => ({
-    watchQuestion: ({ question }) => {
+    watchQuestion: (question) => {
       return mutate({
         variables: { id: question.id },
         optimisticResponse: {
@@ -113,7 +113,7 @@ const watchQuestion = graphql(WATCH_QUESTION_MUTATION, {
           watchQuestion: {
             id: question.id,
             __typename: 'Question',
-            question: question.question,
+            question: question.questionText,
             watchedByCurrentUser: true,
           }
         },
@@ -135,7 +135,7 @@ const watchQuestion = graphql(WATCH_QUESTION_MUTATION, {
 
 const unwatchQuestion = graphql(UNWATCH_QUESTION_MUTATION, {
   props: ({ ownProps, mutate }) => ({
-    unwatchQuestion: ({ question }) => {
+    unwatchQuestion: (question) => {
       return mutate({
         variables: { id: question.id },
         optimisticResponse: {
@@ -143,7 +143,7 @@ const unwatchQuestion = graphql(UNWATCH_QUESTION_MUTATION, {
           unwatchQuestion: {
             id: question.id,
             __typename: 'Question',
-            question: question.question,
+            question: question.questionText,
             watchedByCurrentUser: false,
           }
         },
@@ -166,7 +166,7 @@ const unwatchQuestion = graphql(UNWATCH_QUESTION_MUTATION, {
 // const editQuestion = graphql(EDIT_QUESTION_MUTATION, {
 //   props: ({ ownProps, mutate }) => ({
 //     editQuestion: ( id, newQuestion) => {
-//       console.log(id, newQuestion, "Edit")
+//       console.log(id, newQuestion, "EditIcon")
 //       return mutate({
 //         variables: { id: id, question: newQuestion },
 //
@@ -200,22 +200,25 @@ let container = React.createClass({
   },
 
   editQuestion() {
-    this.props.showQuestionPopup(this.props.questionType.question);
+    this.props.showQuestionPopup(this.props.question);
   },
 
 
   render() {
     return (
       <Question
-        onSelectQuestion={this.props.onSelectQuestion}
-        questionType={this.props.questionType}
+        // onSelectQuestion={this.props.onSelectQuestion}
+        question={this.props.question}
         starQuestion={this.props.starQuestion}
         unstarQuestion={this.props.unstarQuestion}
         editQuestion={this.editQuestion}
-        currentUser={this.props.currentUser}
-        link={this.props.link}
+        // currentUser={this.props.currentUser}
+        // link={this.props.link}
+        askQuestion={this.props.watchQuestion}
+
         watchQuestion={this.props.watchQuestion}
         unwatchQuestion={this.props.unwatchQuestion}
+
       />
     )
   }

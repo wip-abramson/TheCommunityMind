@@ -78,7 +78,7 @@ class QuestionText extends React.Component {
     }
     return (
       <div>
-        {textComponent}
+        <Link onlyActiveOnIndex="" onlyActiveOnIndex="" onlyActiveOnIndex="" to={"/question/" + this.props.question.id}>{textComponent}</Link>
       </div>
     )
   }

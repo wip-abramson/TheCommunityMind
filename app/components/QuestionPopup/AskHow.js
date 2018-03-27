@@ -32,7 +32,7 @@ const createHow = graphql(CREATE_HOW_MUTATION, {
               id: "-1",
               question: question,
               stars: 0,
-              staredByCurrentUser: false,
+              starredByCurrentUser: false,
               watchedByCurrentUser: false,
               createdAt: new Date().toISOString(), // the time is now!
               owner: {

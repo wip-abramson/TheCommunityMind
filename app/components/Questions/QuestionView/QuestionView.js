@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from 'prop-types';
 import QuestionList from "./QuestionList";
-import QuestionContainer from './Question/QuestionContainer';
+import QuestionContainer from '../../Question/QuestionContainer';
 
 function QuestionView(props) {
 

@@ -4,7 +4,7 @@
 import React from 'react'
 import QUESTIONS_QUERY from '../../graphql/querys/questions.query';
 import { graphql } from 'react-apollo';
-import QuestionList from './QuestionView/QuestionList';
+import QuestionList from '../QuestionList/QuestionList';
 import update from 'immutability-helper';
 
 

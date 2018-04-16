@@ -10,7 +10,7 @@ import styles from '../styles.css';
 const ThinkIcon =  ({ canThink, thinkAboutQuestion, forgetAboutQuestion }) =>
   <span>
     <FaEye
-      className={styles.icon}
+      className={canThink ? styles.icon : styles.thinkingIcon}
       onClick={canThink ? thinkAboutQuestion : forgetAboutQuestion}
     />
   </span>;

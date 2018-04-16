@@ -3,10 +3,15 @@
  */
 import React from "react";
 import PropTypes from 'prop-types'
-import QuestionContainer from "./QuestionOld/QuestionContainer";
+import QuestionContainer from "../Question/QuestionContainer";
 
+/**
+ * Created a list of QuestionContainers for every question edge passed into it
+ * @param props
+ * @returns {XML}
+ * @constructor
+ */
 const QuestionList = (props) => {
-  // Maps a list of either Why WhatIf or How edges to create individual Question components for each question stored in the edge
   var id =1;
   if (props.error) {
     return <div>error</div>
@@ -23,10 +28,8 @@ const QuestionList = (props) => {
         return (
           <QuestionContainer
             key={"id-" + (id ++)}
-            onSelectQuestion={props.onSelectQuestion}
-            // question type is either a Why, WhatIf or How type depending on what this is a list of
+            // onSelectQuestion={props.onSelectQuestion}
             question={edge.node}
-            link={props.link}
           >
           </QuestionContainer>)
       })}
@@ -37,24 +40,29 @@ const QuestionList = (props) => {
 };
 
 QuestionList.propTypes = {
-  edges: PropTypes.arrayOf(PropTypes.shape({
-    node:  PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      question: PropTypes.shape({
+  connection: PropTypes.shape({
+    edges: PropTypes.arrayOf(PropTypes.shape({
+      node:  PropTypes.shape({
         id: PropTypes.string.isRequired,
-        question: PropTypes.string.isRequired,
+        questionText: PropTypes.string.isRequired,
         stars: PropTypes.number.isRequired,
         owner: PropTypes.shape({
           id: PropTypes.string.isRequired,
           username: PropTypes.string.isRequired,
         }).isRequired
-      }).isRequired
-    }).isRequired,
-    cursor: PropTypes.string,
-  })),
+
+      }).isRequired,
+      cursor: PropTypes.string,
+    })),
+    pageInfo: PropTypes.shape({
+      hasNextPage: PropTypes.bool.isRequired,
+
+    })
+  }),
+
+
   onSelectQuestion: PropTypes.func,
   link: PropTypes.string,
-  hasNextPage: PropTypes.bool.isRequired,
   loadMoreEntries: PropTypes.func.isRequired,
 };
 

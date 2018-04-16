@@ -81,7 +81,7 @@ export const questionLogic = {
       .then((user) => {
         return Question.findById(id).then(unstaredQuestion => {
           console.log("Stared Q")
-          return unstaredQuestion.addStaredBy(user).then(() => {
+          return unstaredQuestion.addStarredBy(user).then(() => {
             return unstaredQuestion;
           });
         })
@@ -96,11 +96,11 @@ export const questionLogic = {
       .then((user) => {
         return Question.findOne({
           where: { id: id },
-          include: [{ model: User, as: "StaredBy", where: { id: user.id } }]
+          include: [{ model: User, as: "StarredBy", where: { id: user.id } }]
         })
           .then(question => {
             if (question) {
-              return question.removeStaredBy(user).then(() => {
+              return question.removeStarredBy(user).then(() => {
                 console.log("destroy StarIcon")
                 return question;
               });
@@ -152,9 +152,9 @@ export const questionLogic = {
   user(question) {
     return question.getUser();
   },
-  staredBy(question) {
+  starredBy(question) {
     return User.findAll({
-      include: [{ model: Question, as: "StaredBy", where: { id: question.id }, }]
+      include: [{ model: Question, as: "StarredBy", where: { id: question.id }, }]
     })
       .then(users => {
         return users;
@@ -170,7 +170,7 @@ export const questionLogic = {
     return User.count({
       include: [{
         model: Question,
-        as: "StaredBy",
+        as: "StarredBy",
         where: { id: question.id }
       }]
     })
@@ -187,7 +187,7 @@ export const questionLogic = {
       .then(currentUser => {
         return User.findOne({
           where: { id: currentUser.id },
-          include: [{ model: Question, as: "StaredBy", where: { id: question.id } }]
+          include: [{ model: Question, as: "StarredBy", where: { id: question.id } }]
         })
           .then(user => {
             return user ? true : false;

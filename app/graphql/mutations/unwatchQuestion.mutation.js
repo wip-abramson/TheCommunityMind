@@ -7,7 +7,7 @@ const UNWATCH_QUESTION_MUTATION = gql`
   mutation unwatchQuestion($id: ID!) {
     unwatchQuestion(id:$id) {
       id
-      question
+      questionText
       watchedByCurrentUser
     }
   }

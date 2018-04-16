@@ -19,24 +19,24 @@ const Question = ({ question, starQuestion, unstarQuestion, watchQuestion, unwat
 
       <div className="topRow">
         <QuestionOwner owner={question.owner}/>
-        <DeleteIcon canDelete={question.ownedByCurrentUser} deleteQuestion={deleteQuestion}/>
+        <DeleteIcon canDelete={question.ownedByCurrentUser} deleteQuestion={() => deleteQuestion(question)}/>
       </div>
       <div className="question">
-        {question.questionText}
+        {formatQuestion(question.questionText)}
       </div>
       <div className="bottomRow">
         <StarIcon
           starCount={question.stars}
           canStar={question.starredByCurrentUser}
-          starQuestion={starQuestion}
-          unstarQuestion={unstarQuestion}
+          starQuestion={() => starQuestion(question)}
+          unstarQuestion={() => unstarQuestion(question)}
         />
         <ThinkIcon
-          canThink={question.watchedByCurrentUser}
-          thinkAboutQuestion={watchQuestion}
-          forgetAboutQuestion={unwatchQuestion}
+          canThink={! question.watchedByCurrentUser}
+          thinkAboutQuestion={() => watchQuestion(question)}
+          forgetAboutQuestion={() => unwatchQuestion(question)}
         />
-        <EditIcon canEdit={question.ownedByCurrentUser} editQuestion={editQuestion}/>
+        <EditIcon canEdit={question.ownedByCurrentUser} editQuestion={() => editQuestion(question)}/>
         <AskQuestionIcon canAskQuestion={true} askQuestion={askQuestion}/>
       </div>
 
@@ -44,6 +44,15 @@ const Question = ({ question, starQuestion, unstarQuestion, watchQuestion, unwat
     </div>
   )
 };
+
+function formatQuestion(question) {
+  let newQuestion = question[0].toUpperCase() + question.substring(1)
+
+  if (newQuestion[newQuestion.length] != "?") {
+    newQuestion += "?";
+  }
+  return newQuestion;
+}
 
 Question.propTypes = {
   question: PropTypes.shape({
@@ -61,7 +70,7 @@ Question.propTypes = {
   starQuestion: PropTypes.func.isRequired,
   unstarQuestion: PropTypes.func.isRequired,
   watchQuestion: PropTypes.func.isRequired,
-  unwatchQuestion: PropTypes.fun.isRequired,
+  unwatchQuestion: PropTypes.func.isRequired,
 };
 
 export default Question;

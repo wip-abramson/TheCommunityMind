@@ -4,7 +4,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import QuestionsList from '../../Questions/QuestionView/QuestionList';
+import QuestionsList from '../../QuestionList/QuestionList';
 
 const QuestionListContainer = (props) => {
 
@@ -18,8 +18,7 @@ const QuestionListContainer = (props) => {
 
   return (
     <QuestionsList
-      edges={props.connection.edges}
-      hasNextPage={props.connection.pageInfo.hasNextPage}
+      connection={props.connection}
       loadMoreEntries={props.loadMoreEntries}
     />
   )

@@ -7,7 +7,7 @@ import { graphql } from 'react-apollo';
 
 import QuestionListContainer from './QuestionListContainer';
 
-import USER_STARED_QUESTIONS_QUERY from '../../../graphql/querys/userStaredQuestions.query';
+import USER_STARED_QUESTIONS_QUERY from '../../../graphql/querys/userStarredQuestions.query';
 
 const StaredQuestionsList = graphql(USER_STARED_QUESTIONS_QUERY, {
   options: (props) => ({

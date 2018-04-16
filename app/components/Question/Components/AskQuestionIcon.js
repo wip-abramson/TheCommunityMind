@@ -4,13 +4,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import FaQuestion from 'react-icons/lib/fa/question-circle';
+
 import styles from '../styles.css';
 
 const AskQuestionIcon = ({ canAskQuestion, askQuestion }) =>
   <span>
     { canAskQuestion ?
       <FaQuestion
-        className={styles.icon && styles.askQuestionIcon}
+        className={[styles.icon,styles.askQuestionIcon].join(" ")}
         onClick={askQuestion}
       />
       : null }

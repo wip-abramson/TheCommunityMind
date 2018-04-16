@@ -4,40 +4,80 @@
 import React from 'react';
 import { compose, graphql } from "react-apollo";
 
-import FIND_OR_CREATE_THREAD from '../../../graphql/mutations/findOrCreateThread.mutation';
-
 import QuestionInput from './QuestionInput';
+import CREATE_QUESTION_MUTATION from "../../../graphql/mutations/createQuestion.mutation";
+import QUESTIONS_QUERY from "../../../graphql/querys/questions.query";
 
-const findOrCreateTag = graphql(FIND_OR_CREATE_THREAD, {
+
+const createQuestion = graphql(CREATE_QUESTION_MUTATION, {
   props: ({ ownProps, mutate }) => ({
-    findOrCreateThread: (name) => {
-      console.log("FINDING THREAD", name)
+    createQuestion: ( questionText, parentId) => {
       return mutate({
-        variables: { name: name },
+
+        variables: { questionText, parentId },
         optimisticResponse: {
           __typename: 'Mutation',
-          findOrCreateThread: {
-            __typename: 'Tag',
-            id: "-1", // fake id
-            name: name
-
+          createQuestion: {
+            __typename: 'Question',
+            id: "-1",
+            questionText: questionText,
+            stars: 0,
+            ownedByCurrentUser: true,
+            starredByCurrentUser: false,
+            watchedByCurrentUser: false,
+            createdAt: new Date().toISOString(), // the time is now!
+            owner: {
+              __typename: 'User',
+              id: "-1", // still faking the user
+              username: 'Justyn.Kautzer' // still faking the user
+            },
           },
-
         },
+        update: (proxy, { data: { createQuestion } }) => {
+          // Read the data from our cache for this query.
+          const query = {
+            query: QUESTIONS_QUERY,
+            variables: {
+              first: 10,
+              // after: null,
+              // before: null,
+              // last: null
+            }
+          }
+          const data = proxy.readQuery(query);
+          // Add why from the mutation to the beginning.
 
+          const questionEdge = {
+            __typename: "QuestionEdge",
+            node: createQuestion,
+            cursor: Buffer.from(createQuestion.createdAt.toString()).toString('base64')
+          };
+
+          data.questions.edges.unshift(questionEdge);
+          // Write our data back to the cache.
+          query.data = data;
+          proxy.writeQuery(query);
+        },
       }).catch(res => {
         // catches any error returned from mutation request
+        // ownProps.unAuthorized();
+
         const errors = res.graphQLErrors.map((error) => {
-          // What about other errors?
           console.log(error.message)
+          if (error.message === "Unauthorized") {
+            ownProps.unAuthorized();
+          }
           return error;
         });
         return errors
-        // this.setState({ errors });
       })
     }
+
   })
-})
+});
+
+
+
 
 class QuestionInputContainer extends React.Component {
 
@@ -46,24 +86,19 @@ class QuestionInputContainer extends React.Component {
 
     this.state = {
       questionText: "",
-      questionThreads: [],
     }
 
-    this.handleAddThread = this.handleAddThread.bind(this);
     this.handleTextChange = this.handleTextChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleRemoveThread = this.handleRemoveThread.bind(this);
   }
 
   handleSubmit() {
     console.log("SUBMIT", this.state.questionText)
-    var tagIds = this.state.questionThreads.map(questionThread => { console.log(questionThread.id); return questionThread.id});
 
+    //TODO handle threads
+    this.props.createQuestion(this.state.questionText, []).then(res => {
 
-    this.props.createQuestion(this.state.questionText, tagIds).then(res => {
-      this.setState({questionText: "", questionThreads: []})
-
-    })
+    });
     this.props.hideQuestionPopup();
 
 
@@ -75,53 +110,17 @@ class QuestionInputContainer extends React.Component {
     })
   }
 
-  handleAddThread(event) {
-    if (event.keyCode === 13) {
-      var threadName = event.target.value.trim();
-      if (threadName.length !== 0) {
-        this.props.findOrCreateThread(threadName)
-          .then(res => {
-            this.setState(previousState => ({
-              questionThreads: [...previousState.questionThreads, res.data.findOrCreateTag]
-            }));
-          })
-          .catch(error => {
-            console.log(error.message)
-          });
-      }
-
-
-      event.target.value = "";
-    }
-  }
-
-  handleRemoveThread(thread) {
-    var newThreadList = [];
-    this.state.questionThreads.map((questionThread) => {
-      if (questionThread.id !== thread.id) {
-        newThreadList.push(questionThread);
-      }
-    });
-
-    this.setState({ questionThreads: newThreadList })
-  }
 
   render() {
     return (
       <QuestionInput
         questionText={this.state.questionText}
-        questionThreads={this.state.questionThreads}
-        placeholder={this.props.placeholder}
-        onKeyPress={this.handleAddThread}
+        placeholder="Ask your beautiful question ..."
         onTextChange={this.handleTextChange}
         onSubmit={this.handleSubmit}
-        removeThread={this.handleRemoveThread}
-        questionType={this.props.questionType}
       />
     )
   }
 }
 
-export default compose(
-  findOrCreateTag
-)(QuestionInputContainer);
+export default compose(createQuestion)(QuestionInputContainer);

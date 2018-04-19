@@ -43,3 +43,4 @@ app/public/js/app.js
 # idea
 .idea/
 dist/
+app-env

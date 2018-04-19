@@ -19,7 +19,8 @@ function loggingMiddleware(req, res, next) {
 //   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 // }
 
-server.use(cors());
+server.options("*",cors());
+server.use("*",cors());
 
 server.use(express.static('../public'));
 server.use(loggingMiddleware);

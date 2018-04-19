@@ -2,6 +2,7 @@
  * Created by will on 20/11/17.
  */
 import React from 'react';
+import PropTypes from 'prop-types';
 import { compose, graphql } from "react-apollo";
 
 import QuestionInput from './QuestionInput';
@@ -29,8 +30,8 @@ const createQuestion = graphql(CREATE_QUESTION_MUTATION, {
             createdAt: new Date().toISOString(), // the time is now!
             owner: {
               __typename: 'User',
-              id: "-1", // still faking the user
-              username: 'Justyn.Kautzer' // still faking the user
+              id: ownProps.user.id + "",
+              username: ownProps.user.username
             },
           },
         },
@@ -44,9 +45,9 @@ const createQuestion = graphql(CREATE_QUESTION_MUTATION, {
               // before: null,
               // last: null
             }
-          }
+          };
           const data = proxy.readQuery(query);
-          // Add why from the mutation to the beginning.
+          // Add question from the mutation to the beginning of questions query.
 
           const questionEdge = {
             __typename: "QuestionEdge",
@@ -60,17 +61,14 @@ const createQuestion = graphql(CREATE_QUESTION_MUTATION, {
           proxy.writeQuery(query);
         },
       }).catch(res => {
-        // catches any error returned from mutation request
-        // ownProps.unAuthorized();
 
-        const errors = res.graphQLErrors.map((error) => {
+        res.graphQLErrors.map((error) => {
           console.log(error.message)
           if (error.message === "Unauthorized") {
             ownProps.unAuthorized();
           }
           return error;
         });
-        return errors
       })
     }
 
@@ -80,7 +78,6 @@ const createQuestion = graphql(CREATE_QUESTION_MUTATION, {
 const editQuestion = graphql(EDIT_QUESTION_MUTATION, {
   props: ({ ownProps, mutate }) => ({
     editQuestion: ( id, newQuestion) => {
-      console.log(id, newQuestion, "Edit")
       return mutate({
         variables: { id: id, questionText: newQuestion },
         optimisticResponse: {
@@ -94,45 +91,44 @@ const editQuestion = graphql(EDIT_QUESTION_MUTATION, {
         },
       })
         .catch(res => {
-          // unlikley to be unauthorized as never show edit button to unauthorized users
-          // ownProps.unAuthorized();
 
           // catches any error returned from mutation request
           const errors = res.graphQLErrors.map((error) => {
-            console.log("Failed")
-            console.log(error.message)
+            console.log(error.message);
             return error;
           });
-          // return errors
-          // this.setState({ errors });
         })
     }
   })
 
-})
+});
 
 
 
 
 class QuestionInputContainer extends React.Component {
-
   constructor(props) {
     super(props);
 
     this.state = {
       questionText: "",
-    }
+    };
 
     this.handleTextChange = this.handleTextChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  // TODO On Component Did Render should populate the questionText field if question exists ie for edit
+  // if component is recieving a question this means popup is in edit mode
+  // need to populate the questionText state
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.question) {
+      this.setState({questionText: nextProps.question.questionText})
+    }
+  }
 
+  // submitting either a child question, and edit or a new question
   handleSubmit() {
-    console.log("SUBMIT", this.state.questionText)
-    console.log("IsEdit", !!this.props.question)
-    console.log("Parent Question ID", this.props.parentId);
+
     //TODO handle threads
 
     if (this.props.parentId) {
@@ -174,6 +170,14 @@ class QuestionInputContainer extends React.Component {
     )
   }
 }
+
+QuestionInputContainer.propTypes = {
+  question: PropTypes.shape({
+    questionText: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired
+  }),
+  parentId: PropTypes.string,
+};
 
 export default compose(
   createQuestion,

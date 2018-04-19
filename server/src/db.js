@@ -256,96 +256,96 @@ const tags = [
 ]
 
 //
-// Conn.sync({ force: true })
-Conn.sync();
-  // .then(() => {
-  //   const passwrd = "tPass2";
-  //   return bcrypt.hash(passwrd, 10)
-  //     .then((hash2) => {
-  //       return UserModel.create({
-  //         email: faker.internet.email(),
-  //         username: faker.internet.userName(),
-  //         password: hash2,
-  //         version: 1,
-  //       })
-  //         .then(user2 => {
-  //
-  //           const password = "testPassword";
-  //           return bcrypt.hash(password, 10)
-  //             .then((hash) => {
-  //               return UserModel.create({
-  //                 email: faker.internet.email(),
-  //                 username: faker.internet.userName(),
-  //                 password: hash,
-  //                 version: 1,
-  //               })
-  //                 .then((user) => {
-  //                   console.log(user2.id, "u2")
-  //                   console.log(user.id, "u1")
-  //                   user.addFollowedBy(user2).then(() => {
-  //                   }).catch(error => {
-  //                     console.log(error)
-  //                   })
-  //
-  //                   return Promise.all(tags.map(tag => {
-  //                     return Tag.create(tag);
-  //
-  //                   })).then(createdTags => {
-  //
-  //                     console.log(createdTags.length)
-  //                     user.setTags(createdTags);
-  //
-  //                     console.log("Added follower")
-  //                     return questions.forEach((topQuestionData) => {
-  //                       console.log(topQuestionData.questionText);
-  //                       return user.createQuestion({
-  //                         questionText: topQuestionData.questionText,
-  //                         stars: 0
-  //                       })
-  //                         .then((topQuestion) => {
-  //                         console.log(topQuestion.questionText)
-  //                           user.addWatched(topQuestion);
-  //
-  //                           console.log("addQuestion");
-  //                           topQuestion.addStarredBy(user);
-  //                           topQuestion.setTags(createdTags);
-  //
-  //                           return topQuestionData.questions.forEach((secondQuestionData) => {
-  //                             // console.log(whatIfData.whatif)
-  //                             return user.createQuestion({
-  //                               questionText: secondQuestionData.questionText,
-  //                               stars: 0
-  //                             })
-  //                               .then((secondQuestion) => {
-  //                                 // console.log(newWhatIf == null)
-  //                                 secondQuestion.addParentQuestion(topQuestion)
-  //
-  //                                 // console.log(newWhy == null)
-  //                                 return secondQuestionData.questions.forEach((thirdQuestionText) => {
-  //                                   return user.createQuestion({
-  //                                     questionText: thirdQuestionText,
-  //                                     stars: 0
-  //                                   })
-  //                                     .then((thirdQuestion) => {
-  //
-  //                                       secondQuestion.addChildQuestion(thirdQuestion);
-  //
-  //                                     })
-  //                                 })
-  //                               })
-  //
-  //                           })
-  //                         })
-  //                     })
-  //
-  //                   })
-  //                 })
-  //
-  //             })
-  //         })
-  //     })
-  //
-  // });
+Conn.sync({ force: true })
+// Conn.sync();
+  .then(() => {
+    const passwrd = "tPass2";
+    return bcrypt.hash(passwrd, 10)
+      .then((hash2) => {
+        return UserModel.create({
+          email: faker.internet.email(),
+          username: faker.internet.userName(),
+          password: hash2,
+          version: 1,
+        })
+          .then(user2 => {
+
+            const password = "testPassword";
+            return bcrypt.hash(password, 10)
+              .then((hash) => {
+                return UserModel.create({
+                  email: faker.internet.email(),
+                  username: faker.internet.userName(),
+                  password: hash,
+                  version: 1,
+                })
+                  .then((user) => {
+                    console.log(user2.id, "u2")
+                    console.log(user.id, "u1")
+                    user.addFollowedBy(user2).then(() => {
+                    }).catch(error => {
+                      console.log(error)
+                    })
+
+                    return Promise.all(tags.map(tag => {
+                      return Tag.create(tag);
+
+                    })).then(createdTags => {
+
+                      console.log(createdTags.length)
+                      user.setTags(createdTags);
+
+                      console.log("Added follower")
+                      return questions.forEach((topQuestionData) => {
+                        console.log(topQuestionData.questionText);
+                        return user.createQuestion({
+                          questionText: topQuestionData.questionText,
+                          stars: 0
+                        })
+                          .then((topQuestion) => {
+                          console.log(topQuestion.questionText)
+                            user.addWatched(topQuestion);
+
+                            console.log("addQuestion");
+                            topQuestion.addStarredBy(user);
+                            topQuestion.setTags(createdTags);
+
+                            return topQuestionData.questions.forEach((secondQuestionData) => {
+                              // console.log(whatIfData.whatif)
+                              return user.createQuestion({
+                                questionText: secondQuestionData.questionText,
+                                stars: 0
+                              })
+                                .then((secondQuestion) => {
+                                  // console.log(newWhatIf == null)
+                                  secondQuestion.addParentQuestion(topQuestion)
+
+                                  // console.log(newWhy == null)
+                                  return secondQuestionData.questions.forEach((thirdQuestionText) => {
+                                    return user.createQuestion({
+                                      questionText: thirdQuestionText,
+                                      stars: 0
+                                    })
+                                      .then((thirdQuestion) => {
+
+                                        secondQuestion.addChildQuestion(thirdQuestion);
+
+                                      })
+                                  })
+                                })
+
+                            })
+                          })
+                      })
+
+                    })
+                  })
+
+              })
+          })
+      })
+
+  });
 
 const User = Conn.models.user;
 const Question = Conn.models.question;

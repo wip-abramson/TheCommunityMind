@@ -14,16 +14,16 @@ function loggingMiddleware(req, res, next) {
   // console.log('header:', req.header);
   next();
 }
-var corsOptions = {
-  origin: 'https://www.thecommunitymind.com',
-  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-}
+// var corsOptions = {
+//   origin: 'https://www.thecommunitymind.com',
+//   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+// }
 
-server.use('*', cors());
+server.use(cors());
 
 server.use(express.static('../public'));
 server.use(loggingMiddleware);
-server.use('/graphql', bodyParser.json(), cors(corsOptions), jwt({
+server.use('/graphql', bodyParser.json(), jwt({
   secret: JWT_SECRET,
   credentialsRequired: false,
 }), graphqlExpress((request) => {

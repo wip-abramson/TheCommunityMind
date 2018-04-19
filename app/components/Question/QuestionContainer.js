@@ -14,6 +14,8 @@ import STAR_QUESTION_MUTATION from '../../graphql/mutations/starQuestion.mutatio
 import UNSTAR_QUESTION_MUTATION from '../../graphql/mutations/unstarQuestion.mutation';
 import WATCH_QUESTION_MUTATION from '../../graphql/mutations/watchQuestion.mutation';
 import UNWATCH_QUESTION_MUTATION from '../../graphql/mutations/unwatchQuestion.mutation';
+import DELETE_QUESTION_MUTATION from '../../graphql/mutations/deleteQuestion.mutation';
+import QUESTIONS_QUERY from "../../graphql/querys/questions.query";
 
 import Notifications from 'react-notification-system-redux';
 import { unauthorizedErrorNotification } from '../../notifications/error.notifications';
@@ -31,8 +33,8 @@ const mapDispatchToProps = (dispatch) => {
       console.log("DISPATCH UNAUTHORIZED")
       dispatch(Notifications.error(unauthorizedErrorNotification))
     },
-    showQuestionPopup: (question) => {
-      dispatch(showQuestionPopup(question));
+    showQuestionPopup: (parentId, question) => {
+      dispatch(showQuestionPopup(parentId, question));
     },
   }
 }
@@ -159,6 +161,67 @@ const unwatchQuestion = graphql(UNWATCH_QUESTION_MUTATION, {
         })
     }
   })
+});
+
+const deleteQuestion = graphql(DELETE_QUESTION_MUTATION, {
+  props: ({ ownProps, mutate }) => ({
+    deleteQuestion: (question) => mutate({
+      variables: {id: question.id},
+      optimisticResponse: {
+        __typename: 'Mutation',
+        deleteQuestion: {
+          __typename: 'Question',
+          id: question.id,
+          questionText: question.questionText,
+          stars: 0,
+          ownedByCurrentUser: true,
+          starredByCurrentUser: false,
+          watchedByCurrentUser: false,
+          createdAt: question.createdAt,
+          owner: {
+            __typename: 'User',
+            id: question.owner.id,
+            username: question.owner.username
+          },
+        },
+      },
+      update: (proxy, { data: { deleteQuestion } }) => {
+        // Read the data from our cache for this query.
+        const query = {
+          query: QUESTIONS_QUERY,
+          variables: {
+            first: 10,
+          }
+        };
+
+        const data = proxy.readQuery(query);
+        // Add why from the mutation to the beginning.
+        let updatedQuestionEdges = [];
+
+        data.questions.edges.forEach((edge) => {
+          if (edge.node.id != deleteQuestion.id) {
+            updatedQuestionEdges.push(edge);
+          }
+        });
+
+        data.questions.edges = updatedQuestionEdges;
+        // Write our data back to the cache.
+        query.data = data;
+        proxy.writeQuery(query);
+      },
+    })
+      .catch(res => {
+        // catches any error returned from mutation request
+        const errors = res.graphQLErrors.map((error) => {
+          console.log(error.message)
+          if (error.message === "Unauthorized") {
+            ownProps.unAuthorized();
+          }
+          return error;
+        });
+        return errors
+      })
+  })
 })
 
 
@@ -168,17 +231,19 @@ class Container extends React.Component {
     super(props);
 
     this.editQuestion = this.editQuestion.bind(this);
+    this.askQuestion = this.askQuestion.bind(this);
+
   }
 
 
   editQuestion() {
-    this.props.showQuestionPopup(this.props.question);
+    this.props.showQuestionPopup(null, this.props.question);
   }
 
-  deleteQuestion() {
-    // TODO
-    console.log("DELETE");
+  askQuestion() {
+    this.props.showQuestionPopup(this.props.question.id, null)
   }
+
 
   render() {
     return (
@@ -187,8 +252,8 @@ class Container extends React.Component {
         starQuestion={this.props.starQuestion}
         unstarQuestion={this.props.unstarQuestion}
         editQuestion={this.editQuestion}
-        askQuestion={this.props.showQuestionPopup}
-        deleteQuestion={this.deleteQuestion}
+        askQuestion={this.askQuestion}
+        deleteQuestion={this.props.deleteQuestion}
         watchQuestion={this.props.watchQuestion}
         unwatchQuestion={this.props.unwatchQuestion}
 
@@ -205,7 +270,8 @@ const QuestionContainer = compose(
   starQuestion,
   unstarQuestion,
   watchQuestion,
-  unwatchQuestion
+  unwatchQuestion,
+  deleteQuestion
 )(Container);
 
 export default QuestionContainer;

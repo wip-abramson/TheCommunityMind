@@ -11,8 +11,6 @@ import QuestionPopup from './QuestionPopup';
 const mapStateToProps = function (state) {
   return {
     questionPopup: state.questionPopup,
-    currentWhy: state.currentWhy,
-    currentWhatIf: state.currentWhatIf,
   }
 };
 

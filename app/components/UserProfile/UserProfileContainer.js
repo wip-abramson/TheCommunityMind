@@ -15,7 +15,6 @@ import { unauthorizedErrorNotification } from '../../notifications/error.notific
 
 import UserInformation from './UserInformation'
 import UserQuestionsContainer from './UserQuestionsContainer';
-import { setQuestionType, WHY } from '../../actions/QuestionPopup';
 
 const mapStateToProps = function (state) {
   return {
@@ -28,9 +27,6 @@ const mapDispatchToProps = function (dispatch) {
     unAuthorized: () => {
       console.log("DISPATCH UNAUTHORIZED")
       dispatch(Notifications.error(unauthorizedErrorNotification))
-    },
-    setQuestionType: () => {
-      dispatch(setQuestionType(WHY))
     },
   }
 };
@@ -103,7 +99,6 @@ const unfollowUser = graphql(UNFOLLOW_USER_MUTATION, {
 class container extends React.Component {
 
   render () {
-    this.props.setQuestionType(WHY);
     if (this.props.loading) {
       return <p>Loading ...</p>;
     }

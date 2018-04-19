@@ -82,7 +82,7 @@ const typeDefs = `
     watchQuestion(id: ID!): Question
     unwatchQuestion(id: ID!): Question
     deleteQuestion(id: ID!): Question
-    editQuestion(id: ID!, newQuestion: String!): Question
+    editQuestion(id: ID!, newQuestionText: String!): Question
     starQuestion(id: ID!): Question
     unstarQuestion(id: ID!): Question
     

@@ -5,19 +5,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import UserQuestionsList from './QuestionLists/UserQuestionsList';
-import StaredQuestionsList from './QuestionLists/StaredQuestionsList';
+import StarredQuestionsList from './QuestionLists/StarredQuestionsList';
 
-import { LATEST, WHY, WHATIF, HOW, STAR } from './viewLabels';
+import { LATEST, STAR } from './viewLabels';
 
 const UserQuestions = (props) => {
 
-  console.log("USERQUESTIONS")
   var questionLst;
   if (props.questionView === LATEST) {
     questionLst = <UserQuestionsList userId={props.userId}/>
   }
   if (props.questionView === STAR) {
-    questionLst =  <StaredQuestionsList userId={props.userId}/>
+    questionLst =  <StarredQuestionsList userId={props.userId}/>
 
   }
   return (
@@ -25,7 +24,7 @@ const UserQuestions = (props) => {
       <button onClick={() => {props.onViewChange(LATEST)}}>Latest</button>
 
 
-      <button onClick={() => {props.onViewChange(STAR)}}>Stared Questions</button>
+      <button onClick={() => {props.onViewChange(STAR)}}>Starred Questions</button>
 
 
       {questionLst}
@@ -35,7 +34,7 @@ const UserQuestions = (props) => {
 }
 
 UserQuestions.propTypes = {
-  userId: PropTypes.String,
+  userId: PropTypes.string,
   onViewChange: PropTypes.func.isRequired,
 
 }

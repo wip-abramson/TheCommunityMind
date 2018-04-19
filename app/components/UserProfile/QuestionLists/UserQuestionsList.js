@@ -28,7 +28,6 @@ const UserQuestionsList = graphql(USER_QUESTIONS_QUERY, {
           if (!fetchMoreResult) {
             return previousResult;
           }
-          // push results (older whys) to end of whys list
           return update(previousResult, {
 
             userQuestions: {

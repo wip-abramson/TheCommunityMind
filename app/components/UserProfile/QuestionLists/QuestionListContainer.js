@@ -30,7 +30,7 @@ QuestionListContainer.propTypes = {
     pageInfo: PropTypes.shape({
       hasNextPage: PropTypes.bool.isRequired
     }).isRequired
-  }).isRequired,
+  }),
   loadMoreEntries: PropTypes.func.isRequired,
 }
 

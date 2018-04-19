@@ -7,20 +7,20 @@ import { graphql } from 'react-apollo';
 
 import QuestionListContainer from './QuestionListContainer';
 
-import USER_STARED_QUESTIONS_QUERY from '../../../graphql/querys/userStarredQuestions.query';
+import USER_STARRED_QUESTIONS_QUERY from '../../../graphql/querys/userStarredQuestions.query';
 
-const StaredQuestionsList = graphql(USER_STARED_QUESTIONS_QUERY, {
+const StarredQuestionsList = graphql(USER_STARRED_QUESTIONS_QUERY, {
   options: (props) => ({
     variables: {userId: props.userId, first: 5}
   }),
-  props: ({ ownProps, data: { fetchMore, loading, error, userStaredQuestions } }) => ({
+  props: ({ ownProps, data: { fetchMore, loading, error, userStarredQuestions } }) => ({
     loading,
     error,
-    connection: userStaredQuestions,
+    connection: userStarredQuestions,
     loadMoreEntries() {
       fetchMore({
         variables: {
-          after: userStaredQuestions.edges[userStaredQuestions.edges.length - 1].cursor,
+          after: userStarredQuestions.edges[userStarredQuestions.edges.length - 1].cursor,
 
         },
         updateQuery: (previousResult, { fetchMoreResult }) => {
@@ -31,9 +31,9 @@ const StaredQuestionsList = graphql(USER_STARED_QUESTIONS_QUERY, {
           // push results (older whys) to end of whys list
           return update(previousResult, {
 
-            userStaredQuestions: {
-              edges: { $push: fetchMoreResult.userStaredQuestions.edges },
-              pageInfo: { $set: fetchMoreResult.userStaredQuestions.pageInfo },
+            userStarredQuestions: {
+              edges: { $push: fetchMoreResult.userStarredQuestions.edges },
+              pageInfo: { $set: fetchMoreResult.userStarredQuestions.pageInfo },
             },
 
           });
@@ -43,4 +43,4 @@ const StaredQuestionsList = graphql(USER_STARED_QUESTIONS_QUERY, {
   })
 })(QuestionListContainer);
 
-export default StaredQuestionsList;
+export default StarredQuestionsList;

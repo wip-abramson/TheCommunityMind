@@ -4,10 +4,10 @@
 import {gql} from 'react-apollo';
 
 const EDIT_QUESTION_MUTATION = gql`
-  mutation editQuestion($id: ID!, $question: String!) {
-    editQuestion(id: $id, newQuestion: $question) {
+  mutation editQuestion($id: ID!, $questionText: String!) {
+    editQuestion(id: $id, newQuestionText: $questionText) {
       id
-      question
+      questionText
     }
   }
 `;

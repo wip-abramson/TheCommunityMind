@@ -21,27 +21,23 @@ export const questionLogic = {
   deleteQuestion(_, { id }, ctx) {
     return authLogic.getAuthenticatedUser(ctx)
       .then((user) => {
-        return Question.findById({
-          where: { id },
+        return Question.findOne({
+          where: { id: id },
           include: [{
             model: User,
             where: { id: user.id },
           }],
         })
-        // destroy the How WhatIf or Why that owns the question - cannot have any without a question
         // no need to delete associations, they are automatically deleted on delete
           .then(question => {
               if (!question) {
                 return Promise.reject("Unauthorized")
               }
-              return How.destroy({ where: { id: question.howId } })
-                .then(() => Why.destroy({ where: { id: question.whyId } }))
-                .then(() => WhatIf.destroy({ where: { id: question.whatIfId } }))
-                // then finally destroy the question
-                .then(() => question.destroy()
-                  .then(destroyedQ => {
-                    return destroyedQ;
-                  }))
+              return question.destroy()
+                .then(destroyedQ => {
+                  return destroyedQ;
+                });
+
             }
           )
       })
@@ -51,7 +47,7 @@ export const questionLogic = {
       });
 
   },
-  editQuestion(_, { id, newQuestion }, ctx) {
+  editQuestion(_, { id, newQuestionText }, ctx) {
     return authLogic.getAuthenticatedUser(ctx)
       .then(user => {
         return Question.findOne({
@@ -65,7 +61,7 @@ export const questionLogic = {
             if (!questionToEdit) {
               return Promise.reject("Unauthorized")
             }
-            return questionToEdit.update({ question: newQuestion })
+            return questionToEdit.update({ questionText: newQuestionText })
               .then(updatedQuestion => {
                 return updatedQuestion
               })

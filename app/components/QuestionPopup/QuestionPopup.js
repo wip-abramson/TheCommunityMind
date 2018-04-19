@@ -15,7 +15,7 @@ const QuestionPopup = (props) => {
 
       <div className={styles.modalContent}>
         <FaClose onClick={props.hideQuestionPopup} className={styles.close}/>
-        <QuestionInputContainer hideQuestionPopup={props.hideQuestionPopup}/>
+        <QuestionInputContainer parentId={props.questionPopup.parentId} question={props.questionPopup.question} hideQuestionPopup={props.hideQuestionPopup}/>
       </div>
     </div>
   )

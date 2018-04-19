@@ -36,7 +36,7 @@ const Question = ({ question, starQuestion, unstarQuestion, watchQuestion, unwat
           thinkAboutQuestion={() => watchQuestion(question)}
           forgetAboutQuestion={() => unwatchQuestion(question)}
         />
-        <EditIcon canEdit={question.ownedByCurrentUser} editQuestion={() => editQuestion(question)}/>
+        <EditIcon canEdit={question.ownedByCurrentUser} editQuestion={() => editQuestion()}/>
         <AskQuestionIcon canAskQuestion={true} askQuestion={askQuestion}/>
       </div>
 

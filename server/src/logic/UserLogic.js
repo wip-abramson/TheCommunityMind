@@ -222,26 +222,6 @@ export const userLogic = {
       })
 
   },
-  userWhys(_, { userId, first, after, last, before }, ctx) {
-
-    const args = paginationLogic.buildArgs(first, after, last, before);
-    args.include = [{ model: Question, where: { userId: userId } }];
-
-    return whyLogic.buildPaginatedWhys(args, before);
-
-  },
-  userWhatIfs(_, { userId, first, after, last, before }, ctx) {
-    const args = paginationLogic.buildArgs(first, after, last, before);
-    args.include = [{ model: Question, where: { userId: userId } }];
-
-    return whatIfLogic.buildPaginatedWhatIfs(args, before)
-  },
-  userHows(_, { userId, first, after, last, before }, ctx) {
-    const args = paginationLogic.buildArgs(first, after, last, before);
-    args.include = [{ model: Question, where: { userId: userId } }];
-
-    return howLogic.buildPaginatedHows(args, before)
-  },
   userStarredQuestions(_, { userId, first, after, last, before }, ctx) {
     const args = {};
 
@@ -266,25 +246,15 @@ export const userLogic = {
     }
 
     // const args = paginationLogic.buildArgs(first, after, last, before);
-    args.include = [{
-      model: Question,
-      where: where,
-      include: [{ model: User, as: "starredBy", where: { id: userId } }]
-    }];
+    args.include = [{ model: User, as: "starredBy", where: { id: userId } }];
 
-    return findAllQuestions(args)
-      .then(allQuestions => paginate(first, after, last, before, allQuestions))
+    return Question.findAll(args).then(questions => paginate(first, after, last, before, questions));
 
-      .catch(error => {
-        console.log(error, "Error");
-        return Promise.reject(error)
-      })
   },
   userQuestions(_, { userId, first, after, last, before }, ctx) {
-
     const args = {};
     args.limit = (first || last) + 1;
-
+    //
     const where = {};
     // because we return messages from newest -> oldest
     // before actually means newer (id > cursor)
@@ -301,16 +271,12 @@ export const userLogic = {
       where.id = { $lt: Buffer.from(after, 'base64').toString() };
       console.log(where.id, "WHERE");
     }
+    console.log(userId);
     where.userId = userId;
-    args.include = [{ model: Question, where: where, order: [['createdAt', 'DESC']] }];
 
-    return findAllQuestions(args)
-      .then(allQuestions => paginate(first, after, last, before, allQuestions))
+    args.where = where;
 
-      .catch(error => {
-        console.log(error, "Error");
-        return Promise.reject(error)
-      });
+    return Question.findAll(args).then(questions => paginate(first, after, last, before, questions));
   }
 
 };
@@ -357,7 +323,7 @@ function paginate(first, after, last, before, questions) {
   }
   console.log(limitedItems.length, "LIMITEMS")
   var edges = limitedItems.map(node => ({
-    cursor: Buffer.from(node.question.id.toString()).toString('base64'), // convert question id to cursor
+    cursor: Buffer.from(node.id.toString()).toString('base64'), // convert question id to cursor
     node
   }));
 
@@ -368,29 +334,4 @@ function paginate(first, after, last, before, questions) {
       hasNextPage: () => hasNextPage
     }
   }
-}
-
-function findAllQuestions(args) {
-  return Why.findAll(args)
-    .then(whys => {
-      return WhatIf.findAll(args)
-        .then(whatIfs => {
-          return How.findAll(args)
-            .then(hows => {
-              var allQuestions = whys.concat(whatIfs, hows);
-
-              // console.log(allQuestions.length);
-              allQuestions.sort((a, b) => {
-                a = new Date(a.question.id);
-                b = new Date(b.question.id);
-                return a > b ? -1 : a < b ? 1 : 0;
-              })
-              console.log("ALLQS", allQuestions.length)
-              return allQuestions;
-              // return paginate(first, after, last, before, questionType);
-
-            })
-        })
-    })
-// NEED TO DEFINE HAS NEXT AND HAS PREV IN THIS PART. Via search in db!!
 }

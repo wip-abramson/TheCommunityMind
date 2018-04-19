@@ -6,15 +6,13 @@ import QUESTION_FRAGMENT from '../fragments/question.fragment';
 
 
 const USER_STARED_QUESTIONS_QUERY = gql`
-  query userStaredQuestions($userId: ID!, $first: Int, $after: String, $last: Int, $before: String) {
-    userStaredQuestions(userId: $userId, first: $first, after: $after, last: $last, before: $before) {
+  query userStarredQuestions($userId: ID!, $first: Int, $after: String, $last: Int, $before: String) {
+    userStarredQuestions(userId: $userId, first: $first, after: $after, last: $last, before: $before) {
       edges {
         node {
-          id
-          question {
-            ... QuestionFragment 
-          }
-          
+
+          ... QuestionFragment 
+
         }
         cursor
       }

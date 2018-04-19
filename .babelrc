@@ -3,7 +3,8 @@
     "es2015",
     "react",
     "airbnb",
-    "stage-1"
+    "stage-1",
+    "env"
   ],
   "plugins": ["transform-object-rest-spread","transform-class-properties"]
 

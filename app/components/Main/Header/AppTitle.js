@@ -2,25 +2,21 @@ import React from "react";
 import {Link} from 'react-router';
 
 
-var AppTitle = function () {
+var AppTitle = function (props) {
 
 
   var noMargin = {
     margin: 0,
     padding: 10,
     display: "inline-block",
-  }
-
-  var imgstyle = {
-      // height: 150,
-      // width: 300
+    color: "black"
   }
 
   return (
-      <Link to='/'>
+      <Link to='/' onClick={props.hideQuestionPopup}>
 
         <div style={noMargin}>
-          <img src="public/imgs/thecommunitymind_logo1@0.75x.png" style={imgstyle}/>
+          <img src="public/imgs/thecommunitymind_logo1@0.5x.png"/>
         </div>
       </Link>
   )

@@ -3,7 +3,7 @@
  */
 import React from 'react'
 import { compose, graphql } from "react-apollo";
-import { loginMutation } from '../../graphql/mutations/mutations';
+import { loginMutation } from '../../graphql/mutations/user.mutations';
 import { browserHistory } from 'react-router'
 import { connect } from "react-redux";
 import { loginSuccess } from '../../actions/Auth';

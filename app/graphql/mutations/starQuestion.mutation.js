@@ -7,8 +7,8 @@ const STAR_QUESTION_MUTATION = gql`
   mutation starQuestion($id: ID!) {
     starQuestion(id: $id){
        id
-       question
-       staredByCurrentUser
+       questionText
+       starredByCurrentUser
        watchedByCurrentUser
        stars
      }

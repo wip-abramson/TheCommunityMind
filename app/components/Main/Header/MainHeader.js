@@ -1,7 +1,9 @@
 import React from "react";
+import PropTypes from 'prop-types'
 import { Nav, Navbar, NavItem, NavDropdown, MenuItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import AppTitle from "./AppTitle";
+import FaQuestionCircle from 'react-icons/fa/question-circle'
 
 var MainHeader = function (props) {
   var style = {
@@ -10,12 +12,12 @@ var MainHeader = function (props) {
   }
   return (
   <div>
-    <Navbar collapseOnSelect>
+    <Navbar className="navbar-fixed-top" collapseOnSelect>
       <Navbar.Header>
         <LinkContainer to="/" onlyActiveOnIndex>
           <Navbar.Brand>
 
-            <AppTitle/>
+            <AppTitle hideQuestionPopup={props.hideQuestionPopup}/>
 
 
           </Navbar.Brand>
@@ -23,22 +25,31 @@ var MainHeader = function (props) {
         <Navbar.Toggle />
       </Navbar.Header>
       {props.currentUser ? (
-        <Navbar.Collapse>
-          <Nav style={style}>
-
-
-          </Nav>
+        <div>
           <Nav pullRight>
-            <NavDropdown eventKey="4" title={props.currentUser.username} id="nav-dropdown">
-              <LinkContainer to={{pathname: "/profile", query: {userId: props.currentUser.id}}}>
-                <MenuItem>Profile</MenuItem>
-              </LinkContainer>
-              <MenuItem eventKey="4.2" onSelect={() => {props.viewWatchList()}}>Watch list</MenuItem>
-              <MenuItem divider />
-              <MenuItem eventKey="4.4" onSelect={() => {props.logout()}}>Logout</MenuItem>
-            </NavDropdown>
+
+            <NavItem >
+              <FaQuestionCircle onClick={props.onQuestionClick} size={90}/>
+            </NavItem>
           </Nav>
-        </Navbar.Collapse>
+          <Navbar.Collapse>
+            <Nav pullRight>
+              <NavDropdown eventKey="4" title={props.currentUser.username} id="nav-dropdown">
+                <LinkContainer to={{pathname: "/profile", query: {userId: props.currentUser.id}}}>
+                  <MenuItem>Profile</MenuItem>
+                </LinkContainer>
+                <MenuItem eventKey="4.2" onSelect={() => {props.viewWatchList()}}>Watch list</MenuItem>
+                <MenuItem divider />
+                <MenuItem eventKey="4.4" onSelect={() => {props.logout()}}>Logout</MenuItem>
+              </NavDropdown>
+            </Nav>
+          </Navbar.Collapse>
+        </div>
+
+
+
+
+
       ) : (
         <Navbar.Collapse>
           <Nav style={style}>
@@ -60,8 +71,17 @@ var MainHeader = function (props) {
 
     </Navbar>
   </div>
-
   )
+};
+
+MainHeader.propTypes = {
+  viewWatchList: PropTypes.func.isRequired,
+  logout: PropTypes.func.isRequired,
+  onQuestionClick: PropTypes.func.isRequired,
+  currentUser: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    username: PropTypes.string.isRequired,
+  })
 }
 
 export default MainHeader;

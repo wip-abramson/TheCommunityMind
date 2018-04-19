@@ -35,9 +35,11 @@ node_modules
 .DS_Store
 
 env
-
+yarn.lock
+package-lock.json
 app/public/js/bundle.js
 app/public/js/app.js
 
 # idea
 .idea/
+dist/

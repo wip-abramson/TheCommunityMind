@@ -1,12 +1,16 @@
 import React from 'react'
 import MainHeader from './Header/MainHeader'
 import FullDiv from '../generic/FullDiv';
-import { Grid, Row } from 'react-bootstrap'
+import { Grid } from 'react-bootstrap'
 import { connect } from 'react-redux'
 import { signOut } from '../../actions/Auth';
+import { showQuestionPopup, hideQuestionPopup } from '../../actions/QuestionPopup';
 import { withApollo } from 'react-apollo';
+import { browserHistory } from 'react-router'
 
 import Notifications from 'react-notification-system-redux';
+
+import QuestionPopupContainer from '../QuestionPopup/QuestionPopupContainer';
 
 
 
@@ -14,6 +18,8 @@ const mapStateToProps = function (state) {
   return {
     currentUser: state.auth.currentUser,
     notifications: state.notifications,
+    currentWhy: state.currentWhy,
+    currentWhatIf: state.currentWhatIf
   }
 };
 
@@ -21,13 +27,19 @@ const mapDispatchToProps = function (dispatch) {
   return {
     logout: () => {
       dispatch(signOut());
+    },
+    showQuestionPopup: () => {
+      dispatch(showQuestionPopup(null));
+    },
+    hideQuestionPopup: () => {
+      dispatch(hideQuestionPopup())
     }
   }
-}
+};
 
 let Main = React.createClass({
   style: {
-    padding: 20
+    padding: "70px 20px"
   },
 
 
@@ -56,6 +68,14 @@ let Main = React.createClass({
 
   },
 
+  showQuestionPopup() {
+    this.props.showQuestionPopup(this.props.currentWhy, this.props.currentWhatIf)
+  },
+
+  viewProfile() {
+    browserHistory.push({pathname: "/profile", query: {userId: this.props.currentUser.id}})
+  },
+
 
   viewWatchList() {
 
@@ -63,6 +83,8 @@ let Main = React.createClass({
   },
 
   render() {
+    // this.props.hideQuestionPopup();
+
     return (
       <FullDiv>
         <MainHeader
@@ -70,10 +92,13 @@ let Main = React.createClass({
           logout={this.logout}
           viewProfile={this.viewProfile}
           viewWatchList={this.viewWatchList}
+          onQuestionClick={this.showQuestionPopup}
+          hideQuestionPopup={this.props.hideQuestionPopup}
         ></MainHeader>
 
 
         <Grid style={this.style}>
+          <QuestionPopupContainer/>
           {this.props.children}
         </Grid>
         <Notifications

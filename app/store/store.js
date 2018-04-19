@@ -3,7 +3,7 @@
  */
 import {createStore, applyMiddleware, compose} from "redux";
 import { App } from '../reducers/App';
-import { apolloClient } from './ApolloClient';
+import { apolloClient } from '../ApolloClient';
 
 
 

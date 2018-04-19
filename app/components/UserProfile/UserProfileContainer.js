@@ -27,7 +27,7 @@ const mapDispatchToProps = function (dispatch) {
     unAuthorized: () => {
       console.log("DISPATCH UNAUTHORIZED")
       dispatch(Notifications.error(unauthorizedErrorNotification))
-    }
+    },
   }
 };
 
@@ -99,7 +99,6 @@ const unfollowUser = graphql(UNFOLLOW_USER_MUTATION, {
 class container extends React.Component {
 
   render () {
-    console.log("RENDER")
     if (this.props.loading) {
       return <p>Loading ...</p>;
     }

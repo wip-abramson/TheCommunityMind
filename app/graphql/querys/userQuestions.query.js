@@ -10,10 +10,7 @@ const USER_QUESTIONS_QUERY = gql`
     userQuestions(userId: $userId, first: $first, after: $after, last: $last, before: $before) {
       edges {
         node {
-          id
-          question {
-            ... QuestionFragment 
-          }
+          ... QuestionFragment 
           
         }
         cursor

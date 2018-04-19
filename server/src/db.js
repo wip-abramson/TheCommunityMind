@@ -31,7 +31,7 @@ const UserModel = Conn.define('user', {
 })
 
 const QuestionModel = Conn.define('question', {
-  question: {
+  questionText: {
     type: Sequelize.STRING,
     allowNull: false
   },
@@ -44,12 +44,6 @@ const TagModel = Conn.define('tag', {
   }
 })
 
-const WhyModel = Conn.define('why', {});
-
-const WhatIfModel = Conn.define('whatif', {});
-
-const HowModel = Conn.define('how', {});
-
 const UserStarQuestionModel = Conn.define('question_star', {});
 
 const UserFollowModel = Conn.define('follow', {});
@@ -60,28 +54,18 @@ const QuestionTagModel = Conn.define('question_tag', {});
 
 const UserTagModel = Conn.define('user_tag', {});
 
+const QuestionLinkModel = Conn.define('question_link', {});
 // Relationships
 
 UserModel.hasMany(QuestionModel);
 QuestionModel.belongsTo(UserModel);
-
-// WhyModel.belongsToMany(TopicModel);
-WhyModel.hasMany(WhatIfModel, { as: 'WhatIfs' });
-WhatIfModel.belongsTo(WhyModel);
-WhatIfModel.hasMany(HowModel, { as: 'Hows' });
-HowModel.belongsTo(WhatIfModel);
-
-WhyModel.hasOne(QuestionModel);
-// QuestionModel.belongsTo(WhyModel);
-WhatIfModel.hasOne(QuestionModel);
-HowModel.hasOne(QuestionModel);
 
 QuestionModel.belongsToMany(UserModel, {
   through: {
     model: UserStarQuestionModel,
     unique: true,
   },
-  as: 'StaredBy'
+  as: 'starredBy'
 });
 
 UserModel.belongsToMany(QuestionModel, {
@@ -89,7 +73,25 @@ UserModel.belongsToMany(QuestionModel, {
     model: UserStarQuestionModel,
     unique: true,
   },
-  as: 'StaredBy'
+  as: 'StarredBy'
+});
+
+QuestionModel.belongsToMany(QuestionModel, {
+  through: {
+    model: QuestionLinkModel,
+    unique: true,
+  },
+  as: "ParentQuestion",
+  foreignKey: "parentId"
+});
+
+QuestionModel.belongsToMany(QuestionModel, {
+  through: {
+    model: QuestionLinkModel,
+    unique: true,
+  },
+  as: "ChildQuestion",
+  foreignKey: "childId"
 });
 
 UserModel.belongsToMany(UserModel, {
@@ -141,8 +143,6 @@ QuestionModel.belongsToMany(TagModel, {
   },
 });
 
-
-
 UserModel.belongsToMany(TagModel, {
   through: {
     model: UserTagModel,
@@ -168,90 +168,72 @@ faker.seed(123); // consistent data every time reload app
 
 const questions = [
   {
-    why: "Why does our economy revolve around designing things that break after a few years",
-    whatifs: [
+    questionText: "Why does our economy revolve around designing things that break after a few years",
+    questions: [
       {
-        whatif: "What if we changed our designs to a modular approach and open sourced how to repair the parts",
-        hows: [
+        questionText: "What if we changed our designs to a modular approach and open sourced how to repair the parts",
+        questions: [
           "How would companies make money"
         ]
       },
       {
-        whatif: "What if we built things that lasted as long as possible",
-        hows: []
+        questionText: "What if we built things that lasted as long as possible",
+        questions: []
       },
       {
-        whatif: "What if we designed systems that used our waste products based along the natures system of reusability",
-        hows: []
+        questionText: "What if we designed systems that used our waste products based along the natures system of reusability",
+        questions: []
       }
     ]
   },
 
   {
-    why: "Why do I need to get a new pair of glasses when my perscription changes",
-    whatifs: [
+    questionText: "Why do I need to get a new pair of glasses when my perscription changes",
+    questions: [
       {
-        whatif: "What if you could electronically alter the strength of the lenses",
-        hows: ["How would this happen"]
+        questionText: "What if you could electronically alter the strength of the lenses",
+        questions: ["How would this happen"]
       },
     ],
   },
   {
-    why: "Why don't people wear their hearing aides",
-    whatifs: [
+    questionText: "Why don't people wear their hearing aides",
+    questions: [
       {
-        whatif: "What if hearing aides were fashionable",
-        hows: []
+        questionText: "What if hearing aides were fashionable",
+        questions: []
       },
       {
-        whatif: "What if heaering aides were sold more like glasses",
-        hows: []
-      },
-    ],
-  },
-  {
-    why: "Why don't we have cities in the sea?",
-    whatifs: [
-      {
-        whatif: "What if we thought of development in the sea like building a spacestation",
-        hows: ["How would they survive potential collisions"]
-      },
-      {
-        whatif: "What if these cities cleaned the ocean at the same time",
-        hows: ["how would it do this", "how could we use any materials recovered"]
-      },
-      {
-        whatif: "What if these cities actually existed under the sea",
-        hows: ["how would they withstand the pressure"]
+        questionText: "What if heaering aides were sold more like glasses",
+        questions: []
       },
     ],
   },
   {
-    why: "Why don't people question their reality more",
-    whatifs: [
+    questionText: "Why don't we have cities in the sea?",
+    questions: [
       {
-        whatif: "What if we encouraged questions whenever they are asked",
-        hows: ["How can we show our appreciation for each question", "How can we ensure we don't write of anyone's questions before thinking about it"]
+        questionText: "What if we thought of development in the sea like building a spacestation",
+        questions: ["How would they survive potential collisions"]
       },
-      { whatif: "What if we admit when we don't know the answer", hows: [] },
-
-    ]
+      {
+        questionText: "What if these cities cleaned the ocean at the same time",
+        questions: ["how would it do this", "how could we use any materials recovered"]
+      },
+      {
+        questionText: "What if these cities actually existed under the sea",
+        questions: ["how would they withstand the pressure"]
+      },
+    ],
   },
   {
-    why: "Why am I not happy",
-    whatifs: [
+    questionText: "Why don't people question their reality more",
+    questions: [
       {
-        whatif: "What if I wrote down everything that made me unhappy",
-        hows: ["How can I use this information"]
+        questionText: "What if we encouraged questions whenever they are asked",
+        questions: ["How can we show our appreciation for each question", "How can we ensure we don't write of anyone's questions before thinking about it"]
       },
-      {
-        whatif: "What if I concentrated on the things that made me happy",
-        hows: ["How can I find something that makes me happy"]
-      },
-      {
-        whatif: "what if I changed my environment",
-        hows: ["How can I identify the environment that makes me least happy"]
-      }
+      { questionText: "What if we admit when we don't know the answer", questions: [] },
 
     ]
   },
@@ -273,116 +255,104 @@ const tags = [
   }
 ]
 
-//{force: true}
-Conn.sync();
+//
 // Conn.sync({ force: true })
-//   .then(() => {
-//     const passwrd = "tPass2";
-//     return bcrypt.hash(passwrd, 10)
-//       .then((hash2) => {
-//         return UserModel.create({
-//           email: faker.internet.email(),
-//           username: faker.internet.userName(),
-//           password: hash2,
-//           version: 1,
-//         })
-//           .then(user2 => {
-//
-//             const password = "testPassword";
-//             return bcrypt.hash(password, 10)
-//               .then((hash) => {
-//                 return UserModel.create({
-//                   email: faker.internet.email(),
-//                   username: faker.internet.userName(),
-//                   password: hash,
-//                   version: 1,
-//                 })
-//                   .then((user) => {
-//                     console.log(user2.id, "u2")
-//                     console.log(user.id, "u1")
-//                     user.addFollowedBy(user2).then(() => {
-//                     }).catch(error => {
-//                       console.log(error)
-//                     })
-//
-//                     return Promise.all(tags.map(tag => {
-//                       return Tag.create(tag);
-//
-//                     })).then(createdTags => {
-//
-//                       console.log(createdTags.length)
-//                       user.setTags(createdTags);
-//
-//                       // console.log("Added follower")
-//                       questions.forEach((whyData) => {
-//                         // console.log(whyData.why);
-//                         return user.createQuestion({ question: whyData.why, stars: 0 })
-//                           .then((whyQuestion) => {
-//                           user.addWatched(whyQuestion)
-//
-//                             console.log("addQuestion")
-//                             whyQuestion.addStaredBy(user)
-//                             whyQuestion.setTags(createdTags)
-//
-//                             return WhyModel.create({})
-//                               .then((newWhy) => {
-//                                 newWhy.setQuestion(whyQuestion);
-//
-//                                 return whyData.whatifs.forEach((whatIfData) => {
-//                                   // console.log(whatIfData.whatif)
-//                                   return user.createQuestion({
-//                                     question: whatIfData.whatif,
-//                                     stars: 0
-//                                   })
-//                                     .then((whatIfQuestion) => {
-//                                       // console.log(newWhatIf == null)
-//
-//                                       return WhatIfModel.create({})
-//                                         .then((newWhatIf) => {
-//                                           // whatIfQuestion.setWhatIf(newWhatIf);
-//                                           newWhatIf.setQuestion(whatIfQuestion);
-//                                           newWhy.addWhatIf(newWhatIf);
-//                                           // console.log(newWhy == null)
-//                                           return whatIfData.hows.forEach((how) => {
-//                                             return user.createQuestion({ question: how, stars: 0 })
-//                                               .then((howQuestion) => {
-//
-//                                                 return HowModel.create({})
-//                                                   .then((newHow) => {
-//                                                     newHow.setQuestion(howQuestion);
-//                                                     newWhatIf.addHow(newHow);
-//                                                   })
-//
-//                                               })
-//                                           })
-//                                         })
-//
-//                                     })
-//                                 })
-//                               })
-//                           })
-//                       })
-//
-//                     })
-//                   })
-//               })
-//           })
-//       })
-//
-//   });
+Conn.sync();
+  // .then(() => {
+  //   const passwrd = "tPass2";
+  //   return bcrypt.hash(passwrd, 10)
+  //     .then((hash2) => {
+  //       return UserModel.create({
+  //         email: faker.internet.email(),
+  //         username: faker.internet.userName(),
+  //         password: hash2,
+  //         version: 1,
+  //       })
+  //         .then(user2 => {
+  //
+  //           const password = "testPassword";
+  //           return bcrypt.hash(password, 10)
+  //             .then((hash) => {
+  //               return UserModel.create({
+  //                 email: faker.internet.email(),
+  //                 username: faker.internet.userName(),
+  //                 password: hash,
+  //                 version: 1,
+  //               })
+  //                 .then((user) => {
+  //                   console.log(user2.id, "u2")
+  //                   console.log(user.id, "u1")
+  //                   user.addFollowedBy(user2).then(() => {
+  //                   }).catch(error => {
+  //                     console.log(error)
+  //                   })
+  //
+  //                   return Promise.all(tags.map(tag => {
+  //                     return Tag.create(tag);
+  //
+  //                   })).then(createdTags => {
+  //
+  //                     console.log(createdTags.length)
+  //                     user.setTags(createdTags);
+  //
+  //                     console.log("Added follower")
+  //                     return questions.forEach((topQuestionData) => {
+  //                       console.log(topQuestionData.questionText);
+  //                       return user.createQuestion({
+  //                         questionText: topQuestionData.questionText,
+  //                         stars: 0
+  //                       })
+  //                         .then((topQuestion) => {
+  //                         console.log(topQuestion.questionText)
+  //                           user.addWatched(topQuestion);
+  //
+  //                           console.log("addQuestion");
+  //                           topQuestion.addStarredBy(user);
+  //                           topQuestion.setTags(createdTags);
+  //
+  //                           return topQuestionData.questions.forEach((secondQuestionData) => {
+  //                             // console.log(whatIfData.whatif)
+  //                             return user.createQuestion({
+  //                               questionText: secondQuestionData.questionText,
+  //                               stars: 0
+  //                             })
+  //                               .then((secondQuestion) => {
+  //                                 // console.log(newWhatIf == null)
+  //                                 secondQuestion.addParentQuestion(topQuestion)
+  //
+  //                                 // console.log(newWhy == null)
+  //                                 return secondQuestionData.questions.forEach((thirdQuestionText) => {
+  //                                   return user.createQuestion({
+  //                                     questionText: thirdQuestionText,
+  //                                     stars: 0
+  //                                   })
+  //                                     .then((thirdQuestion) => {
+  //
+  //                                       secondQuestion.addChildQuestion(thirdQuestion);
+  //
+  //                                     })
+  //                                 })
+  //                               })
+  //
+  //                           })
+  //                         })
+  //                     })
+  //
+  //                   })
+  //                 })
+  //
+  //             })
+  //         })
+  //     })
+  //
+  // });
 
-const Why = Conn.models.why;
-const WhatIf = Conn.models.whatif;
-const How = Conn.models.how;
 const User = Conn.models.user;
 const Question = Conn.models.question;
 const Tag = Conn.models.tag;
 
 // note only export objects that represent data not join tables
 export {
-  Why,
-  WhatIf,
-  How,
   User,
   Question,
   Tag,

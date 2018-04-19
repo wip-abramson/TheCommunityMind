@@ -8,7 +8,7 @@ import ThreadBarContainer from '../ThreadBar/ThreadBarContainer';
 const Home = (props) => {
   return (
     <div>
-      <ThreadBarContainer/>
+      {/*<ThreadBarContainer/>*/}
       {props.children}
     </div>
   )

@@ -1,0 +1,11 @@
+.flexRow {
+    display: flex;
+    flex-direction: column;
+    align-content: space-between;
+    margin-top: 10px;
+
+}
+
+.submitBtn {
+    align-self: flex-end;
+}

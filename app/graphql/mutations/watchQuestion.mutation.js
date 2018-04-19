@@ -7,7 +7,7 @@ const WATCH_QUESTION_MUTATION = gql`
   mutation watchQuestion($id: ID!) {
     watchQuestion(id:$id) {
       id
-      question
+      questionText
       watchedByCurrentUser
     }
   }

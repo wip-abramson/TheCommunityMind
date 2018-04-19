@@ -1,12 +1,8 @@
-import { Topic } from "./db";
 import GraphQLDate from 'graphql-date';
 
 import { authLogic } from './logic/AuthLogic';
 import { userLogic } from './logic/UserLogic';
 import { questionLogic } from './logic/QuestionLogic';
-import { whyLogic } from './logic/WhyLogic';
-import { whatIfLogic } from './logic/WhatIfLogic';
-import { howLogic } from './logic/HowLogic';
 import { tagLogic } from './logic/TagLogic';
 
 export const resolvers = {
@@ -19,47 +15,24 @@ export const resolvers = {
     tags: (_, args, ctx) => {
       return tagLogic.query(_, args, ctx);
     },
-    whys: (_, args, ctx) => {
-
-      return whyLogic.query(_, args, ctx);
-    },
-    whatIfs: (_, args, ctx) => {
-      return whatIfLogic.query(_, args, ctx);
-    },
-    hows(_, args, ctx) {
-      return howLogic.query(_, args, ctx);
-    },
     user(_, args, ctx) {
       return userLogic.query(_, args, ctx);
     },
-    userWhys(_, args, ctx) {
-      return userLogic.userWhys(_, args, ctx);
-    },
-    userWhatIfs(_, args, ctx) {
-      return userLogic.userWhatIfs(_, args, ctx);
-    },
-    userHows(_, args, ctx) {
-      return userLogic.userHows(_, args, ctx);
-    },
-    userStaredQuestions(_, args, ctx) {
-      return userLogic.userStaredQuestions(_, args, ctx);
+    userStarredQuestions(_, args, ctx) {
+      return userLogic.userStarredQuestions(_, args, ctx);
     },
     userQuestions(_, args, ctx) {
       return userLogic.userQuestions(_, args, ctx);
+    },
+    questions(_, args, ctx) {
+      return questionLogic.query(_, args, ctx);
     }
 
 
   },
   Mutation: {
-    createWhy(_, args, ctx) {
-      return whyLogic.createWhy(_, args, ctx);
-
-    },
-    createWhatIf: (_, args, ctx) => {
-      return whatIfLogic.createWhatIf(_, args, ctx)
-    },
-    createHow: (_, args, ctx) => {
-      return howLogic.createHow(_, args, ctx)
+    createQuestion(_, args, ctx) {
+      return questionLogic.createQuestion(_, args, ctx);
 
     },
     findOrCreateTag(_, args, ctx) {
@@ -129,20 +102,29 @@ export const resolvers = {
     owner(question, args, ctx) {
       return questionLogic.user(question, args, ctx);
     },
-    staredBy(question, args, ctx) {
-      return questionLogic.staredBy(question, args, ctx);
+    starredBy(question, args, ctx) {
+      return questionLogic.starredBy(question, args, ctx);
     },
     stars(question, args, ctx) {
       return questionLogic.stars(question, args, ctx);
     },
-    staredByCurrentUser(question, args, ctx) {
-      return questionLogic.staredByCurrentUser(question, args, ctx);
+    starredByCurrentUser(question, args, ctx) {
+      return questionLogic.starredByCurrentUser(question, args, ctx);
     },
     watchedByCurrentUser(question, args, ctx) {
       return questionLogic.watchedByCurrentUser(question, args, ctx);
     },
+    ownedByCurrentUser(question, args, ctx) {
+      return questionLogic.ownedByCurrentUser(question, args, ctx);
+    },
     associatedWith(question, args, ctx) {
       return questionLogic.associatedWith(question, args, ctx);
+    },
+    parentQuestions(question, args, ctx) {
+      return questionLogic.parentQuestion(question, args, ctx);
+    },
+    childQuestions(question, args, ctx) {
+      return questionLogic.childQuestions(question, args, ctx);
     }
   },
 
@@ -156,32 +138,6 @@ export const resolvers = {
     },
   },
 
-  Why: {
-    whatIfs(why, args, ctx) {
-      return whyLogic.whatIfs(why, args, ctx);
-    },
-    question(why, args, ctx) {
-      return whyLogic.question(why, args, ctx);
-    }
-  },
-  WhatIf: {
-    hows(whatIf, args, ctx) {
-      return whatIfLogic.hows(whatIf, args, ctx);
-    },
-    // howFeed(whatIf, args, ctx) {
-    //   return howLogic.howFeed(whatIf, args, ctx);
-    // },
-    question(whatIf, args, ctx) {
-      return whatIfLogic.question(whatIf, args, ctx);
-    }
-  },
-
-  How: {
-    question(how, args, ctx) {
-      return howLogic.question(how, args, ctx);
-    },
-  },
-
   User: {
     questions(user, args, ctx) {
       return userLogic.questions(user, args, ctx);
@@ -189,8 +145,8 @@ export const resolvers = {
     jwt(user, args, ctx) {
       return userLogic.jwt(user, args, ctx);
     },
-    staredQuestions(user, args, ctx) {
-      return userLogic.staredQuestions(user, args, ctx);
+    starredQuestions(user, args, ctx) {
+      return userLogic.starredQuestions(user, args, ctx);
     },
     follows(user, args, ctx) {
       return userLogic.follows(user, args, ctx);
@@ -213,31 +169,6 @@ export const resolvers = {
     followedByCurrentUser(user, args, ctx) {
       return userLogic.followedByCurrentUser(user, args, ctx);
     },
-    whys(user, args, ctx) {
-      return userLogic.whys(user, args, ctx);
-    },
-    whatIfs(user, args, ctx) {
-      return userLogic.whatIfs(user, args, ctx);
-    },
-    hows(user, args, ctx) {
-      return userLogic.hows(user, args, ctx);
-    }
 
   },
-
-  QuestionType: {
-    __resolveType(obj, context, info){
-
-      // console.log(obj.dataValues[whatIfId])
-      if (obj.whatifId) {
-        return 'How';
-      }
-
-      if (obj.whyId) {
-        return 'WhatIf';
-      }
-
-      return 'Why';
-    },
-  }
 }

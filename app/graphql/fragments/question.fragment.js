@@ -6,9 +6,10 @@ import {gql} from 'react-apollo';
 const QUESTION_FRAGMENT = gql`
   fragment QuestionFragment on Question {
     id 
-    question
+    questionText
     stars
-    staredByCurrentUser
+    starredByCurrentUser
+    ownedByCurrentUser
     watchedByCurrentUser
     createdAt
     owner {

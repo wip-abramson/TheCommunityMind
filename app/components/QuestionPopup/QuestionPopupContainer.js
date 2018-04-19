@@ -11,6 +11,7 @@ import QuestionPopup from './QuestionPopup';
 const mapStateToProps = function (state) {
   return {
     questionPopup: state.questionPopup,
+    user: state.auth.currentUser
   }
 };
 

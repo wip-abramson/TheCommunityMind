@@ -2,6 +2,8 @@ import Sequelize from "sequelize";
 import faker from 'faker';
 import bcrypt from 'bcrypt';
 
+import ostUserQueries from './ost/ostUserQueries';
+
 const Conn = new Sequelize('communitymind', null, null, {
   dialect: 'sqlite',
   storage: './mind.sqlite',
@@ -280,6 +282,8 @@ Conn.sync({ force: true })
                   version: 1,
                 })
                   .then((user) => {
+                    // ostUserQueries.createUser(user.username);
+                    ostUserQueries.editUser();
                     console.log(user2.id, "u2")
                     console.log(user.id, "u1")
                     user.addFollowedBy(user2).then(() => {

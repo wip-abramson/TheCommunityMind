@@ -9,7 +9,7 @@ import { store } from './store/store';
 
 const networkInterface = createNetworkInterface({
 
-  uri:   process.env.NODE_ENV === 'production'? 'http://thecommunitymind.com/graphql' : 'http://0.0.0.0:5000/graphql',
+  uri:   process.env.NODE_ENV === 'production'? 'https://thecommunitymind.com/graphql' : 'http://0.0.0.0:5000/graphql',
 });
 
 

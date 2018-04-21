@@ -14,10 +14,6 @@ function loggingMiddleware(req, res, next) {
   // console.log('header:', req.header);
   next();
 }
-// var corsOptions = {
-//   origin: 'https://www.thecommunitymind.com',
-//   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-// }
 
 server.options("*",cors());
 server.use("*",cors());
@@ -39,9 +35,6 @@ server.use('/graphql', bodyParser.json(), jwt({
       }) : Promise.resolve(null),
   },
 })}));
-
-// server.use('/graphql', bodyParser.json, graphqlExpress({ schema }));
-
 
 
 server.use('/graphiql', graphiqlExpress({

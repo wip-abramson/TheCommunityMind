@@ -7,6 +7,7 @@ import { signOut } from '../../actions/Auth';
 import { showQuestionPopup, hideQuestionPopup } from '../../actions/QuestionPopup';
 import { withApollo } from 'react-apollo';
 import { browserHistory } from 'react-router'
+import QuestionPopupContainer from '../QuestionPopup/QuestionPopupContainer';
 
 import Notifications from 'react-notification-system-redux';
 
@@ -35,14 +36,14 @@ const mapDispatchToProps = function (dispatch) {
   }
 };
 
-let Main = React.createClass({
-  style: {
+class Main extends React.Component{
+  style = {
     padding: "70px 20px"
-  },
+  }
 
 
   //Optional styling
-  notificationStyle: {
+  notificationStyle = {
     NotificationItem: { // Override the notification item
       DefaultStyle: { // Applied to every notification, regardless of the notification level
         margin: '10px 5px 2px 1px'
@@ -55,7 +56,7 @@ let Main = React.createClass({
         color: 'red'
       }
     }
-  },
+  };
 
   logout() {
     // should i clear it all?
@@ -64,21 +65,28 @@ let Main = React.createClass({
     this.props.logout()
     this.props.client.resetStore()
 
-  },
+  }
 
   showQuestionPopup() {
     this.props.showQuestionPopup(this.props.currentWhy, this.props.currentWhatIf)
-  },
+  }
 
   viewProfile() {
     browserHistory.push({pathname: "/profile", query: {userId: this.props.currentUser.id}})
-  },
+  }
 
 
   viewWatchList() {
 
     console.log("Viewing watch list")
-  },
+  }
+
+  componentDidMount() {
+    if(!this.props.currentUser) {
+      browserHistory.push({pathname: "/landing"})
+
+    }
+  }
 
   render() {
     return (
@@ -105,7 +113,7 @@ let Main = React.createClass({
       </FullDiv>
     )
   }
-})
+}
 
 export default withApollo(
   connect(

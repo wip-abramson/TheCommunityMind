@@ -12,6 +12,7 @@ var AppRouter = function () {
   return (
     <Router history={browserHistory}>
       <Route path='/' component={Main}>
+        <Route path='/Landing' component={LandingPage}/>
         <Route component={Home}>
           <IndexRoute component={QuestionsView}/>
           {/*<Route path="/thread/:name" component={ThreadPage}/>*/}

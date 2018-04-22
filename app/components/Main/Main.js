@@ -1,7 +1,7 @@
 import React from 'react'
 import MainHeader from './Header/MainHeader'
 import FullDiv from '../generic/FullDiv';
-import { Grid } from 'react-bootstrap'
+import { Grid, Row } from 'react-bootstrap'
 import { connect } from 'react-redux'
 import { signOut } from '../../actions/Auth';
 import { showQuestionPopup, hideQuestionPopup } from '../../actions/QuestionPopup';
@@ -9,8 +9,6 @@ import { withApollo } from 'react-apollo';
 import { browserHistory } from 'react-router'
 
 import Notifications from 'react-notification-system-redux';
-
-import QuestionPopupContainer from '../QuestionPopup/QuestionPopupContainer';
 
 
 
@@ -83,8 +81,6 @@ let Main = React.createClass({
   },
 
   render() {
-    // this.props.hideQuestionPopup();
-
     return (
       <FullDiv>
         <MainHeader

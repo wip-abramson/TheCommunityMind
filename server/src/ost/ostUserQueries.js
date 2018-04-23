@@ -58,7 +58,7 @@ const ostUserQueries = {
 
   testBuilder:() => {
     let inputParams =[];
-    request_timestamp=1524136256
+    let request_timestamp=1524136256
   }
 };
 

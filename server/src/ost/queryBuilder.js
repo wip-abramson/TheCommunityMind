@@ -7,11 +7,11 @@ import crypto from 'crypto';
 
 import {API_KEY, API_SECRET} from '../../config';
 
-
+const BASE_URL = "https://playgroundapi.ost.com";
 
 export const generateQueryString = (endpoint, inputParams) => {
-  inputParams["api_key"] = API_KEY;
-  inputParams["request_timestamp"] = Math.floor(Date.now() /1000);
+  inputParams.api_key = API_KEY;
+  inputParams.request_timestamp= createTimeString();
 
   const queryParamsString = queryString.stringify(inputParams, {arrayFormat: 'bracket'}).replace(/%20/g, '+');
 
@@ -21,10 +21,30 @@ export const generateQueryString = (endpoint, inputParams) => {
 };
 
 export const generateApiSignature =(stringToSign) => {
-  console.log(stringToSign);
   let buff = new Buffer.from(API_SECRET, 'utf8');
   let hmac = crypto.createHmac('sha256', buff);
   hmac.update(stringToSign);
   return hmac.digest('hex');
 
+};
+
+
+
+export const buildQuery = (inputParams, endpoint) => {
+
+  let queryToSign = generateQueryString(endpoint, inputParams);
+  let apiSignature = generateApiSignature(queryToSign);
+}
+
+// function buildQueryInputs(inputParams) => {
+//
+//   inputParams.api_key = API_KEY;
+//   inputParams.request_timestamp= createTimeString();
+// }
+
+function createTimeString() {
+  var d = new Date();
+  var t = d.getTime();
+  var o = t + "";
+  return o.substring(0, 10);
 }

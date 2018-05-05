@@ -4,24 +4,14 @@
 import { buildQuery } from './queryBuilder';
 import axios from 'axios';
 
-const BASE_URL = "https://playgroundapi.ost.com";
-
-const instance = axios.create({
-  baseURL: BASE_URL,
-  timeout:1000,
-  headers: {Accept: "application/json"}
-})
-
 const ostUserQueries = {
   createUser: (username) => {
     const endpoint = "/users/create";
-
     let inputParams = {
       name: username
     };
 
     const query = buildQuery(endpoint,inputParams);
-
 
     return axios.post(query.url, query.queryParams)
       .then((response) => {
@@ -44,10 +34,10 @@ const ostUserQueries = {
 
     axios.post(query.url, query.queryParams)
       .then((response) => {
-        console.log("Successfully edited user")
+        console.log("Successfully edited user", response.data.data.economy_users[0].name)
       })
       .catch(error => {
-        console.log("Error editing user", response.data.data.economy_users[0].username)
+        console.log("Error editing user")
 
       });
   },
@@ -67,18 +57,7 @@ const ostUserQueries = {
         console.log(error);
       })
   },
-
-  testBuilder:() => {
-    let inputParams =[];
-    let request_timestamp=1524136256
-  }
 };
 
-function createTimeString() {
-  var d = new Date();
-  var t = d.getTime();
-  var o = t + "";
-  return o.substring(0, 10);
-}
 
 export default ostUserQueries;

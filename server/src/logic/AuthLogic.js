@@ -5,13 +5,14 @@ import { User } from '../db';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { JWT_SECRET } from '../../config';
+import ostUserQueries from '../ost/ostUserQueries';
 
 export const authLogic = {
   // reusable function to check for a user with context
   getAuthenticatedUser(ctx) {
     console.log("Getting user")
     if (!ctx.user) {
-       console.log("No ctx")
+      console.log("No ctx")
       return Promise.reject('Unauthorized');
     }
 
@@ -31,26 +32,35 @@ export const authLogic = {
       .then((existing) => {
         if (!existing) {
           // hash password to create user
-          return bcrypt.hash(password, 10).then(hash => User.create({
-            email,
-            password: hash,
-            username: username || email,
-            version: 1,
-          }))
-            .then((user) => {
-              const { id } = user;
-              const token = jwt.sign({
-                id,
-                email,
-                username,
-                version: 1,
-                // exp: Math.floor(new Date().getTime() / 1000) + 7 * 24 * 60 * 60
-              }, JWT_SECRET);
-              user.jwt = token;
-              ctx.user = Promise.resolve(user);
-              console.log("user created");
-              return user;
-            });
+          return bcrypt.hash(password, 10)
+            .then(hash => {
+              return ostUserQueries.createUser(username)
+                .then(uuid => {
+                  return User.create({
+                    email,
+                    password: hash,
+                    username: username || email,
+                    version: 1,
+                    ostUuid: uuid
+                  })
+                    .then((user) => {
+                      const { id } = user;
+                      const token = jwt.sign({
+                        id,
+                        email,
+                        username,
+                        version: 1,
+                        // exp: Math.floor(new Date().getTime() / 1000) + 7 * 24 * 60 * 60
+                      }, JWT_SECRET);
+                      user.jwt = token;
+                      ctx.user = Promise.resolve(user);
+                      console.log("user created");
+                      return user;
+                    });
+                })
+
+            })
+
         }
 
         return Promise.reject('Email already exists');

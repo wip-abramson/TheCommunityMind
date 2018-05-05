@@ -13,9 +13,9 @@ export const buildQuery = (endpoint, inputParams) => {
   inputParams.api_key = API_KEY;
   inputParams.request_timestamp= createTimeString();
 
-  const queryParamsString = queryString.stringify(inputParams, {arrayFormat: 'bracket'}).replace(/%20/g, '+');
+  const queryParamsString = queryString.stringify(inputParams, {arrayFormat: 'bracket'}).replace(/%20/g, '+').replace(/%5B/g, '').replace(/%5D/g, '');
   const stringToSign = endpoint + '?' + queryParamsString;
-
+  console.log('String to sign', stringToSign);
   const signature = generateApiSignature(stringToSign);
   inputParams.signature = signature;
 
@@ -35,6 +35,7 @@ function generateApiSignature(stringToSign) {
   return hmac.digest('hex');
 
 };
+
 
 
 function createTimeString() {

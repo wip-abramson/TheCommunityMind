@@ -4,11 +4,15 @@
 import { Question, User, Tag } from '../db';
 import { authLogic } from './AuthLogic';
 import { paginationLogic } from './PaginationLogic';
+import ostTransactions from '../ost/ostTransactions';
 
 export const questionLogic = {
   createQuestion(_, { questionText, parentId }, ctx) {
     return authLogic.getAuthenticatedUser(ctx)
       .then(user => {
+        ostTransactions.executeQuestionTransaction(user.ostUuid).then(transactionHash => {
+          console.log(transactionHash);
+        });
         return Question.create({
           questionText,
           stars: 0,

@@ -262,102 +262,102 @@ const tags = [
 ]
 
 //
-Conn.sync({ force: true })
-// Conn.sync();
-  .then(() => {
-    const passwrd = "tPass2";
-    return bcrypt.hash(passwrd, 10)
-      .then((hash2) => {
-        let user1 = {
-          email: faker.internet.email(),
-          username: "Alice",
-          password: hash2,
-          version: 1,
-          ostUuid: 'e3586536-bfb4-4b98-8998-e4c9a8069cba'
-
-        };
-        return UserModel.create(user1)
-          .then(user1 => {
-
-            const password = "testPassword";
-            return bcrypt.hash(password, 10)
-              .then((hash) => {
-                let user2 = {
-                  email: faker.internet.email(),
-                  username: "Bob",
-                  password: hash,
-                  version: 1,
-                  ostUuid: '9aa974b4-9fa7-4f93-bd88-a3cf3de1fa22',
-                };
-                return UserModel.create(user2)
-                  .then((user) => {
-                    ostUserQueries.editUser();
-                    console.log(user1.id, "u2")
-                    console.log(user.id, "u1")
-                    user.addFollowedBy(user1).then(() => {
-                    }).catch(error => {
-                      console.log(error)
-                    })
-
-                    return Promise.all(tags.map(tag => {
-                      return Tag.create(tag);
-
-                    })).then(createdTags => {
-
-                      console.log(createdTags.length)
-                      user.setTags(createdTags);
-
-                      console.log("Added follower")
-                      return questions.forEach((topQuestionData) => {
-                        console.log(topQuestionData.questionText);
-                        return user.createQuestion({
-                          questionText: topQuestionData.questionText,
-                          stars: 0
-                        })
-                          .then((topQuestion) => {
-                            console.log(topQuestion.questionText)
-                            user.addWatched(topQuestion);
-
-                            console.log("addQuestion");
-                            topQuestion.addStarredBy(user);
-                            topQuestion.setTags(createdTags);
-
-                            return topQuestionData.questions.forEach((secondQuestionData) => {
-                              // console.log(whatIfData.whatif)
-                              return user.createQuestion({
-                                questionText: secondQuestionData.questionText,
-                                stars: 0
-                              })
-                                .then((secondQuestion) => {
-                                  // console.log(newWhatIf == null)
-                                  secondQuestion.addParentQuestion(topQuestion)
-
-                                  // console.log(newWhy == null)
-                                  return secondQuestionData.questions.forEach((thirdQuestionText) => {
-                                    return user.createQuestion({
-                                      questionText: thirdQuestionText,
-                                      stars: 0
-                                    })
-                                      .then((thirdQuestion) => {
-
-                                        secondQuestion.addChildQuestion(thirdQuestion);
-
-                                      })
-                                  })
-                                })
-
-                            })
-                          })
-                      })
-
-                    })
-                  })
-
-              })
-          })
-      })
-
-  });
+// Conn.sync({ force: true })
+Conn.sync();
+  // .then(() => {
+  //   const passwrd = "tPass2";
+  //   return bcrypt.hash(passwrd, 10)
+  //     .then((hash2) => {
+  //       let user1 = {
+  //         email: faker.internet.email(),
+  //         username: "Alice",
+  //         password: hash2,
+  //         version: 1,
+  //         ostUuid: 'e3586536-bfb4-4b98-8998-e4c9a8069cba'
+  //
+  //       };
+  //       return UserModel.create(user1)
+  //         .then(user1 => {
+  //
+  //           const password = "testPassword";
+  //           return bcrypt.hash(password, 10)
+  //             .then((hash) => {
+  //               let user2 = {
+  //                 email: faker.internet.email(),
+  //                 username: "Bob",
+  //                 password: hash,
+  //                 version: 1,
+  //                 ostUuid: '9aa974b4-9fa7-4f93-bd88-a3cf3de1fa22',
+  //               };
+  //               return UserModel.create(user2)
+  //                 .then((user) => {
+  //                   ostUserQueries.editUser();
+  //                   console.log(user1.id, "u2")
+  //                   console.log(user.id, "u1")
+  //                   user.addFollowedBy(user1).then(() => {
+  //                   }).catch(error => {
+  //                     console.log(error)
+  //                   })
+  //
+  //                   return Promise.all(tags.map(tag => {
+  //                     return Tag.create(tag);
+  //
+  //                   })).then(createdTags => {
+  //
+  //                     console.log(createdTags.length)
+  //                     user.setTags(createdTags);
+  //
+  //                     console.log("Added follower")
+  //                     return questions.forEach((topQuestionData) => {
+  //                       console.log(topQuestionData.questionText);
+  //                       return user.createQuestion({
+  //                         questionText: topQuestionData.questionText,
+  //                         stars: 0
+  //                       })
+  //                         .then((topQuestion) => {
+  //                           console.log(topQuestion.questionText)
+  //                           user.addWatched(topQuestion);
+  //
+  //                           console.log("addQuestion");
+  //                           topQuestion.addStarredBy(user);
+  //                           topQuestion.setTags(createdTags);
+  //
+  //                           return topQuestionData.questions.forEach((secondQuestionData) => {
+  //                             // console.log(whatIfData.whatif)
+  //                             return user.createQuestion({
+  //                               questionText: secondQuestionData.questionText,
+  //                               stars: 0
+  //                             })
+  //                               .then((secondQuestion) => {
+  //                                 // console.log(newWhatIf == null)
+  //                                 secondQuestion.addParentQuestion(topQuestion)
+  //
+  //                                 // console.log(newWhy == null)
+  //                                 return secondQuestionData.questions.forEach((thirdQuestionText) => {
+  //                                   return user.createQuestion({
+  //                                     questionText: thirdQuestionText,
+  //                                     stars: 0
+  //                                   })
+  //                                     .then((thirdQuestion) => {
+  //
+  //                                       secondQuestion.addChildQuestion(thirdQuestion);
+  //
+  //                                     })
+  //                                 })
+  //                               })
+  //
+  //                           })
+  //                         })
+  //                     })
+  //
+  //                   })
+  //                 })
+  //
+  //             })
+  //         })
+  //     })
+  //
+  // });
 
 const User = Conn.models.user;
 const Question = Conn.models.question;

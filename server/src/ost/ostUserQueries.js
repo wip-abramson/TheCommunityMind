@@ -1,7 +1,7 @@
 /**
  * Created by will on 19/04/18.
  */
-import { generateQueryString, generateApiSignature } from './queryBuilder';
+import { buildQuery } from './queryBuilder';
 import axios from 'axios';
 
 const BASE_URL = "https://playgroundapi.ost.com";
@@ -15,70 +15,52 @@ const instance = axios.create({
 const ostUserQueries = {
   createUser: (username) => {
     const endpoint = "/users/create";
-    console.log(username)
+
     let inputParams = {
       name: username
     };
 
-    let createUserQuery = generateQueryString(endpoint, inputParams);
-    let apiSignature = generateApiSignature(createUserQuery);
+    const query = buildQuery(endpoint,inputParams);
 
-    const URL = BASE_URL + createUserQuery + "&signature=" + apiSignature;
-    inputParams.signature = apiSignature;
 
-    return axios.post(URL, inputParams)
+    return axios.post(query.url, query.queryParams)
       .then((response) => {
-        console.log("SUCCESS")
-        console.log(response.data.data.economy_users[0].uuid);
+        console.log("Succesfully created user", response.data.data.economy_users[0].uuid)
         return response.data.data.economy_users[0].uuid;
       })
       .catch(error => {
-        console.log("ERROR")
-        console.log(error.config.url);
+        console.log("Error unable to create user")
       });
   },
-  editUser: () => {
+  editUser: (uuid, username) => {
+    // TODO make input params use username and uuid from function inputs
     const endpoint = "/users/edit";
     let inputParams ={};
     inputParams.uuid = '3cf76d8e-8269-4757-ba96-7a93a878d0be';
     inputParams.name = "Will A";
 
-    let editUserQuery = generateQueryString(endpoint, inputParams);
-    let apiSignature = generateApiSignature(editUserQuery);
-
-    const completeQuery = editUserQuery + "&signature=" + apiSignature;
-    inputParams.signature = apiSignature;
+    const query = buildQuery(endpoint,inputParams);
 
 
-    // const params = {uuid: "2", name: "will"};
-    console.log(inputParams.request_timestamp, createTimeString());
-    console.log(inputParams);
-    
-    instance.post(completeQuery, inputParams)
+    axios.post(query.url, query.queryParams)
       .then((response) => {
-        console.log("SUCCESS")
-        // console.log(response.data.username);
+        console.log("Successfully edited user")
       })
       .catch(error => {
-        console.log("ERROR")
-        // console.log(error.config)
-        // console.log(error.config.url);
-        // console.log(error)
+        console.log("Error editing user", response.data.data.economy_users[0].username)
 
       });
   },
   getAllUsers: () => {
     const endpoint = "/users/list";
-    let inputParams = {};
-    inputParams.page_no = 1;
+    let inputParams = {
+      page_no: 1
+    };
 
-    let editUserQuery = generateQueryString(endpoint, inputParams);
-    let apiSignature = generateApiSignature(editUserQuery);
+    const query = buildQuery(endpoint,inputParams);
 
-    const completeQuery = editUserQuery + "&signature=" + apiSignature;
-    inputParams["signature"] = apiSignature;
 
-    instance.get(completeQuery).then(response => {
+    axios.get(query.url).then(response => {
       console.log(response.data);
     })
       .catch(error => {

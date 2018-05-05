@@ -291,6 +291,7 @@ Conn.sync({ force: true })
                 };
                 return UserModel.create(user2)
                   .then((user) => {
+                    ostUserQueries.editUser();
                     console.log(user1.id, "u2")
                     console.log(user.id, "u1")
                     user.addFollowedBy(user1).then(() => {

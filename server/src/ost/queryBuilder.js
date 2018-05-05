@@ -9,18 +9,26 @@ import {API_KEY, API_SECRET} from '../../config';
 
 const BASE_URL = "https://playgroundapi.ost.com";
 
-export const generateQueryString = (endpoint, inputParams) => {
+export const buildQuery = (endpoint, inputParams) => {
   inputParams.api_key = API_KEY;
   inputParams.request_timestamp= createTimeString();
 
   const queryParamsString = queryString.stringify(inputParams, {arrayFormat: 'bracket'}).replace(/%20/g, '+');
-
-  console.log(queryParamsString);
   const stringToSign = endpoint + '?' + queryParamsString;
-  return stringToSign;
-};
 
-export const generateApiSignature =(stringToSign) => {
+  const signature = generateApiSignature(stringToSign);
+  inputParams.signature = signature;
+
+  const URL = BASE_URL + stringToSign + "&signature=" + signature;
+
+  return {
+    url: URL,
+    queryParams: inputParams
+  }
+}
+
+
+function generateApiSignature(stringToSign) {
   let buff = new Buffer.from(API_SECRET, 'utf8');
   let hmac = crypto.createHmac('sha256', buff);
   hmac.update(stringToSign);
@@ -28,19 +36,6 @@ export const generateApiSignature =(stringToSign) => {
 
 };
 
-
-
-export const buildQuery = (inputParams, endpoint) => {
-
-  let queryToSign = generateQueryString(endpoint, inputParams);
-  let apiSignature = generateApiSignature(queryToSign);
-}
-
-// function buildQueryInputs(inputParams) => {
-//
-//   inputParams.api_key = API_KEY;
-//   inputParams.request_timestamp= createTimeString();
-// }
 
 function createTimeString() {
   var d = new Date();

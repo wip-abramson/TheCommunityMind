@@ -18,7 +18,7 @@ var AppRouter = function () {
 
 
         <Route component={Home}>
-          <IndexRoute component={<QuestionsView/>}/>
+          <IndexRoute component={QuestionsView}/>
           {/*<Route path="/thread/:name" component={ThreadPage}/>*/}
         </Route>
         <Route path='question/:id' component={QuestionsView}/>
@@ -41,4 +41,4 @@ var AppRouter = function () {
 }
 
 
-module.exports = AppRouter;
+export default AppRouter;

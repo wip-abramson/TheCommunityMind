@@ -39,7 +39,7 @@ const mapDispatchToProps = function (dispatch) {
 class Main extends React.Component{
   style = {
     padding: "70px 20px"
-  }
+  };
 
 
   //Optional styling
@@ -58,12 +58,20 @@ class Main extends React.Component{
     }
   };
 
+  constructor(props) {
+    super(props);
+    this.viewWatchList = this.viewWatchList.bind(this);
+    this.logout = this.logout.bind(this);
+    this.showQuestionPopup = this.showQuestionPopup.bind(this);
+    this.viewProfile = this.viewProfile.bind(this);
+  }
+
   logout() {
     // should i clear it all?
-    console.log("Loggin out")
+    console.log("Loggin out", this.props)
     localStorage.clear();
     this.props.logout()
-    this.props.client.resetStore()
+    // this.props.client.resetStore()
 
   }
 

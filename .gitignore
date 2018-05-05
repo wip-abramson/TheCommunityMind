@@ -34,7 +34,8 @@ node_modules
 # OS
 .DS_Store
 
-env
+.dbenv
+.env
 yarn.lock
 package-lock.json
 app/public/js/bundle.js

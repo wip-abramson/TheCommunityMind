@@ -79,7 +79,7 @@ MainHeader.propTypes = {
   logout: PropTypes.func.isRequired,
   onQuestionClick: PropTypes.func.isRequired,
   currentUser: PropTypes.shape({
-    id: PropTypes.number.isRequired,
+    id: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
   })
 }

@@ -7,11 +7,16 @@ import QuestionsView from '../components/QuestionViews/QuestionsView'
 import LoginContainer from "../components/Authentication/LoginContainer";
 import RegisterContainer from "../components/Authentication/RegisterContainer";
 import UserProfileContainer from "../components/UserProfile/UserProfileContainer";
+import LandingPage from '../components/LandingPage/LandingPage';
 
 var AppRouter = function () {
   return (
     <Router history={browserHistory}>
+
       <Route path='/' component={Main}>
+        <Route path='/Landing' component={LandingPage}/>
+
+
         <Route component={Home}>
           <IndexRoute component={QuestionsView}/>
           {/*<Route path="/thread/:name" component={ThreadPage}/>*/}
@@ -36,4 +41,4 @@ var AppRouter = function () {
 }
 
 
-module.exports = AppRouter;
+export default AppRouter;

@@ -1,16 +1,15 @@
 import React from 'react'
 import MainHeader from './Header/MainHeader'
 import FullDiv from '../generic/FullDiv';
-import { Grid } from 'react-bootstrap'
+import { Grid, Row } from 'react-bootstrap'
 import { connect } from 'react-redux'
 import { signOut } from '../../actions/Auth';
 import { showQuestionPopup, hideQuestionPopup } from '../../actions/QuestionPopup';
 import { withApollo } from 'react-apollo';
 import { browserHistory } from 'react-router'
+import QuestionPopupContainer from '../QuestionPopup/QuestionPopupContainer';
 
 import Notifications from 'react-notification-system-redux';
-
-import QuestionPopupContainer from '../QuestionPopup/QuestionPopupContainer';
 
 
 
@@ -37,14 +36,14 @@ const mapDispatchToProps = function (dispatch) {
   }
 };
 
-let Main = React.createClass({
-  style: {
+class Main extends React.Component{
+  style = {
     padding: "70px 20px"
-  },
+  };
 
 
   //Optional styling
-  notificationStyle: {
+  notificationStyle = {
     NotificationItem: { // Override the notification item
       DefaultStyle: { // Applied to every notification, regardless of the notification level
         margin: '10px 5px 2px 1px'
@@ -57,34 +56,47 @@ let Main = React.createClass({
         color: 'red'
       }
     }
-  },
+  };
+
+  constructor(props) {
+    super(props);
+    this.viewWatchList = this.viewWatchList.bind(this);
+    this.logout = this.logout.bind(this);
+    this.showQuestionPopup = this.showQuestionPopup.bind(this);
+    this.viewProfile = this.viewProfile.bind(this);
+  }
 
   logout() {
     // should i clear it all?
-    console.log("Loggin out")
+    console.log("Loggin out", this.props)
     localStorage.clear();
     this.props.logout()
-    this.props.client.resetStore()
+    // this.props.client.resetStore()
 
-  },
+  }
 
   showQuestionPopup() {
     this.props.showQuestionPopup(this.props.currentWhy, this.props.currentWhatIf)
-  },
+  }
 
   viewProfile() {
     browserHistory.push({pathname: "/profile", query: {userId: this.props.currentUser.id}})
-  },
+  }
 
 
   viewWatchList() {
 
     console.log("Viewing watch list")
-  },
+  }
+
+  componentDidMount() {
+    if(!this.props.currentUser) {
+      browserHistory.push({pathname: "/landing"})
+
+    }
+  }
 
   render() {
-    // this.props.hideQuestionPopup();
-
     return (
       <FullDiv>
         <MainHeader
@@ -109,7 +121,7 @@ let Main = React.createClass({
       </FullDiv>
     )
   }
-})
+}
 
 export default withApollo(
   connect(

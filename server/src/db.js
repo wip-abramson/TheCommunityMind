@@ -168,75 +168,40 @@ faker.seed(123); // consistent data every time reload app
 
 const questions = [
   {
-    questionText: "Why does our economy revolve around designing things that break after a few years",
-    questions: [
-      {
-        questionText: "What if we changed our designs to a modular approach and open sourced how to repair the parts",
-        questions: [
-          "How would companies make money"
-        ]
-      },
-      {
-        questionText: "What if we built things that lasted as long as possible",
-        questions: []
-      },
-      {
-        questionText: "What if we designed systems that used our waste products based along the natures system of reusability",
-        questions: []
-      }
-    ]
+    questionText: "Why can't helicopters be quiet",
+    questions: []
   },
 
   {
     questionText: "Why do I need to get a new pair of glasses when my perscription changes",
     questions: [
-      {
-        questionText: "What if you could electronically alter the strength of the lenses",
-        questions: ["How would this happen"]
-      },
     ],
   },
   {
     questionText: "Why don't people wear their hearing aides",
-    questions: [
-      {
-        questionText: "What if hearing aides were fashionable",
-        questions: []
-      },
-      {
-        questionText: "What if heaering aides were sold more like glasses",
-        questions: []
-      },
-    ],
-  },
-  {
-    questionText: "Why don't we have cities in the sea?",
-    questions: [
-      {
-        questionText: "What if we thought of development in the sea like building a spacestation",
-        questions: ["How would they survive potential collisions"]
-      },
-      {
-        questionText: "What if these cities cleaned the ocean at the same time",
-        questions: ["how would it do this", "how could we use any materials recovered"]
-      },
-      {
-        questionText: "What if these cities actually existed under the sea",
-        questions: ["how would they withstand the pressure"]
-      },
-    ],
-  },
-  {
-    questionText: "Why don't people question their reality more",
-    questions: [
-      {
-        questionText: "What if we encouraged questions whenever they are asked",
-        questions: ["How can we show our appreciation for each question", "How can we ensure we don't write of anyone's questions before thinking about it"]
-      },
-      { questionText: "What if we admit when we don't know the answer", questions: [] },
+    questions: []
 
-    ]
   },
+  {
+    questionText: "Why don't we build cities in the sea",
+    questions: []
+
+  },
+  {
+    questionText: "Why don't I question my reality more",
+    questions: []
+  },
+  {
+    questionText: "How can I help others understand the promise of blockchain technologies",
+    questions: []
+  },
+  {
+    questionText: "Why should companies own my digital data",
+    questions: []
+  },
+  // {
+  //   questionText: ""
+  // }
 
 ];
 

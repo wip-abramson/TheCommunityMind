@@ -22,7 +22,7 @@ server.use('/graphql', bodyParser.json(), jwt({
   secret: JWT_SECRET,
   credentialsRequired: false,
 }), graphqlExpress((request) => {
-
+  console.log(request.user)
   return ({
     schema: schema,
     context: {

@@ -8,7 +8,7 @@ import LoginContainer from "../components/Authentication/LoginContainer";
 import RegisterContainer from "../components/Authentication/RegisterContainer";
 import UserProfileContainer from "../components/UserProfile/UserProfileContainer";
 
-var AppRouter = function () {
+const AppRouter = function () {
   return (
     <Router history={browserHistory}>
       <Route path='/' component={Main}>
@@ -36,4 +36,4 @@ var AppRouter = function () {
 }
 
 
-module.exports = AppRouter;
+export default AppRouter;

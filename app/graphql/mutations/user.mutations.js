@@ -1,5 +1,4 @@
-import {gql} from "react-apollo";
-
+import gql from 'graphql-tag';
 export const addUserMutation = gql`
   mutation AddUserMutation($username: String!, $password: String!, $email: String!) {
     register(username: $username, password: $password, email: $email) {

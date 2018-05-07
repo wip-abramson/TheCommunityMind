@@ -19,7 +19,7 @@ const ostUserQueries = {
           return response.data.data.economy_users[0].uuid;
         })
         .catch(error => {
-          console.log("Error unable to create user")
+          console.log("Error unable to create user", error)
         });
     },
     editUser: (uuid, username) => {

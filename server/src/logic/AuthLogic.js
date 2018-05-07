@@ -36,32 +36,39 @@ export const authLogic = {
             .then(hash => {
               return ostUserQueries.createUser(username)
                 .then(uuid => {
-                  return ostUserQueries.airdropNewUser()
-                    .then(airdropUuid => {
-                      return User.create({
-                        email,
-                        password: hash,
-                        username: username || email,
-                        version: 1,
-                        ostUuid: uuid
-                      })
-                        .then((user) => {
-                          const { id } = user;
-                          const token = jwt.sign({
-                            id,
-                            email,
-                            username,
-                            version: 1,
-                            // exp: Math.floor(new Date().getTime() / 1000) + 7 * 24 * 60 * 60
-                          }, JWT_SECRET);
-                          user.jwt = token;
-                          user.airdropUuid = airdropUuid;
-                          ctx.user = Promise.resolve(user);
-                          console.log("user created ", airdropUuid);
+                  if (uuid != null) {
+                    return ostUserQueries.airdropNewUser()
+                      .then(airdropUuid => {
+                        return User.create({
+                          email,
+                          password: hash,
+                          username: username || email,
+                          version: 1,
+                          ostUuid: uuid
+                        })
+                          .then((user) => {
+                            const { id } = user;
+                            const token = jwt.sign({
+                              id,
+                              email,
+                              username,
+                              version: 1,
+                              // exp: Math.floor(new Date().getTime() / 1000) + 7 * 24 * 60 * 60
+                            }, JWT_SECRET);
+                            user.jwt = token;
+                            user.airdropUuid = airdropUuid;
+                            ctx.user = Promise.resolve(user);
+                            console.log("user created ", airdropUuid);
 
-                          return user;
-                        });
-                    })
+                            return user;
+                          });
+                      })
+                  }
+                  else {
+                    console.log("Unable to create user")
+                    return null;
+                  }
+
 
                 })
 

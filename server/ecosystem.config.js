@@ -6,7 +6,7 @@ module.exports = {
     "script"      : "./server.js",
     "watch"       : false,
     "error_file"      : "err.log",
-    "out_file"        : "out.log",
+    "out_file" : "out.log",
     "env": {
       "NODE_ENV": "production",
       // "RDS_PORT": RDS_PORT,
@@ -30,7 +30,7 @@ module.exports = {
       repo: 'git@github.com:wip-abramson/TheCommunityMind.git',
       path: '/home/ubuntu/TheCommunityMind',
       'post-deploy': 'npm i && npm run production && sudo cp -a ./dist/. /usr/share/nginx/dist/ && cd server && npm i ' +
-      '&& cp ~/TCMDbTest/server/.env ~/TheCommunityMind/source/server/ && pm2 startOrRestart ecosystem.config.js '
+      '&& sudo cp ~/TCMDbTest/server/.env ~/TheCommunityMind/source/server/'
     }
   }
 }

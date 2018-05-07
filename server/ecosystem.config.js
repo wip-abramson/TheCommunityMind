@@ -1,9 +1,19 @@
+import {RDS_PORT, RDS_PASSWORD, RDS_USERNAME, RDS_DB_NAME, RDS_HOSTNAME} from './config';
+
 module.exports = {
   "apps" : [{
     "name"        : "TheCommunityMind",
     "script"      : "./server.js",
     "watch"       : false,
     "error_file"      : "err.log",
+    "env": {
+      "NODE_ENV": "production",
+      "RDS_PORT": RDS_PORT,
+      "RDS_USERNAME": RDS_USERNAME,
+      "RDS_DB_NAME": RDS_DB_NAME,
+      "RDS_PASSWORD": RDS_PASSWORD,
+      "RDS_HOSTNAME": RDS_HOSTNAME
+    },
     "no-autorestart": true,
     "ignore_watch" : ["node_modules", "./mind.sqlite"],
     "exec_interpreter" : "babel-node",

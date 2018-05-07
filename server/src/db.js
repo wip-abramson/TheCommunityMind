@@ -2,11 +2,37 @@ import Sequelize from "sequelize";
 import faker from 'faker';
 import bcrypt from 'bcrypt';
 
-const Conn = new Sequelize('communitymind', null, null, {
-  dialect: 'sqlite',
-  storage: './mind.sqlite',
-  logging: false, // true to see logs
-})
+import {RDS_DB_NAME, RDS_HOSTNAME, RDS_PASSWORD, RDS_USERNAME, RDS_PORT} from '../config';
+
+const Conn = createDatabaseConnection();
+
+function createDatabaseConnection() {
+  if (process.env.NODE_ENV === 'production')
+  {
+    console.log("PRODUCTION DB");
+    return new Sequelize(RDS_DB_NAME, RDS_USERNAME, RDS_PASSWORD, {
+      host: RDS_HOSTNAME,
+      port: RDS_PORT,
+      logging: console.log,
+      maxConcurrentQueries: 100,
+      dialect: 'mysql',
+      dialectOptions: {
+        ssl:'Amazon RDS'
+      },
+      pool: { maxConnections: 5, maxIdleTime: 30},
+      language: 'en'
+    })
+  }
+  else {
+    return new Sequelize('communitymind', null, null, {
+      dialect: 'sqlite',
+      storage: './mind.sqlite',
+      logging: false, // true to see logs
+    })
+  }
+}
+
+
 
 const UserModel = Conn.define('user', {
   username: {

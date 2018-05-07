@@ -4,6 +4,7 @@ import { authLogic } from './logic/AuthLogic';
 import { userLogic } from './logic/UserLogic';
 import { questionLogic } from './logic/QuestionLogic';
 import { tagLogic } from './logic/TagLogic';
+import { ostLogic } from './logic/OstLogic';
 
 export const resolvers = {
   Date: GraphQLDate,
@@ -26,6 +27,12 @@ export const resolvers = {
     },
     questions(_, args, ctx) {
       return questionLogic.query(_, args, ctx);
+    },
+    checkTransactionStatus(_, args, ctx) {
+
+    },
+    checkAirdropStatus(_, args, ctx) {
+      return ostLogic.checkAirdropStatus(_, args, ctx);
     }
 
 

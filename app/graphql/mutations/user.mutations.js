@@ -7,6 +7,7 @@ export const addUserMutation = gql`
       username
       email
       jwt
+      airdropUuid
     }
   }
 `

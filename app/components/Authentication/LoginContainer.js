@@ -19,7 +19,7 @@ const mapDispatchToProps = function (dispatch) {
       console.log(user);
       dispatch(loginSuccess(user))
       browserHistory.push("/");
-      loginSuccessNotification.message = "Welcome back " + user.username
+      loginSuccessNotification.message = "Welcome back " + user.username;
       dispatch(Notifications.success(loginSuccessNotification));
     },
     loginFailed: function(message) {

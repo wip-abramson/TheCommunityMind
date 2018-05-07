@@ -6,6 +6,7 @@ module.exports = {
     "script"      : "./server.js",
     "watch"       : false,
     "error_file"      : "err.log",
+    "out_file"        : "out.log",
     "env": {
       "NODE_ENV": "production",
       // "RDS_PORT": RDS_PORT,

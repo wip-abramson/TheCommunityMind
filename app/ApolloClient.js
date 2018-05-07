@@ -61,7 +61,9 @@ function fetchTokenHeader() {
     console.log("Got token", token)
     if (token) {
       var tokenObj = JSON.parse(token)
-      return `Bearer ${tokenObj.value}`;
+      const auth = `Bearer ${tokenObj.value}`;
+      console.log('Auth Header', auth);
+      return auth;
 
       // console.log(jwtDecode(tokenObj.value))
       // jwtDecode(tokenObj).then()

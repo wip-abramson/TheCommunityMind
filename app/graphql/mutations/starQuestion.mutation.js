@@ -1,8 +1,7 @@
 /**
  * Created by will on 13/11/17.
  */
-import { gql } from 'react-apollo';
-
+import gql from 'graphql-tag';
 const STAR_QUESTION_MUTATION = gql`
   mutation starQuestion($id: ID!) {
     starQuestion(id: $id){

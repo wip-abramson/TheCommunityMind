@@ -1,7 +1,5 @@
-
-import {resolvers} from "./resolvers";
+import { resolvers } from "./resolvers";
 import { makeExecutableSchema } from 'graphql-tools'
-
 
 const typeDefs = `
   scalar Date
@@ -46,7 +44,15 @@ const typeDefs = `
     node: Question!
   }
   
+  type OstTransaction {
+    id: String!
+    currentStatus: String!
+  }
   
+  type OstAirdrop {
+    id: String!
+    currentStatus: String!
+  }
   
   type User {
     id: ID!
@@ -63,6 +69,7 @@ const typeDefs = `
     followedByCurrentUser: Boolean!
     watches: [Question]
     interestedIn: [Tag]
+    airdropUuid: String
   }
   
   
@@ -74,7 +81,8 @@ const typeDefs = `
    questions(parentId: Int, first: Int, after: String, last: Int, before: String): QuestionConnection!
    userStarredQuestions(userId: ID!, first: Int, after: String, last: Int, before: String): QuestionConnection!
    userQuestions(userId: ID!, first: Int, after: String, last: Int, before: String): QuestionConnection!
-
+   checkTransactionStatus(tranactionId: String!): OstTransaction!
+   checkAirdropStatus(airdropId: String!): OstAirdrop!
    }
   
   type Mutation {
@@ -101,7 +109,6 @@ const typeDefs = `
   }
 `;
 
-const schema = makeExecutableSchema({typeDefs, resolvers})
+const schema = makeExecutableSchema({ typeDefs, resolvers })
 
-
-export {schema};
+export { schema };

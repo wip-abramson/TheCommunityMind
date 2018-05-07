@@ -1,4 +1,4 @@
-import {gql} from 'react-apollo';
+import gql from 'graphql-tag';
 import QUESTION_FRAGMENT from '../fragments/question.fragment';
 
 const CREATE_QUESTION_MUTATION = gql`

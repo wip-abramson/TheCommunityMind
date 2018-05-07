@@ -9,7 +9,7 @@ import RegisterContainer from "../components/Authentication/RegisterContainer";
 import UserProfileContainer from "../components/UserProfile/UserProfileContainer";
 import LandingPage from '../components/LandingPage/LandingPage';
 
-var AppRouter = function () {
+const AppRouter = function () {
   return (
     <Router history={browserHistory}>
 

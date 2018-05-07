@@ -7,11 +7,10 @@ import bodyParser from 'body-parser';
 import { JWT_SECRET } from './config';
 import { User } from './src/db';
 
-const PORT = 5000
+const PORT = 5000;
 const server = express();
 
 function loggingMiddleware(req, res, next) {
-  // console.log('header:', req.header);
   next();
 }
 
@@ -24,16 +23,15 @@ server.use('/graphql', bodyParser.json(), jwt({
   secret: JWT_SECRET,
   credentialsRequired: false,
 }), graphqlExpress((request) => {
-  // console.log("HERE", request)
-  console.log(schema);
+  console.log(request.user)
   return ({
-  schema: schema,
-  context: {
-    user: request.user ?
-      User.findOne({
-        where:  { id: request.user.id, version: request.user.version }
-      }) : Promise.resolve(null),
-  },
+    schema: schema,
+    context: {
+      user: request.user ?
+        User.findOne({
+          where:  { id: request.user.id, version: request.user.version }
+        }) : Promise.resolve(null),
+    },
 })}));
 
 

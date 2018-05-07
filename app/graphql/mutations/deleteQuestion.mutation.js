@@ -1,7 +1,7 @@
 /**
  * Created by will on 17/04/18.
  */
-import {gql} from 'react-apollo';
+import gql from 'graphql-tag';
 import QUESTION_FRAGMENT from '../fragments/question.fragment';
 
 const DELETE_QUESTION_MUTATION = gql`

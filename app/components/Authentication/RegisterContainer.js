@@ -3,8 +3,8 @@
  */
 import React from 'react'
 import { compose, graphql } from "react-apollo";
-// import Register from './Register';
 import { addUserMutation } from '../../graphql/mutations/user.mutations';
+import AIRDROP_STATUS from '../../graphql/querys/airdropStatus.query';
 import { browserHistory } from 'react-router';
 import { connect } from "react-redux";
 import { loginSuccess } from '../../actions/Auth';
@@ -20,7 +20,7 @@ const mapDispatchToProps = function (dispatch) {
     loginUser: function (user) {
       dispatch(loginSuccess(user));
       browserHistory.push("/");
-      registerSuccessNotification.message = "Welcome " + user.username;
+      registerSuccessNotification.message = "Welcome " + user.username  + ". Airdrop in progress";
       dispatch(Notifications.success(registerSuccessNotification));
     },
     registerFailed: function(title) {
@@ -33,6 +33,10 @@ const mapDispatchToProps = function (dispatch) {
   }
 };
 
+// const airdropStatus = graphql(AIRDROP_STATUS, {
+//   props: ({ownProps, })
+// })
+
 let container = React.createClass({
 
   register (email, password, username) {
@@ -42,7 +46,6 @@ let container = React.createClass({
       email,
     }).then(res => {
 
-      console.log(res.data.register);
       if (res.data.register) {
         this.props.loginUser(res.data.register);
         var object = {value: res.data.register.jwt, timestamp: new Date().getTime()}

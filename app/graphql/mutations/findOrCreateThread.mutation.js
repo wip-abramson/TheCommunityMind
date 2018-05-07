@@ -1,8 +1,7 @@
 /**
  * Created by will on 20/11/17.
  */
-import { gql } from 'react-apollo';
-
+import gql from 'graphql-tag';
 const FIND_OR_CREATE_THREAD = gql`
   mutation findOrCreateTag($name: String!) {
     findOrCreateTag(name: $name) {

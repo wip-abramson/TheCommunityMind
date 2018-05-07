@@ -1,8 +1,7 @@
 /**
  * Created by will on 15/11/17.
  */
-import { gql } from 'react-apollo'
-
+import gql from 'graphql-tag';
 const UNWATCH_QUESTION_MUTATION = gql`
   mutation unwatchQuestion($id: ID!) {
     unwatchQuestion(id:$id) {

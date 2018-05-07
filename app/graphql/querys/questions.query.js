@@ -1,7 +1,7 @@
 /**
  * Created by will on 02/03/18.
  */
-import {gql} from 'react-apollo';
+import gql from 'graphql-tag';
 import QUESTION_FRAGMENT from '../fragments/question.fragment';
 
 const QUESTIONS_QUERY = gql`

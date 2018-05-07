@@ -1,8 +1,7 @@
 /**
  * Created by will on 21/11/17.
  */
-import { gql } from 'react-apollo';
-
+import gql from 'graphql-tag';
 const TOP_TAGS_QUERY = gql`
   query topTags {
     topTags {

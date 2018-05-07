@@ -1,8 +1,7 @@
 /**
  * Created by will on 15/11/17.
  */
-import { gql } from 'react-apollo'
-
+import gql from 'graphql-tag';
 const UNFOLLOW_USER_MUTATION = gql`
   mutation unfollowUser($userId: ID!) {
     unfollowUser(id: $userId) {

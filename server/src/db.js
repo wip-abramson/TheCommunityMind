@@ -2,6 +2,8 @@ import Sequelize from "sequelize";
 import faker from 'faker';
 import bcrypt from 'bcrypt';
 
+import ostUserQueries from './ost/ostUserQueries';
+
 import {RDS_DB_NAME, RDS_HOSTNAME, RDS_PASSWORD, RDS_USERNAME, RDS_PORT} from '../config';
 
 const Conn = createDatabaseConnection();
@@ -38,6 +40,10 @@ const UserModel = Conn.define('user', {
   username: {
     type: Sequelize.STRING,
     allowNull: false,
+  },
+  ostUuid: {
+    type: Sequelize.STRING,
+    allowNull: false
   },
   password: {
     type: Sequelize.STRING,
@@ -258,22 +264,28 @@ Conn.sync({ force: true })
           username: faker.internet.userName(),
           password: hash2,
           version: 1,
-        })
-          .then(user2 => {
+          ostUuid: 'e3586536-bfb4-4b98-8998-e4c9a8069cba'
+
+        };
+        return UserModel.create(user1)
+          .then(user1 => {
 
             const password = "testPassword";
             return bcrypt.hash(password, 10)
               .then((hash) => {
-                return UserModel.create({
+                let user2 = {
                   email: faker.internet.email(),
-                  username: faker.internet.userName(),
+                  username: "Bob",
                   password: hash,
                   version: 1,
-                })
+                  ostUuid: '9aa974b4-9fa7-4f93-bd88-a3cf3de1fa22',
+                };
+                return UserModel.create(user2)
                   .then((user) => {
-                    console.log(user2.id, "u2")
+                    ostUserQueries.verifyAirdropStatus('47e44392-fec8-4aff-b6d6-8f0fa483463f');
+                    console.log(user1.id, "u2")
                     console.log(user.id, "u1")
-                    user.addFollowedBy(user2).then(() => {
+                    user.addFollowedBy(user1).then(() => {
                     }).catch(error => {
                       console.log(error)
                     })
@@ -294,7 +306,7 @@ Conn.sync({ force: true })
                           stars: 0
                         })
                           .then((topQuestion) => {
-                          console.log(topQuestion.questionText)
+                            console.log(topQuestion.questionText)
                             user.addWatched(topQuestion);
 
                             console.log("addQuestion");

@@ -1,8 +1,7 @@
 /**
  * Created by will on 24/05/17.
  */
-import {gql} from 'react-apollo';
-
+import gql from 'graphql-tag';
 const QUESTION_FRAGMENT = gql`
   fragment QuestionFragment on Question {
     id 

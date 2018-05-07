@@ -1,4 +1,4 @@
-import {RDS_PORT, RDS_PASSWORD, RDS_USERNAME, RDS_DB_NAME, RDS_HOSTNAME, JWT_SECRET} from './config';
+// import {RDS_PORT, RDS_PASSWORD, RDS_USERNAME, RDS_DB_NAME, RDS_HOSTNAME, JWT_SECRET} from './config';
 
 module.exports = {
   "apps" : [{
@@ -8,12 +8,12 @@ module.exports = {
     "error_file"      : "err.log",
     "env": {
       "NODE_ENV": "production",
-      "RDS_PORT": RDS_PORT,
-      "RDS_USERNAME": RDS_USERNAME,
-      "RDS_DB_NAME": RDS_DB_NAME,
-      "RDS_PASSWORD": RDS_PASSWORD,
-      "RDS_HOSTNAME": RDS_HOSTNAME,
-      "JWT_SECRET": JWT_SECRET,
+      // "RDS_PORT": RDS_PORT,
+      // "RDS_USERNAME": RDS_USERNAME,
+      // "RDS_DB_NAME": RDS_DB_NAME,
+      // "RDS_PASSWORD": RDS_PASSWORD,
+      // "RDS_HOSTNAME": RDS_HOSTNAME,
+      // "JWT_SECRET": JWT_SECRET,
     },
     "no-autorestart": true,
     "ignore_watch" : ["node_modules", "./mind.sqlite"],

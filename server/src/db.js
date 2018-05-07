@@ -2,15 +2,17 @@ import Sequelize from "sequelize";
 import faker from 'faker';
 import bcrypt from 'bcrypt';
 
+import {RDS_DB_NAME, RDS_HOSTNAME, RDS_PASSWORD, RDS_USERNAME, RDS_PORT} from '../config';
+
 const Conn = createDatabaseConnection();
 
 function createDatabaseConnection() {
   if (process.env.NODE_ENV === 'production')
   {
     console.log("PRODUCTION DB");
-    return new Sequelize(config.database, config.username, config.password, {
-      host: '****.****.us-west-1.rds.amazonaws.com',
-      port: 3306,
+    return new Sequelize(RDS_DB_NAME, RDS_USERNAME, RDS_PASSWORD, {
+      host: RDS_HOSTNAME,
+      port: RDS_PORT,
       logging: console.log,
       maxConcurrentQueries: 100,
       dialect: 'mysql',

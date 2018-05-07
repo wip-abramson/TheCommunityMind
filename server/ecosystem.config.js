@@ -1,4 +1,4 @@
-import {RDS_PORT, RDS_PASSWORD, RDS_USERNAME, RDS_DB_NAME, RDS_HOSTNAME} from './config';
+import {RDS_PORT, RDS_PASSWORD, RDS_USERNAME, RDS_DB_NAME, RDS_HOSTNAME, JWT_SECRET} from './config';
 
 module.exports = {
   "apps" : [{
@@ -12,7 +12,8 @@ module.exports = {
       "RDS_USERNAME": RDS_USERNAME,
       "RDS_DB_NAME": RDS_DB_NAME,
       "RDS_PASSWORD": RDS_PASSWORD,
-      "RDS_HOSTNAME": RDS_HOSTNAME
+      "RDS_HOSTNAME": RDS_HOSTNAME,
+      "JWT_SECRET": JWT_SECRET,
     },
     "no-autorestart": true,
     "ignore_watch" : ["node_modules", "./mind.sqlite"],

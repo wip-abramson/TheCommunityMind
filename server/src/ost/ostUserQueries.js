@@ -59,7 +59,7 @@ const ostUserQueries = {
     airdropNewUser: () => {
       const endpoint = '/users/airdrop/drop';
       let inputParams = {
-        amount: 500,
+        amount: 100,
         list_type: 'never_airdropped'
       };
 
@@ -67,7 +67,7 @@ const ostUserQueries = {
 
       return axios.post(query.url, query.queryParams)
         .then(response => {
-            console.log("Successfully executed airdrop to new users", response.data.data.airdrop_uuid)
+            console.log("Successfully executed airdrop to new users", response.data)
             return ostUserQueries.verifyAirdropStatus(response.data.data.airdrop_uuid)
               .then(status => {
                 console.log(status);

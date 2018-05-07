@@ -251,21 +251,19 @@ const tags = [
     name: "technology"
   }
 ]
-
 //
 Conn.sync({ force: true })
 // Conn.sync();
   .then(() => {
     const passwrd = "tPass2";
     return bcrypt.hash(passwrd, 10)
-      .then((hash2) => {
-        return UserModel.create({
+      .then((hash1) => {
+        let user1 = {
           email: faker.internet.email(),
-          username: faker.internet.userName(),
-          password: hash2,
+          username: "Alice",
+          password: hash1,
           version: 1,
-          ostUuid: 'e3586536-bfb4-4b98-8998-e4c9a8069cba'
-
+          ostUuid: 'e3586536-bfb4-4b98-8998-e4c9a8069cba',
         };
         return UserModel.create(user1)
           .then(user1 => {
@@ -282,7 +280,7 @@ Conn.sync({ force: true })
                 };
                 return UserModel.create(user2)
                   .then((user) => {
-                    ostUserQueries.verifyAirdropStatus('47e44392-fec8-4aff-b6d6-8f0fa483463f');
+                    // ostUserQueries.verifyAirdropStatus('47e44392-fec8-4aff-b6d6-8f0fa483463f');
                     console.log(user1.id, "u2")
                     console.log(user.id, "u1")
                     user.addFollowedBy(user1).then(() => {
@@ -347,6 +345,7 @@ Conn.sync({ force: true })
               })
           })
       })
+
 
   });
 

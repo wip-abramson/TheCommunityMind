@@ -12,17 +12,23 @@ import jwtDecode from 'jwt-decode';
 import { store } from './store/store';
 
 const httpLink = new HttpLink({
-  uri: process.env.NODE_ENV === 'production' ? 'http://thecommunitymind.com/graphql' : 'http://0.0.0.0:5000/graphql'
+  uri: process.env.NODE_ENV === 'production' ? 'https://thecommunitymind.com/graphql' : 'http://0.0.0.0:5000/graphql'
 });
 
-const middlewareLink = setContext(() => (
-
-  {
-    //       req.options.headers.authorization = ;
+const authLink = setContext((_, { headers }) => {
+  // get the authentication token from local storage if it exists
+  const token = localStorage.getItem('token');
+  // return the headers to the context so httpLink can read them
+  if (token) {
+    console.log("GOT TOKEN ")
+  }
+  return {
     headers: {
-      Authorization: fetchTokenHeader()
+      ...headers,
+      authorization: token ? `Bearer ${token}` : '',
     }
-  }));
+  }
+});
 
 const errorLink = onError(({ networkError = {}, graphQLErrors }) => {
   if (networkError.statusCode === 401) {
@@ -52,43 +58,8 @@ const afterwareLink = new ApolloLink((operation, forward) => {
   });
 });
 
-// const link = middlewareLink.concat(httpLink, errorLink, afterwareLink);
+const link = ApolloLink.from([errorLink, afterwareLink, authLink, httpLink]);
 
-const link = ApolloLink.from([errorLink, afterwareLink, middlewareLink, httpLink]);
-
-function fetchTokenHeader() {
-  const token = localStorage.getItem('token');
-    console.log("Got token", token)
-    if (token) {
-      var tokenObj = JSON.parse(token)
-      return `Bearer ${tokenObj.value}`;
-
-      // console.log(jwtDecode(tokenObj.value))
-      // jwtDecode(tokenObj).then()
-
-    }
-    return null;
-}
-
-// networkInterface.use([{
-//   applyMiddleware(req, next) {
-//     if (!req.options.headers) {
-//       req.options.headers = {};  // Create the header object if needed.
-//     }
-//     // get the authentication token from local storage if it exists
-//     const token = localStorage.getItem('token');
-//     console.log("Got token", token)
-//     if (token) {
-//       var tokenObj = JSON.parse(token)
-//       req.options.headers.authorization = `Bearer ${tokenObj.value}`;
-//
-//       // console.log(jwtDecode(tokenObj.value))
-//       // jwtDecode(tokenObj).then()
-//
-//     }
-//     next();
-//   }
-// }]);
 
 export const apolloClient = new ApolloClient({
   link: link,

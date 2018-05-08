@@ -14,13 +14,14 @@ const AppRouter = function () {
     <Router history={browserHistory}>
 
       <Route path='/' component={Main}>
-        <Route path='/Landing' component={LandingPage}/>
 
 
         <Route component={Home}>
           <IndexRoute component={QuestionsView}/>
           {/*<Route path="/thread/:name" component={ThreadPage}/>*/}
         </Route>
+        <Route path='/Landing' component={LandingPage}/>
+
         <Route path='question/:id' component={QuestionsView}/>
 
         < Route

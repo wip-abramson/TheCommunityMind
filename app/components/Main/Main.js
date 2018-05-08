@@ -90,6 +90,7 @@ class Main extends React.Component{
   }
 
   componentDidMount() {
+    console.log("Current User", this.props.currentUser)
     if(!this.props.currentUser) {
       browserHistory.push({pathname: "/landing"})
 

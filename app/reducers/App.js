@@ -16,6 +16,7 @@ export const App = combineReducers({
   auth,
   questionPopup,
   notifications,
+  apollo: apolloClient.reducer()
 });
 
 

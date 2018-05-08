@@ -252,8 +252,8 @@ const tags = [
   }
 ]
 //
-// Conn.sync({ force: true })
 Conn.sync();
+// Conn.sync({ force: true })
   // .then(() => {
   //   const passwrd = "tPass2";
   //   return bcrypt.hash(passwrd, 10)

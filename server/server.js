@@ -23,7 +23,8 @@ server.use('/graphql', bodyParser.json(), jwt({
   secret: JWT_SECRET,
   credentialsRequired: false,
 }), graphqlExpress((request) => {
-  console.log(request.user)
+  console.log(request, "REQUEST")
+  // console.log(request, "session")
   return ({
     schema: schema,
     context: {
@@ -32,7 +33,8 @@ server.use('/graphql', bodyParser.json(), jwt({
           where:  { id: request.user.id, version: request.user.version }
         }) : Promise.resolve(null),
     },
-})}));
+})
+}));
 
 
 server.use('/graphiql', graphiqlExpress({

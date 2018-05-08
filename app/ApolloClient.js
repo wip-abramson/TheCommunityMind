@@ -15,19 +15,28 @@ const httpLink = new HttpLink({
   uri: process.env.NODE_ENV === 'production' ? 'https://thecommunitymind.com/graphql' : 'http://0.0.0.0:5000/graphql'
 });
 
-const middlewareLink = setContext(() => (
+const authLink = setContext((_, { headers }) => {
+  // get the authentication token from local storage if it exists
+  const tokenJson = localStorage.getItem('token');
+  let token = null;
+  // return the headers to the context so httpLink can read them
+  if (tokenJson) {
+    token = JSON.parse(tokenJson);
+    console.log("GOT TOKEN ", token.value)
 
-  {
-    //       req.options.headers.authorization = ;
+  }
+  return {
     headers: {
-
-      Authorization: fetchTokenHeader()
+      ...headers,
+      Authorization: token ? `Bearer ${token.value}` : '',
     }
-  }));
+  }
+});
 
 const errorLink = onError(({ networkError = {}, graphQLErrors }) => {
   if (networkError.statusCode === 401) {
-    console.log('Unauthorised')
+    console.log('Unauthorised', graphQLErrors);
+    localStorage.clear();
     signOut();
   }
 })
@@ -55,7 +64,7 @@ const afterwareLink = new ApolloLink((operation, forward) => {
 
 // const link = middlewareLink.concat(httpLink, errorLink, afterwareLink);
 
-const link = ApolloLink.from([errorLink, afterwareLink, middlewareLink, httpLink]);
+const link = ApolloLink.from([errorLink, afterwareLink, authLink, httpLink]);
 
 function fetchTokenHeader() {
   const token = localStorage.getItem('token');

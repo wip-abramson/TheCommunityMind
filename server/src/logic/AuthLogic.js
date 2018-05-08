@@ -15,7 +15,7 @@ export const authLogic = {
       console.log("No ctx")
       return Promise.reject('Unauthorized');
     }
-
+    console.log(ctx.user);
     return ctx.user
       .then((user) => {
         if (!user) {
@@ -48,6 +48,7 @@ export const authLogic = {
                         })
                           .then((user) => {
                             const { id } = user;
+                            console.log(JWT_SECRET);
                             const token = jwt.sign({
                               id,
                               email,

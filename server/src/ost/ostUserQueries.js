@@ -59,7 +59,7 @@ const ostUserQueries = {
     airdropNewUser: () => {
       const endpoint = '/users/airdrop/drop';
       let inputParams = {
-        amount: 100,
+        amount: 50,
         list_type: 'never_airdropped'
       };
 

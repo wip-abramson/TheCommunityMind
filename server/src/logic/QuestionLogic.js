@@ -8,6 +8,7 @@ import ostTransactions from '../ost/ostTransactions';
 
 export const questionLogic = {
   createQuestion(_, { questionText, parentId }, ctx) {
+    console.log('CREATE Q')
     return authLogic.getAuthenticatedUser(ctx)
       .then(user => {
         ostTransactions.executeQuestionTransaction(user.ostUuid).then(transactionHash => {

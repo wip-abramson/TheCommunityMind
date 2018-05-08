@@ -9,7 +9,18 @@ import QuestionInput from './QuestionInput';
 import CREATE_QUESTION_MUTATION from "../../../graphql/mutations/createQuestion.mutation";
 import EDIT_QUESTION_MUTATION from '../../../graphql/mutations/editQuestion.mutation';
 import QUESTIONS_QUERY from "../../../graphql/querys/questions.query";
+import Notifications from 'react-notification-system-redux';
+import { unauthorizedErrorNotification } from '../../../notifications/error.notifications';
+import { connect } from "react-redux";
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    unAuthorized: () => {
+      console.log("DISPATCH UNAUTHORIZED")
+      dispatch(Notifications.error(unauthorizedErrorNotification))
+    },
+  }
+}
 
 const createQuestion = graphql(CREATE_QUESTION_MUTATION, {
   props: ({ ownProps, mutate }) => ({
@@ -180,6 +191,10 @@ QuestionInputContainer.propTypes = {
 };
 
 export default compose(
+  connect(
+    null,
+    mapDispatchToProps
+  ),
   createQuestion,
   editQuestion
 )(QuestionInputContainer);

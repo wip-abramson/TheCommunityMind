@@ -7,7 +7,7 @@ import { Button, FormControl } from 'react-bootstrap';
 
 import styles from './questionInput.css';
 
-const QuestionInput = ({ questionText, placeholder, onTextChange, onSubmit }) => {
+const QuestionInput = ({ questionText, placeholder, onTextChange, onSubmit, focus }) => {
 
   return (
     <div
@@ -15,6 +15,7 @@ const QuestionInput = ({ questionText, placeholder, onTextChange, onSubmit }) =>
     >
 
       <FormControl
+       inputRef={input => input && input.focus()}
         type="text"
         placeholder={placeholder}
         value={questionText}

@@ -132,9 +132,8 @@ class QuestionInputContainer extends React.Component {
   // if component is recieving a question this means popup is in edit mode
   // need to populate the questionText state
   componentWillReceiveProps(nextProps) {
-    if (nextProps.question) {
-      this.setState({questionText: nextProps.question.questionText})
-    }
+    this.setState({questionText: nextProps.question ? nextProps.question.questionText : ''})
+
   }
 
   // submitting either a child question, and edit or a new question

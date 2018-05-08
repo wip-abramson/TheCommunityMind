@@ -20,6 +20,7 @@ const middlewareLink = setContext(() => (
   {
     //       req.options.headers.authorization = ;
     headers: {
+
       Authorization: fetchTokenHeader()
     }
   }));
@@ -69,7 +70,7 @@ function fetchTokenHeader() {
       // jwtDecode(tokenObj).then()
 
     }
-    return null;
+    return 'Bearer ' ;
 }
 
 // networkInterface.use([{

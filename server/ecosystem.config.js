@@ -30,7 +30,7 @@ module.exports = {
       repo: 'git@github.com:wip-abramson/TheCommunityMind.git',
       path: '/home/ubuntu/TheCommunityMind',
       'post-deploy': 'npm i && npm run production && sudo cp -a ./dist/. /usr/share/nginx/dist/ && cd server && npm i ' +
-      '&& sudo cp ~/TCMDbTest/server/.env ~/TheCommunityMind/source/server/'
+      '&& sudo cp ~/TCMDbTest/server/.env ~/TheCommunityMind/source/server/ && pm2 startOrRestart ecosystem.config.js'
     }
   }
 }

@@ -70,6 +70,8 @@ const typeDefs = `
     watches: [Question]
     interestedIn: [Tag]
     airdropUuid: String
+    totalOstBalance: Int
+    totalAirdroppedBalance: Int
   }
   
   

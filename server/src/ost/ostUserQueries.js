@@ -3,42 +3,64 @@
  */
 import { buildQuery } from './queryBuilder';
 import axios from 'axios';
+import ost from './ostkit';
 
 const ostUserQueries = {
     createUser: (username) => {
-      const endpoint = "/users/create";
-      let inputParams = {
-        name: username
-      };
 
-      const query = buildQuery(endpoint, inputParams);
-
-      return axios.post(query.url, query.queryParams)
-        .then((response) => {
-          console.log("Succesfully created user", response.data.data.economy_users[0].uuid)
-          return response.data.data.economy_users[0].uuid;
-        })
-        .catch(error => {
-          console.log("Error unable to create user", error)
-        });
+      ost.usersCreate({name: username});
+      // const endpoint = "/users/create";
+      // let inputParams = {
+      //   name: username
+      // };
+      //
+      // const query = buildQuery(endpoint, inputParams);
+      //
+      // return axios.post(query.url, query.queryParams)
+      //   .then((response) => {
+      //     console.log("Succesfully created user", response.data.data.economy_users[0].uuid)
+      //     return response.data.data.economy_users[0].uuid;
+      //   })
+      //   .catch(error => {
+      //     console.log("Error unable to create user", error)
+      //   });
     },
-    editUser: (uuid, username) => {
-      // TODO make input params use username and uuid from function inputs
-      const endpoint = "/users/edit";
-      let inputParams = {};
-      inputParams.uuid = '3cf76d8e-8269-4757-ba96-7a93a878d0be';
-      inputParams.name = "Will A";
-
-      const query = buildQuery(endpoint, inputParams);
-
-      axios.post(query.url, query.queryParams)
-        .then((response) => {
-          console.log("Successfully edited user", response.data.data.economy_users[0].name)
+    getUser: (uuid, name) => {
+      // TODO this is a hack ost not implemented getUser yet
+      return ost.usersEdit({uuid, name})
+        .then(res => {
+          console.log("Success", res.economy_users[0]);
+          return res.economy_users[0]
         })
         .catch(error => {
-          console.log("Error editing user")
+          console.log("Error", error);
+          return null;
+        })
+    },
+    editUser: (uuid, name) => {
 
-        });
+      ost.usersEdit({uuid, name})
+        .then(res => {
+          console.log("Success", res.economy_users[0]);
+        })
+        .catch(error => {
+          console.log("Error", error);
+        })
+      // const endpoint = "/users/edit";
+      // let inputParams = {};
+      // inputParams.uuid = '3cf76d8e-8269-4757-ba96-7a93a878d0be';
+      // inputParams.name = "Will A";
+      //
+      // const query = buildQuery(endpoint, inputParams);
+      //
+      // axios.post(query.url, query.queryParams)
+      //   .then((response) => {
+      //     console.log("Successfully edited user", response.data.data.economy_users[0].name)
+      //   })
+      //   .catch(error => {
+      //     console.log("Error editing user")
+      //
+      //   });
     },
     getAllUsers: () => {
       const endpoint = "/users/list";

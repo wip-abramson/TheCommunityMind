@@ -176,6 +176,12 @@ export const resolvers = {
     followedByCurrentUser(user, args, ctx) {
       return userLogic.followedByCurrentUser(user, args, ctx);
     },
+    totalOstBalance(user, args, ctx) {
+      return userLogic.totalOstBalance(user, args, ctx);
+    },
+    totalAirdroppedBalance(user, args, ctx) {
+      return userLogic.totalAirdroppedBalance(user, args, ctx);
+    }
 
   },
 }

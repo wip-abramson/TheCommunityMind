@@ -3,7 +3,7 @@
  */
 import { Question, User, Tag } from '../db';
 import { authLogic } from './AuthLogic';
-import { paginationLogic } from './PaginationLogic';
+import ostUserQueries from '../ost/ostUserQueries';
 
 export const userLogic = {
   jwt(user) {
@@ -277,6 +277,25 @@ export const userLogic = {
     args.where = where;
 
     return Question.findAll(args).then(questions => paginate(first, after, last, before, questions));
+  },
+  // TODO Having to call ostUserQuery twice is there a way to simplify???
+  totalOstBalance(user, args, ctx) {
+    return ostUserQueries.getUser(user.ostUuid, user.username)
+      .then(ostUser => {
+        if (!ostUser) {
+          throw new Error('Unable to fetch ost user with uuid: ' + user.ostUuid);
+        }
+        return ostUser.token_balance;
+      })
+  },
+  totalAirdroppedBalance(user, args, ctx) {
+    return ostUserQueries.getUser(user.ostUuid, user.username)
+      .then(ostUser => {
+        if (!ostUser) {
+          throw new Error('Unable to fetch ost user with uuid: ' + user.ostUuid);
+        }
+        return ostUser.total_airdropped_tokens;
+      })
   }
 
 };

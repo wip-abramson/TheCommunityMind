@@ -43,16 +43,7 @@ const typeDefs = `
     pageInfo: PageInfo
     node: Question!
   }
-  
-  type OstTransaction {
-    id: String!
-    currentStatus: String!
-  }
-  
-  type OstAirdrop {
-    id: String!
-    currentStatus: String!
-  }
+ 
   
   type User {
     id: ID!
@@ -69,7 +60,6 @@ const typeDefs = `
     followedByCurrentUser: Boolean!
     watches: [Question]
     interestedIn: [Tag]
-    airdropUuid: String
     totalOstBalance: Int
     totalAirdroppedBalance: Int
   }
@@ -83,8 +73,6 @@ const typeDefs = `
    questions(parentId: Int, first: Int, after: String, last: Int, before: String): QuestionConnection!
    userStarredQuestions(userId: ID!, first: Int, after: String, last: Int, before: String): QuestionConnection!
    userQuestions(userId: ID!, first: Int, after: String, last: Int, before: String): QuestionConnection!
-   checkTransactionStatus(tranactionId: String!): OstTransaction!
-   checkAirdropStatus(airdropId: String!): OstAirdrop!
    }
   
   type Mutation {

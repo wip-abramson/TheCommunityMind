@@ -19,12 +19,13 @@ server.use("*",cors());
 
 server.use(express.static('../public'));
 server.use(loggingMiddleware);
+
+//TODO add subscription server
 server.use('/graphql', bodyParser.json(), jwt({
   secret: JWT_SECRET,
   credentialsRequired: false,
 }), graphqlExpress((request) => {
   console.log(request, "REQUEST")
-  // console.log(request, "session")
   return ({
     schema: schema,
     context: {

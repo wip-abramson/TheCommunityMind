@@ -4,7 +4,6 @@
 import React from 'react'
 import { compose, graphql } from "react-apollo";
 import { addUserMutation } from '../../graphql/mutations/user.mutations';
-import AIRDROP_STATUS from '../../graphql/querys/airdropStatus.query';
 import { browserHistory } from 'react-router';
 import { connect } from "react-redux";
 import { loginSuccess } from '../../actions/Auth';
@@ -32,10 +31,6 @@ const mapDispatchToProps = function (dispatch) {
 
   }
 };
-
-// const airdropStatus = graphql(AIRDROP_STATUS, {
-//   props: ({ownProps, })
-// })
 
 let container = React.createClass({
 

@@ -34,11 +34,12 @@ export const authLogic = {
           // hash password to create user
           return bcrypt.hash(password, 10)
             .then(hash => {
-              return ostUserQueries.createUser(username)
-                .then(uuid => {
-                  if (uuid != null) {
-                    return ostUserQueries.airdropNewUser()
-                      .then(airdropUuid => {
+                return ostUserQueries.createUser(username)
+                  .then(uuid => {
+                      if (uuid != null) {
+
+                        // TODO do i need to react to this? I think subscribe
+                        ostUserQueries.airdropNewUser();
                         return User.create({
                           email,
                           password: hash,
@@ -57,28 +58,28 @@ export const authLogic = {
                               // exp: Math.floor(new Date().getTime() / 1000) + 7 * 24 * 60 * 60
                             }, JWT_SECRET);
                             user.jwt = token;
-                            user.airdropUuid = airdropUuid;
                             ctx.user = Promise.resolve(user);
-                            console.log("user created ", airdropUuid);
 
                             return user;
                           });
-                      })
-                  }
-                  else {
-                    console.log("Unable to create user")
-                    return null;
-                  }
 
+                      }
+                      else {
+                        console.log("Unable to create user")
+                        throw new Error('Unable to create Ost User');
+                      }
 
-                })
+                    }
+                  )
 
-            })
+              }
+            )
 
         }
 
         return Promise.reject('Email already exists');
-      });
+      })
+      ;
 
   },
   login: (obj, { email, password }, ctx) => {

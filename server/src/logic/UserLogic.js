@@ -280,22 +280,47 @@ export const userLogic = {
   },
   // TODO Having to call ostUserQuery twice is there a way to simplify???
   totalOstBalance(user, args, ctx) {
-    return ostUserQueries.getUser(user.ostUuid, user.username)
-      .then(ostUser => {
-        if (!ostUser) {
-          throw new Error('Unable to fetch ost user with uuid: ' + user.ostUuid);
+    return authLogic.getAuthenticatedUser(ctx)
+      .then(authorisedUser => {
+        if (authorisedUser && authorisedUser.id === user.id) {
+          return ostUserQueries.getUser(user.ostUuid, user.username)
+            .then(ostUser => {
+              if (!ostUser) {
+                throw new Error('Unable to fetch ost user with uuid: ' + user.ostUuid);
+              }
+              return ostUser.token_balance;
+            })
         }
-        return ostUser.token_balance;
+        else {
+          throw new Error('Unauthorized to view users balance');
+        }
       })
+      .catch(error => {
+        throw new Error('Unable to fetch ost user with uuid: ' + user.ostUuid);
+      })
+
   },
   totalAirdroppedBalance(user, args, ctx) {
-    return ostUserQueries.getUser(user.ostUuid, user.username)
-      .then(ostUser => {
-        if (!ostUser) {
-          throw new Error('Unable to fetch ost user with uuid: ' + user.ostUuid);
+    return authLogic.getAuthenticatedUser(ctx)
+      .then(authorisedUser => {
+        if (authorisedUser && authorisedUser.id === user.id) {
+          return ostUserQueries.getUser(user.ostUuid, user.username)
+            .then(ostUser => {
+              if (!ostUser) {
+                throw new Error('Unable to fetch ost user with uuid: ' + user.ostUuid);
+              }
+              return ostUser.total_airdropped_tokens;
+            })
         }
-        return ostUser.total_airdropped_tokens;
+        else {
+          throw new Error('Unauthorized to view users balance');
+        }
       })
+      .catch(error => {
+        console.log("Error", error);
+        throw new Error('Unable to fetch ost user with uuid: ' + user.ostUuid);
+      })
+
   }
 
 };

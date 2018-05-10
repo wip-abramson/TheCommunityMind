@@ -143,11 +143,17 @@ export const resolvers = {
     questions(user, args, ctx) {
       return userLogic.questions(user, args, ctx);
     },
+    questionsAskedCount(user, args, ctx) {
+      return userLogic.questionsAskedCount(user, args, ctx);
+    },
     jwt(user, args, ctx) {
       return userLogic.jwt(user, args, ctx);
     },
     starredQuestions(user, args, ctx) {
       return userLogic.starredQuestions(user, args, ctx);
+    },
+    questionsStarredCount(user, args, ctx) {
+      return userLogic.questionsStarredCount(user, args, ctx);
     },
     follows(user, args, ctx) {
       return userLogic.follows(user, args, ctx);
@@ -171,10 +177,12 @@ export const resolvers = {
       return userLogic.followedByCurrentUser(user, args, ctx);
     },
     totalOstBalance(user, args, ctx) {
-      return userLogic.totalOstBalance(user, args, ctx);
+      return 100;
+      // return userLogic.totalOstBalance(user, args, ctx);
     },
     totalAirdroppedBalance(user, args, ctx) {
-      return userLogic.totalAirdroppedBalance(user, args, ctx);
+      return 50;
+      // return userLogic.totalAirdroppedBalance(user, args, ctx);
     }
 
   },

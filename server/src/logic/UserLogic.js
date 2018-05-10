@@ -23,10 +23,33 @@ export const userLogic = {
     return this.userQuestions(user, { userId: user.id, first, after, last, before }, ctx);
 
   },
+  questionsAskedCount(user, args, ctx) {
+    return Question.count({
+      where: {userId: user.id}
+    })
+      .then(questionCount => {
+        return questionCount;
+      })
+      .catch(error => {
+        console.log(error, "Error");
+        return Promise.reject(error)
+      })
+  },
   starredQuestions(user, { first, after, last, before }, ctx) {
     return this.userStarredQuestions(user, { userId: user.id, first, after, last, before }, ctx);
   },
-
+  questionsStarredCount(user, args, ctx) {
+    return Question.count({
+      include: [{ model: User, as: "starredBy", where: { id: user.id } }]
+    })
+      .then(questionCount => {
+        return questionCount;
+      })
+      .catch(error => {
+        console.log(error, "Error");
+        return Promise.reject(error)
+      })
+  },
 
   follows(user, args, ctx) {
     // Again no Auth req

@@ -51,8 +51,10 @@ const typeDefs = `
     password: String!
     email: String!
     questions(first: Int, after: String, last: Int, before: String): QuestionConnection
+    questionsAskedCount: Int!
     jwt: String # json web token for access
     starredQuestions(first: Int, after: String, last: Int, before: String): QuestionConnection
+    questionsStarredCount: Int!
     followersCount: Int!
     followers: [User]
     followsCount: Int!

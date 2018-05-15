@@ -28,12 +28,6 @@ export const resolvers = {
     questions(_, args, ctx) {
       return questionLogic.query(_, args, ctx);
     },
-    checkTransactionStatus(_, args, ctx) {
-
-    },
-    checkAirdropStatus(_, args, ctx) {
-      return ostLogic.checkAirdropStatus(_, args, ctx);
-    }
 
 
   },

@@ -64,7 +64,6 @@ let container = React.createClass({
         return error;
       });
       return errors
-      // this.setState({ errors });
     })
 
   },

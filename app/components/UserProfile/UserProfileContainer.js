@@ -57,7 +57,6 @@ const followUser = graphql(FOLLOW_USER_MUTATION, {
             return error;
           });
           return errors
-          // this.setState({ errors });
         })
     }
   })
@@ -90,7 +89,6 @@ const unfollowUser = graphql(UNFOLLOW_USER_MUTATION, {
             return error;
           });
           return errors
-          // this.setState({ errors });
         })
     }
   })

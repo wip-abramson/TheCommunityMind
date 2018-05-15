@@ -10,6 +10,8 @@ import { browserHistory } from 'react-router'
 import QuestionPopupContainer from '../QuestionPopup/QuestionPopupContainer';
 
 import Notifications from 'react-notification-system-redux';
+import Modal from '../generic/Modal';
+import OstInformation from '../OstInformation/OstInformation';
 
 
 
@@ -60,10 +62,15 @@ class Main extends React.Component{
 
   constructor(props) {
     super(props);
+
+    this.state = {
+      ostModalOpen: false
+    }
     this.viewWatchList = this.viewWatchList.bind(this);
     this.logout = this.logout.bind(this);
     this.showQuestionPopup = this.showQuestionPopup.bind(this);
     this.viewProfile = this.viewProfile.bind(this);
+    this.toggleOstModal = this.toggleOstModal.bind(this);
   }
 
   logout() {
@@ -89,6 +96,13 @@ class Main extends React.Component{
     console.log("Viewing watch list")
   }
 
+  toggleOstModal() {
+    console.log("Toggle Modal");
+    this.setState({
+      ostModalOpen: !this.state.ostModalOpen
+    });
+  }
+
   componentDidMount() {
     console.log("Current User", this.props.currentUser)
     if(!this.props.currentUser) {
@@ -107,6 +121,7 @@ class Main extends React.Component{
           viewWatchList={this.viewWatchList}
           onQuestionClick={this.showQuestionPopup}
           hideQuestionPopup={this.props.hideQuestionPopup}
+          toggleOstModal={this.toggleOstModal}
         ></MainHeader>
 
 
@@ -118,6 +133,9 @@ class Main extends React.Component{
           notifications={this.props.notifications}
           style={this.notificationStyle}
         />
+        <Modal onClose={this.toggleOstModal} show={this.state.ostModalOpen}>
+          <OstInformation/>
+        </Modal>
 
       </FullDiv>
     )

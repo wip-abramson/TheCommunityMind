@@ -1,0 +1,10 @@
+.balanceContainer {
+    display: inline-block;
+    /*padding: 20px;*/
+}
+
+.ostText {
+    height: 100%;
+    display: inline-block;
+    font-size: 20px;
+}

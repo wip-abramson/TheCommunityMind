@@ -6,6 +6,8 @@ export const addUserMutation = gql`
       username
       email
       jwt
+      totalOstBalance
+      totalAirdroppedBalance
     }
   }
 `
@@ -16,6 +18,8 @@ export const loginMutation = gql`
       id
       username
       jwt
+      totalOstBalance
+      totalAirdroppedBalance
     }
   }
 `

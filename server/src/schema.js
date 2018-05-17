@@ -4,7 +4,7 @@ import { makeExecutableSchema } from 'graphql-tools'
 const typeDefs = `
   scalar Date
   
-  type Tag {
+  type Topic {
    id: ID!                # "!" denotes a required field
    name: String!
    followers: [User]
@@ -22,14 +22,16 @@ const typeDefs = `
     stars: Int!
     starredBy: [User]!
     questionText: String!
-    parentQuestions(first: Int, after: String, last: Int, before: String): QuestionConnection!
-    childQuestions(first: Int, after: String, last: Int, before: String): QuestionConnection!
+    superQuestions(first: Int, after: String, last: Int, before: String): QuestionConnection!
+    superQuestionsCount: Int!
+    subQuestions(first: Int, after: String, last: Int, before: String): QuestionConnection!
+    subQuestionsCount: Int!
     owner: User!
     createdAt: Date!
     starredByCurrentUser: Boolean!
     watchedByCurrentUser: Boolean!
     ownedByCurrentUser: Boolean!
-    associatedWith: [Tag]
+    associatedWith: [Topic]!
   }
   
 
@@ -61,7 +63,7 @@ const typeDefs = `
     follows: [User]
     followedByCurrentUser: Boolean!
     watches: [Question]
-    interestedIn: [Tag]
+    interestedIn: [Topic]
     totalOstBalance: Int
     totalAirdroppedBalance: Int
   }
@@ -69,8 +71,8 @@ const typeDefs = `
   
   
   type Query {
-   topTags: [Tag]
-   tags: [Tag]    
+   topTopics: [Topic]
+   topics: [Topic]    
    user(id: ID!): User
    questions(parentId: Int, first: Int, after: String, last: Int, before: String): QuestionConnection!
    userStarredQuestions(userId: ID!, first: Int, after: String, last: Int, before: String): QuestionConnection!
@@ -86,11 +88,11 @@ const typeDefs = `
     starQuestion(id: ID!): Question
     unstarQuestion(id: ID!): Question
     
-    findOrCreateTag(name: String!): Tag!
-    associateQuestionWithTag(questionId: ID!, tagId: ID!): Tag
-    removeTagAssociationWithQuestion(questionId: ID!, tagId: ID!): Tag
-    addUserInterest(userId: ID!, tagId: ID!): Tag
-    removeUserInterest(userId: ID!, tagId: ID!): Tag
+    findOrCreateTopic(name: String!): Topic!
+    associateQuestionWithTopic(questionId: ID!, topicId: ID!): Topic
+    removeTopicAssociationWithQuestion(questionId: ID!, topicId: ID!): Topic
+    addUserInterest(userId: ID!, topicId: ID!): Topic
+    removeUserInterest(userId: ID!, topicId: ID!): Topic
     followUser(id: ID!): User
     unfollowUser(id: ID!): User
    

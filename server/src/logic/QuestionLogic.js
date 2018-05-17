@@ -272,7 +272,7 @@ export const questionLogic = {
               return Promise.reject("Unauthorized");
             }
 
-            // Should I check if Tag is already associated? Probably
+            // Should I check if Topic is already associated? Probably
             return Tag.findById(tagId)
               .then(tag => {
                 return question.removeTag(tag)
@@ -287,18 +287,28 @@ export const questionLogic = {
         return Promise.reject(error)
       });
   },
-  parentQuestions(question, { first, before, last, after }, ctx) {
+  superQuestions(question, { first, before, last, after }, ctx) {
     const args = paginationLogic.buildArgs(first, after, last, before);
     args.include = [{ model: Question, as: "ChildQuestion", where: { id: question.id }, }]
 
     return this.buildPaginatedQuestions(args, before)
 
   },
-  childQuestions(question, {  whyId, first, after, last, before }, ctx) {
+  superQuestionsCount(question, args, ctx) {
+    return Question.count({
+      include: [{ model: Question, as: "ChildQuestion", where: { id: question.id }, }]
+    })
+  },
+  subQuestions(question, { first, after, last, before }, ctx) {
     const args = paginationLogic.buildArgs(first, after, last, before);
     args.include = [{ model: Question, as: "ParentQuestion", where: { id: question.id }, }]
 
     return this.buildPaginatedQuestions(args, before)
+  },
+  subQuestionsCount(question, args, ctx) {
+    return Question.count({
+      include: [{ model: Question, as: "ParentQuestion", where: { id: question.id }, }]
+    })
   },
   query(_, { first, after, last, before }, ctx) {
     const args = paginationLogic.buildArgs(first, after, last, before);

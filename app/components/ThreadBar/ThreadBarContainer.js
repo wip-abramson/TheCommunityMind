@@ -25,7 +25,7 @@ export default compose(
     props: ({ ownProps, data: { loading, error, topTags } }) => ({
       loading,
       error,
-      tags: topTags
+      topics: topTags
     })
   })
 )(ThreadBar);

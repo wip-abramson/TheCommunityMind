@@ -12,11 +12,11 @@ const ThreadBar = (props) => {
   if (props.error) {
     return <p>{props.error.message}</p>;
   }
-  // console.log(props.tags.length);
+  // console.log(props.topics.length);
   return (
     <div style={{padding: "10px"}}>
       <Link to="/">Home</Link>
-      {props.tags.map(tag => {
+      {props.topics.map(tag => {
         var linkTo = "/thread/" + tag.name;
         return <Link to={linkTo}>{tag.name[0].toUpperCase() + tag.name.slice(1)}</Link>
       })}

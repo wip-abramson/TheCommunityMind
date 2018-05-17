@@ -86,7 +86,18 @@ const QuestionTagModel = Conn.define('question_tag', {});
 
 const UserTagModel = Conn.define('user_tag', {});
 
-const QuestionLinkModel = Conn.define('question_link', {});
+const QuestionLinkModel = Conn.define('question_link', {
+  approval: {
+    type: Sequelize.INTEGER
+  }
+});
+
+const QuestionRelatedModel = Conn.define('question_related', {
+  approval: {
+    type: Sequelize.INTEGER
+  }
+});
+
 // Relationships
 
 UserModel.hasMany(QuestionModel);
@@ -125,6 +136,23 @@ QuestionModel.belongsToMany(QuestionModel, {
   as: "ChildQuestion",
   foreignKey: "childId"
 });
+
+// QuestionModel.belongsToMany(QuestionModel, {
+//   through: {
+//     QuestionRelatedModel, unique: true,
+//   },
+//   as: "RelatedQuestion",
+//   foreignKey: "relatedQuestionId"
+// });
+//
+// QuestionModel.belongsToMany(QuestionModel, {
+//   through: {
+//     QuestionRelatedModel,
+//     unique: true,
+//   },
+//   as: "RelatedTo",
+//   foreignKey: "relatedToId"
+// });
 
 UserModel.belongsToMany(UserModel, {
   through: {
@@ -290,8 +318,8 @@ Conn.sync()
 //                       console.log(error)
 //                     })
 //
-//                     return Promise.all(tags.map(tag => {
-//                       return Tag.create(tag);
+//                     return Promise.all(topics.map(tag => {
+//                       return Topic.create(tag);
 //
 //                     })).then(createdTags => {
 //

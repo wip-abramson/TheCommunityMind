@@ -4,7 +4,7 @@
 import { Tag, User, Question } from '../db';
 import { authLogic } from './AuthLogic';
 
-export const tagLogic = {
+export const topicLogic = {
   query(_, { name }, ctx) {
     return Tag.findAll({
       // where: {
@@ -19,7 +19,7 @@ export const tagLogic = {
         return Promise.reject(error)
       })
   },
-  topTags(_, args, ctx) {
+  topTopics(_, args, ctx) {
     return authLogic.getAuthenticatedUser(ctx)
       .then(user => {
         return Tag.findAll({
@@ -30,14 +30,14 @@ export const tagLogic = {
           })
       })
       .catch(error => {
-        console.log("No User Logged in, Returning top general tags");
+        console.log("No User Logged in, Returning top general topics");
         return Tag.findAll()
           .then(tags => {
             return rankedTags(tags);
           })
       })
   },
-  findOrCreateTag(_, { name }, ctx) {
+  findOrCreateTopic(_, { name }, ctx) {
     return authLogic.getAuthenticatedUser(ctx)
       .then(user => {
         return Tag.findOrCreate({

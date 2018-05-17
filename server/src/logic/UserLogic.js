@@ -228,7 +228,7 @@ export const userLogic = {
               return Promise.reject("Unauthorized");
             }
 
-            // Should I check that Tag is already associated with user?
+            // Should I check that Topic is already associated with user?
             return Tag.findById(tagId)
               .then(tag => {
                 return currentUser.removeTag(tag)

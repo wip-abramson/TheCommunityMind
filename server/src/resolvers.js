@@ -3,18 +3,18 @@ import GraphQLDate from 'graphql-date';
 import { authLogic } from './logic/AuthLogic';
 import { userLogic } from './logic/UserLogic';
 import { questionLogic } from './logic/QuestionLogic';
-import { tagLogic } from './logic/TagLogic';
+import { topicLogic } from './logic/TopicLogic';
 import { ostLogic } from './logic/OstLogic';
 
 export const resolvers = {
   Date: GraphQLDate,
 
   Query: {
-    topTags: (_, args, ctx) => {
-      return tagLogic.topTags(_, args, ctx);
+    topTopics: (_, args, ctx) => {
+      return topicLogic.topTopics(_, args, ctx);
     },
-    tags: (_, args, ctx) => {
-      return tagLogic.query(_, args, ctx);
+    topics: (_, args, ctx) => {
+      return topicLogic.query(_, args, ctx);
     },
     user(_, args, ctx) {
       return userLogic.query(_, args, ctx);
@@ -36,8 +36,8 @@ export const resolvers = {
       return questionLogic.createQuestion(_, args, ctx);
 
     },
-    findOrCreateTag(_, args, ctx) {
-      return tagLogic.findOrCreateTag(_, args, ctx);
+    findOrCreateTopic(_, args, ctx) {
+      return topicLogic.findOrCreateTopic(_, args, ctx);
     },
     deleteQuestion: (_, args, ctx) => {
       return questionLogic.deleteQuestion(_, args, ctx);
@@ -57,11 +57,11 @@ export const resolvers = {
     unwatchQuestion(_, args, ctx) {
       return questionLogic.unwatchQuestion(_, args, ctx);
     },
-    associateQuestionWithTag(_, args, ctx) {
-      return questionLogic.associateQuestionWithTag(_, args, ctx);
+    associateQuestionWithTopic(_, args, ctx) {
+      return questionLogic.associateQuestionWithTopic(_, args, ctx);
     },
-    removeTagAssociationWithQuestion(_, args, ctx) {
-      return questionLogic.removeTagAssociationWithQuestion(_, args, ctx);
+    removeTopicAssociationWithQuestion(_, args, ctx) {
+      return questionLogic.removeTopicAssociationWithQuestion(_, args, ctx);
     },
     addUserInterest(_, args, ctx) {
       return userLogic.addUserInterest(_, args, ctx);
@@ -87,15 +87,15 @@ export const resolvers = {
 
   },
 
-  Tag: {
-    questions(tag, args, ctx) {
-      tagLogic.questions(tag, args, ctx);
+  Topic: {
+    questions(topic, args, ctx) {
+      topicLogic.questions(topic, args, ctx);
     },
-    followers(tag, args, ctx) {
-      tagLogic.followers(tag, args, ctx);
+    followers(topic, args, ctx) {
+      topicLogic.followers(topic, args, ctx);
     },
-    numberOfFollowers(tag, args, ctx) {
-      tagLogic.numberOfFollowers(tag, args, ctx)
+    numberOfFollowers(topic, args, ctx) {
+      topicLogic.numberOfFollowers(topic, args, ctx)
     }
   },
 
@@ -121,11 +121,17 @@ export const resolvers = {
     associatedWith(question, args, ctx) {
       return questionLogic.associatedWith(question, args, ctx);
     },
-    parentQuestions(question, args, ctx) {
-      return questionLogic.parentQuestion(question, args, ctx);
+    superQuestions(question, args, ctx) {
+      return questionLogic.superQuestions(question, args, ctx);
     },
-    childQuestions(question, args, ctx) {
-      return questionLogic.childQuestions(question, args, ctx);
+    subQuestions(question, args, ctx) {
+      return questionLogic.subQuestions(question, args, ctx);
+    },
+    subQuestionsCount(question, args, ctx) {
+      return questionLogic.subQuestionsCount(question, args, ctx);
+    },
+    superQuestionsCount(question, args, ctx) {
+      return questionLogic.superQuestionsCount(question, args, ctx);
     }
   },
 

@@ -7,17 +7,17 @@ import FaQuestion from 'react-icons/lib/fa/question-circle';
 
 import styles from '../styles.css';
 
-const AskQuestionIcon = ({ askQuestion }) =>
+const AskQuestionIcon = ({ changeToInputView }) =>
   <span>
       <FaQuestion
         size={35}
         className={[styles.icon, styles.askQuestionIcon].join(" ")}
-        onClick={askQuestion}
+        onClick={changeToInputView}
       />
   </span>;
 
 AskQuestionIcon.propTypes = {
-  askQuestion: PropTypes.func.isRequired
+  changeToInputView: PropTypes.func.isRequired
 };
 
 export default AskQuestionIcon;

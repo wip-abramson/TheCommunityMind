@@ -7,17 +7,17 @@ import FaCodeFork from 'react-icons/lib/fa/code-fork';
 
 import styles from '../styles.css';
 
-const AddLinkIcon = ({ askQuestion }) =>
+const AddLinkIcon = ({ addLinkToQuestion }) =>
   <span>
       <FaCodeFork
         size={35}
         className={[styles.icon, styles.askQuestionIcon].join(" ")}
-        onClick={askQuestion}
+        onClick={addLinkToQuestion}
       />
   </span>;
 
 AddLinkIcon.propTypes = {
-  askQuestion: PropTypes.func.isRequired
+  addLinkToQuestion: PropTypes.func.isRequired
 };
 
 export default AddLinkIcon;

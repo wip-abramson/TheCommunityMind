@@ -1,5 +1,6 @@
 .focusGrid {
-    height: 45vh;
+    margin-top:30px;
+    height: 40vh;
     width: 100%;
     display: grid;
     grid-template-columns: 30px 1fr 6fr 1fr 30px;

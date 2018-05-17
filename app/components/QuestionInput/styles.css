@@ -1,3 +1,21 @@
 .questionInputBox {
-    grid-area: questionBox;
+    height: 100%;;
+    width: 100%;
+    grid-area: question;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.questionInput {
+    font-size: 30px;
+    margin-left: auto;
+    width: 90%;
+    height: 80%;
+    margin-right: auto;
+    background-color: transparent;
+    border: none;
+
 }

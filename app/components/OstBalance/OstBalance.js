@@ -8,16 +8,16 @@ import styles from './styles.css';
 
 const OstBalance = ({ totalBalance, airdroppedBalance }) =>
   <div className={styles.balanceContainer}>
-    <div className={styles.ostText}>OST</div>
+    <div className={styles.ostText}>Inspiration</div>
     <div>
       <p>{"Total Balance : "  + totalBalance}</p>
       <p>{"Airdropped Balance : " + airdroppedBalance}</p>
     </div>
-  </div>
+  </div>;
 
 OstBalance.propTypes = {
   totalBalance: PropTypes.number.isRequired,
   airdroppedBalance: PropTypes.number.isRequired,
-}
+};
 
 export default OstBalance;

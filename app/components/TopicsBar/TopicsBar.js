@@ -10,18 +10,19 @@ import Topic from '../Topic/Topic';
 import TopicInput from './components/TopicInput';
 import LoadMoreTopics from './components/LoadMoreTopics';
 
-const TopicsBar = ({topics}) =>
+const TopicsBar = ({ topics, hasMoreTopics }) =>
+
   <div className={styles.topicsBar}>
     <div className={styles.topics}>
       {topics.map(topic => <Topic topic={topic} strength={21} styles={styles}/>)}
     </div>
-    <LoadMoreTopics isMore={true}/>
+    <LoadMoreTopics isMore={hasMoreTopics}/>
     <TopicInput/>
   </div>;
 
-// TODO do these
 TopicsBar.propTypes = {
-
-}
+  topics: PropTypes.array.isRequired,
+  hasMoreTopics: PropTypes.bool.isRequired
+};
 
 export default TopicsBar;

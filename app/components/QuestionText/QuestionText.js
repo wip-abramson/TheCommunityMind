@@ -6,11 +6,15 @@ import PropTypes from 'prop-types';
 
 import styles from './styles.css';
 
-const QuestionText = () =>
+const QuestionText = ({questionText}) =>
   <div className={styles.question}>
     <div className={styles.questionText}>
-      Do all questions need answers?
+      {questionText}
     </div>
   </div>;
+
+QuestionText.propTypes = {
+  questionText: PropTypes.string.isRequired
+};
 
 export default QuestionText;

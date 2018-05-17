@@ -1,0 +1,11 @@
+.questionBox {
+    grid-area: questionBox;
+    height: 100%;
+    width: 100%;
+
+    display: grid;
+    grid-template-rows: 1fr 4fr 1fr;
+    grid-template-areas: "topicsBar" "question" "linksBar";
+
+    border: 3px solid black;
+}

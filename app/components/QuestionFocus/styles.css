@@ -1,0 +1,33 @@
+.focusGrid {
+    height: 45vh;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 30px 1fr 6fr 1fr 30px;
+    grid-template-rows: 50px 2fr 1fr 2fr 50px;
+    grid-template-areas: ". . topBar . ."
+                        ". questionBox questionBox questionBox ."
+                        "leftNav questionBox questionBox questionBox rightNav"
+                        ". questionBox questionBox questionBox ."
+                        ". . bottomBar . .";
+    border: 5px solid black;
+    padding: 10px 30px;
+    border-radius: 30%;
+}
+
+
+
+
+.leftNav {
+    height: 100%;
+    grid-area: leftNav;
+    vertical-align: middle;
+
+}
+
+.rightNav {
+    height: 100%;
+    grid-area: rightNav;
+    vertical-align: middle;
+
+}
+

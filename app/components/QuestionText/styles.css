@@ -1,0 +1,13 @@
+.question {
+    height: 100%;
+    display: table;
+    grid-area: question;
+    background-color: transparent;
+    text-align: center;
+    font-size: 30px;
+}
+
+.questionText {
+    display: table-cell;
+    vertical-align: middle;
+}

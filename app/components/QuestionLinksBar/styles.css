@@ -1,0 +1,24 @@
+.linksBar {
+    grid-area: linksBar;
+    background-color: #fefefe;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.questionLinkType {
+    padding: 0px 10px;
+    font-size: 20px;
+    flex-grow: 1;
+    text-align: center;
+    border-left: 1px solid black;
+}
+
+.questionLinkTypeNoBorder {
+    padding: 0px 10px;
+    font-size: 20px;
+    flex-grow: 1;
+    text-align: center;
+}

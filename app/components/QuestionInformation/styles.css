@@ -1,0 +1,6 @@
+.questionInformationBox {
+    grid-area: questionBox;
+    height: 100%;
+    width: 100%;
+    background-color: gold;
+}

@@ -1,0 +1,14 @@
+.topBar {
+    width: 100%;
+    grid-area: topBar;
+
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    font-size: 18px;
+}
+
+
+

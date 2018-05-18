@@ -22,13 +22,14 @@
     height: 100%;
     grid-area: leftNav;
     vertical-align: middle;
-
+    cursor: pointer;
 }
 
 .rightNav {
     height: 100%;
     grid-area: rightNav;
     vertical-align: middle;
+    cursor: pointer;
 
 }
 

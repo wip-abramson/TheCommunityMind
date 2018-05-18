@@ -11,19 +11,29 @@ import ApproveLink from './MenuItems/ApproveLink';
 import Incentivise from './MenuItems/Incentivise';
 import ViewTopic from './MenuItems/ViewTopic';
 
-const Topic = ({styles, topic, strength}) =>
-  <div className={styles.topic}>
-    <Dropdown
-      title={topic.name}
-      >
-      <FollowTopic topicId={topic.id}/>
-      <ApproveLink topicId={topic.id}/>
-      <Incentivise topicId={topic.id}/>
-      <ViewTopic topicId={topic.id}/>
-    </Dropdown>
-    <Count amount={strength}/>
+const Topic = ({ styles, topic, strength, isInput }) => {
 
-  </div>;
+  const view = isInput ?
+    <div className={styles.topic}>
+      {topic.name}
+    </div> :
+
+    <div className={styles.topic}>
+      <Dropdown
+        title={topic.name}
+        fontSize={15}
+      >
+        <FollowTopic topicId={topic.id}/>
+        <ApproveLink topicId={topic.id}/>
+        <Incentivise topicId={topic.id}/>
+        <ViewTopic topicId={topic.id}/>
+      </Dropdown>
+      <Count amount={strength}/>
+
+    </div>;
+
+  return view;
+};
 
 Topic.propTypes = {
   styles: PropTypes.shape({}),

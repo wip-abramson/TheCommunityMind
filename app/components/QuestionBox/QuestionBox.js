@@ -56,20 +56,47 @@ class QuestionBox extends React.Component {
 
     this.state = {
       topics: [],
-      linkType: {},
+      linkTypeSelected: null,
       questionText: ""
     };
 
     this.handleTextChange = this.handleTextChange.bind(this);
     this.handleAddTopic = this.handleAddTopic.bind(this);
+    this.selectLinkType = this.selectLinkType.bind(this);
   }
+
+  // TODO not happy with how this is achieved. Should load links from BE
+  linkTypes = [{id: 1, linkType: "Super Questions"}, {id: 2, linkType: "Sub Questions"}, {id: 3, linkType: "Unrelated Question"}];
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevProps.isInput !== this.props.isInput && this.props.isInput === false) {
       this.setState({
         topics: [],
-        linkType: {},
+        linkTypeSelected: null,
         questionText: ""
+      })
+    }
+  }
+
+  selectLinkType(linkTypeId) {
+    if (this.props.isInput) {
+      this.updateQuestionInputLinkType(linkTypeId);
+    }
+    else {
+      // TODO load links in view to navigate through
+    }
+  }
+
+  updateQuestionInputLinkType(linkTypeId) {
+    if (this.state.linkTypeSelected && this.state.linkTypeSelected.id === linkTypeId) {
+      this.setState({
+        linkTypeSelected: null
+      })
+    }
+    else {
+      let linkIds = this.linkTypes.map(type => type.id);
+      this.setState({
+        linkTypeSelected: this.linkTypes[linkIds.indexOf(linkTypeId)]
       })
     }
   }
@@ -82,11 +109,11 @@ class QuestionBox extends React.Component {
 
   handleAddTopic(topic) {
     this.props.findOrCreateTopic(topic)
-      .then(createdTopic => {
-        console.log(createdTopic)
-        if (this.props.isInput && createdTopic) {
+      .then(response => {
+        if (this.props.isInput && response.data.findOrCreateTopic) {
+          console.log("adding topics", response.data.findOrCreateTopic);
           this.setState({
-            topics: [createdTopic, ...this.state.topics]
+            topics: [...this.state.topics, response.data.findOrCreateTopic]
           })
         }
       })
@@ -97,19 +124,24 @@ class QuestionBox extends React.Component {
 
   }
 
+
   render() {
+    // TODO hasMoreTopics needs to be more defined then just not input
     return (
       <div className={styles.questionBox}>
         <TopicsBar
           topics={this.props.isInput ? this.state.topics : topics}
           hasMoreTopics={!this.props.isInput}
           onAddTopic={this.handleAddTopic}
-
+          isInput={this.props.isInput}
         />
         {this.props.isInput ?
           <QuestionInput value={this.state.questionText} onInputChange={this.handleTextChange}/> :
           <QuestionText questionText="Do all questions need answers?"/>}
-        <QuestionLinksBar isInput={this.props.isInput}/>
+        <QuestionLinksBar
+          selectedLinkType={this.state.linkTypeSelected}
+          selectLinkType={this.selectLinkType}
+          isInput={this.props.isInput}/>
       </div>
     )
   }

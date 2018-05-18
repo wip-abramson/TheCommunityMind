@@ -13,11 +13,11 @@ import LoadMoreTopics from './components/LoadMoreTopics';
 
 
 
-const TopicsBar = ({ topics, hasMoreTopics, onAddTopic }) =>
+const TopicsBar = ({ topics, hasMoreTopics, onAddTopic, isInput }) =>
 
   <div className={styles.topicsBar}>
     <div className={styles.topics}>
-      {topics.map(topic => <Topic topic={topic} strength={21} styles={styles}/>)}
+      {topics.map(topic => { console.log(topic); return <Topic topic={topic} strength={21} styles={styles} isInput={isInput}/>;})}
     </div>
     <LoadMoreTopics isMore={hasMoreTopics}/>
     <TopicInput onAddTopic={onAddTopic}/>
@@ -47,7 +47,8 @@ const TopicsBar = ({ topics, hasMoreTopics, onAddTopic }) =>
 TopicsBar.propTypes = {
   topics: PropTypes.array.isRequired,
   hasMoreTopics: PropTypes.bool.isRequired,
-  onAddTopic: PropTypes.func.isRequired
+  onAddTopic: PropTypes.func.isRequired,
+  isInput: PropTypes.func.isRequired
 };
 
 export default TopicsBar;

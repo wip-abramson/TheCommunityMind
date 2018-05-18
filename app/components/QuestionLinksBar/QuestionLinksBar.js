@@ -15,29 +15,14 @@ class QuestionLinksBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      checkboxSelected: {
-        id: 1,
-        linkType: "Super Question"
-      }
+      checkboxSelected: null
     };
 
-    this.selectLinkType = this.selectLinkType.bind(this);
+    this.getIdSelected = this.getIdSelected.bind(this);
   }
 
-  // TODO not happy with how this is achieved. Should load links from BE
-  linkTypes = [{id: 1, linkType: "Super Questions"}, {id: 2, linkType: "Sub Questions"}, {id: 3, linkType: "Unrelated Question"}];
-
-  selectLinkType(id) {
-    if (this.props.isInput) {
-      let linkIds = this.linkTypes.map(type => type.id);
-      this.setState({
-        checkboxSelected: this.linkTypes[linkIds.indexOf(id)]
-      })
-    }
-    else {
-      // TODO load links in view to navigate through
-    }
-
+  getIdSelected() {
+    return this.props.selectedLinkType ? this.props.selectedLinkType.id : 0
   }
 
   render() {
@@ -45,34 +30,35 @@ class QuestionLinksBar extends React.Component {
 
       <div className={styles.linksBar}>
         <QuestionLinkType
-          selectLinkType={this.selectLinkType}
+          selectLinkType={this.props.selectLinkType}
           isInput={this.props.isInput}
           hasBorder={false}
-          idSelected={this.state.checkboxSelected.id}
-          linkType={{id: 1, linkType: "Super Questions"}}
-          amount={5}/>
+          idSelected={this.getIdSelected()}
+          linkType={{id: 1, linkType: "Super Questions", amount: 26}}/>
         <QuestionLinkType
-          selectLinkType={this.selectLinkType}
+          selectLinkType={this.props.selectLinkType}
           isInput={this.props.isInput}
-          hasBorder={true} idSelected={this.state.checkboxSelected.id}
-          linkType={{id: 2, linkType: "Sub Questions"}}
-          amount={25}/>
-        {/*<QuestionLinkType isInput={this.props.isInput} hasBorder={true} linkType="Related Questions" amount={11}/>*/}
-        {this.props.isInput ?
-          <QuestionLinkType
-            selectLinkType={this.selectLinkType}
-            isInput={this.props.isInput}
-            hasBorder={true}
-            idSelected={this.state.checkboxSelected.id}
-            linkType={{id: 3, linkType: "Unrelated Question"}}/>
-          : null}
+          hasBorder={true}
+          idSelected={this.getIdSelected()}
+          linkType={{id: 2, linkType: "Sub Questions", amount: 29}}/>
+        <QuestionLinkType
+          selectLinkType={this.props.selectLinkType}
+          isInput={this.props.isInput}
+          hasBorder={true}
+          linkType={{id: 3, linkType: "Related Questions", amount: 11}}
+          idSelected={this.getIdSelected()}/>
       </div>
     )
   }
 }
 
 QuestionLinkType.propTypes = {
-  isInput: PropTypes.bool.isRequired
+  isInput: PropTypes.bool.isRequired,
+  selectedLinkType: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    linkType: PropTypes.string.isRequired,
+  }),
+  selectLinkType: PropTypes.func.isRequired
 };
 
 export default QuestionLinksBar;

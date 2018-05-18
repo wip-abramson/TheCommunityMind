@@ -18,7 +18,7 @@ import FollowUser from './MenuItems/FollowUser';
 
 const Username = ({user}) =>
   <div className={styles.username}>
-    <Dropdown title={user.username} style={{"fontSize": "22px"}}>
+    <Dropdown title={user.username} fontSize={22}>
       <FollowUser userId={user.id}/>
       <TipUser userId={user.id}/>
       <ViewProfile userId={user.id}/>

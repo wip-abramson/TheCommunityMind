@@ -36,6 +36,7 @@ class TopicInput extends React.Component {
         <input
           placeholder="Suggest Topic"
           onChange={this.handleTopicInputChange}
+          value={this.state.topicInput}
           onKeyUp={(e) => {
             if (e.keyCode === 13) {
               this.props.onAddTopic(this.state.topicInput);

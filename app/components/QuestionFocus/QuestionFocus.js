@@ -38,6 +38,7 @@ class QuestionFocus extends React.Component {
     };
 
     this.toggleIsInput = this.toggleIsInput.bind(this);
+    this.handleSubmitQuestion = this.handleSubmitQuestion.bind(this);
   }
 
   toggleIsInput() {
@@ -47,12 +48,16 @@ class QuestionFocus extends React.Component {
     })
   }
 
+  handleSubmitQuestion(data) {
+    console.log(data);
+  }
+
   render() {
     return (
       <div className={styles.focusGrid}>
         <QuestionUsernameBar isInput={this.state.isInput} user={{ id: "1", username: "Will" }}/>
         <FaLeftArrow size={30} className={styles.leftNav}/>
-        <QuestionBox isInput={this.state.isInput}/>
+        <QuestionBox isInput={this.state.isInput} onSubmitQuestion={this.handleSubmitQuestion}/>
         <FaRightArrow size={30} className={styles.rightNav}/>
         <UserInteractionsBar isInput={this.state.isInput} questionId={11} toggleIsInput={this.toggleIsInput}/>
       </div>

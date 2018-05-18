@@ -18,16 +18,16 @@ const QuestionLinkType = ({hasBorder, linkType, amount, isInput, selectLinkType,
     {isInput ?
       <Checkbox
         isSelected={idSelected === linkType.id}
-        selectCheckbox={() => {console.log("Select", linkType.id); selectLinkType(linkType.id)}}/>
-      : <Count amount={amount}/>}
+        selectCheckbox={() => selectLinkType(linkType.id)}/>
+      : <Count amount={linkType.amount}/>}
   </div>;
 
 QuestionLinkType.propTypes = {
   linkType: PropTypes.shape({
     id: PropTypes.number.isRequired,
-    linkType: PropTypes.string.isRequired
+    linkType: PropTypes.string.isRequired,
+    amount: PropTypes.number.isRequired
   }).isRequired,
-  amount: PropTypes.number,
   hasBorder: PropTypes.bool.isRequired,
   isInput: PropTypes.bool.isRequired,
   selectLinkType: PropTypes.func.isRequired,

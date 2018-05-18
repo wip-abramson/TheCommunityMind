@@ -7,6 +7,8 @@ import PropTypes from 'prop-types';
 import styles from './styles.css';
 
 const Checkbox = ({ selectCheckbox, isSelected }) => {
+  console.log(isSelected)
+
   return (
     <span className={styles.checkbox}>
     <input type="checkbox" checked={isSelected} onClick={selectCheckbox}/>

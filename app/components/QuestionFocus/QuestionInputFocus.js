@@ -46,7 +46,7 @@ class QuestionInputFocus extends React.Component {
 
   isInput = true;
   // TODO not happy with how this is achieved. Should load links from BE
-  linkTypes = [{id: 1, linkType: "Super Questions"}, {id: 2, linkType: "Sub Questions"}, {id: 3, linkType: "Unrelated Question"}];
+  linkTypes = [{id: '1', linkType: "Super Questions"}, {id: '2', linkType: "Sub Questions"}, {id: '3', linkType: "Unrelated Question"}];
 
   constructor(props) {
     super(props);
@@ -99,7 +99,6 @@ class QuestionInputFocus extends React.Component {
     this.props.findOrCreateTopic(topic)
       .then(response => {
         if (response.data.findOrCreateTopic) {
-          console.log("adding topics", response.data.findOrCreateTopic);
           this.setState({
             question: {
               ...this.state.question,
@@ -115,8 +114,8 @@ class QuestionInputFocus extends React.Component {
 
   }
 
-  handleSubmitQuestion(data) {
-    console.log(data);
+  handleSubmitQuestion() {
+    console.log(this.state.question);
   }
 
   render() {
@@ -132,7 +131,11 @@ class QuestionInputFocus extends React.Component {
           linkTypes={this.linkTypes}
           onAddTopic={this.handleAddTopic}
         />
-        <UserInteractionsBar isInput={this.isInput} questionId={11} toggleIsInput={this.props.toggleIsInput}/>
+        <UserInteractionsBar
+          isInput={this.isInput}
+          questionId={11}
+          onSubmitQuestion={this.handleSubmitQuestion}
+          toggleIsInput={this.props.toggleIsInput}/>
       </div>
 
     )

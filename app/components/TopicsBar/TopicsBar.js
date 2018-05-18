@@ -17,7 +17,7 @@ const TopicsBar = ({ topics, hasMoreTopics, onAddTopic, isInput }) =>
 
   <div className={styles.topicsBar}>
     <div className={styles.topics}>
-      {topics.map(topic => { console.log(topic); return <Topic topic={topic} strength={21} styles={styles} isInput={isInput}/>;})}
+      {topics.map(topic => <Topic topic={topic} strength={21} styles={styles} isInput={isInput}/>)}
     </div>
     <LoadMoreTopics isMore={hasMoreTopics}/>
     <TopicInput onEnter={onAddTopic}/>

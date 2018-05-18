@@ -41,7 +41,7 @@ export const topicLogic = {
     return authLogic.getAuthenticatedUser(ctx)
       .then(user => {
         return Tag.findOrCreate({
-          where: { name: name.toLowerCase() }
+          where: { name: name.substr(0,1).toUpperCase() + name.substr(1).toLowerCase() }
         })
           .then(tag => {
             console.log(tag[0].name)

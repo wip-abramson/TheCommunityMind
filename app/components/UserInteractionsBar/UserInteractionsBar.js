@@ -13,25 +13,24 @@ import AddLinkIcon from './icons/AddLinkIcon';
 import AcceptQuestionIcon from './icons/AcceptQuestionIcon';
 import CancelQuestionIcon from './icons/CancelQuestionIcon';
 
-const UserInteractionsBar = ({ questionId, toggleIsInput, isInput }) => {
-  const view = isInput ? (
+const UserInteractionsBar = ({ questionId, toggleIsInput, isInput, onSubmitQuestion }) => {
+  return isInput ? (
     <div className={styles.bottomBar}>
-      <div className={styles.spaceHolder}></div>
+      <div className={styles.spaceHolder}/>
       <CancelQuestionIcon cancelQuestionInput={toggleIsInput}/>
-      <AcceptQuestionIcon acceptQuestionInput={() => console.log("Accept question")}/>
+      <AcceptQuestionIcon acceptQuestionInput={onSubmitQuestion}/>
     </div>
   ) : (
     <div className={styles.bottomBar}>
       <StarIcon starCount={13}/>
       <ThinkIcon/>
-      <div className={styles.spaceHolder}></div>
+      <div className={styles.spaceHolder}/>
       <AddLinkIcon/>
       <AskQuestionIcon changeToInputView={toggleIsInput}/>
     </div>
   );
 
-  return view;
-}
+};
 
 
 
@@ -39,7 +38,8 @@ const UserInteractionsBar = ({ questionId, toggleIsInput, isInput }) => {
 UserInteractionsBar.propTypes = {
   questionId: PropTypes.string.isRequired,
   toggleIsInput: PropTypes.func.isRequired,
-  isInput: PropTypes.bool.isRequired
+  isInput: PropTypes.bool.isRequired,
+  onSubmitQuestion: PropTypes.func.isRequired
 };
 
 export default UserInteractionsBar;

@@ -10,12 +10,16 @@ import Username from '../Username/Username';
 import FocusType from '../FocusType/FocusType';
 import TimeCreated from '../TimeCreated/TimeCreated';
 
-// TODO change to props for focus type and user
-const QuestionUsernameBar = ({ user, isInput }) => {
-  const view = isInput ? (<div className={styles.topBar}/>) : (
+const QuestionUsernameBar = ({ user, isInput, focusType }) => {
+  const view = isInput ? (<div className={styles.topBar}>
+    <div/>
+    <FocusType focusType={focusType}/>
+    <div/>
+  </div>) : (
     <div className={styles.topBar}>
-      <FocusType focusType="Question Focus"/>
       <TimeCreated time="3 days ago"/>
+
+      <FocusType focusType={focusType}/>
       <Username user={user}/>
     </div>  );
 
@@ -27,7 +31,8 @@ QuestionUsernameBar.propTypes = {
     id: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired
   }).isRequired,
-  isInput: PropTypes.bool.isRequired
+  isInput: PropTypes.bool.isRequired,
+  focusType: PropTypes.string.isRequired
 };
 
 export default QuestionUsernameBar;

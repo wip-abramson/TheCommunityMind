@@ -8,7 +8,7 @@ import LoginContainer from "../components/Authentication/LoginContainer";
 import RegisterContainer from "../components/Authentication/RegisterContainer";
 import UserProfileContainer from "../components/UserProfile/UserProfileContainer";
 import LandingPage from '../components/LandingPage/LandingPage';
-import QuestionFocus from '../components/QuestionFocus/QuestionFocus';
+import QuestionFocusContainer from '../components/QuestionFocus/QuestionFocusContainer';
 
 const AppRouter = function () {
   return (
@@ -21,7 +21,7 @@ const AppRouter = function () {
           <IndexRoute component={QuestionsView}/>
           {/*<Route path="/thread/:name" component={ThreadPage}/>*/}
         </Route>
-        <Route path='/Landing' component={QuestionFocus}/>
+        <Route path='/Landing' component={QuestionFocusContainer}/>
 
         <Route path='question/:id' component={QuestionsView}/>
 

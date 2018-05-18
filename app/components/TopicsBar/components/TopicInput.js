@@ -39,8 +39,8 @@ class TopicInput extends React.Component {
           value={this.state.topicInput}
           onKeyUp={(e) => {
             if (e.keyCode === 13) {
-              this.props.onAddTopic(this.state.topicInput);
               this.clearInput();
+              this.props.onEnter(this.state.topicInput);
             }
           }}/>
       </div>
@@ -49,7 +49,7 @@ class TopicInput extends React.Component {
 }
 
 TopicInput.propTypes = {
-  onAddTopic: PropTypes.func.isRequired
+  onEnter: PropTypes.func.isRequired
 };
 
 export default TopicInput;

@@ -15,7 +15,7 @@ import FaLeftArrow from 'react-icons/lib/fa/arrow-left';
 
 // TODO make nav items do stuff (Separate component)
 // TODO left arrow should go to previous right arrow should go to random unless user selects a link to traverse
-// const QuestionFocus = ({ isInput, focussedId }) => {
+// const QuestionFocusContainer = ({ isInput, focussedId }) => {
 //   return (
 //     <div className={styles.focusGrid}>
 //       <QuestionUsernameBar/>
@@ -31,21 +31,12 @@ import FaLeftArrow from 'react-icons/lib/fa/arrow-left';
 // TODO implement left and right arrow nav
 class QuestionFocus extends React.Component {
 
+  isInput = false;
+
   constructor(props) {
     super(props);
-    this.state = {
-      isInput: false
-    };
 
-    this.toggleIsInput = this.toggleIsInput.bind(this);
     this.handleSubmitQuestion = this.handleSubmitQuestion.bind(this);
-  }
-
-  toggleIsInput() {
-    console.log("Changinging input type")
-    this.setState({
-      isInput: !this.state.isInput
-    })
   }
 
   handleSubmitQuestion(data) {
@@ -55,11 +46,23 @@ class QuestionFocus extends React.Component {
   render() {
     return (
       <div className={styles.focusGrid}>
-        <QuestionUsernameBar isInput={this.state.isInput} user={{ id: "1", username: "Will" }}/>
+        <QuestionUsernameBar isInput={this.isInput} user={{ id: "1", username: "Will" }}
+                             focusType="Question Focus"/>
         <FaLeftArrow size={30} className={styles.leftNav}/>
-        <QuestionBox isInput={this.state.isInput} onSubmitQuestion={this.handleSubmitQuestion}/>
+        <QuestionBox
+          question={{
+            id: "1",
+            questionText: "Why can't I view my digital footprint in one easily accessible user interface",
+            topics: [
+              { id: "12", name: "Questioning" },
+              { id: "13", name: "Answers" },
+              { id: "11", name: "Meaning" },
+              { id: "1", name: "Ideas" }] }}
+          isInput={this.isInput}
+          onSubmitQuestion={this.handleSubmitQuestion}/>
         <FaRightArrow size={30} className={styles.rightNav}/>
-        <UserInteractionsBar isInput={this.state.isInput} questionId={11} toggleIsInput={this.toggleIsInput}/>
+        <UserInteractionsBar isInput={this.isInput} questionId={11}
+                             toggleIsInput={this.props.toggleIsInput}/>
       </div>
 
     )
@@ -68,7 +71,8 @@ class QuestionFocus extends React.Component {
 
 QuestionFocus.propTypes = {
   isInput: PropTypes.bool.isRequired,
-  focussedId: PropTypes.string.isRequired
+  focussedId: PropTypes.string.isRequired,
+  toggleIsInput: PropTypes.func.isRequired
 };
 
 export default QuestionFocus;

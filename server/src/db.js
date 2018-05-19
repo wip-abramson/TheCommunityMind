@@ -2,7 +2,6 @@ import Sequelize from "sequelize";
 import faker from 'faker';
 import bcrypt from 'bcrypt';
 
-
 const Op = Sequelize.Op;
 
 import ostUserQueries from './ost/ostUserQueries';
@@ -31,7 +30,7 @@ function createDatabaseConnection() {
     return new Sequelize('communitymind', null, null, {
       dialect: 'sqlite',
       storage: './mind.sqlite',
-      logging: true, // true to see logs
+      logging: false, // true to see logs
     })
   }
 }
@@ -89,9 +88,6 @@ const QuestionLinkModel = Conn.define('questionLink', {
     primaryKey: true,
     autoIncrement: true
   },
-  approval: {
-    type: Sequelize.INTEGER
-  }
 });
 
 const QuestionLinkApproval = Conn.define('question_link_approval');
@@ -196,9 +192,9 @@ UserModel.belongsToMany(QuestionModel, {
   as: "Ponder"
 })
 
-
 TopicModel.hasMany(QuestionTopicModel);
 QuestionTopicModel.belongsTo(QuestionModel);
+
 TopicModel.belongsToMany(QuestionModel, {
   through: {
     model: QuestionTopicModel,
@@ -222,6 +218,9 @@ UserModel.belongsToMany(QuestionTopicModel, {
   as: "TopicLinkApproval",
 });
 
+UserModel.hasMany(QuestionTopicModel, { as: "QuestionTopicLink" });
+QuestionTopicModel.belongsTo(UserModel, { as: "Owner" });
+
 QuestionTopicModel.belongsToMany(UserModel, {
   through: {
     model: UserTopicLinkApprovalModel,
@@ -229,6 +228,9 @@ QuestionTopicModel.belongsToMany(UserModel, {
   },
   as: "TopicLinkApproval",
 });
+
+UserModel.hasMany(QuestionLinkModel)
+QuestionLinkModel.belongsTo(UserModel, { as: "Owner" });
 
 UserModel.belongsToMany(QuestionLinkModel, {
   through: {
@@ -246,7 +248,6 @@ QuestionLinkModel.belongsToMany(UserModel, {
   as: "QuestionLinkApproval"
 });
 
-
 UserModel.belongsToMany(TopicModel, {
   through: {
     model: UserTopicModel,
@@ -254,16 +255,12 @@ UserModel.belongsToMany(TopicModel, {
   },
 });
 
-
-
 TopicModel.belongsToMany(UserModel, {
   through: {
     model: UserTopicModel,
     unique: true,
   },
 });
-
-
 
 faker.seed(123); // consistent data every time reload app
 
@@ -339,8 +336,8 @@ Conn.sync({ force: true })
   .then(() => {
     return QuestionLinkTypeModel.create({ linkType: PARENT_CHILD_LINK })
       .then(createdLinkType => {
-        QuestionLinkType.create({linkType: RELATED_LINK});
-        QuestionLinkType.create({linkType: REWORDING_LINK});
+        QuestionLinkType.create({ linkType: RELATED_LINK });
+        QuestionLinkType.create({ linkType: REWORDING_LINK });
         const passwrd = "tPass2";
         return bcrypt.hash(passwrd, 10)
           .then((hash1) => {
@@ -391,12 +388,18 @@ Conn.sync({ force: true })
 
                                 console.log("addQuestion");
                                 topQuestion.addStarredBy(user);
-                                topQuestion.setTopics(createdTopics).then(questionTopics => {
-                                  // console.log(questionTopic.Instance.proptotype);
-                                  questionTopics.forEach(questionTopic => user.addTopicLinkApproval(questionTopic));
-
+                                createdTopics.forEach(topic => {
+                                  console.log("CREATE Q TOPIC")
+                                  return user.createQuestionTopicLink({
+                                    questionId: topQuestion.id,
+                                    topicId: topic.id
+                                  })
+                                    .then(questionTopic => {
+                                      console.log("CREATED LINK", questionTopic.userId);
+                                        return user.addTopicLinkApproval(questionTopic)
+                                      }
+                                    )
                                 });
-
 
                                 return topQuestionData.questions.forEach((secondQuestionData) => {
                                   return user.createQuestion({
@@ -405,12 +408,13 @@ Conn.sync({ force: true })
                                   })
                                     .then((secondQuestion) => {
                                       // console.log(newWhatIf == null)
-                                      return QuestionLinkModel.create({
-                                        approval: 0,
+                                      console.log("THEUSER", user.id)
+                                      return user.createQuestionLink({
                                         fromId: topQuestion.id,
                                         toId: secondQuestion.id,
-                                        questionLinkTypeId: createdLinkType.id
+                                        questionLinkTypeId: createdLinkType.id,
                                       }).then(questionLink => {
+                                        console.log("Created question link", questionLink.userId)
                                         user.addQuestionLinkApproval(questionLink);
 
                                         console.log("QUESTIONLINKTYPEID", questionLink.questionLinkTypeId);
@@ -420,9 +424,8 @@ Conn.sync({ force: true })
                                             stars: 0
                                           })
                                             .then((thirdQuestion) => {
-
-                                              QuestionLinkModel.create({
-                                                approval: 0,
+                                              user.createQuestionLink({
+                                                ownerId: user.id,
                                                 fromId: secondQuestion.id,
                                                 toId: thirdQuestion.id,
                                                 questionLinkTypeId: 1

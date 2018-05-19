@@ -5,7 +5,10 @@ import {QuestionLink, QuestionLinkType, User, Op} from '../db';
 import {paginationLogic} from './PaginationLogic';
 import {authLogic} from './AuthLogic';
 
-const linkTypes = [{type: "parentChild", id: 1}, {type: "related", id: 2}, {type: "rewording", id: 3}];
+export const SUPER_QUESTION = "Super Question";
+export const SUB_QUESTION = "Sub Question";
+export const RELATED_QUESTION = "Related Question";
+export const linkTypes = [SUPER_QUESTION, SUB_QUESTION, RELATED_QUESTION]; // TODO {type: "rewording", id: 3}];
 
 
 export const questionLinkLogic = {
@@ -39,6 +42,10 @@ export const questionLinkLogic = {
         console.log(error);
         return false;
       })
+  },
+  owner(questionLink, args, ctx) {
+    console.log("OWNERID",questionLink.userId);
+    return User.findById(questionLink.userId);
   },
   // TODO how can I better represent linkTypeId
   subQuestionLinks(question, {first, after, last, before}, ctx) {

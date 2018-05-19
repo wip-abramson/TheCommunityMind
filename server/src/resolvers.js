@@ -226,6 +226,9 @@ export const resolvers = {
     },
     approvedByCurrentUser(questionLink, args, ctx) {
       return questionLinkLogic.approvedByCurrentUser(questionLink, args, ctx);
+    },
+    owner(questionLink, args, ctx) {
+      return questionLinkLogic.owner(questionLink, args, ctx);
     }
 
   },
@@ -241,6 +244,9 @@ export const resolvers = {
     },
     approvedByCurrentUser(questionTopicLink, args, ctx) {
       return questionTopicLinkLogic.approvedByCurrentUser(questionTopicLink, args, ctx);
+    },
+    owner(questionTopicLink, args, ctx) {
+      return questionTopicLinkLogic.owner(questionTopicLink, args, ctx);
     }
   }
 }

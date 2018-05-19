@@ -1,27 +1,40 @@
 /**
  * Created by will on 07/11/17.
  */
-import { Question, User, Topic, QuestionTopicLink } from '../db';
+import { Question, User, Topic, QuestionTopicLink, QuestionLink } from '../db';
 import { authLogic } from './AuthLogic';
 import { paginationLogic } from './PaginationLogic';
 import { questionTopicLinkLogic } from './QuestionTopicLinkLogic'
 import ostTransactions from '../ost/ostTransactions';
+import {SUPER_QUESTION, SUB_QUESTION, RELATED_QUESTION} from './QuestionLinkLogic'
 
 export const questionLogic = {
-  createQuestion(_, { questionText, parentId }, ctx) {
+  createQuestion(_, { questionText, topicIds, linkType, questioningId }, ctx) {
     console.log('CREATE Q')
+
     return authLogic.getAuthenticatedUser(ctx)
       .then(user => {
-        ostTransactions.executeQuestionTransaction(user.ostUuid).then(transactionHash => {
+        return ostTransactions.executeQuestionTransaction(user.ostUuid).then(transactionHash => {
           console.log(transactionHash);
-        });
-        return Question.create({
-          questionText,
-          stars: 0,
-          userId: user.id,
-          parentId
+          return user.createQuestion({
+            questionText,
+            stars: 0,
+          }).then(question => {
 
-        })
+            return Promise.all(topicIds.map(topicId => user.createQuestionTopicLink({questionId: question.id, topicId: topicId})))
+              .then(() => {
+                if (linkType && questioningId) {
+                  return createQuestionLink(user, linkType, question, questioningId)
+                    .then(questionLink => {
+                      return user.addQuestionLinkApproval(questionLink)
+                        .then(() => question)
+                    })
+                }
+                return question;
+              })
+          })
+        });
+
       });
   },
   // TODO not sure we need this
@@ -385,4 +398,32 @@ export const questionLogic = {
       })
   },
 
+}
+
+function createQuestionLink(user, linkType, question, questioningId) {
+  console.log("Creating Link");
+  if (linkType === SUPER_QUESTION) {
+    return user.createQuestionLink({
+      fromId: question.id,
+      toId: questioningId,
+      questionLinkTypeId: 1
+    })
+  }
+  else if (linkType === SUB_QUESTION) {
+    return user.createQuestionLink({
+      fromId: questioningId,
+      toId: question.id,
+      questionLinkTypeId: 1
+    })
+  }
+  else if (linkType === RELATED_QUESTION) {
+    return user.createQuestionLink({
+      fromId: question.id,
+      toId: questioningId,
+      questionLinkTypeId: 2
+    })
+  }
+  else {
+    throw new Error("Invalid link type");
+  }
 }

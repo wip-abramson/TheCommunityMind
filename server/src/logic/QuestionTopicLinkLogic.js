@@ -32,6 +32,9 @@ export const questionTopicLinkLogic = {
         return false;
       })
   },
+  owner(questionTopicLink, args, ctx) {
+    return User.findById(questionTopicLink.userId);
+  },
   buildPaginatedQuestionTopicLinks(args, before) {
     return QuestionTopicLink.findAll(args)
       .then(questionTopicLinks => {

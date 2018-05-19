@@ -15,11 +15,21 @@ const ostTransactions = {
       from_uuid,
       to_uuid: COMPANY_UUID,
       transaction_kind: TRANSACTION_TYPES.Question
-    }).then(response => {
-      console.log("Successfully executed question transaction", response);
+    }).then(transaction_result => {
+      ost.monitorTransaction(transaction_result.transaction_uuid , function(transaction) {
+        if (transaction.status === "complete") {
+          return transaction_result.transaction_uuid;
+        } else if (transaction.status === "failed") {
+          console.log("Transaction failed")
+          throw new Error('Transaction Failed');
+
+        } else {
+          console.log("Status: ",transaction.status)
+        }
+      });
       //TODO monitor the transaciton and push notifications to frontend
 
-      return response.transaction_uuid;
+
     })
       .catch(error => {
         console.log("Error executing question transaction", error);

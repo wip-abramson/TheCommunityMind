@@ -311,7 +311,7 @@ export const userLogic = {
               if (!ostUser) {
                 throw new Error('Unable to fetch ost user with uuid: ' + user.ostUuid);
               }
-              return ostUser.token_balance;
+              return Math.floor(ostUser.token_balance);
             })
         }
         else {
@@ -327,9 +327,11 @@ export const userLogic = {
     return authLogic.getAuthenticatedUser(ctx)
       .then(authorisedUser => {
         if (authorisedUser && authorisedUser.id === user.id) {
+          console.log("Authorized")
           return ostUserQueries.getUser(user.ostUuid, user.username)
             .then(ostUser => {
               if (!ostUser) {
+                console.log('No User')
                 throw new Error('Unable to fetch ost user with uuid: ' + user.ostUuid);
               }
               return ostUser.total_airdropped_tokens;
@@ -350,9 +352,9 @@ export const userLogic = {
 
 function paginate(first, after, last, before, questions) {
 
-  var hasNextPage = false;
-  var hasPreviousPage = false;
-  var limitedItems = [];
+  let hasNextPage = false;
+  let hasPreviousPage = false;
+  let limitedItems = [];
 
   const itemLimit = first || last;
 

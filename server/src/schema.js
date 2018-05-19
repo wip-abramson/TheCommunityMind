@@ -54,6 +54,7 @@ const typeDefs = `
     question: Question!
     approval: Int!
     approvedByCurrentUser: Boolean!
+    owner: User!
   }
  
 
@@ -86,6 +87,7 @@ const typeDefs = `
     approval: Int!
     linkType: String!
     approvedByCurrentUser: Boolean!
+    owner: User!
   }
   
  
@@ -126,7 +128,8 @@ const typeDefs = `
    }
   
   type Mutation {
-    createQuestion(questionText: String!, parentId: ID): Question
+    createQuestion(questionText: String!, topicIds: [ID]!, linkType: String, questioningId: ID): Question
+    
     ponderQuestion(id: ID!): Question
     unponderQuestion(id: ID!): Question
     deleteQuestion(id: ID!): Question

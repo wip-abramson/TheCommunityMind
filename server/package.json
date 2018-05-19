@@ -37,7 +37,7 @@
     "ostkit": "0.0.6",
     "passport": "^0.3.2",
     "query-string": "^6.0.0",
-    "sequelize": "^3.30.4",
+    "sequelize": "^4.37.7",
     "sqlite3": "^3.1.8"
   },
   "devDependencies": {

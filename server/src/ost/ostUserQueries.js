@@ -40,7 +40,7 @@ const ostUserQueries = {
     // TODO if needed
     },
     airdropNewUser: () => {
-      const amount = 50;
+      const amount = 5;
       const list_type = "never_airdropped";
       ost.usersAirdropDrop({amount, list_type})
         .then(response => {

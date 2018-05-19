@@ -1,12 +1,12 @@
 /**
  * Created by will on 08/11/17.
  */
-import { Tag, User, Question } from '../db';
+import { Topic, User, Question } from '../db';
 import { authLogic } from './AuthLogic';
 
 export const topicLogic = {
   query(_, { name }, ctx) {
-    return Tag.findAll({
+    return Topic.findAll({
       // where: {
       //   name,
       // }
@@ -22,7 +22,7 @@ export const topicLogic = {
   topTopics(_, args, ctx) {
     return authLogic.getAuthenticatedUser(ctx)
       .then(user => {
-        return Tag.findAll({
+        return Topic.findAll({
           include: [{ model: User, where: { id: user.id } }]
         })
           .then(tags => {
@@ -31,7 +31,7 @@ export const topicLogic = {
       })
       .catch(error => {
         console.log("No User Logged in, Returning top general topics");
-        return Tag.findAll()
+        return Topic.findAll()
           .then(tags => {
             return rankedTags(tags);
           })
@@ -40,7 +40,7 @@ export const topicLogic = {
   findOrCreateTopic(_, { name }, ctx) {
     return authLogic.getAuthenticatedUser(ctx)
       .then(user => {
-        return Tag.findOrCreate({
+        return Topic.findOrCreate({
           where: { name: name.substr(0,1).toUpperCase() + name.substr(1).toLowerCase() }
         })
           .then(tag => {
@@ -57,7 +57,7 @@ export const topicLogic = {
   followers(tag, args, ctx) {
     // Undecided if I need this - should users be able to see which users follow what?
     return User.findAll({
-      include: [{ model: Tag, as: "Followers", where: { id: tag.id } }]
+      include: [{ model: Topic, as: "Followers", where: { id: tag.id } }]
     })
       .then(users => {
         return users
@@ -69,7 +69,7 @@ export const topicLogic = {
   },
   questions(tag, args, ctx) {
     return Question.findAll({
-      include: [{ model: Tag, as: "Questions", where: { id: tag.id } }]
+      include: [{ model: Topic, as: "Questions", where: { id: tag.id } }]
     })
       .then(questions => {
         return questions;
@@ -81,7 +81,7 @@ export const topicLogic = {
   },
   numberOfFollowers(tag, args, ctx) {
     return User.count({
-      include: [{ model: Tag, as: "Followers", where: { id: tag.id } }]
+      include: [{ model: Topic, as: "Followers", where: { id: tag.id } }]
     })
       .then(count => {
         return count;
@@ -101,11 +101,11 @@ const rankedTags = (tags) => {
   }
   return Promise.all(tags.map(tag => {
     return User.count({
-      include: [{ model: Tag, where: { id: tag.id } }]
+      include: [{ model: Topic, where: { id: tag.id } }]
     })
       .then(numberOfFollowers => {
         return Question.count({
-          include: [{ model: Tag, where: { id: tag.id } }]
+          include: [{ model: Topic, where: { id: tag.id } }]
         })
           .then(numberOfQuestions => {
             return {

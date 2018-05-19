@@ -22,18 +22,40 @@ const typeDefs = `
     stars: Int!
     starredBy: [User]!
     questionText: String!
-    superQuestions(first: Int, after: String, last: Int, before: String): QuestionConnection!
+    superQuestionLinks(first: Int, after: String, last: Int, before: String): QuestionLinkConnection!
     superQuestionsCount: Int!
-    subQuestions(first: Int, after: String, last: Int, before: String): QuestionConnection!
+    subQuestionLinks(first: Int, after: String, last: Int, before: String): QuestionLinkConnection!
     subQuestionsCount: Int!
+    relatedQuestionLinks(first: Int, after: String, last: Int, before: String): QuestionLinkConnection!
+    relatedQuestionsCount: Int!
     owner: User!
-    createdAt: Date!
+    createdAt: String!
     starredByCurrentUser: Boolean!
-    watchedByCurrentUser: Boolean!
+    ponderedByCurrentUser: Boolean!
+    ponderCount: Int!
     ownedByCurrentUser: Boolean!
-    associatedWith: [Topic]!
+    linksToTopics(first: Int, after: String, last: Int, before: String): QuestionTopicLinkConnection!
   }
   
+  type QuestionTopicLinkConnection {
+    edges: [QuestionTopicLinkEdge]
+    pageInfo: PageInfo
+  }
+  
+  type QuestionTopicLinkEdge {
+    cursor: String!
+    pageInfo: PageInfo
+    node: QuestionTopicLink!
+  }
+  
+  type QuestionTopicLink {
+    id: ID!
+    topic: Topic!
+    question: Question!
+    approval: Int!
+    approvedByCurrentUser: Boolean!
+  }
+ 
 
   type QuestionConnection {
     edges: [QuestionEdge]
@@ -45,6 +67,27 @@ const typeDefs = `
     pageInfo: PageInfo
     node: Question!
   }
+  
+  type QuestionLinkConnection {
+    edges: [QuestionLinkEdge]
+    pageInfo: PageInfo
+  }
+  
+  type QuestionLinkEdge {
+    cursor: String!
+    pageInfo: PageInfo
+    node: QuestionLink!
+  }
+  
+  type QuestionLink {
+    fromQuestion: Question!
+    toQuestion: Question!
+    createdAt: Date!
+    approval: Int!
+    linkType: String!
+    approvedByCurrentUser: Boolean!
+  }
+  
  
   
   type User {
@@ -62,7 +105,7 @@ const typeDefs = `
     followsCount: Int!
     follows: [User]
     followedByCurrentUser: Boolean!
-    watches: [Question]
+    ponders: [Question]
     interestedIn: [Topic]
     totalOstBalance: Int
     totalAirdroppedBalance: Int
@@ -74,23 +117,26 @@ const typeDefs = `
    topTopics: [Topic]
    topics: [Topic]    
    user(id: ID!): User
+   question(questionId: ID!): Question!
    questions(parentId: Int, first: Int, after: String, last: Int, before: String): QuestionConnection!
    userStarredQuestions(userId: ID!, first: Int, after: String, last: Int, before: String): QuestionConnection!
    userQuestions(userId: ID!, first: Int, after: String, last: Int, before: String): QuestionConnection!
+   questionLinks(linkType: String, linkTypeId: ID): [QuestionLink] 
+   
    }
   
   type Mutation {
     createQuestion(questionText: String!, parentId: ID): Question
-    watchQuestion(id: ID!): Question
-    unwatchQuestion(id: ID!): Question
+    ponderQuestion(id: ID!): Question
+    unponderQuestion(id: ID!): Question
     deleteQuestion(id: ID!): Question
     editQuestion(id: ID!, newQuestionText: String!): Question
     starQuestion(id: ID!): Question
     unstarQuestion(id: ID!): Question
     
     findOrCreateTopic(name: String!): Topic!
-    associateQuestionWithTopic(questionId: ID!, topicId: ID!): Topic
-    removeTopicAssociationWithQuestion(questionId: ID!, topicId: ID!): Topic
+    linkQuestionWithTopic(questionId: ID!, topicId: ID!): Topic
+    removeTopicLinkFromQuestion(questionId: ID!, topicId: ID!): Topic
     addUserInterest(userId: ID!, topicId: ID!): Topic
     removeUserInterest(userId: ID!, topicId: ID!): Topic
     followUser(id: ID!): User

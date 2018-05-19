@@ -1,9 +1,10 @@
 /**
  * Created by will on 07/11/17.
  */
-import { Question, User, Tag } from '../db';
+import { Question, User, Topic, QuestionTopicLink } from '../db';
 import { authLogic } from './AuthLogic';
 import { paginationLogic } from './PaginationLogic';
+import { questionTopicLinkLogic } from './QuestionTopicLinkLogic'
 import ostTransactions from '../ost/ostTransactions';
 
 export const questionLogic = {
@@ -23,6 +24,7 @@ export const questionLogic = {
         })
       });
   },
+  // TODO not sure we need this
   deleteQuestion(_, { id }, ctx) {
     return authLogic.getAuthenticatedUser(ctx)
       .then((user) => {
@@ -52,6 +54,7 @@ export const questionLogic = {
       });
 
   },
+  // TODO this should be replaced with a rewording link
   editQuestion(_, { id, newQuestionText }, ctx) {
     return authLogic.getAuthenticatedUser(ctx)
       .then(user => {
@@ -81,7 +84,6 @@ export const questionLogic = {
     return authLogic.getAuthenticatedUser(ctx)
       .then((user) => {
         return Question.findById(id).then(unstaredQuestion => {
-          console.log("Stared Q")
           return unstaredQuestion.addStarredBy(user).then(() => {
             return unstaredQuestion;
           });
@@ -116,12 +118,12 @@ export const questionLogic = {
         return Promise.reject(error)
       })
   },
-  watchQuestion(_, { id }, ctx) {
+  ponderQuestion(_, { id }, ctx) {
     return authLogic.getAuthenticatedUser(ctx)
       .then(user => {
         return Question.findById(id)
           .then(question => {
-            return user.addWatched(question)
+            return user.addPonder(question)
               .then(() => {
                 return question;
               })
@@ -132,18 +134,18 @@ export const questionLogic = {
         return Promise.reject(error)
       })
   },
-  unwatchQuestion(_, { id }, ctx) {
+  unponderQuestion(_, { id }, ctx) {
     return authLogic.getAuthenticatedUser(ctx)
       .then(user => {
         return Question.findOne({
           where: { id: id },
-          include: [{ model: User, as: "Watched", where: { id: user.id } }]
+          include: [{ model: User, as: "Ponder", where: { id: user.id } }]
         })
           .then(question => {
             if (!question) {
-              return Promise.reject("User is not watching this question")
+              return Promise.reject("User is not pondering this question")
             }
-            return user.removeWatched(question)
+            return user.removePonder(question)
               .then(() => {
                 return question;
               })
@@ -199,15 +201,24 @@ export const questionLogic = {
         return false;
       })
   },
-  watchedByCurrentUser(question, args, ctx) {
+  ponderCount(question, args, ctx) {
+    return User.count({
+      include: [{
+        model: Question,
+        as: "Ponder",
+        where: {id: question.id}
+      }]
+    })
+  },
+  ponderedByCurrentUser(question, args, ctx) {
     return authLogic.getAuthenticatedUser(ctx)
       .then(user => {
         return Question.findOne({
           where: { id: question.id },
-          include: [{ model: User, as: "Watched", where: { id: user.id } }]
+          include: [{ model: User, as: "Ponder", where: { id: user.id } }]
         })
           .then(question => {
-            return question ? true : false;
+            return !!question;
           })
       })
       .catch(error => {
@@ -222,7 +233,7 @@ export const questionLogic = {
           where: { id: question.id, userId: user.id },
         })
           .then(question => {
-            return question ? true : false;
+            return !!question;
           })
       })
       .catch(error => {
@@ -230,30 +241,54 @@ export const questionLogic = {
         return false;
       })
   },
-  associatedWith(question, args, ctx) {
-    return Tag.findAll({
-      include: [{ model: Question, where: { id: question.id } }]
-    })
-      .then(tags => {
-        return tags;
-      })
+  createdAt(question, args, ctx) {
+    const inputDate = question.createdAt;
+    const todaysDate = new Date();
+    // TODO make much nicer
+    if(inputDate.setHours(0,0,0,0) === todaysDate.setHours(0,0,0,0)) {
+      if(todaysDate.getMinutes() === inputDate.getMinutes()) {
+        return "Just Now";
+      }
+      else if(todaysDate.getHours() === inputDate.getHours()) {
+        return todaysDate.getMinutes() - inputDate.getMinutes() + " Minutes ago";
+
+      }
+    }
+
+      return question.createdAt.toDateString();
   },
-  associateQuestionWithTag(_, { questionId, tagId }, ctx) {
+  linksToTopics(question, {first, after, last, before}, ctx) {
+    const args =paginationLogic.buildArgs(first, after, last, before);
+
+    args.include = [{ model: Question, where: { id: question.id } }];
+    return questionTopicLinkLogic.buildPaginatedQuestionTopicLinks(args, before);
+  },
+  linkQuestionWithTopic(_, { questionId, topicId }, ctx) {
     return authLogic.getAuthenticatedUser(ctx)
       .then(user => {
         return Question.findById(questionId)
           .then(question => {
-            console.log(question.userId, user.id)
+            return Topic.findOne({
+              where: { id: topicId },
+              include: [{
+                model: QuestionTopicLink,
+                where: { questionId: question.id }
+              }],
 
-            if (question.userId !== user.id) {
-              return Promise.reject("Unauthorized");
-            }
-            return Tag.findById(tagId)
-              .then(tag => {
-                return question.addTag(tag)
-                  .then(() => {
-                    return tag
-                  });
+            })
+              .then(topic => {
+                if (topic) {
+                  console.log("Approve Link")
+                  topic.addQuestionTopicUserApproval(question).then(() => topic);
+                }
+                else {
+                  return question.addTopic(topic)
+                    .then(() => {
+                    // TODO do I want to return a topic here - WHY?
+                      return topic
+                    });
+                }
+
               })
           })
       })
@@ -262,7 +297,8 @@ export const questionLogic = {
         return Promise.reject(error)
       });
   },
-  removeTagAssociationWithQuestion(_, { questionId, tagId }, ctx) {
+  // TODO I dont think I need this anymore!
+  removeTopicLinkFromQuestion(_, { questionId, topicId }, ctx) {
     return authLogic.getAuthenticatedUser(ctx)
       .then(user => {
         return Question.findById(questionId)
@@ -273,11 +309,11 @@ export const questionLogic = {
             }
 
             // Should I check if Topic is already associated? Probably
-            return Tag.findById(tagId)
-              .then(tag => {
-                return question.removeTag(tag)
+            return Topic.findById(topicId)
+              .then(topic => {
+                return question.removeTopic(topic)
                   .then(() => {
-                    return tag
+                    return topic
                   });
               })
           })
@@ -287,28 +323,11 @@ export const questionLogic = {
         return Promise.reject(error)
       });
   },
-  superQuestions(question, { first, before, last, after }, ctx) {
-    const args = paginationLogic.buildArgs(first, after, last, before);
-    args.include = [{ model: Question, as: "ChildQuestion", where: { id: question.id }, }]
-
-    return this.buildPaginatedQuestions(args, before)
-
+  questionQuery(_, { questionId }, ctx)  {
+    return Question.findById(questionId);
   },
-  superQuestionsCount(question, args, ctx) {
-    return Question.count({
-      include: [{ model: Question, as: "ChildQuestion", where: { id: question.id }, }]
-    })
-  },
-  subQuestions(question, { first, after, last, before }, ctx) {
-    const args = paginationLogic.buildArgs(first, after, last, before);
-    args.include = [{ model: Question, as: "ParentQuestion", where: { id: question.id }, }]
-
-    return this.buildPaginatedQuestions(args, before)
-  },
-  subQuestionsCount(question, args, ctx) {
-    return Question.count({
-      include: [{ model: Question, as: "ParentQuestion", where: { id: question.id }, }]
-    })
+  questionInlink(id, args, ctx) {
+    return Question.findById(id);
   },
   query(_, { first, after, last, before }, ctx) {
     const args = paginationLogic.buildArgs(first, after, last, before);
@@ -319,14 +338,13 @@ export const questionLogic = {
     return Question.findAll(args)
       .then(questions => {
         const edges = questions.map(question => {
-
-          return  ({
+          return ({
             cursor: Buffer.from(question.id.toString()).toString('base64'), // convert id to cursor
             node: question
           })
         });
         // if no whatifs then no next or prev page
-        if(questions.length === 0) {
+        if (questions.length === 0) {
           return {
             edges,
             pageInfo: {
@@ -365,6 +383,6 @@ export const questionLogic = {
         console.log(error, "Error");
         return Promise.reject(error)
       })
-  }
+  },
 
 }

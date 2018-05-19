@@ -5,11 +5,16 @@ import { userLogic } from './logic/UserLogic';
 import { questionLogic } from './logic/QuestionLogic';
 import { topicLogic } from './logic/TopicLogic';
 import { ostLogic } from './logic/OstLogic';
+import { questionLinkLogic } from './logic/QuestionLinkLogic';
+import { questionTopicLinkLogic } from './logic/QuestionTopicLinkLogic';
 
 export const resolvers = {
   Date: GraphQLDate,
 
   Query: {
+    question(_, args, ctx) {
+      return questionLogic.questionQuery(_, args, ctx);
+    },
     topTopics: (_, args, ctx) => {
       return topicLogic.topTopics(_, args, ctx);
     },
@@ -28,7 +33,9 @@ export const resolvers = {
     questions(_, args, ctx) {
       return questionLogic.query(_, args, ctx);
     },
-
+    questionLinks(_, args, ctx) {
+      return questionLinkLogic.query(_, args, ctx);
+    }
 
   },
   Mutation: {
@@ -51,17 +58,17 @@ export const resolvers = {
     unstarQuestion(_, args, ctx) {
       return questionLogic.unstarQuestion(_, args, ctx);
     },
-    watchQuestion(_, args, ctx) {
-      return questionLogic.watchQuestion(_, args, ctx);
+    ponderQuestion(_, args, ctx) {
+      return questionLogic.ponderQuestion(_, args, ctx);
     },
-    unwatchQuestion(_, args, ctx) {
-      return questionLogic.unwatchQuestion(_, args, ctx);
+    unponderQuestion(_, args, ctx) {
+      return questionLogic.unponderQuestion(_, args, ctx);
     },
-    associateQuestionWithTopic(_, args, ctx) {
-      return questionLogic.associateQuestionWithTopic(_, args, ctx);
+    linkQuestionWithTopic(_, args, ctx) {
+      return questionLogic.linkQuestionWithTopic(_, args, ctx);
     },
-    removeTopicAssociationWithQuestion(_, args, ctx) {
-      return questionLogic.removeTopicAssociationWithQuestion(_, args, ctx);
+    removeTopicLinkFromQuestion(_, args, ctx) {
+      return questionLogic.removeTopicLinkFromQuestion(_, args, ctx);
     },
     addUserInterest(_, args, ctx) {
       return userLogic.addUserInterest(_, args, ctx);
@@ -112,26 +119,38 @@ export const resolvers = {
     starredByCurrentUser(question, args, ctx) {
       return questionLogic.starredByCurrentUser(question, args, ctx);
     },
-    watchedByCurrentUser(question, args, ctx) {
-      return questionLogic.watchedByCurrentUser(question, args, ctx);
+    ponderCount(question, args, ctx) {
+      return questionLogic.ponderCount(question, args, ctx);
+    },
+    ponderedByCurrentUser(question, args, ctx) {
+      return questionLogic.ponderedByCurrentUser(question, args, ctx);
     },
     ownedByCurrentUser(question, args, ctx) {
       return questionLogic.ownedByCurrentUser(question, args, ctx);
     },
-    associatedWith(question, args, ctx) {
-      return questionLogic.associatedWith(question, args, ctx);
+    linksToTopics(question, args, ctx) {
+      return questionLogic.linksToTopics(question, args, ctx);
     },
-    superQuestions(question, args, ctx) {
-      return questionLogic.superQuestions(question, args, ctx);
+    superQuestionLinks(question, args, ctx) {
+      return questionLinkLogic.superQuestionLinks(question, args, ctx);
     },
-    subQuestions(question, args, ctx) {
-      return questionLogic.subQuestions(question, args, ctx);
+    subQuestionLinks(question, args, ctx) {
+      return questionLinkLogic.subQuestionLinks(question, args, ctx);
     },
     subQuestionsCount(question, args, ctx) {
-      return questionLogic.subQuestionsCount(question, args, ctx);
+      return questionLinkLogic.subQuestionLinksCount(question, args, ctx);
     },
     superQuestionsCount(question, args, ctx) {
-      return questionLogic.superQuestionsCount(question, args, ctx);
+      return questionLinkLogic.superQuestionLinksCount(question, args, ctx);
+    },
+    relatedQuestionLinks(question, args, ctx) {
+      return questionLinkLogic.relatedQuestionLinks(question, args, ctx);
+    },
+    relatedQuestionsCount(question, args, ctx) {
+      return questionLinkLogic.relatedQuestionLinksCount(question, args, ctx);
+    },
+    createdAt(question, args, ctx) {
+      return questionLogic.createdAt(question, args, ctx);
     }
   },
 
@@ -173,8 +192,8 @@ export const resolvers = {
     followersCount(user, args, ctx) {
       return userLogic.followersCount(user, args, ctx);
     },
-    watches(user, args, ctx) {
-      return userLogic.watches(user, args, ctx);
+    ponders(user, args, ctx) {
+      return userLogic.ponders(user, args, ctx);
     },
     interestedIn(user, args, ctx) {
       return userLogic.interestedIn(user, args, ctx);
@@ -189,7 +208,39 @@ export const resolvers = {
     totalAirdroppedBalance(user, args, ctx) {
       // return 50;
       return userLogic.totalAirdroppedBalance(user, args, ctx);
+    },
+
+  },
+  QuestionLink: {
+    fromQuestion(questionLink, args, ctx) {
+      return questionLogic.questionInlink(questionLink.fromId, args, ctx)
+    },
+    toQuestion(questionLink, args, ctx) {
+      return questionLogic.questionInlink(questionLink.toId, args, ctx)
+    },
+    linkType(questionLink, args, ctx) {
+      return questionLinkLogic.linkType(questionLink, args, ctx);
+    },
+    approval(questionLink, args, ctx) {
+      return questionLinkLogic.approval(questionLink, args, ctx);
+    },
+    approvedByCurrentUser(questionLink, args, ctx) {
+      return questionLinkLogic.approvedByCurrentUser(questionLink, args, ctx);
     }
 
   },
+  QuestionTopicLink: {
+    question(questionTopicLink, args, ctx) {
+      return questionTopicLinkLogic.question(questionTopicLink, args, ctx);
+    },
+    topic(questionTopicLink, args, ctx) {
+      return questionTopicLinkLogic.topic(questionTopicLink, args, ctx);
+    },
+    approval(questionTopicLink, args, ctx) {
+      return questionTopicLinkLogic.approval(questionTopicLink, args, ctx);
+    },
+    approvedByCurrentUser(questionTopicLink, args, ctx) {
+      return questionTopicLinkLogic.approvedByCurrentUser(questionTopicLink, args, ctx);
+    }
+  }
 }

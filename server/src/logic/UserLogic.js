@@ -1,7 +1,7 @@
 /**
  * Created by will on 07/11/17.
  */
-import { Question, User, Tag } from '../db';
+import { Question, User, Topic } from '../db';
 import { authLogic } from './AuthLogic';
 import ostUserQueries from '../ost/ostUserQueries';
 
@@ -157,14 +157,14 @@ export const userLogic = {
       })
 
   },
-  watches(user, args, ctx) {
+  ponders(user, args, ctx) {
     return authLogic.getAuthenticatedUser(ctx)
       .then(currentUser => {
         if (currentUser.id !== user.id) {
           return Promise.reject("Unauthorized")
         }
         return Question.findAll({
-          include: [{ model: User, as: "Watched", where: { id: user.id } }]
+          include: [{ model: User, as: "Ponder", where: { id: user.id } }]
         }).then(questions => {
           return questions;
         })
@@ -182,7 +182,7 @@ export const userLogic = {
           return Promise.reject("Unauthorized")
         }
 
-        return Tag.findAll({
+        return Topic.findAll({
           include: [{ model: User, where: { id: user.id } }]
         }).then(tags => {
           return tags;
@@ -204,7 +204,7 @@ export const userLogic = {
               return Promise.reject("Unauthorized");
             }
 
-            return Tag.findById(tagId)
+            return Topic.findById(tagId)
               .then(tag => {
                 return currentUser.addTag(tag)
                   .then(() => {
@@ -229,7 +229,7 @@ export const userLogic = {
             }
 
             // Should I check that Topic is already associated with user?
-            return Tag.findById(tagId)
+            return Topic.findById(tagId)
               .then(tag => {
                 return currentUser.removeTag(tag)
                   .then(() => {

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import { Nav, Navbar, NavItem, NavDropdown, MenuItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import AppTitle from "./AppTitle";
-import FaQuestionCircle from 'react-icons/fa/question-circle'
 import OstBalance from '../../OstBalance/OstBalance';
 
 import styles from './styles.css';
@@ -39,13 +38,10 @@ var MainHeader = function (props) {
               />
             </NavItem>
 
-            <NavItem >
-              <FaQuestionCircle onClick={props.onQuestionClick} size={90}/>
-            </NavItem>
           </Nav>
           <Navbar.Collapse>
             <Nav pullRight>
-              <NavDropdown eventKey="4" title={props.currentUser.username} id="nav-dropdown" className={styles.username}>
+              <NavDropdown noCaret eventKey="4" title={props.currentUser.username} id="nav-dropdown" className={styles.username}>
                 <LinkContainer to={{pathname: "/profile", query: {userId: props.currentUser.id}}}>
                   <MenuItem>Profile</MenuItem>
                 </LinkContainer>

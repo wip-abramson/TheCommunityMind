@@ -13,22 +13,28 @@ import LoadMoreTopics from './components/LoadMoreTopics';
 
 
 
-const TopicsBar = ({ topics, hasMoreTopics, onAddTopic, isInput }) =>
-
-  <div className={styles.topicsBar}>
-    <div className={styles.topics}>
-      {topics.map(topic => <Topic topic={topic} strength={21} styles={styles} isInput={isInput}/>)}
+const TopicsBar = ({ topicLinks, hasMoreTopics, onAddTopic, isInput }) =>
+{
+  return (
+    <div className={styles.topicsBar}>
+      <div className={styles.topics}>
+      {topicLinks.map(topicLink => <Topic key={topicLink.topic.id} topic={topicLink.topic} strength={topicLink.approval} styles={styles} isInput={isInput}/>)}
+      </div>
+      <LoadMoreTopics isMore={hasMoreTopics}/>
+      {isInput ? <TopicInput onEnter={onAddTopic}/>
+        : <div className={styles.topicInputContainer}/>}
     </div>
-    <LoadMoreTopics isMore={hasMoreTopics}/>
-    <TopicInput onEnter={onAddTopic}/>
-  </div>;
+  )
+}
+
+
 
 
 TopicsBar.propTypes = {
-  topics: PropTypes.array.isRequired,
+  topicLinks: PropTypes.array.isRequired,
   hasMoreTopics: PropTypes.bool.isRequired,
-  onAddTopic: PropTypes.func.isRequired,
-  isInput: PropTypes.func.isRequired
+  onAddTopic: PropTypes.func,
+  isInput: PropTypes.bool.isRequired
 };
 
 export default TopicsBar;

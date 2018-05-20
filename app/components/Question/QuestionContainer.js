@@ -12,8 +12,8 @@ import Question from './Question';
 
 import STAR_QUESTION_MUTATION from '../../graphql/mutations/starQuestion.mutation';
 import UNSTAR_QUESTION_MUTATION from '../../graphql/mutations/unstarQuestion.mutation';
-import WATCH_QUESTION_MUTATION from '../../graphql/mutations/watchQuestion.mutation';
-import UNWATCH_QUESTION_MUTATION from '../../graphql/mutations/unwatchQuestion.mutation';
+import WATCH_QUESTION_MUTATION from '../../graphql/mutations/ponderQuestion.mutation';
+import UNWATCH_QUESTION_MUTATION from '../../graphql/mutations/forgetQuestion.mutation';
 import DELETE_QUESTION_MUTATION from '../../graphql/mutations/deleteQuestion.mutation';
 import QUESTIONS_QUERY from "../../graphql/querys/questions.query";
 
@@ -54,7 +54,7 @@ const starQuestion = graphql(STAR_QUESTION_MUTATION, {
             stars: question.stars + 1,
             questionText: question.questionText,
             starredByCurrentUser: true,
-            watchedByCurrentUser: question.watchedByCurrentUser,
+            ponderedByCurrentUser: question.ponderedByCurrentUser,
           }
         },
       })
@@ -105,16 +105,16 @@ const unstarQuestion = graphql(UNSTAR_QUESTION_MUTATION, {
 
 const watchQuestion = graphql(WATCH_QUESTION_MUTATION, {
   props: ({ ownProps, mutate }) => ({
-    watchQuestion: (question) => {
+    ponderQuestion: (question) => {
       return mutate({
         variables: { id: question.id },
         optimisticResponse: {
           __typename: 'Mutation',
-          watchQuestion: {
+          ponderQuestion: {
             id: question.id,
             __typename: 'Question',
             questionText: question.questionText,
-            watchedByCurrentUser: true,
+            ponderedByCurrentUser: true,
           }
         },
       })
@@ -135,16 +135,16 @@ const watchQuestion = graphql(WATCH_QUESTION_MUTATION, {
 
 const unwatchQuestion = graphql(UNWATCH_QUESTION_MUTATION, {
   props: ({ ownProps, mutate }) => ({
-    unwatchQuestion: (question) => {
+    unponderQuestion: (question) => {
       return mutate({
         variables: { id: question.id },
         optimisticResponse: {
           __typename: 'Mutation',
-          unwatchQuestion: {
+          unponderQuestion: {
             id: question.id,
             __typename: 'Question',
             questionText: question.questionText,
-            watchedByCurrentUser: false,
+            ponderedByCurrentUser: false,
           }
         },
       })
@@ -176,7 +176,7 @@ const deleteQuestion = graphql(DELETE_QUESTION_MUTATION, {
           stars: 0,
           ownedByCurrentUser: true,
           starredByCurrentUser: false,
-          watchedByCurrentUser: false,
+          ponderedByCurrentUser: false,
           createdAt: question.createdAt,
           owner: {
             __typename: 'User',
@@ -254,8 +254,8 @@ class Container extends React.Component {
         editQuestion={this.editQuestion}
         askQuestion={this.askQuestion}
         deleteQuestion={this.props.deleteQuestion}
-        watchQuestion={this.props.watchQuestion}
-        unwatchQuestion={this.props.unwatchQuestion}
+        watchQuestion={this.props.ponderQuestion}
+        unwatchQuestion={this.props.unponderQuestion}
 
       />
     )

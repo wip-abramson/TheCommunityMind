@@ -9,11 +9,40 @@ const QUESTION_FRAGMENT = gql`
     stars
     starredByCurrentUser
     ownedByCurrentUser
-    watchedByCurrentUser
+    ponderedByCurrentUser
+    ponderCount
+    subQuestionsCount
+    superQuestionsCount
+    relatedQuestionsCount
     createdAt
     owner {
       id
       username
+    }
+    linksToTopics(first: 4) {
+    	
+      edges {
+        cursor
+        pageInfo {
+          hasNextPage
+          hasPreviousPage
+        } 
+        node {
+					owner {
+            id
+          }          
+          id
+          question {
+    		id
+      }
+      topic {
+        id
+        name
+      }
+      approval
+      approvedByCurrentUser
+        }
+      }   
     }
   }
 `;

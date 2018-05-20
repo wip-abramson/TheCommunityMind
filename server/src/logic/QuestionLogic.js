@@ -1,16 +1,18 @@
 /**
  * Created by will on 07/11/17.
  */
-import { Question, User, Topic, QuestionTopicLink, QuestionLink } from '../db';
+import { Question, User, Topic, QuestionTopicLink, QuestionLink, Op } from '../db';
 import { authLogic } from './AuthLogic';
 import { paginationLogic } from './PaginationLogic';
 import { questionTopicLinkLogic } from './QuestionTopicLinkLogic'
 import ostTransactions from '../ost/ostTransactions';
-import {SUPER_QUESTION, SUB_QUESTION, RELATED_QUESTION} from './QuestionLinkLogic'
+import { SUPER_QUESTION, SUB_QUESTION, RELATED_QUESTION } from './QuestionLinkLogic'
+import Sequelize from "sequelize";
+
+const RANDOM = process.env.NODE_ENV ? 'RAND()' : 'RANDOM()';
 
 export const questionLogic = {
   createQuestion(_, { questionText, topicIds, linkType, questioningId }, ctx) {
-    console.log('CREATE Q')
 
     return authLogic.getAuthenticatedUser(ctx)
       .then(user => {
@@ -21,7 +23,15 @@ export const questionLogic = {
             stars: 0,
           }).then(question => {
 
-            return Promise.all(topicIds.map(topicId => user.createQuestionTopicLink({questionId: question.id, topicId: topicId})))
+            return Promise.all(topicIds.map(topicId => {
+              return user.createQuestionTopicLink({
+                questionId: question.id,
+                topicId: topicId
+              }).then(questionTopicLink => {
+                user.addTopicLinkApproval(questionTopicLink);
+                return questionTopicLink;
+              })
+            }))
               .then(() => {
                 if (linkType && questioningId) {
                   return createQuestionLink(user, linkType, question, questioningId)
@@ -110,25 +120,16 @@ export const questionLogic = {
   unstarQuestion(_, { id }, ctx) {
     return authLogic.getAuthenticatedUser(ctx)
       .then((user) => {
-        return Question.findOne({
-          where: { id: id },
-          include: [{ model: User, as: "StarredBy", where: { id: user.id } }]
-        })
+        return Question.findById(id)
           .then(question => {
-            if (question) {
-              return question.removeStarredBy(user).then(() => {
-                console.log("destroy StarIcon")
-                return question;
-              });
-            }
-            else {
-              return Promise.reject("Question not stared by current user");
-            }
+            return question.removeStarredBy(user).then(() => {
+              return question;
+            });
           })
-      })
-      .catch(error => {
-        console.log(error, "Error");
-        return Promise.reject(error)
+          .catch(error => {
+            console.log(error, "Error");
+            return Promise.reject(error)
+          })
       })
   },
   ponderQuestion(_, { id }, ctx) {
@@ -219,7 +220,7 @@ export const questionLogic = {
       include: [{
         model: Question,
         as: "Ponder",
-        where: {id: question.id}
+        where: { id: question.id }
       }]
     })
   },
@@ -257,21 +258,24 @@ export const questionLogic = {
   createdAt(question, args, ctx) {
     const inputDate = question.createdAt;
     const todaysDate = new Date();
-    // TODO make much nicer
-    if(inputDate.setHours(0,0,0,0) === todaysDate.setHours(0,0,0,0)) {
-      if(todaysDate.getMinutes() === inputDate.getMinutes()) {
+    // TODO make much nicer not sure it quite does what I want
+    if (inputDate.getFullYear() === todaysDate.getFullYear() &&
+      inputDate.getMonth() === todaysDate.getMonth() &&
+      inputDate.getDate() === todaysDate.getDate()) {
+      if (todaysDate.getHours() === inputDate.getHours() && todaysDate.getMinutes() === inputDate.getMinutes()) {
+        console.log(inputDate, todaysDate);
         return "Just Now";
       }
-      else if(todaysDate.getHours() === inputDate.getHours()) {
+      else if (todaysDate.getHours() === inputDate.getHours()) {
         return todaysDate.getMinutes() - inputDate.getMinutes() + " Minutes ago";
 
       }
     }
 
-      return question.createdAt.toDateString();
+    return question.createdAt.toDateString();
   },
-  linksToTopics(question, {first, after, last, before}, ctx) {
-    const args =paginationLogic.buildArgs(first, after, last, before);
+  linksToTopics(question, { first, after, last, before }, ctx) {
+    const args = paginationLogic.buildArgs(first, after, last, before);
 
     args.include = [{ model: Question, where: { id: question.id } }];
     return questionTopicLinkLogic.buildPaginatedQuestionTopicLinks(args, before);
@@ -297,7 +301,7 @@ export const questionLogic = {
                 else {
                   return question.addTopic(topic)
                     .then(() => {
-                    // TODO do I want to return a topic here - WHY?
+                      // TODO do I want to return a topic here - WHY?
                       return topic
                     });
                 }
@@ -346,6 +350,48 @@ export const questionLogic = {
     const args = paginationLogic.buildArgs(first, after, last, before);
 
     return this.buildPaginatedQuestions(args, before)
+  },
+  randomQuestionQuery(_, {currentQuestionId}, ctx) {
+    const args = {
+      order: [
+        Sequelize.literal(RANDOM)
+      ],
+      limit: 3
+    };
+    if (currentQuestionId) {
+      args.where = {id: {[Op.ne]: currentQuestionId}};
+    }
+    return Question.findAll(args).then(randomQuestions => {
+      return Promise.all(randomQuestions.map(randomQuestion => {
+        return User.count({
+          include: [{model: Question, as: "StarredBy", where: {id: randomQuestion.id}}]
+        }).then(starCount => {
+          console.log("StarCount ", starCount);
+          return User.count({
+            include: [{model: Question, as: "Ponder", where: {id: randomQuestion.id}}]
+          }).then(ponderCount => {
+            console.log("ponder count: ", ponderCount)
+            return Question.count({
+              where: {id: randomQuestion.id},
+              include: [{model: QuestionLink}]
+            }).then(linkCount => {
+              console.log(linkCount);
+              return {
+                question: randomQuestion,
+                totalRating: starCount + ponderCount + linkCount
+              }
+            })
+          })
+        })
+      })).then(ratedQuestions => {
+
+        ratedQuestions.sort((a, b) => {
+          return b.totalRating - a.totalRating;
+        })
+        return ratedQuestions[0].question;
+
+      })
+    })
   },
   buildPaginatedQuestions(args, before) {
     return Question.findAll(args)

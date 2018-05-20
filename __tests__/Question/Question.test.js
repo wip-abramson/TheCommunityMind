@@ -27,7 +27,7 @@ describe("Question Component", () => {
         },
         stars: 1,
         starredByCurrentUser: false,
-        watchedByCurrentUser: true,
+        ponderedByCurrentUser: true,
         ownerByCurrentUser: false
       }
 
@@ -49,7 +49,7 @@ describe("Question Component", () => {
     expect(wrapper.find(EditIcon).length).toEqual(1);
   });
 
-  it('renders a ThinkIcon', () => {
+  it('renders a PonderIcon', () => {
     const wrapper = shallow(<Question {...props}/>);
     expect(wrapper.find(ThinkIcon).length).toEqual(1);
   });

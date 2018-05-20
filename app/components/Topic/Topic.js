@@ -12,7 +12,6 @@ import Incentivise from './MenuItems/Incentivise';
 import ViewTopic from './MenuItems/ViewTopic';
 
 const Topic = ({ styles, topic, strength, isInput }) => {
-
   const view = isInput ?
     <div className={styles.topic}>
       {topic.name}
@@ -20,7 +19,8 @@ const Topic = ({ styles, topic, strength, isInput }) => {
 
     <div className={styles.topic}>
       <Dropdown
-        title={topic.name}
+        id={topic.id}
+        title={formatTopic(topic.name)}
         fontSize={15}
       >
         <FollowTopic topicId={topic.id}/>
@@ -35,13 +35,19 @@ const Topic = ({ styles, topic, strength, isInput }) => {
   return view;
 };
 
+function formatTopic(topic) {
+  return topic.replace(/\w\S*/g, function(txt){
+    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+  });
+}
+
 Topic.propTypes = {
   styles: PropTypes.shape({}),
   topic: PropTypes.shape({
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired
   }).isRequired,
-  strength: PropTypes.number.isRequired
+  strength: PropTypes.number
 };
 
 export default Topic;

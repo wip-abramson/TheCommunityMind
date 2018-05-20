@@ -9,7 +9,16 @@
 
 .icon {
     cursor: pointer;
-    marginRight: 10;
+}
+
+.ponderingIcon {
+    cursor: pointer;
+    color: yellow;
+}
+
+.starredIcon {
+    cursor: pointer;
+    color: goldenrod;
 }
 
 

@@ -7,13 +7,17 @@
     flex-direction: row;
 }
 
-.topicInput {
+.topicInputContainer {
     float: right;
     margin: 5px;
     vertical-align: middle;
     justify-self: flex-end;
-    width: 210px;
+    width: 160px;
     align-self: center;
+}
+
+.topicInput {
+    width: 160px;
 }
 
 .topics {

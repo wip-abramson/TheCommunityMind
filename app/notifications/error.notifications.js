@@ -16,6 +16,12 @@ export const unauthorizedErrorNotification = {
   }
 };
 
+export const unableToNavPrevious = {
+  message: 'Unable to navigate backwards. Please navigate forwards first',
+  position: 'tc',
+  autoDismiss: 3,
+};
+
 export const loginFailedNotification = {
   title: 'Login Failed',
   message: 'Do you need to register?',

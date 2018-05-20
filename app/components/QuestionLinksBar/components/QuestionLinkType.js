@@ -12,22 +12,27 @@ import Checkbox from '../../generic/Checkbox/Checkbox';
 
 //TODO potentially generalize
 // TODO enable switch between count and checkbox depending on if in input mode
-const QuestionLinkType = ({hasBorder, linkType, amount, isInput, selectLinkType, idSelected}) =>
-  <div className={hasBorder ? styles.questionLinkType : styles.questionLinkTypeNoBorder}
-       onClick={() => selectLinkType(linkType.id)}>
-    {linkType.linkType}
-    {isInput ?
-      <Checkbox
-        isSelected={idSelected === linkType.id}
-        selectCheckbox={() => selectLinkType(linkType.id)}/>
-      : <Count amount={linkType.amount}/>}
-  </div>;
+const QuestionLinkType = ({hasBorder, linkType, isInput, selectLinkType, idSelected}) =>
+{
+  return (
+    <div className={hasBorder ? styles.questionLinkType : styles.questionLinkTypeNoBorder}
+         onClick={() => selectLinkType(linkType.id)}>
+      {linkType.linkType}
+      {isInput ?
+        <Checkbox
+          isSelected={idSelected === linkType.id}
+          selectCheckbox={() => selectLinkType(linkType.id)}/>
+        : <Count amount={linkType.amount}/>}
+    </div>
+  )
+};
+
 
 QuestionLinkType.propTypes = {
   linkType: PropTypes.shape({
-    id: PropTypes.number.isRequired,
+    id: PropTypes.string.isRequired,
     linkType: PropTypes.string.isRequired,
-    amount: PropTypes.number.isRequired
+    amount: PropTypes.number
   }).isRequired,
   hasBorder: PropTypes.bool.isRequired,
   isInput: PropTypes.bool.isRequired,

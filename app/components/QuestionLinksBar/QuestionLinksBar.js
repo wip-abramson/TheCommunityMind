@@ -21,8 +21,10 @@ class QuestionLinksBar extends React.Component {
     this.getIdSelected = this.getIdSelected.bind(this);
   }
 
+
+
   getIdSelected() {
-    return this.props.selectedLinkType ? this.props.selectedLinkType.id : 0
+    return this.props.currentSelectedLinkType ? this.props.currentSelectedLinkType.id : 0
   }
 
   render() {
@@ -30,35 +32,39 @@ class QuestionLinksBar extends React.Component {
 
       <div className={styles.linksBar}>
         <QuestionLinkType
-          selectLinkType={this.props.selectLinkType}
+          selectLinkType={this.props.onSelectLinkType}
           isInput={this.props.isInput}
           hasBorder={false}
           idSelected={this.getIdSelected()}
-          linkType={{id: '1', linkType: "Super Questions", amount: 26}}/>
+          linkType={{id: '1', linkType: "Super Questions", amount: this.props.superQuestionsCount}}/>
         <QuestionLinkType
-          selectLinkType={this.props.selectLinkType}
+          selectLinkType={this.props.onSelectLinkType}
           isInput={this.props.isInput}
           hasBorder={true}
           idSelected={this.getIdSelected()}
-          linkType={{id: '2', linkType: "Sub Questions", amount: 29}}/>
+          linkType={{id: '2', linkType: "Sub Questions", amount: this.props.subQuestionsCount}}/>
         <QuestionLinkType
-          selectLinkType={this.props.selectLinkType}
+          selectLinkType={this.props.onSelectLinkType}
           isInput={this.props.isInput}
           hasBorder={true}
-          linkType={{id: '3', linkType: "Related Questions", amount: 11}}
+          linkType={{id: '3', linkType: "Related Questions", amount: this.props.relatedQuestionsCount}}
           idSelected={this.getIdSelected()}/>
       </div>
     )
   }
 }
 
-QuestionLinkType.propTypes = {
-  isInput: PropTypes.bool.isRequired,
-  selectedLinkType: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    linkType: PropTypes.string.isRequired,
-  }),
-  selectLinkType: PropTypes.func.isRequired
-};
+QuestionLinksBar.propTypes = {
+    isInput: PropTypes.bool.isRequired,
+    currentSelectedLinkType: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      linkType: PropTypes.string.isRequired,
+    }),
+    onSelectLinkType: PropTypes.func.isRequired,
+    superQuestionsCount: PropTypes.number,
+    subQuestionsCount: PropTypes.number,
+    relatedQuestionsCount: PropTypes.number
+
+}
 
 export default QuestionLinksBar;

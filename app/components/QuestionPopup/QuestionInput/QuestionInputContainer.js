@@ -37,7 +37,7 @@ const createQuestion = graphql(CREATE_QUESTION_MUTATION, {
             stars: 0,
             ownedByCurrentUser: true,
             starredByCurrentUser: false,
-            watchedByCurrentUser: false,
+            ponderedByCurrentUser: false,
             createdAt: new Date().toISOString(), // the time is now!
             owner: {
               __typename: 'User',
@@ -97,7 +97,7 @@ const editQuestion = graphql(EDIT_QUESTION_MUTATION, {
             id: id,
             __typename: 'Question',
             questionText: newQuestion,
-            watchedByCurrentUser: false,
+            ponderedByCurrentUser: false,
           }
         },
       })

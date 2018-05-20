@@ -32,17 +32,20 @@ class QuestionBox extends React.Component {
     return (
       <div className={styles.questionBox}>
         <TopicsBar
-          topics={this.props.question.topics}
-          hasMoreTopics={!this.props.isInput}
+          topicLinks={this.props.question.linksToTopics.edges.map(edge => edge.node)}
+          hasMoreTopics={!this.props.isInput}// this.props.question.linksToTopics.edges.pageInfo.hasNextPage}
           onAddTopic={this.props.onAddTopic}
           isInput={this.props.isInput}
         />
         {this.props.isInput ?
           <QuestionInput currentInput={this.props.question.questionText} onInputChange={this.props.onQuestionChange}/> :
-          <QuestionText questionText="Do all questions need answers?"/>}
+          <QuestionText questionText={this.props.question.questionText} />}
         <QuestionLinksBar
-          selectedLinkType={this.props.question.linkTypeSelected}
-          selectLinkType={this.props.onSelectQuestionLink}
+          superQuestionsCount={this.props.question.superQuestionsCount}
+          subQuestionsCount={this.props.question.subQuestionsCount}
+          relatedQuestionsCount={this.props.question.relatedQuestionsCount}
+          currentSelectedLinkType={this.props.question.linkTypeSelected}
+          onSelectLinkType={this.props.onSelectQuestionLink}
           isInput={this.props.isInput}/>
       </div>
     )
@@ -52,11 +55,13 @@ class QuestionBox extends React.Component {
 // TODO make question required ans use to get topics etc
 
 QuestionBox.propTypes = {
-  isInput: PropTypes.func.isRequired,
+  isInput: PropTypes.bool.isRequired,
   question: PropTypes.shape({
     id: PropTypes.string,
     questionText: PropTypes.string.isRequired,
-    topics: PropTypes.array.isRequired,
+    linksToTopics: PropTypes.shape({
+      edges: PropTypes.array.isRequired,
+    }).isRequired,
     linkTypeSelected: PropTypes.shape({
       id: PropTypes.string.isRequired,
       linkType: PropTypes.string.isRequired
@@ -64,7 +69,7 @@ QuestionBox.propTypes = {
   }).isRequired,
   onQuestionChange: PropTypes.func,
   onSelectQuestionLink: PropTypes.func.isRequired,
-  onAddTopic: PropTypes.func.isRequired
+  onAddTopic: PropTypes.func
 };
 
 export default QuestionBox;

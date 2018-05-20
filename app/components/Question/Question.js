@@ -32,7 +32,7 @@ const Question = ({ question, starQuestion, unstarQuestion, watchQuestion, unwat
           unstarQuestion={() => unstarQuestion(question)}
         />
         <ThinkIcon
-          canThink={! question.watchedByCurrentUser}
+          canThink={! question.ponderedByCurrentUser}
           thinkAboutQuestion={() => watchQuestion(question)}
           forgetAboutQuestion={() => unwatchQuestion(question)}
         />
@@ -59,7 +59,7 @@ Question.propTypes = {
     id: PropTypes.string.isRequired,
     questionText: PropTypes.string.isRequired,
     starredByCurrentUser: PropTypes.bool.isRequired,
-    watchedByCurrentUser: PropTypes.bool.isRequired,
+    ponderedByCurrentUser: PropTypes.bool.isRequired,
     ownedByCurrentUser: PropTypes.bool.isRequired,
     stars: PropTypes.number.isRequired,
     owner: PropTypes.shape({

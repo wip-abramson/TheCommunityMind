@@ -119,7 +119,8 @@ const typeDefs = `
    topTopics: [Topic]
    topics: [Topic]    
    user(id: ID!): User
-   question(questionId: ID!): Question!
+   questionById(questionId: ID!): Question!
+   randomQuestion(currentQuestionId: ID): Question!
    questions(parentId: Int, first: Int, after: String, last: Int, before: String): QuestionConnection!
    userStarredQuestions(userId: ID!, first: Int, after: String, last: Int, before: String): QuestionConnection!
    userQuestions(userId: ID!, first: Int, after: String, last: Int, before: String): QuestionConnection!

@@ -59,7 +59,7 @@ const UserModel = Conn.define('user', {
   version: { // version of the password
     type: Sequelize.INTEGER,
   },
-})
+});
 
 const QuestionModel = Conn.define('question', {
   questionText: {
@@ -120,7 +120,9 @@ QuestionModel.belongsToMany(UserModel, {
     model: UserStarQuestionModel,
     unique: true,
   },
-  as: 'starredBy'
+  as: 'starredBy',
+  foreignKey: "starredQuestionId"
+
 });
 
 UserModel.belongsToMany(QuestionModel, {
@@ -128,7 +130,7 @@ UserModel.belongsToMany(QuestionModel, {
     model: UserStarQuestionModel,
     unique: true,
   },
-  as: 'StarredBy'
+  as: 'StarredBy',
 });
 
 QuestionModel.belongsToMany(QuestionModel, {
@@ -190,7 +192,7 @@ UserModel.belongsToMany(QuestionModel, {
     unique: true,
   },
   as: "Ponder"
-})
+});
 
 TopicModel.hasMany(QuestionTopicModel);
 QuestionTopicModel.belongsTo(QuestionModel);
@@ -231,6 +233,8 @@ QuestionTopicModel.belongsToMany(UserModel, {
 
 UserModel.hasMany(QuestionLinkModel)
 QuestionLinkModel.belongsTo(UserModel, { as: "Owner" });
+QuestionModel.hasMany(QuestionLinkModel)
+QuestionLinkModel.belongsTo(QuestionModel);
 
 UserModel.belongsToMany(QuestionLinkModel, {
   through: {
@@ -330,128 +334,127 @@ const questionLinkTypes = [
 ];
 
 //
-// Conn.sync()
-//   .then(() => ostUserQueries.editUser('9aa974b4-9fa7-4f93-bd88-a3cf3de1fa22', "Bob") );
-Conn.sync({ force: true })
-  .then(() => {
-    return QuestionLinkTypeModel.create({ linkType: PARENT_CHILD_LINK })
-      .then(createdLinkType => {
-        QuestionLinkType.create({ linkType: RELATED_LINK });
-        QuestionLinkType.create({ linkType: REWORDING_LINK });
-        const passwrd = "tPass2";
-        return bcrypt.hash(passwrd, 10)
-          .then((hash1) => {
-            let user1 = {
-              email: faker.internet.email(),
-              username: "Alice",
-              password: hash1,
-              version: 1,
-              ostUuid: 'e3586536-bfb4-4b98-8998-e4c9a8069cba',
-            };
-            return UserModel.create(user1)
-              .then(user1 => {
-
-                const password = "testPassword";
-                return bcrypt.hash(password, 10)
-                  .then((hash) => {
-                    let user2 = {
-                      email: faker.internet.email(),
-                      username: "Bob",
-                      password: hash,
-                      version: 1,
-                      ostUuid: '9aa974b4-9fa7-4f93-bd88-a3cf3de1fa22',
-                    };
-                    return UserModel.create(user2)
-                      .then((user) => {
-                        ostUserQueries.editUser('9aa974b4-9fa7-4f93-bd88-a3cf3de1fa22', "Bob");
-                        // ostUserQueries.verifyAirdropStatus('47e44392-fec8-4aff-b6d6-8f0fa483463f');
-                        user.addFollowedBy(user1).then(() => {
-                        }).catch(error => {
-                          console.log(error)
-                        });
-
-                        return Promise.all(topics.map(topic => {
-                          return Topic.create(topic);
-
-                        })).then(createdTopics => {
-
-                          user.setTopics(createdTopics);
-
-                          return questions.forEach((topQuestionData) => {
-                            console.log(topQuestionData.questionText);
-                            return user.createQuestion({
-                              questionText: topQuestionData.questionText,
-                              stars: 0
-                            })
-                              .then((topQuestion) => {
-                                user.addPonder(topQuestion);
-
-                                console.log("addQuestion");
-                                topQuestion.addStarredBy(user);
-                                createdTopics.forEach(topic => {
-                                  console.log("CREATE Q TOPIC")
-                                  return user.createQuestionTopicLink({
-                                    questionId: topQuestion.id,
-                                    topicId: topic.id
-                                  })
-                                    .then(questionTopic => {
-                                      console.log("CREATED LINK", questionTopic.userId);
-                                        return user.addTopicLinkApproval(questionTopic)
-                                      }
-                                    )
-                                });
-
-                                return topQuestionData.questions.forEach((secondQuestionData) => {
-                                  return user.createQuestion({
-                                    questionText: secondQuestionData.questionText,
-                                    stars: 0
-                                  })
-                                    .then((secondQuestion) => {
-                                      // console.log(newWhatIf == null)
-                                      console.log("THEUSER", user.id)
-                                      return user.createQuestionLink({
-                                        fromId: topQuestion.id,
-                                        toId: secondQuestion.id,
-                                        questionLinkTypeId: createdLinkType.id,
-                                      }).then(questionLink => {
-                                        console.log("Created question link", questionLink.userId)
-                                        user.addQuestionLinkApproval(questionLink);
-
-                                        console.log("QUESTIONLINKTYPEID", questionLink.questionLinkTypeId);
-                                        return secondQuestionData.questions.forEach((thirdQuestionText) => {
-                                          return user.createQuestion({
-                                            questionText: thirdQuestionText,
-                                            stars: 0
-                                          })
-                                            .then((thirdQuestion) => {
-                                              user.createQuestionLink({
-                                                ownerId: user.id,
-                                                fromId: secondQuestion.id,
-                                                toId: thirdQuestion.id,
-                                                questionLinkTypeId: 1
-                                              }).then(questionLink => console.log("QUESTIONLINKTYPEID", questionLink.questionLinkTypeId))
-
-                                            })
-                                        })
-                                      })
-                                      // console.log(newWhy == null)
-
-                                    })
-
-                                })
-                              })
-                          })
-
-                        })
-                      })
-
-                  })
-              })
-          })
-
-      });
-
-  });
+Conn.sync()
+  .then(() => ostUserQueries.editUser('9aa974b4-9fa7-4f93-bd88-a3cf3de1fa22', "Bob") );
+// Conn.sync({ force: true })
+//   .then(() => {
+//     return QuestionLinkTypeModel.create({ linkType: PARENT_CHILD_LINK })
+//       .then(createdLinkType => {
+//         QuestionLinkType.create({ linkType: RELATED_LINK });
+//         QuestionLinkType.create({ linkType: REWORDING_LINK });
+//         const passwrd = "tPass2";
+//         return bcrypt.hash(passwrd, 10)
+//           .then((hash1) => {
+//             let user1 = {
+//               email: faker.internet.email(),
+//               username: "Alice",
+//               password: hash1,
+//               version: 1,
+//               ostUuid: 'e3586536-bfb4-4b98-8998-e4c9a8069cba',
+//             };
+//             return UserModel.create(user1)
+//               .then(user1 => {
+//
+//                 const password = "testPassword";
+//                 return bcrypt.hash(password, 10)
+//                   .then((hash) => {
+//                     let user2 = {
+//                       email: faker.internet.email(),
+//                       username: "Bob",
+//                       password: hash,
+//                       version: 1,
+//                       ostUuid: '9aa974b4-9fa7-4f93-bd88-a3cf3de1fa22',
+//                     };
+//                     return UserModel.create(user2)
+//                       .then((user) => {
+//                         ostUserQueries.editUser('9aa974b4-9fa7-4f93-bd88-a3cf3de1fa22', "Bob");
+//                         // ostUserQueries.verifyAirdropStatus('47e44392-fec8-4aff-b6d6-8f0fa483463f');
+//                         user.addFollowedBy(user1).then(() => {
+//                         }).catch(error => {
+//                           console.log(error)
+//                         });
+//
+//                         return Promise.all(topics.map(topic => {
+//                           return Topic.create(topic);
+//
+//                         })).then(createdTopics => {
+//
+//                           user.setTopics(createdTopics);
+//
+//                           return questions.forEach((topQuestionData) => {
+//                             console.log(topQuestionData.questionText);
+//                             return user.createQuestion({
+//                               questionText: topQuestionData.questionText,
+//                               stars: 0
+//                             })
+//                               .then((topQuestion) => {
+//                                 user.addPonder(topQuestion);
+//
+//                                 console.log("addQuestion");
+//                                 topQuestion.addStarredBy(user);
+//                                 createdTopics.forEach(topic => {
+//                                   console.log("CREATE Q TOPIC")
+//                                   return user.createQuestionTopicLink({
+//                                     questionId: topQuestion.id,
+//                                     topicId: topic.id
+//                                   })
+//                                     .then(questionTopic => {
+//                                       console.log("CREATED LINK", questionTopic.userId);
+//                                         return user.addTopicLinkApproval(questionTopic)
+//                                       }
+//                                     )
+//                                 });
+//
+//                                 return topQuestionData.questions.forEach((secondQuestionData) => {
+//                                   return user.createQuestion({
+//                                     questionText: secondQuestionData.questionText,
+//                                     stars: 0
+//                                   })
+//                                     .then((secondQuestion) => {
+//                                       // console.log(newWhatIf == null)
+//                                       console.log("THEUSER", user.id)
+//                                       return user.createQuestionLink({
+//                                         fromId: topQuestion.id,
+//                                         toId: secondQuestion.id,
+//                                         questionLinkTypeId: createdLinkType.id,
+//                                       }).then(questionLink => {
+//                                         console.log("Created question link", questionLink.userId)
+//                                         user.addQuestionLinkApproval(questionLink);
+//
+//                                         console.log("QUESTIONLINKTYPEID", questionLink.questionLinkTypeId);
+//                                         return secondQuestionData.questions.forEach((thirdQuestionText) => {
+//                                           return user.createQuestion({
+//                                             questionText: thirdQuestionText,
+//                                             stars: 0
+//                                           })
+//                                             .then((thirdQuestion) => {
+//                                               user.createQuestionLink({
+//                                                 ownerId: user.id,
+//                                                 fromId: secondQuestion.id,
+//                                                 toId: thirdQuestion.id,
+//                                                 questionLinkTypeId: 1
+//                                               }).then(questionLink => console.log("QUESTIONLINKTYPEID", questionLink.questionLinkTypeId))
+//
+//                                             })
+//                                         })
+//                                       })
+//                                       // console.log(newWhy == null)
+//
+//                                     })
+//
+//                                 })
+//                               })
+//                           })
+//
+//                         })
+//                       })
+//
+//                   })
+//               })
+//           })
+//
+//       });
+//   });
 
 const User = Conn.models.user;
 const Question = Conn.models.question;

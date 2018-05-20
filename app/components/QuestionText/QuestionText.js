@@ -9,9 +9,19 @@ import styles from './styles.css';
 const QuestionText = ({questionText}) =>
   <div className={styles.question}>
     <div className={styles.questionText}>
-      {questionText}
+      {formatQuestion(questionText)}
     </div>
   </div>;
+
+
+function formatQuestion(question) {
+  let newQuestion = question[0].toUpperCase() + question.substring(1)
+
+  if (newQuestion[newQuestion.length] != "?") {
+    newQuestion += "?";
+  }
+  return newQuestion;
+}
 
 QuestionText.propTypes = {
   questionText: PropTypes.string.isRequired

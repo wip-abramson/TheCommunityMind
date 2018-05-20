@@ -12,7 +12,7 @@ export const resolvers = {
   Date: GraphQLDate,
 
   Query: {
-    question(_, args, ctx) {
+    questionById(_, args, ctx) {
       return questionLogic.questionQuery(_, args, ctx);
     },
     topTopics: (_, args, ctx) => {
@@ -35,6 +35,9 @@ export const resolvers = {
     },
     questionLinks(_, args, ctx) {
       return questionLinkLogic.query(_, args, ctx);
+    },
+    randomQuestion(_, args, ctx) {
+      return questionLogic.randomQuestionQuery(_, args, ctx);
     }
 
   },

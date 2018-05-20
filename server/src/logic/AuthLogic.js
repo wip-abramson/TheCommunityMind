@@ -10,12 +10,10 @@ import ostUserQueries from '../ost/ostUserQueries';
 export const authLogic = {
   // reusable function to check for a user with context
   getAuthenticatedUser(ctx) {
-    console.log("Getting user")
     if (!ctx.user) {
       console.log("No ctx")
       return Promise.reject('Unauthorized');
     }
-    console.log(ctx.user);
     return ctx.user
       .then((user) => {
         if (!user) {
@@ -36,7 +34,7 @@ export const authLogic = {
             .then(hash => {
                 return ostUserQueries.createUser(username)
                   .then(uuid => {
-                      if (uuid != null) {
+                      if (uuid !== null) {
 
                         // TODO do i need to react to this? I think subscribe
                         ostUserQueries.airdropNewUser();
@@ -49,7 +47,6 @@ export const authLogic = {
                         })
                           .then((user) => {
                             const { id } = user;
-                            console.log(JWT_SECRET);
                             const token = jwt.sign({
                               id,
                               email,

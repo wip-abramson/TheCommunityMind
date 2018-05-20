@@ -18,6 +18,7 @@ const Dropdown = ({title, fontSize, ...props}) =>
   </DropdownButton>;
 
 Dropdown.propTypes = {
+  id: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   fontSize: PropTypes.number.isRequired
 };

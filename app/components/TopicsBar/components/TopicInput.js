@@ -32,8 +32,9 @@ class TopicInput extends React.Component {
 
   render() {
     return (
-      <div className={styles.topicInput} >
+      <div className={styles.topicInputContainer} >
         <input
+          className={styles.topicInput}
           placeholder="Suggest Topic"
           onChange={this.handleTopicInputChange}
           value={this.state.topicInput}

@@ -13,20 +13,6 @@ import QuestionBox from '../QuestionBox/QuestionBox'
 import FaRightArrow from 'react-icons/lib/fa/arrow-right';
 import FaLeftArrow from 'react-icons/lib/fa/arrow-left';
 
-// TODO make nav items do stuff (Separate component)
-// TODO left arrow should go to previous right arrow should go to random unless user selects a link to traverse
-// const QuestionFocusContainer = ({ isInput, focussedId }) => {
-//   return (
-//     <div className={styles.focusGrid}>
-//       <QuestionUsernameBar/>
-//       <FaLeftArrow size={30} className={styles.leftNav}/>
-//       <QuestionBox>Qhere are you</QuestionBox>
-//       <FaRightArrow size={30} className={styles.rightNav}/>
-//       <UserInteractionsBar/>
-//     </div>
-//   )
-// };
-
 // TODO link up to backend and fetch question
 // TODO implement left and right arrow nav
 class QuestionFocus extends React.Component {
@@ -35,33 +21,33 @@ class QuestionFocus extends React.Component {
 
   constructor(props) {
     super(props);
-
-    this.handleSubmitQuestion = this.handleSubmitQuestion.bind(this);
+    this.handleSelectLinkType = this.handleSelectLinkType.bind(this);
   }
 
-  handleSubmitQuestion(data) {
-    console.log(data);
+  handleSelectLinkType(linkType) {
+    console.log("Selecting", linkType);
   }
 
   render() {
     return (
       <div className={styles.focusGrid}>
-        <QuestionUsernameBar isInput={this.isInput} user={{ id: "1", username: "Will" }}
+        <QuestionUsernameBar isInput={this.isInput}
+                             user={this.props.question.owner}
+                             timeCreated={this.props.question.createdAt}
                              focusType="Question Focus"/>
-        <FaLeftArrow size={30} className={styles.leftNav}/>
+        <FaLeftArrow size={30} className={styles.leftNav} onClick={this.props.onPreviousQuestion}/>
         <QuestionBox
-          question={{
-            id: "1",
-            questionText: "Why can't I view my digital footprint in one easily accessible user interface",
-            topics: [
-              { id: "12", name: "Questioning" },
-              { id: "13", name: "Answers" },
-              { id: "11", name: "Meaning" },
-              { id: "1", name: "Ideas" }] }}
+          onSelectQuestionLink={this.handleSelectLinkType}
+          question={this.props.question}
           isInput={this.isInput}
           onSubmitQuestion={this.handleSubmitQuestion}/>
-        <FaRightArrow size={30} className={styles.rightNav}/>
-        <UserInteractionsBar isInput={this.isInput} questionId={11}
+        <FaRightArrow size={30} className={styles.rightNav} onClick={this.props.onNextQuestion}/>
+        <UserInteractionsBar isInput={this.isInput}
+                             stars={this.props.question.stars}
+                             starredByCurrentUser={this.props.question.starredByCurrentUser}
+                             ponderCount={this.props.question.ponderCount}
+                             ponderedByCurrentUser={this.props.question.ponderedByCurrentUser}
+                             questionId={this.props.question.id}
                              toggleIsInput={this.props.toggleIsInput}/>
       </div>
 
@@ -70,9 +56,10 @@ class QuestionFocus extends React.Component {
 }
 
 QuestionFocus.propTypes = {
-  isInput: PropTypes.bool.isRequired,
-  focussedId: PropTypes.string.isRequired,
-  toggleIsInput: PropTypes.func.isRequired
+  question: PropTypes.shape({}).isRequired,
+  toggleIsInput: PropTypes.func.isRequired,
+  onNextQuestion: PropTypes.func.isRequired,
+  onPreviousQuestion: PropTypes.func.isRequired
 };
 
 export default QuestionFocus;

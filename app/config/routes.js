@@ -9,6 +9,8 @@ import RegisterContainer from "../components/Authentication/RegisterContainer";
 import UserProfileContainer from "../components/UserProfile/UserProfileContainer";
 import LandingPage from '../components/LandingPage/LandingPage';
 import QuestionFocusContainer from '../components/QuestionFocus/QuestionFocusContainer';
+import RandomQuestionContainer from '../components/RandomQuestionContainer/RandomQuestionContainer';
+import QuestionIdFocusContainer from '../components/QuestionIdFocusContainer/QuestionIdFocusContainer';
 
 const AppRouter = function () {
   return (
@@ -18,12 +20,13 @@ const AppRouter = function () {
 
 
         <Route component={Home}>
-          <IndexRoute component={QuestionsView}/>
+          <IndexRoute component={RandomQuestionContainer}/>
           {/*<Route path="/thread/:name" component={ThreadPage}/>*/}
         </Route>
-        <Route path='/Landing' component={QuestionFocusContainer}/>
+        <Route path='/landing' component={LandingPage}/>
+        <Route path='/random' component={RandomQuestionContainer} />
 
-        <Route path='question/:id' component={QuestionsView}/>
+        <Route path='/question' component={QuestionIdFocusContainer}/>
 
         < Route
           path='/login'

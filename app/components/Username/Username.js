@@ -3,6 +3,8 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
+import {graphql, compose} from 'react-apollo';
+import {connect} from 'react-redux';
 
 import styles from './styles.css';
 
@@ -12,15 +14,125 @@ import ViewProfile from './MenuItems/ViewProfile';
 import TipUser from './MenuItems/TipUser';
 import FollowUser from './MenuItems/FollowUser';
 
-//TODO change username to user object, count should come from there
-//TODO Make user a clickable dropdown component
-// TODO username text not bit enough
+import Notifications from 'react-notification-system-redux';
+import { unauthorizedErrorNotification } from '../../notifications/error.notifications';
 
-const Username = ({user}) =>
+import FOLLOW_USER_MUTATION from '../../graphql/mutations/followUser.mutation'
+import UNFOLLOW_USER_MUTATION from '../../graphql/mutations/unfollowUser.mutation';
+import TIP_USER_MUTATION from '../../graphql/mutations/tipUser.mutation';
+
+const mapDispatchToProps = function (dispatch) {
+  return {
+    unAuthorized: () => {
+      console.log("DISPATCH UNAUTHORIZED")
+      dispatch(Notifications.error(unauthorizedErrorNotification))
+    },
+  }
+};
+
+const followUser = graphql(FOLLOW_USER_MUTATION, {
+  props: ({ ownProps, mutate }) => ({
+    followUser: (userId) => {
+      return mutate({
+        variables: { userId: userId },
+        optimisticResponse: {
+          __typename: 'Mutation',
+          followUser: {
+            id: userId,
+            __typename: 'User',
+            followedByCurrentUser: true,
+          }
+        },
+      })
+        .catch(res => {
+          // catches any error returned from mutation request
+          const errors = res.graphQLErrors.map((error) => {
+            console.log(error.message)
+            if (error.message === "Unauthorized") {
+              ownProps.unAuthorized();
+            }
+            return error;
+          });
+          return errors
+        })
+    }
+  })
+});
+
+const unfollowUser = graphql(UNFOLLOW_USER_MUTATION, {
+  props: ({ ownProps, mutate }) => ({
+    unfollowUser: (userId) => {
+
+      return mutate({
+        variables: { userId: userId},
+        optimisticResponse: {
+          __typename: 'Mutation',
+          unfollowUser: {
+            id: userId,
+            __typename: 'User',
+            followedByCurrentUser: false,
+          }
+        },
+      })
+        .catch(res => {
+          // catches any error returned from mutation request
+          const errors = res.graphQLErrors.map((error) => {
+            console.log(error.message)
+            if (error.message === "Unauthorized") {
+              ownProps.unAuthorized();
+            }
+            return error;
+          });
+          return errors
+        })
+    }
+  })
+});
+
+const tipUser = graphql(TIP_USER_MUTATION, {
+  props: ({ ownProps, mutate }) => ({
+    tipUser: (userId) => {
+
+      //TODO potentially think about optimistic response of logged in user with updated balance
+      return mutate({
+        variables: { userId: userId},
+        // optimisticResponse: {
+        //   __typename: 'Mutation',
+        //   tipUser: {
+        //     id: userId,
+        //
+        //     __typename: 'User',
+        //     followedByCurrentUser: false,
+        //   }
+        // },
+      })
+        .catch(res => {
+          // catches any error returned from mutation request
+          const errors = res.graphQLErrors.map((error) => {
+            console.log(error.message)
+            if (error.message === "Unauthorized") {
+              ownProps.unAuthorized();
+            }
+            return error;
+          });
+          return errors
+        })
+    }
+  })
+})
+
+
+const Username = ({user, followUser, unfollowUser, tipUser}) =>
   <div className={styles.username}>
     <Dropdown title={user.username} fontSize={22} id={user.id}>
-      <FollowUser userId={user.id}/>
-      <TipUser userId={user.id}/>
+      <FollowUser
+        canFollow={!user.followedByCurrentUser}
+        followUser={followUser}
+        unfollowUser={unfollowUser}
+        userId={user.id}/>
+      <TipUser
+        userId={user.id}
+        tipUser={tipUser}/>
       <ViewProfile userId={user.id}/>
     </Dropdown>
     <Count amount={11}/>
@@ -29,8 +141,17 @@ const Username = ({user}) =>
 Username.propTypes = {
   user: PropTypes.shape({
     id: PropTypes.string.isRequired,
-    username: PropTypes.string.isRequired
+    username: PropTypes.string.isRequired,
+    followedByCurrentUser: PropTypes.bool.isRequired,
   }).isRequired
 };
 
-export default Username;
+export default compose(
+  connect(
+    null,
+    mapDispatchToProps
+  ),
+  tipUser,
+  followUser,
+  unfollowUser,
+)(Username)

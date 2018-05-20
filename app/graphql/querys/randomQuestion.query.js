@@ -5,8 +5,8 @@ import gql from 'graphql-tag';
 import QUESTION_FRAGMENT from '../fragments/question.fragment';
 
 const RANDOM_QUESTION_QUERY = gql`
-  query randomQuestion($currentQuestionId: ID) {
-    randomQuestion(currentQuestionId: $currentQuestionId) {
+  query randomQuestion($visitedQuestionIds: [ID]!) {
+    randomQuestion(visitedQuestionIds: $visitedQuestionIds) {
       ...QuestionFragment
     }
    }

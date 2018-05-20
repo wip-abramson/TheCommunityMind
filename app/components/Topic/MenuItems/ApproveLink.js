@@ -4,11 +4,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import MenuItem from '../../generic/MenuItem/MenuItem';
+import DefaultMenuItem from '../../generic/DefaultMenuItem/DefaultMenuItem';
 
 //TODO change onClick to real function
 const ApproveLink = ({topicId}) =>
-  <MenuItem title="Approve Link" onClick={() => console.log("Approve")}/>;
+  <DefaultMenuItem title="Approve Link" onClick={() => console.log("Approve")}/>;
 
 ApproveLink.propTypes = {
   topicId: PropTypes.string.isRequired

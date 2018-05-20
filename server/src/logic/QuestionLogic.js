@@ -106,9 +106,20 @@ export const questionLogic = {
   starQuestion(_, { id }, ctx) {
     return authLogic.getAuthenticatedUser(ctx)
       .then((user) => {
-        return Question.findById(id).then(unstaredQuestion => {
-          return unstaredQuestion.addStarredBy(user).then(() => {
-            return unstaredQuestion;
+        return Question.findOne({
+          where: { id },
+          include: [{ model: User }]
+        }).then(unstarredQuestion => {
+          // console.log(unstarredQuestion.user.ostUuid)
+          return ostTransactions.executeApproveTransaction(user.ostUuid, unstarredQuestion.user.ostUuid).then(transaction => {
+            if (transaction === null) {
+              return unstarredQuestion;
+            }
+            return unstarredQuestion.addStarredBy(user).then(() => {
+              return unstarredQuestion
+
+            });
+
           });
         })
       })
@@ -135,12 +146,18 @@ export const questionLogic = {
   ponderQuestion(_, { id }, ctx) {
     return authLogic.getAuthenticatedUser(ctx)
       .then(user => {
-        return Question.findById(id)
-          .then(question => {
-            return user.addPonder(question)
-              .then(() => {
-                return question;
-              })
+          return Question.findOne({
+            where: { id },
+            include: [{ model: User }]
+          }).then(question => {
+            // console.log(unstarredQuestion.user.ostUuid)
+            return ostTransactions.executeApproveTransaction(user.ostUuid, question.user.ostUuid).then(transaction => {
+              return user.addPonder(question)
+                .then(() => {
+                  return question;
+                })
+            });
+
           })
       })
       .catch(error => {
@@ -351,47 +368,59 @@ export const questionLogic = {
 
     return this.buildPaginatedQuestions(args, before)
   },
-  randomQuestionQuery(_, {currentQuestionId}, ctx) {
-    const args = {
-      order: [
-        Sequelize.literal(RANDOM)
-      ],
-      limit: 3
-    };
-    if (currentQuestionId) {
-      args.where = {id: {[Op.ne]: currentQuestionId}};
-    }
-    return Question.findAll(args).then(randomQuestions => {
-      return Promise.all(randomQuestions.map(randomQuestion => {
-        return User.count({
-          include: [{model: Question, as: "StarredBy", where: {id: randomQuestion.id}}]
-        }).then(starCount => {
-          console.log("StarCount ", starCount);
-          return User.count({
-            include: [{model: Question, as: "Ponder", where: {id: randomQuestion.id}}]
-          }).then(ponderCount => {
-            console.log("ponder count: ", ponderCount)
-            return Question.count({
-              where: {id: randomQuestion.id},
-              include: [{model: QuestionLink}]
-            }).then(linkCount => {
-              console.log(linkCount);
-              return {
-                question: randomQuestion,
-                totalRating: starCount + ponderCount + linkCount
-              }
-            })
-          })
-        })
-      })).then(ratedQuestions => {
-
-        ratedQuestions.sort((a, b) => {
-          return b.totalRating - a.totalRating;
-        })
-        return ratedQuestions[0].question;
-
-      })
-    })
+  randomQuestionQuery(_, { visitedQuestionIds }, ctx) {
+    // const args = {
+    //   order: [
+    //     Sequelize.literal(RANDOM)
+    //   ],
+    //   limit: 3
+    // };
+    // if (currentQuestionId) {
+    //   args.where = { id: { [Op.ne]: currentQuestionId } };
+    // }
+    console.log(visitedQuestionIds);
+    return Question.count().then(count => {
+      // console.log(currentQuestionId);
+      let id = Math.floor(Math.random() * (count + 1)) ;
+      console.log(visitedQuestionIds.indexOf(id+'') !== -1);
+      while(visitedQuestionIds.indexOf(id+'') !== -1) {
+        id = Math.floor(Math.random() * (count)) +1 ;
+        console.log(id);
+      }
+      console.log("FIND QUESTION", id)
+      return Question.findById(id);
+    });
+    // return Question.findAll(args).then(randomQuestions => {
+    //   return Promise.all(randomQuestions.map(randomQuestion => {
+    //     return User.count({
+    //       include: [{ model: Question, as: "StarredBy", where: { id: randomQuestion.id } }]
+    //     }).then(starCount => {
+    //       console.log("StarCount ", starCount);
+    //       return User.count({
+    //         include: [{ model: Question, as: "Ponder", where: { id: randomQuestion.id } }]
+    //       }).then(ponderCount => {
+    //         console.log("ponder count: ", ponderCount)
+    //         return Question.count({
+    //           where: { id: randomQuestion.id },
+    //           include: [{ model: QuestionLink }]
+    //         }).then(linkCount => {
+    //           console.log(linkCount);
+    //           return {
+    //             question: randomQuestion,
+    //             totalRating: starCount + ponderCount + linkCount
+    //           }
+    //         })
+    //       })
+    //     })
+    //   })).then(ratedQuestions => {
+    //
+    //     ratedQuestions.sort((a, b) => {
+    //       return b.totalRating - a.totalRating;
+    //     })
+    //     return ratedQuestions[0].question;
+    //
+    //   })
+    // })
   },
   buildPaginatedQuestions(args, before) {
     return Question.findAll(args)
@@ -473,3 +502,6 @@ function createQuestionLink(user, linkType, question, questioningId) {
     throw new Error("Invalid link type");
   }
 }
+
+
+

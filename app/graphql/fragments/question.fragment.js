@@ -18,6 +18,7 @@ const QUESTION_FRAGMENT = gql`
     owner {
       id
       username
+      followedByCurrentUser
     }
     linksToTopics(first: 4) {
     	

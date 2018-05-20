@@ -4,11 +4,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import MenuItem from '../../generic/MenuItem/MenuItem';
+import DefaultMenuItem from '../../generic/DefaultMenuItem/DefaultMenuItem';
 
 //TODO change onClick to real function
 const ViewTopic = ({topicId}) =>
-  <MenuItem title="View Topic" onClick={() => console.log("View Topic")}/>;
+  <DefaultMenuItem title="View Topic" onClick={() => console.log("View Topic")}/>;
 
 ViewTopic.propTypes = {
   topicId: PropTypes.string.isRequired

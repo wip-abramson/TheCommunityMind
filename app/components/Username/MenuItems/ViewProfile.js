@@ -4,11 +4,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import MenuItem from '../../generic/MenuItem/MenuItem';
+import DefaultMenuItem from '../../generic/DefaultMenuItem/DefaultMenuItem';
 
 //TODO change onClick to real function
 const ViewProfile = ({userId}) =>
-  <MenuItem title="View Profile" onClick={() => console.log("View profile")}/>;
+  <DefaultMenuItem title="View Profile" onClick={() => console.log("View profile")}/>;
 
 ViewProfile.propTypes = {
   userId: PropTypes.string.isRequired

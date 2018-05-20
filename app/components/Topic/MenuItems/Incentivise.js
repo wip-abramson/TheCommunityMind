@@ -4,11 +4,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import MenuItem from '../../generic/MenuItem/MenuItem';
+import DefaultMenuItem from '../../generic/DefaultMenuItem/DefaultMenuItem';
 
 //TODO change onClick to real function
 const Incentivise = ({topicId}) =>
-  <MenuItem title="Incentivise" onClick={() => console.log("Incentivise")}/>;
+  <DefaultMenuItem title="Incentivise" onClick={() => console.log("Incentivise")}/>;
 
 Incentivise.propTypes = {
   topicId: PropTypes.string.isRequired

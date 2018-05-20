@@ -93,7 +93,7 @@ class QuestionFocusContainer extends React.Component {
 QuestionFocusContainer.propTypes = {
   question: PropTypes.shape({}),
   loading: PropTypes.bool.isRequired,
-  error: PropTypes.bool.isRequired,
+  error: PropTypes.string,
   onNextQuestion: PropTypes.func.isRequired,
   onPreviousQuestion: PropTypes.func.isRequired,
 };

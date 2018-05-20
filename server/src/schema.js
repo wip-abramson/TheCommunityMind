@@ -120,7 +120,7 @@ const typeDefs = `
    topics: [Topic]    
    user(id: ID!): User
    questionById(questionId: ID!): Question!
-   randomQuestion(currentQuestionId: ID): Question!
+   randomQuestion(visitedQuestionIds: [ID]!): Question!
    questions(parentId: Int, first: Int, after: String, last: Int, before: String): QuestionConnection!
    userStarredQuestions(userId: ID!, first: Int, after: String, last: Int, before: String): QuestionConnection!
    userQuestions(userId: ID!, first: Int, after: String, last: Int, before: String): QuestionConnection!
@@ -137,7 +137,7 @@ const typeDefs = `
     editQuestion(id: ID!, newQuestionText: String!): Question
     starQuestion(id: ID!): Question
     unstarQuestion(id: ID!): Question
-    
+    tipUser(id: ID!): User
     findOrCreateTopic(name: String!): Topic!
     linkQuestionWithTopic(questionId: ID!, topicId: ID!): Topic
     removeTopicLinkFromQuestion(questionId: ID!, topicId: ID!): Topic

@@ -4,6 +4,7 @@
 import { Question, User, Topic } from '../db';
 import { authLogic } from './AuthLogic';
 import ostUserQueries from '../ost/ostUserQueries';
+import ostTransactions from '../ost/ostTransactions';
 
 export const userLogic = {
   jwt(user) {
@@ -101,6 +102,28 @@ export const userLogic = {
         return Promise.reject(error)
       })
   },
+  tipUser(_, { id }, ctx) {
+
+    return authLogic.getAuthenticatedUser(ctx)
+      .then(currentUser => {
+        if (currentUser.id === id) {
+          return Promise.reject("User cannot tip itself")
+        }
+        return User.findById(id)
+          .then(user => {
+            console.log("Tip user", user.ostUuid)
+            return ostTransactions.executeUserTipTransaction(currentUser.ostUuid, user.ostUuid)
+              .then(result => {
+                // console.log(result);
+                return currentUser;
+              })
+          })
+      })
+      .catch(error => {
+        console.log(error, "Error");
+        return Promise.reject(error)
+      })
+  },
   followUser(_, { id }, ctx) {
     return authLogic.getAuthenticatedUser(ctx)
       .then(currentUser => {
@@ -109,10 +132,13 @@ export const userLogic = {
         }
         return User.findById(id)
           .then(user => {
-            return user.addFollowedBy(currentUser)
-              .then(() => {
-                // console.log(followedUser, "FOLLOWED")
-                return user;
+            return ostTransactions.executeUserFollowUserTransaction(currentUser.ostUuid, user.ostUuid)
+              .then(transaction => {
+                return user.addFollowedBy(currentUser)
+                  .then(() => {
+                    // console.log(followedUser, "FOLLOWED")
+                    return user;
+                  })
               })
           })
       })

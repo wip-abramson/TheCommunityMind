@@ -4,14 +4,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import MenuItem from '../../generic/MenuItem/MenuItem';
+import MenuItem from '../../generic/DefaultMenuItem/DefaultMenuItem';
 
 //TODO change onClick to real function
-const TipUser = ({userId}) =>
-  <MenuItem title="Tip" onClick={() => console.log("Tip User")}/>;
+const TipUser = ({userId, tipUser}) =>
+  <MenuItem title="Tip" onClick={() => tipUser(userId)}/>;
 
 TipUser.propTypes = {
-  userId: PropTypes.string.isRequired
+  userId: PropTypes.string.isRequired,
+  tipUser: PropTypes.func.isRequired
 };
 
 export default TipUser;

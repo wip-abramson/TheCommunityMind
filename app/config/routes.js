@@ -9,7 +9,7 @@ import RegisterContainer from "../components/Authentication/RegisterContainer";
 import UserProfileContainer from "../components/UserProfile/UserProfileContainer";
 import LandingPage from '../components/LandingPage/LandingPage';
 import QuestionFocusContainer from '../components/QuestionFocus/QuestionFocusContainer';
-import RandomQuestionContainer from '../components/RandomQuestionContainer/RandomQuestionContainer';
+import RandomQuestionTracker from '../components/RandomQuestionContainer/RandomQuestionTracker';
 import QuestionIdFocusContainer from '../components/QuestionIdFocusContainer/QuestionIdFocusContainer';
 
 const AppRouter = function () {
@@ -20,11 +20,11 @@ const AppRouter = function () {
 
 
         <Route component={Home}>
-          <IndexRoute component={RandomQuestionContainer}/>
+          <IndexRoute component={RandomQuestionTracker}/>
           {/*<Route path="/thread/:name" component={ThreadPage}/>*/}
         </Route>
         <Route path='/landing' component={LandingPage}/>
-        <Route path='/random' component={RandomQuestionContainer} />
+        <Route path='/random' component={RandomQuestionTracker} />
 
         <Route path='/question' component={QuestionIdFocusContainer}/>
 

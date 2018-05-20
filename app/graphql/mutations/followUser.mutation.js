@@ -6,8 +6,6 @@ const FOLLOW_USER_MUTATION = gql`
   mutation followUser($userId: ID!) {
     followUser(id: $userId) {
       id
-      username
-      followersCount
       followedByCurrentUser
     }
   }

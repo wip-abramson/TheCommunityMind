@@ -90,6 +90,9 @@ export const resolvers = {
       return authLogic.register(_, args, ctx);
 
     },
+    tipUser: (_, args, ctx) => {
+      return userLogic.tipUser(_, args, ctx);
+    },
 
     login: (_, args, ctx) => {
       return authLogic.login(_, args, ctx);

@@ -36,18 +36,18 @@ class QuestionLinksBar extends React.Component {
           isInput={this.props.isInput}
           hasBorder={false}
           idSelected={this.getIdSelected()}
-          linkType={{id: '1', linkType: "Super Questions", amount: this.props.superQuestionsCount}}/>
+          linkType={{id: '1', linkType: "Super Question", amount: this.props.superQuestionsCount}}/>
         <QuestionLinkType
           selectLinkType={this.props.onSelectLinkType}
           isInput={this.props.isInput}
           hasBorder={true}
           idSelected={this.getIdSelected()}
-          linkType={{id: '2', linkType: "Sub Questions", amount: this.props.subQuestionsCount}}/>
+          linkType={{id: '2', linkType: "Sub Question", amount: this.props.subQuestionsCount}}/>
         <QuestionLinkType
           selectLinkType={this.props.onSelectLinkType}
           isInput={this.props.isInput}
           hasBorder={true}
-          linkType={{id: '3', linkType: "Related Questions", amount: this.props.relatedQuestionsCount}}
+          linkType={{id: '3', linkType: "Related Question", amount: this.props.relatedQuestionsCount}}
           idSelected={this.getIdSelected()}/>
       </div>
     )

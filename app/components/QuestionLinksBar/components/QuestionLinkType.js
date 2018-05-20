@@ -16,12 +16,12 @@ const QuestionLinkType = ({hasBorder, linkType, isInput, selectLinkType, idSelec
 {
   return (
     <div className={hasBorder ? styles.questionLinkType : styles.questionLinkTypeNoBorder}
-         onClick={() => selectLinkType(linkType.id)}>
+         onClick={() => selectLinkType(linkType)}>
       {linkType.linkType}
       {isInput ?
         <Checkbox
           isSelected={idSelected === linkType.id}
-          selectCheckbox={() => selectLinkType(linkType.id)}/>
+          selectCheckbox={() => selectLinkType(linkType)}/>
         : <Count amount={linkType.amount}/>}
     </div>
   )
@@ -37,7 +37,7 @@ QuestionLinkType.propTypes = {
   hasBorder: PropTypes.bool.isRequired,
   isInput: PropTypes.bool.isRequired,
   selectLinkType: PropTypes.func.isRequired,
-  idSelected: PropTypes.number.isRequired,
+  idSelected: PropTypes.string.isRequired,
 };
 
 export default QuestionLinkType;

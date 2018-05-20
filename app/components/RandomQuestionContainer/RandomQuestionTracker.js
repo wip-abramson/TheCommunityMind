@@ -21,7 +21,7 @@ class RandomQuestionTracker extends React.Component {
       visitedQuestionIds: [...this.state.visitedQuestionIds, questionId]
     });
 
-    browserHistory.push({pathname: "/random"})
+    browserHistory.push({pathname: "/"})
   }
 
   render() {

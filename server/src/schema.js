@@ -121,11 +121,13 @@ const typeDefs = `
    topics: [Topic]    
    user(id: ID!): User
    questionById(questionId: ID!): Question!
+   questionLinks(questionId: ID!, linkType: String!, first: Int, after: String, last: Int, before: String): QuestionLinkConnection!
+
+   
    randomQuestion(visitedQuestionIds: [ID]!): Question!
    questions(parentId: Int, first: Int, after: String, last: Int, before: String): QuestionConnection!
    userStarredQuestions(userId: ID!, first: Int, after: String, last: Int, before: String): QuestionConnection!
    userQuestions(userId: ID!, first: Int, after: String, last: Int, before: String): QuestionConnection!
-   questionLinks(linkType: String, linkTypeId: ID): [QuestionLink] 
    
    }
   

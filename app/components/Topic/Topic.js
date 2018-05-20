@@ -14,7 +14,7 @@ import ViewTopic from './MenuItems/ViewTopic';
 
 
 
-const Topic = ({ styles, topic, strength, isInput, followTopic, unfollowTopic, linkApproved, approveQuestionTopicLink, unapproveQuestionTopicLink }) => {
+const Topic = ({ styles, questionId, topic, strength, isInput, followTopic, unfollowTopic, linkApproved, approveQuestionTopicLink, unapproveQuestionTopicLink }) => {
   return isInput ?
     <div className={styles.topic}>
       {topic.name}
@@ -32,6 +32,7 @@ const Topic = ({ styles, topic, strength, isInput, followTopic, unfollowTopic, l
           followTopic={followTopic}
           unfollowTopic={unfollowTopic}/>
         <ApproveLink
+          questionId={questionId}
           canApprove={!linkApproved}
           approveLink={approveQuestionTopicLink}
           unapproveLink={unapproveQuestionTopicLink}

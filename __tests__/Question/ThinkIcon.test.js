@@ -2,7 +2,7 @@
  * Created by will on 13/03/18.
  */
 import React from 'react';
-import ThinkIcon from '../../app/components/Question/Components/ThinkIcon';
+import ThinkIcon from '../../app/components/old/Question/Components/ThinkIcon';
 import FaEye from 'react-icons/lib/fa/eye';
 
 describe("EditIcon component", () => {

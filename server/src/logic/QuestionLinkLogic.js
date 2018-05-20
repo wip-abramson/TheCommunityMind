@@ -1,30 +1,65 @@
 /**
  * Created by will on 18/05/18.
  */
-import {QuestionLink, QuestionLinkType, User, Op} from '../db';
-import {paginationLogic} from './PaginationLogic';
-import {authLogic} from './AuthLogic';
+import { QuestionLink, QuestionLinkType, User, Op, PARENT_CHILD_LINK, RELATED_LINK } from '../db';
+import { paginationLogic } from './PaginationLogic';
+import { authLogic } from './AuthLogic';
 
 export const SUPER_QUESTION = "Super Question";
 export const SUB_QUESTION = "Sub Question";
 export const RELATED_QUESTION = "Related Question";
 export const linkTypes = [SUPER_QUESTION, SUB_QUESTION, RELATED_QUESTION]; // TODO {type: "rewording", id: 3}];
 
-
 export const questionLinkLogic = {
-  query(_, args, ctx) {
-    return QuestionLink.findAll();
+  query(_, { questionId, linkType, first, after, last, before }, ctx) {
+    console.log("Question Links", questionId, linkType)
+    const paginationArgs = paginationLogic.buildArgs(first, after, last, before);
+    let queryArgs = {}
+    if (linkType === SUPER_QUESTION) {
+      queryArgs = {
+        where: { toId: questionId },
+        include: [{ model: QuestionLinkType, linkType: PARENT_CHILD_LINK }]
+      }
+    }
+    else if (linkType === SUB_QUESTION) {
+      queryArgs = {
+        where: { fromId: questionId },
+        include: [{ model: QuestionLinkType, linkType: PARENT_CHILD_LINK }]
+      }
+
+    }
+    else if (linkType === RELATED_QUESTION) {
+      queryArgs = {
+        where: {
+          [Op.or]: [
+            {
+              toId: questionId
+            },
+            {
+              fromId: questionId
+            }
+          ],
+        },
+        include:  [{ model: QuestionLinkType, linkType: RELATED_LINK }]
+      }
+    }
+    else {
+      throw new Error('Invalid link type');
+    }
+    const args = Object.assign({}, paginationArgs, queryArgs)
+    console.log(args);
+    return this.buildPaginatedQuestionLinks(args, before);
   },
   linkType(questionLink, args, ctx) {
     return QuestionLinkType.findOne({
-      where: {id: questionLink.questionLinkTypeId},
+      where: { id: questionLink.questionLinkTypeId },
     }).then(questionLinkType => {
       return questionLinkType.linkType
     })
   },
   approval(questionLink, args, ctx) {
     return User.count({
-      include: [{model: QuestionLink, as: "QuestionLinkApproval", where: {id: questionLink.id}}]
+      include: [{ model: QuestionLink, as: "QuestionLinkApproval", where: { id: questionLink.id } }]
     })
   },
   approvedByCurrentUser(questionLink, args, ctx) {
@@ -32,7 +67,11 @@ export const questionLinkLogic = {
       .then(currentUser => {
         return User.findOne({
           where: { id: currentUser.id },
-          include: [{ model: QuestionLink, as: "QuestionLinkApproval", where: { id: questionLink.id } }]
+          include: [{
+            model: QuestionLink,
+            as: "QuestionLinkApproval",
+            where: { id: questionLink.id }
+          }]
         })
           .then(user => {
             return !!user;
@@ -44,11 +83,11 @@ export const questionLinkLogic = {
       })
   },
   owner(questionLink, args, ctx) {
-    console.log("OWNERID",questionLink.userId);
+    console.log("OWNERID", questionLink.userId);
     return User.findById(questionLink.userId);
   },
   // TODO how can I better represent linkTypeId
-  subQuestionLinks(question, {first, after, last, before}, ctx) {
+  subQuestionLinks(question, { first, after, last, before }, ctx) {
     const args = paginationLogic.buildArgs(first, after, last, before);
 
     args.where = Object.assign({}, args.where, {
@@ -66,7 +105,7 @@ export const questionLinkLogic = {
       }
     })
   },
-  superQuestionLinks(question, {first, after, last, before}, ctx) {
+  superQuestionLinks(question, { first, after, last, before }, ctx) {
     const args = paginationLogic.buildArgs(first, after, last, before);
     args.where = Object.assign({}, args.where, {
       toId: question.id,
@@ -84,7 +123,7 @@ export const questionLinkLogic = {
       }
     })
   },
-  relatedQuestionLinks(question, {first, after, last, before}, ctx) {
+  relatedQuestionLinks(question, { first, after, last, before }, ctx) {
     const args = paginationLogic.buildArgs(first, after, last, before);
 
     // TODO should not have to know this is 2

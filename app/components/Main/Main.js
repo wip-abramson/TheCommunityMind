@@ -7,7 +7,7 @@ import { signOut } from '../../actions/Auth';
 import { showQuestionPopup, hideQuestionPopup } from '../../actions/QuestionPopup';
 import { withApollo } from 'react-apollo';
 import { browserHistory } from 'react-router'
-import QuestionPopupContainer from '../QuestionPopup/QuestionPopupContainer';
+import QuestionPopupContainer from '../old/QuestionPopup/QuestionPopupContainer';
 
 import Notifications from 'react-notification-system-redux';
 import Modal from '../generic/Modal';

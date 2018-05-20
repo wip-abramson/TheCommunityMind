@@ -166,14 +166,14 @@ const unapproveQuestionTopicLink = graphql(UNAPPROVE_QUESTION_TOPIC_LINK_MUTATIO
 });
 
 
-const TopicsBar = ({ topicLinks, hasMoreTopics, onAddTopic, isInput, approveQuestionTopicLink, unapproveQuestionTopicLink, followTopic, unfollowTopic }) =>
+const TopicsBar = ({ topicLinks, questionId, hasMoreTopics, onAddTopic, isInput, approveQuestionTopicLink, unapproveQuestionTopicLink, followTopic, unfollowTopic }) =>
 {
-  console.log(topicLinks[0]);
   return (
     <div className={styles.topicsBar}>
       <div className={styles.topics}>
       {topicLinks.map(topicLink =>
         <Topic
+          questionId={questionId}
           approveQuestionTopicLink={approveQuestionTopicLink}
           unapproveQuestionTopicLink={unapproveQuestionTopicLink}
           followTopic={followTopic}
@@ -199,7 +199,8 @@ TopicsBar.propTypes = {
   topicLinks: PropTypes.array.isRequired,
   hasMoreTopics: PropTypes.bool.isRequired,
   onAddTopic: PropTypes.func,
-  isInput: PropTypes.bool.isRequired
+  isInput: PropTypes.bool.isRequired,
+  questionId: PropTypes.string.isRequired
 };
 
 export default compose(

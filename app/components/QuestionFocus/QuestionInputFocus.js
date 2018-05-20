@@ -106,8 +106,8 @@ class QuestionInputFocus extends React.Component {
     })
   }
 
-  handleUpdateQuestionLinkTypeSelected(linkTypeId) {
-    if (this.state.question.linkTypeSelected && this.state.question.linkTypeSelected.id === linkTypeId) {
+  handleUpdateQuestionLinkTypeSelected(linkType) {
+    if (this.state.question.linkTypeSelected && this.state.question.linkTypeSelected.id === linkType.id) {
       this.setState({
         question: {
           ...this.state.question,
@@ -120,7 +120,7 @@ class QuestionInputFocus extends React.Component {
       this.setState({
         question: {
           ...this.state.question,
-          linkTypeSelected: this.linkTypes[linkIds.indexOf(linkTypeId)]
+          linkTypeSelected: this.linkTypes[linkIds.indexOf(linkType.id)]
         }
       })
     }

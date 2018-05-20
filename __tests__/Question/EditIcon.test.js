@@ -2,7 +2,7 @@
  * Created by will on 13/03/18.
  */
 import React from 'react';
-import EditIcon from '../../app/components/Question/Components/EditIcon';
+import EditIcon from '../../app/components/old/Question/Components/EditIcon';
 import FaEdit from 'react-icons/lib/fa/edit';
 
 describe("EditIcon component", () => {

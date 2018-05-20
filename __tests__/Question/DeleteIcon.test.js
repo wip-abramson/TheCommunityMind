@@ -3,7 +3,7 @@
  */
 import React from 'react';
 
-import DeleteIcon from '../../app/components/Question/Components/DeleteIcon';
+import DeleteIcon from '../../app/components/old/Question/Components/DeleteIcon';
 import FaClose from 'react-icons/lib/fa/close';
 
 

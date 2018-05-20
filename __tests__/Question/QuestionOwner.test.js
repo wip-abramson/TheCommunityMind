@@ -4,7 +4,7 @@
 import React from 'react';
 import { Link } from 'react-router'
 
-import QuestionOwner from '../../app/components/Question/Components/QuestionOwner';
+import QuestionOwner from '../../app/components/old/Question/Components/QuestionOwner';
 
 describe("QuestionOwner component", () => {
   let props;

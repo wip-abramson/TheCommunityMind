@@ -12,12 +12,6 @@ import QuestionLinksBar from '../QuestionLinksBar/QuestionLinksBar';
 import QuestionInput from '../QuestionInput/QuestionInput';
 
 
-const topics = [{ id: "12", name: "Questioning" }, { id: "13", name: "Answers" }, {
-  id: "11",
-  name: "Meaning"
-}, { id: "1", name: "Ideas" }];
-
-
 
 class QuestionBox extends React.Component {
   constructor(props) {
@@ -29,7 +23,6 @@ class QuestionBox extends React.Component {
 
   render() {
     // TODO hasMoreTopics needs to be more defined then just not input
-    console.log(this.props.question.linksToTopics);
     return (
       <div className={styles.questionBox}>
         <TopicsBar
@@ -37,6 +30,7 @@ class QuestionBox extends React.Component {
           hasMoreTopics={this.props.question.linksToTopics.pageInfo.hasNextPage}// this.props.question.linksToTopics.edges.pageInfo.hasNextPage}
           onAddTopic={this.props.onAddTopic}
           isInput={this.props.isInput}
+          questionId={this.props.question.id}
         />
         {this.props.isInput ?
           <QuestionInput currentInput={this.props.question.questionText} onInputChange={this.props.onQuestionChange}/> :

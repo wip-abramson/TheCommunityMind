@@ -2,7 +2,7 @@
  * Created by will on 12/03/18.
  */
 import React from 'react';
-import StarIcon from '../../app/components/Question/Components/StarIcon';
+import StarIcon from '../../app/components/old/Question/Components/StarIcon';
 import FaStar from 'react-icons/lib/fa/star';
 
 describe("StarIcon component", () => {

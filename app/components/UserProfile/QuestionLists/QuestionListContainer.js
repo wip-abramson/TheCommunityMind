@@ -4,7 +4,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import QuestionsList from '../../QuestionList/QuestionList';
+import QuestionsList from '../../old/QuestionList/QuestionList';
 
 const QuestionListContainer = (props) => {
 

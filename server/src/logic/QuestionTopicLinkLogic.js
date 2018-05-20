@@ -49,13 +49,18 @@ export const questionTopicLinkLogic = {
   approveQuestionTopicLink(_, { topicId, questionId }, ctx) {
     return authLogic.getAuthenticatedUser(ctx)
       .then(currentUser => {
-        return QuestionTopicLink.find({
+        console.log(topicId, questionId)
+        return QuestionTopicLink.findOne({
+
           where: { topicId: topicId, questionId: questionId },
-          include: [{ model: User, as: 'Owner' }]
+          include: [
+            {model: Topic, where: {id: topicId}},
+            {model: Question, where: {id: questionId}},
+            { model: User, as: 'Owner' }]
         })
           .then(questionTopicLink => {
-            console.log(questionTopicLink.userId)
-            // TODO this isnt the best way to do this
+            console.log(questionTopicLink)
+              // TODO this isnt the best way to do this
             return User.findById(questionTopicLink.userId).then(user => {
               return ostTransactions.executeLikeTopicQuestionLink(currentUser.ostUuid, user.ostUuid).then(transaction => {
                 return currentUser.addTopicLinkApproval(questionTopicLink)

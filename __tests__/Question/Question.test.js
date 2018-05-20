@@ -3,13 +3,13 @@
  */
 import React from 'react';
 
-import Question from '../../app/components/Question/Question';
-import StarIcon from '../../app/components/Question/Components/StarIcon';
-import EditIcon from '../../app/components/Question/Components/EditIcon';
-import ThinkIcon from '../../app/components/Question/Components/ThinkIcon';
-import DeleteIcon from '../../app/components/Question/Components/DeleteIcon';
-import AskQuestionIcon from '../../app/components/Question/Components/AskQuestionIcon';
-import QuestionOwner from '../../app/components/Question/Components/QuestionOwner';
+import Question from '../../app/components/old/Question/Question';
+import StarIcon from '../../app/components/old/Question/Components/StarIcon';
+import EditIcon from '../../app/components/old/Question/Components/EditIcon';
+import ThinkIcon from '../../app/components/old/Question/Components/ThinkIcon';
+import DeleteIcon from '../../app/components/old/Question/Components/DeleteIcon';
+import AskQuestionIcon from '../../app/components/old/Question/Components/AskQuestionIcon';
+import QuestionOwner from '../../app/components/old/Question/Components/QuestionOwner';
 
 
 

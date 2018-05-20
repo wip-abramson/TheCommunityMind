@@ -2,7 +2,7 @@
  * Created by will on 03/03/18.
  */
 import React from 'react'
-import QUESTIONS_QUERY from '../../graphql/querys/questions.query';
+import QUESTIONS_QUERY from '../../../graphql/querys/questions.query';
 import { graphql } from 'react-apollo';
 import QuestionList from '../QuestionList/QuestionList';
 import update from 'immutability-helper';

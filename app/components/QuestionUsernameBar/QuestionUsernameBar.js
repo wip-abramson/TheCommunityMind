@@ -8,7 +8,7 @@ import styles from './styles.css';
 
 import Username from '../Username/Username';
 import FocusType from '../FocusType/FocusType';
-import TimeCreated from '../TimeCreated/TimeCreated';
+import TimeCreated from '../generic/TimeCreated/TimeCreated';
 
 const QuestionUsernameBar = ({ user, isInput, focusType, timeCreated }) => {
   const view = isInput ? (<div className={styles.topBar}>

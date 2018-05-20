@@ -3,7 +3,7 @@
  */
 import React from 'react';
 
-import AskQuestionIcon from '../../app/components/Question/Components/AskQuestionIcon';
+import AskQuestionIcon from '../../app/components/old/Question/Components/AskQuestionIcon';
 import FaQuestion from 'react-icons/lib/fa/question-circle';
 
 

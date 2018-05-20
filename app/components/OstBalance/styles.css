@@ -1,6 +1,7 @@
 .balanceContainer {
     display: inline-block;
     /*padding: 20px;*/
+    margin-top: 25px;
 }
 
 .ostText {

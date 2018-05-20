@@ -6,19 +6,19 @@ import PropTypes from 'prop-types';
 
 import { compose, graphql } from "react-apollo";
 import { connect } from "react-redux";
-import { showQuestionPopup } from '../../actions/QuestionPopup';
+import { showQuestionPopup } from '../../../actions/QuestionPopup';
 
 import Question from './Question';
 
-import STAR_QUESTION_MUTATION from '../../graphql/mutations/starQuestion.mutation';
-import UNSTAR_QUESTION_MUTATION from '../../graphql/mutations/unstarQuestion.mutation';
-import WATCH_QUESTION_MUTATION from '../../graphql/mutations/ponderQuestion.mutation';
-import UNWATCH_QUESTION_MUTATION from '../../graphql/mutations/forgetQuestion.mutation';
-import DELETE_QUESTION_MUTATION from '../../graphql/mutations/deleteQuestion.mutation';
-import QUESTIONS_QUERY from "../../graphql/querys/questions.query";
+import STAR_QUESTION_MUTATION from '../../../graphql/mutations/starQuestion.mutation';
+import UNSTAR_QUESTION_MUTATION from '../../../graphql/mutations/unstarQuestion.mutation';
+import WATCH_QUESTION_MUTATION from '../../../graphql/mutations/ponderQuestion.mutation';
+import UNWATCH_QUESTION_MUTATION from '../../../graphql/mutations/forgetQuestion.mutation';
+import DELETE_QUESTION_MUTATION from '../../../graphql/mutations/deleteQuestion.mutation';
+import QUESTIONS_QUERY from "../../../graphql/querys/questions.query";
 
 import Notifications from 'react-notification-system-redux';
-import { unauthorizedErrorNotification } from '../../notifications/error.notifications';
+import { unauthorizedErrorNotification } from '../../../notifications/error.notifications';
 
 const mapStateToProps = function (state) {
   return {

@@ -3,6 +3,8 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+import {browserHistory} from 'react-router';
 
 import styles from './styles.css';
 
@@ -12,6 +14,18 @@ import QuestionBox from '../QuestionBox/QuestionBox'
 
 import FaRightArrow from 'react-icons/lib/fa/arrow-right';
 import FaLeftArrow from 'react-icons/lib/fa/arrow-left';
+
+import Notifications from 'react-notification-system-redux';
+import { noQuestionLinksError } from '../../notifications/error.notifications';
+
+const mapDispatchToProps = function (dispatch) {
+  return {
+    noLinksToView: () => {
+      console.log("DISPATCH UNAUTHORIZED")
+      dispatch(Notifications.info(noQuestionLinksError))
+    },
+  }
+};
 
 // TODO link up to backend and fetch question
 // TODO implement left and right arrow nav
@@ -25,11 +39,15 @@ class QuestionFocus extends React.Component {
   }
 
   handleSelectLinkType(linkType) {
-    console.log("Selecting", linkType);
+    if(linkType.amount === 0) {
+      this.props.noLinksToView();
+    }
+    else {
+      browserHistory.push({ pathname: "/question/links", query: { questionId: this.props.question.id, linkType: linkType.linkType }})
+    }
   }
 
   render() {
-    console.log(this.props.refetchQuestion)
     return (
       <div className={styles.focusGrid}>
         <QuestionUsernameBar isInput={this.isInput}
@@ -64,4 +82,7 @@ QuestionFocus.propTypes = {
   onPreviousQuestion: PropTypes.func.isRequired
 };
 
-export default QuestionFocus;
+export default connect(
+  null,
+  mapDispatchToProps
+)(QuestionFocus);

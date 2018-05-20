@@ -28,7 +28,7 @@ const mapDispatchToProps = (dispatch) => {
 
     }
   }
-}
+};
 
 
 class QuestionFocusContainer extends React.Component {
@@ -93,7 +93,7 @@ class QuestionFocusContainer extends React.Component {
 
 // TODO fill in shape of question
 QuestionFocusContainer.propTypes = {
-  question: PropTypes.shape({}),
+  question: PropTypes.shape({}).isRequired,
   loading: PropTypes.bool.isRequired,
   error: PropTypes.string,
   onNextQuestion: PropTypes.func.isRequired,

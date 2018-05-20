@@ -32,8 +32,7 @@ var MainHeader = function (props) {
           <Nav pullRight>
             <NavItem onClick={props.toggleOstModal}>
               <OstBalance
-                totalBalance={props.currentUser.totalOstBalance}
-                airdroppedBalance={props.currentUser.totalAirdroppedBalance}
+                userId={props.currentUser.id}
 
               />
             </NavItem>

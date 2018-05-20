@@ -4,7 +4,7 @@
 import React from 'react';
 import { connect } from 'react-redux'
 
-import { hideQuestionPopup } from '../../actions/QuestionPopup';
+import { hideQuestionPopup } from '../../../actions/QuestionPopup';
 
 import QuestionPopup from './QuestionPopup';
 

@@ -15,6 +15,9 @@ export const resolvers = {
     questionById(_, args, ctx) {
       return questionLogic.questionQuery(_, args, ctx);
     },
+    questionLinks(_, args, ctx) {
+      return questionLinkLogic.query(_, args, ctx);
+    },
     topTopics: (_, args, ctx) => {
       return topicLogic.topTopics(_, args, ctx);
     },

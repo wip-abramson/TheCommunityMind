@@ -1,6 +1,7 @@
 .menuItem {
     padding-left: 20px;
     border-bottom: 1px solid grey;
+    cursor: pointer;
 }
 
 .dropdown-menu {

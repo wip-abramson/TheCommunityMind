@@ -9,7 +9,9 @@ const TRANSACTION_TYPES = {
   Question: 'Question',
   Approve: 'Approve',
   Tip: 'Tip',
-  FollowUser: 'FollowUser'
+  FollowUser: 'FollowUser',
+  FollowTopic: 'FollowTopic',
+  LikeTopicQuestionLink: 'LikeTopicQLink'
 };
 
 const ostTransactions = {
@@ -76,17 +78,47 @@ const ostTransactions = {
         console.log("Error executing question transaction", error);
       })
   },
+  executeLikeTopicQuestionLink(from_uuid, to_uuid) {
+    return ost.transactiontypesExecute({
+      from_uuid,
+      to_uuid: to_uuid,
+      transaction_kind: TRANSACTION_TYPES.LikeTopicQuestionLink
+    }).then(transaction_result => {
+      return ostTransactions.monitorTransaction(transaction_result.transaction_uuid)
+      //TODO monitor the transaciton and push notifications to frontend
+
+
+    })
+      .catch(error => {
+        console.log("Error executing question transaction", error);
+      })
+  },
+  executeFollowTopic(from_uuid) {
+    return ost.transactiontypesExecute({
+      from_uuid,
+      to_uuid: COMPANY_UUID,
+      transaction_kind: TRANSACTION_TYPES.FollowTopic
+    }).then(transaction_result => {
+      return ostTransactions.monitorTransaction(transaction_result.transaction_uuid)
+      //TODO monitor the transaciton and push notifications to frontend
+
+
+    })
+      .catch(error => {
+        console.log("Error executing question transaction", error);
+      })
+  },
   monitorTransaction(transaction_uuid) {
     return ost.monitorTransaction(transaction_uuid , function(transaction) {
-      console.log(transaction)
       if (transaction.status === "complete") {
-        console.log("Transaction complete", transaction);
-        throw transaction
+        console.log("Transaction complete", transaction.transaction_uuid);
+        return transaction
       } else if (transaction.status === "failed") {
         console.log("Transaction failed")
         throw new Error('Transaction Failed');
 
       } else {
+        console.log("STATUS")
         console.log("Status: ",transaction.status)
       }
     })

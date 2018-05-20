@@ -381,7 +381,7 @@ export const questionLogic = {
     console.log(visitedQuestionIds);
     return Question.count().then(count => {
       // console.log(currentQuestionId);
-      let id = Math.floor(Math.random() * (count + 1)) ;
+      let id = Math.floor(Math.random() * (count)) +1 ;
       console.log(visitedQuestionIds.indexOf(id+'') !== -1);
       while(visitedQuestionIds.indexOf(id+'') !== -1) {
         id = Math.floor(Math.random() * (count)) +1 ;

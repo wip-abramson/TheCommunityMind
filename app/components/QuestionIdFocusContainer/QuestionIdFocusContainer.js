@@ -19,7 +19,7 @@ export default graphql(QUESTION_BY_ID_QUERY, {
     loading,
     error,
     question: questionById,
-    onNextQuestion: () => { browserHistory.push({pathname: "/random", query: {notId: questionById.id}})},
+    onNextQuestion: () => { browserHistory.push({pathname: "/random"})},
     onPreviousQuestion: (previousQuestionId) =>  { browserHistory.push({pathname: "/question", query: {questionId: previousQuestionId}})},
   })
 })(QuestionFocusContainer)

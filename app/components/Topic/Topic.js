@@ -11,8 +11,11 @@ import ApproveLink from './MenuItems/ApproveLink';
 import Incentivise from './MenuItems/Incentivise';
 import ViewTopic from './MenuItems/ViewTopic';
 
-const Topic = ({ styles, topic, strength, isInput }) => {
-  const view = isInput ?
+
+
+
+const Topic = ({ styles, topic, strength, isInput, followTopic, unfollowTopic, linkApproved, approveQuestionTopicLink, unapproveQuestionTopicLink }) => {
+  return isInput ?
     <div className={styles.topic}>
       {topic.name}
     </div> :
@@ -23,20 +26,26 @@ const Topic = ({ styles, topic, strength, isInput }) => {
         title={formatTopic(topic.name)}
         fontSize={15}
       >
-        <FollowTopic topicId={topic.id}/>
-        <ApproveLink topicId={topic.id}/>
+        <FollowTopic
+          topicId={topic.id}
+          canFollow={!topic.followedByCurrentUser}
+          followTopic={followTopic}
+          unfollowTopic={unfollowTopic}/>
+        <ApproveLink
+          canApprove={!linkApproved}
+          approveLink={approveQuestionTopicLink}
+          unapproveLink={unapproveQuestionTopicLink}
+          topicId={topic.id}/>
         <Incentivise topicId={topic.id}/>
         <ViewTopic topicId={topic.id}/>
       </Dropdown>
       <Count amount={strength}/>
 
     </div>;
-
-  return view;
 };
 
 function formatTopic(topic) {
-  return topic.replace(/\w\S*/g, function(txt){
+  return topic.replace(/\w\S*/g, function (txt) {
     return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
   });
 }
@@ -50,4 +59,4 @@ Topic.propTypes = {
   strength: PropTypes.number
 };
 
-export default Topic;
+export default Topic

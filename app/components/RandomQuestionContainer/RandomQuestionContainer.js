@@ -13,12 +13,14 @@ export default graphql(RANDOM_QUESTION_QUERY, {
   options: (ownProps) => {
     return ({
       variables: { visitedQuestionIds: ownProps.visitedQuestionIds },
+      refetchQuery: graphql(RANDOM_QUESTION_QUERY, {variables: {visitedQuestionIds: ownProps.visitedQuestionIds }})
     });
   },
-  props: ({ ownProps, data: { loading, error, randomQuestion } }) => ({
+  props: ({ ownProps, data: { refetchQuery, loading, error, randomQuestion } }) => ({
     loading,
     error,
     question: randomQuestion,
+    refetchQuery: refetchQuery,
     onNextQuestion: () => {
       ownProps.onNextQuestion(randomQuestion.id)
     },

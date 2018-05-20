@@ -73,11 +73,11 @@ export const resolvers = {
     removeTopicLinkFromQuestion(_, args, ctx) {
       return questionLogic.removeTopicLinkFromQuestion(_, args, ctx);
     },
-    addUserInterest(_, args, ctx) {
-      return userLogic.addUserInterest(_, args, ctx);
+    followTopic(_, args, ctx) {
+      return userLogic.followTopic(_, args, ctx);
     },
-    removeUserInterest(_, args, ctx) {
-      return userLogic.removeUserInterest(_, args, ctx);
+    unfollowTopic(_, args, ctx) {
+      return userLogic.unfollowTopic(_, args, ctx);
     },
     followUser(_, args, ctx) {
       return userLogic.followUser(_, args, ctx);
@@ -93,6 +93,14 @@ export const resolvers = {
     tipUser: (_, args, ctx) => {
       return userLogic.tipUser(_, args, ctx);
     },
+    approveQuestionTopicLink(_, args, ctx) {
+      return questionTopicLinkLogic.approveQuestionTopicLink(_, args, ctx);
+    },
+    unapproveQuestionTopicLink(_, args, ctx) {
+      return questionTopicLinkLogic.unapproveQuestionTopicLink(_, args, ctx);
+    },
+
+
 
     login: (_, args, ctx) => {
       return authLogic.login(_, args, ctx);
@@ -102,13 +110,16 @@ export const resolvers = {
 
   Topic: {
     questions(topic, args, ctx) {
-      topicLogic.questions(topic, args, ctx);
+      return topicLogic.questions(topic, args, ctx);
     },
     followers(topic, args, ctx) {
-      topicLogic.followers(topic, args, ctx);
+      return topicLogic.followers(topic, args, ctx);
     },
     numberOfFollowers(topic, args, ctx) {
-      topicLogic.numberOfFollowers(topic, args, ctx)
+      return topicLogic.numberOfFollowers(topic, args, ctx)
+    },
+    followedByCurrentUser(topic, args, ctx) {
+      return topicLogic.followedByCurrentUser(topic, args, ctx);
     }
   },
 

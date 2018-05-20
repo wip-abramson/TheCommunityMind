@@ -9,6 +9,7 @@ const typeDefs = `
    name: String!
    followers: [User]
    numberOfFollowers: Int!
+   followedByCurrentUser: Boolean!
    questions: [Question]
   }
   
@@ -145,6 +146,12 @@ const typeDefs = `
     removeUserInterest(userId: ID!, topicId: ID!): Topic
     followUser(id: ID!): User
     unfollowUser(id: ID!): User
+    
+    followTopic(topicId: ID!): Topic!
+    unfollowTopic(topicId: ID!): Topic!
+    
+    approveQuestionTopicLink(topicId: ID!, questionId: ID!): QuestionTopicLink!
+    unapproveQuestionTopicLink(topicId: ID!, questionId: ID!): QuestionTopicLink!
    
 
     

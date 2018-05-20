@@ -15,7 +15,13 @@ const UserInteractionsBar = ({ questionId, stars, starredByCurrentUser, ponderCo
   return isInput ? (
     <UserInputInteractionsBar toggleIsInput={toggleIsInput} onSubmitQuestion={onSubmitQuestion}/>
   ) : (
-    <UserViewInteractionsBar toggleIsInput={toggleIsInput} questionId={questionId} stars={stars} starredByCurrentUser={starredByCurrentUser} ponderCount={ponderCount} ponderedByCurrentUser={ponderedByCurrentUser}/>
+    <UserViewInteractionsBar
+      toggleIsInput={toggleIsInput}
+      questionId={questionId}
+      stars={stars}
+      starredByCurrentUser={starredByCurrentUser}
+      ponderCount={ponderCount}
+      ponderedByCurrentUser={ponderedByCurrentUser}/>
   );
 
 };

@@ -29,6 +29,7 @@ class QuestionFocus extends React.Component {
   }
 
   render() {
+    console.log(this.props.refetchQuestion)
     return (
       <div className={styles.focusGrid}>
         <QuestionUsernameBar isInput={this.isInput}
@@ -37,6 +38,7 @@ class QuestionFocus extends React.Component {
                              focusType="Question Focus"/>
         <FaLeftArrow size={30} className={styles.leftNav} onClick={this.props.onPreviousQuestion}/>
         <QuestionBox
+          refetchQuestion={this.props.refetchQuestion}
           onSelectQuestionLink={this.handleSelectLinkType}
           question={this.props.question}
           isInput={this.isInput}

@@ -76,11 +76,13 @@ class QuestionFocusContainer extends React.Component {
     else if (this.props.error) {
       return <h1>Error</h1>
     }
+    console.log("Question", this.props.question);
     return (
       this.state.isInput ?
         <QuestionInputFocus toggleIsInput={this.toggleIsInput} questioningId={this.props.question.id}/>
         :
         <QuestionFocus
+          refetchQuestion={this.props.refetchQuery}
           onNextQuestion={this.props.onNextQuestion}
           onPreviousQuestion={this.handleNavBackwards}
           question={this.props.question}

@@ -17,7 +17,7 @@ import CREATE_QUESTION_MUTATION from '../../graphql/mutations/createQuestion.mut
 
 const createQuestion = graphql(CREATE_QUESTION_MUTATION, {
   props: ({ ownProps, mutate }) => ({
-    createQuestion: ( questionText, topicIds, linkType, questioningId) => {
+    createQuestion: (questionText, topicIds, linkType, questioningId) => {
       return mutate({
 
         variables: { questionText, topicIds, linkType, questioningId },
@@ -27,8 +27,7 @@ const createQuestion = graphql(CREATE_QUESTION_MUTATION, {
         res.graphQLErrors.map((error) => {
           console.log(error.message)
           //TODO add notifications
-          if (error.message === "Unauthorized")
-          {
+          if (error.message === "Unauthorized") {
             // ownProps.unAuthorized();
           }
           return error;
@@ -70,14 +69,22 @@ class QuestionInputFocus extends React.Component {
 
   isInput = true;
   // TODO not happy with how this is achieved. Should load links from BE
-  linkTypes = [{id: '1', linkType: "Super Question"}, {id: '2', linkType: "Sub Question"}, {id: '3', linkType: "Related Question"}];
+  linkTypes = [{ id: '1', linkType: "Super Question" }, {
+    id: '2',
+    linkType: "Sub Question"
+  }, { id: '3', linkType: "Related Question" }];
 
   constructor(props) {
     super(props);
     // TODO possible make state mirror a question object from graphql response
     this.state = {
       question: {
-        linksToTopics: {edges: []},
+        linksToTopics: {
+          edges: [],
+          pageInfo: {
+            hasNextPage: false,
+          }
+        },
         linkTypeSelected: null,
         questionText: "",
       }
@@ -88,8 +95,6 @@ class QuestionInputFocus extends React.Component {
     this.handleUpdateQuestionLinkTypeSelected = this.handleUpdateQuestionLinkTypeSelected.bind(this);
     this.handleAddTopic = this.handleAddTopic.bind(this);
   }
-
-
 
   handleQuestionTextChange(updatedQuestionText) {
     this.setState({
@@ -129,7 +134,9 @@ class QuestionInputFocus extends React.Component {
             question: {
               ...this.state.question,
               linksToTopics: {
-                edges: [...this.state.question.linksToTopics.edges, {node: {topic: response.data.findOrCreateTopic}}]
+                edges: [...this.state.question.linksToTopics.edges, { node: { topic: response.data.findOrCreateTopic } }],
+                pageInfo: this.state.question.linksToTopics.pageInfo
+
               }
             }
           })
@@ -143,7 +150,6 @@ class QuestionInputFocus extends React.Component {
   }
 
   handleSubmitQuestion() {
-    console.log(this.state.question);
     const questionText = this.state.question.questionText;
     const linkType = this.state.question.linkTypeSelected ? this.state.question.linkTypeSelected.linkType : null;
     const topicIds = this.state.question.linksToTopics.edges.map(edge => edge.node.topic.id);
@@ -151,12 +157,20 @@ class QuestionInputFocus extends React.Component {
     this.props.createQuestion(questionText, topicIds, linkType, this.props.questioningId).then(response => {
       this.setState({
         question: {
-          linksToTopics: {edges: []} ,
+          linksToTopics: {
+            edges: [],
+            pageInfo: {
+              hasNextPage: false,
+            }
+          },
           linkTypeSelected: null,
           questionText: "",
         }
       });
-      browserHistory.push({pathname: "/question", query: {questionId: response.data.createQuestion.id}})
+      browserHistory.push({
+        pathname: "/question",
+        query: { questionId: response.data.createQuestion.id }
+      })
     })
       .catch(error => {
         // TODO handle error with notification

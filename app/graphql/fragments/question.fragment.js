@@ -19,29 +19,31 @@ const QUESTION_FRAGMENT = gql`
       id
       username
       followedByCurrentUser
+      questionsAskedCount
     }
     linksToTopics(first: 4) {
-    	
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+      } 
       edges {
         cursor
-        pageInfo {
-          hasNextPage
-          hasPreviousPage
-        } 
+
         node {
 					owner {
             id
           }          
           id
           question {
-    		id
-      }
-      topic {
-        id
-        name
-      }
-      approval
-      approvedByCurrentUser
+            id
+          }
+        topic {
+          id
+          name
+          followedByCurrentUser
+        }
+        approval
+        approvedByCurrentUser
         }
       }   
     }

@@ -119,31 +119,38 @@ const tipUser = graphql(TIP_USER_MUTATION, {
         })
     }
   })
-})
+});
 
 
-const Username = ({user, followUser, unfollowUser, tipUser}) =>
-  <div className={styles.username}>
-    <Dropdown title={user.username} fontSize={22} id={user.id}>
-      <FollowUser
-        canFollow={!user.followedByCurrentUser}
-        followUser={followUser}
-        unfollowUser={unfollowUser}
-        userId={user.id}/>
-      <TipUser
-        userId={user.id}
-        tipUser={tipUser}/>
-      <ViewProfile userId={user.id}/>
-    </Dropdown>
-    <Count amount={11}/>
-  </div>;
+const Username = ({user, followUser, unfollowUser, tipUser}) => {
+  console.log(user);
+  return (
+    <div className={styles.username}>
+      <Dropdown title={user.username} fontSize={22} id={user.id}>
+        <FollowUser
+          canFollow={!user.followedByCurrentUser}
+          followUser={followUser}
+          unfollowUser={unfollowUser}
+          userId={user.id}/>
+        <TipUser
+          userId={user.id}
+          tipUser={tipUser}/>
+        <ViewProfile userId={user.id}/>
+      </Dropdown>
+      <Count amount={user.questionsAskedCount}/>
+    </div>
+  )
+}
+
 
 Username.propTypes = {
   user: PropTypes.shape({
     id: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
     followedByCurrentUser: PropTypes.bool.isRequired,
-  }).isRequired
+  }).isRequired,
+  followUser: PropTypes.func.isRequired,
+  unfollowUser: PropTypes.func.isRequired
 };
 
 export default compose(

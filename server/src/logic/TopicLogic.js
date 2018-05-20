@@ -11,8 +11,8 @@ export const topicLogic = {
       //   name,
       // }
     })
-      .then(tags => {
-        return tags;
+      .then(topics => {
+        return topics;
       })
       .catch(error => {
         console.log(error, "Error");
@@ -25,15 +25,15 @@ export const topicLogic = {
         return Topic.findAll({
           include: [{ model: User, where: { id: user.id } }]
         })
-          .then(tags => {
-            return rankedTags(tags);
+          .then(topics => {
+            return rankedTopics(topics);
           })
       })
       .catch(error => {
         console.log("No User Logged in, Returning top general topics");
         return Topic.findAll()
-          .then(tags => {
-            return rankedTags(tags);
+          .then(topics => {
+            return rankedTopics(topics);
           })
       })
   },
@@ -43,9 +43,9 @@ export const topicLogic = {
         return Topic.findOrCreate({
           where: { name: name.substr(0,1).toUpperCase() + name.substr(1).toLowerCase() }
         })
-          .then(tag => {
-            console.log(tag[0].name)
-            return tag[0];
+          .then(topics => {
+            console.log(topics[0].name)
+            return topics[0];
           })
       })
       .catch(error => {
@@ -54,10 +54,10 @@ export const topicLogic = {
       })
 
   },
-  followers(tag, args, ctx) {
+  followers(topic, args, ctx) {
     // Undecided if I need this - should users be able to see which users follow what?
     return User.findAll({
-      include: [{ model: Topic, as: "Followers", where: { id: tag.id } }]
+      include: [{ model: Topic, as: "Followers", where: { id: topic.id } }]
     })
       .then(users => {
         return users
@@ -67,9 +67,9 @@ export const topicLogic = {
         return Promise.reject(error)
       })
   },
-  questions(tag, args, ctx) {
+  questions(topic, args, ctx) {
     return Question.findAll({
-      include: [{ model: Topic, as: "Questions", where: { id: tag.id } }]
+      include: [{ model: Topic, as: "Questions", where: { id: topic.id } }]
     })
       .then(questions => {
         return questions;
@@ -79,9 +79,9 @@ export const topicLogic = {
         return Promise.reject(error)
       })
   },
-  numberOfFollowers(tag, args, ctx) {
+  numberOfFollowers(topic, args, ctx) {
     return User.count({
-      include: [{ model: Topic, as: "Followers", where: { id: tag.id } }]
+      include: [{ model: Topic, as: "Followers", where: { id: topic.id } }]
     })
       .then(count => {
         return count;
@@ -90,43 +90,58 @@ export const topicLogic = {
         console.log(error, "Error");
         return Promise.reject(error)
       })
+  },
+  followedByCurrentUser(topic, args, ctx) {
+    return authLogic.getAuthenticatedUser(ctx)
+      .then(currentUser => {
+        return Topic.findOne({
+          where: { id: topic.id },
+          include: [{ model: User, as: "FollowedBy", where: { id: currentUser.id } }]
+        }).then(user => {
+          return !!user;
+        })
+
+      })
+      .catch(error => {
+        return false;
+      })
   }
-}
+};
 
-const rankedTags = (tags) => {
+const rankedTopics = (topics) => {
 
-  const tagLimit = 5;
-  if (!tags) {
+  const topicLimit = 5;
+  if (!topics) {
     return [];
   }
-  return Promise.all(tags.map(tag => {
+  return Promise.all(topics.map(topic => {
     return User.count({
-      include: [{ model: Topic, where: { id: tag.id } }]
+      include: [{ model: Topic, where: { id: topic.id } }]
     })
       .then(numberOfFollowers => {
         return Question.count({
-          include: [{ model: Topic, where: { id: tag.id } }]
+          include: [{ model: Topic, where: { id: topic.id } }]
         })
           .then(numberOfQuestions => {
             return {
-              tag: tag,
-              // work out the tag ranking number atm just add the two numbers
-              tagRanking: numberOfQuestions + numberOfFollowers
+              topic: topic,
+              // work out the topic ranking number atm just add the two numbers
+              topicRanking: numberOfQuestions + numberOfFollowers
             }
           })
 
       })
   }))
 
-    .then(calculatedTags => {
-      calculatedTags.forEach((calcTag => console.log("TAG RANKING", calcTag.tagRanking, calcTag.tag.name)));
-      calculatedTags.sort((a, b) => {
+    .then(calculatedTopics => {
+      calculatedTopics.forEach((calcTopic => console.log("TOPIC RANKING", calcTopic.topicRanking, calcTopic.topic.name)));
+      calculatedTopics.sort((a, b) => {
 
-        return b.tagRanking - a.tagRanking;
+        return b.topicRanking - a.topicRanking;
       })
-      var topTags = calculatedTags.slice(0, tagLimit);
+      var topTopics = calculatedTopics.slice(0, topicLimit);
 
-      return topTags.map(topTag => topTag.tag);
+      return topTopics.map(topTopic => topTopic.topic);
     })
 
 }

@@ -195,7 +195,10 @@ UserModel.belongsToMany(QuestionModel, {
 });
 
 TopicModel.hasMany(QuestionTopicModel);
+QuestionTopicModel.belongsTo(TopicModel);
+
 QuestionTopicModel.belongsTo(QuestionModel);
+QuestionModel.hasMany(QuestionTopicModel);
 
 TopicModel.belongsToMany(QuestionModel, {
   through: {

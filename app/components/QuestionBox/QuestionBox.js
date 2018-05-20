@@ -29,11 +29,12 @@ class QuestionBox extends React.Component {
 
   render() {
     // TODO hasMoreTopics needs to be more defined then just not input
+    console.log(this.props.question.linksToTopics);
     return (
       <div className={styles.questionBox}>
         <TopicsBar
           topicLinks={this.props.question.linksToTopics.edges.map(edge => edge.node)}
-          hasMoreTopics={!this.props.isInput}// this.props.question.linksToTopics.edges.pageInfo.hasNextPage}
+          hasMoreTopics={this.props.question.linksToTopics.pageInfo.hasNextPage}// this.props.question.linksToTopics.edges.pageInfo.hasNextPage}
           onAddTopic={this.props.onAddTopic}
           isInput={this.props.isInput}
         />

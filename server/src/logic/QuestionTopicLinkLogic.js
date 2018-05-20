@@ -3,17 +3,24 @@
  */
 import { QuestionTopicLink, Question, Topic, User } from '../db';
 import { authLogic } from './AuthLogic';
+import ostTransactions from '../ost/ostTransactions';
 
 export const questionTopicLinkLogic = {
   question(questionTopicLink, args, ctx) {
-    return Question.findById(questionTopicLink.questionId);
+    // console.log("LINK ID", questionTopicLink);
+    return Question.findById(questionTopicLink.questionId)
+
   },
   topic(questionTopicLink, args, ctx) {
-    return Topic.findById(questionTopicLink.topicId);
+    return Topic.findById(questionTopicLink.topicId)
   },
   approval(questionTopicLink, args, ctx) {
     return User.count({
-      include: [{model: QuestionTopicLink, as: "TopicLinkApproval", where: {id: questionTopicLink.id}}]
+      include: [{
+        model: QuestionTopicLink,
+        as: "TopicLinkApproval",
+        where: { id: questionTopicLink.id }
+      }]
     })
   },
   approvedByCurrentUser(questionTopicLink, args, ctx) {
@@ -21,7 +28,11 @@ export const questionTopicLinkLogic = {
       .then(currentUser => {
         return User.findOne({
           where: { id: currentUser.id },
-          include: [{ model: QuestionTopicLink, as: "TopicLinkApproval", where: { id: questionTopicLink.id } }]
+          include: [{
+            model: QuestionTopicLink,
+            as: "TopicLinkApproval",
+            where: { id: questionTopicLink.id }
+          }]
         })
           .then(user => {
             return !!user;
@@ -34,6 +45,39 @@ export const questionTopicLinkLogic = {
   },
   owner(questionTopicLink, args, ctx) {
     return User.findById(questionTopicLink.userId);
+  },
+  approveQuestionTopicLink(_, { topicId, questionId }, ctx) {
+    return authLogic.getAuthenticatedUser(ctx)
+      .then(currentUser => {
+        return QuestionTopicLink.find({
+          where: { topicId: topicId, questionId: questionId },
+          include: [{ model: User, as: 'Owner' }]
+        })
+          .then(questionTopicLink => {
+            console.log(questionTopicLink.userId)
+            // TODO this isnt the best way to do this
+            return User.findById(questionTopicLink.userId).then(user => {
+              return ostTransactions.executeLikeTopicQuestionLink(currentUser.ostUuid, user.ostUuid).then(transaction => {
+                return currentUser.addTopicLinkApproval(questionTopicLink)
+                  .then(() => questionTopicLink);
+              })
+            })
+
+          })
+
+      })
+  },
+  unapproveQuestionTopicLink(_, { topicId, questionId }, ctx) {
+    return authLogic.getAuthenticatedUser(ctx)
+      .then(currentUser => {
+        return QuestionTopicLink.find({
+          where: { topicId: topicId, questionId: questionId }
+        })
+          .then(questionTopicLink => {
+            return currentUser.removeTopicLinkApproval(questionTopicLink)
+              .then(() => questionTopicLink);
+          })
+      })
   },
   buildPaginatedQuestionTopicLinks(args, before) {
     return QuestionTopicLink.findAll(args)

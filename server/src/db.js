@@ -336,7 +336,7 @@ const questionLinkTypes = [
   REWORDING_LINK
 ];
 
-Conn.sync({ force: true })
+Conn.sync({ force: true, logging: console.log })
   .then(() => {
     return QuestionLinkTypeModel.create({ linkType: PARENT_CHILD_LINK })
       .then(createdLinkType => {
@@ -510,3 +510,5 @@ export {
   Op
 
 }
+
+export default Conn;

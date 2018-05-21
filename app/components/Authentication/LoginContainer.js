@@ -16,7 +16,6 @@ import { loginSuccessNotification } from '../../notifications/success.notificati
 const mapDispatchToProps = function (dispatch) {
   return {
     loginUser: function (user) {
-      console.log(user);
       dispatch(loginSuccess(user))
       browserHistory.push("/");
       loginSuccessNotification.message = "Welcome back " + user.username;
@@ -33,7 +32,6 @@ const mapDispatchToProps = function (dispatch) {
 let container = React.createClass({
 
   login(email, password) {
-    console.log(email, password);
     this.props.login({ email, password }).then((res) => {
       // check if user logged in
 

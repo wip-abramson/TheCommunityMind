@@ -342,7 +342,28 @@ Conn.sync({ force: true })
       .then(createdLinkType => {
         QuestionLinkType.create({ linkType: RELATED_LINK });
         QuestionLinkType.create({ linkType: REWORDING_LINK });
+                const passwrd = "tPass2";
+        return bcrypt.hash(passwrd, 10)
+          .then((hash1) => {
+            let user1 = {
+              email: faker.internet.email(),
+              username: "Alice",
+              password: hash1,
+              version: 1,
+              ostUuid: 'e3586536-bfb4-4b98-8998-e4c9a8069cba',
+            };
+            return UserModel.create(user1)
+              .then(user1 => {
+                return user1.createQuestion({
+                  questionText: "Why should I care about blockchain technology"
+                })
+              })
+          })
+
+
       })
+
+
   });
 //
 // Conn.sync()

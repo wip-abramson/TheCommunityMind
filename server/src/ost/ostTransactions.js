@@ -112,6 +112,7 @@ const ostTransactions = {
     return ost.monitorTransaction(transaction_uuid , function(transaction) {
       if (transaction.status === "complete") {
         console.log("Transaction complete", transaction.transaction_uuid);
+        ost.stopMonitoringTransaction(transaction_uuid);
         return transaction
       } else if (transaction.status === "failed") {
         console.log("Transaction failed")
@@ -123,22 +124,6 @@ const ostTransactions = {
       }
     })
   }
-  // checkTransactionStatus: (transaction_uuid) => {
-  //   const endpoint ='/transaction-types/execute';
-  //   let inputParams = {};
-  //   inputParams['transaction_uuids[]'] = [transaction_uuid];
-  //
-  //   const query = buildQuery(endpoint, inputParams);
-  //   console.log(query.url);
-  //   return axios.post(query.url, query.queryParams)
-  //     .then(response => {
-  //       console.log("Successfully checked status of " + transaction_uuid, response.data.data.transactions[0].transaction_hash);
-  //       return response.data.data.transactions[0].transaction_hash;
-  //     })
-  //     .catch(error => {
-  //       console.log('Error, unable to check status of transaction')
-  //     })
-  // }
-}
+};
 
 export default ostTransactions;

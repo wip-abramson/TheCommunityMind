@@ -26,7 +26,13 @@ export const noQuestionLinksError = {
   message: 'No question links to view. Why not create the first one',
   position: 'tc',
   autoDismiss: 3,
-}
+};
+
+export const inputFieldEmpty = {
+  message: 'Input Field Empty',
+  position: 'tc',
+  autoDismiss: 3,
+};
 
 export const loginFailedNotification = {
   title: 'Login Failed',

@@ -3,18 +3,18 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import {MenuItem} from 'react-bootstrap';
 import styles from './styles.css';
 
 
 // TODO add menu click function prop and action
-const MenuItem = ({title, onClick}) =>
-  <div className={styles.menuItem} onClick={onClick}>
+const DefaultMenuItem = ({title, onClick}) =>
+  <MenuItem title={title} className={styles.menuItem} onSelect={onClick}>
     {title}
-  </div>;
+  </MenuItem>;
 
 MenuItem.propTypes = {
   title: PropTypes.string.isRequired
 };
 
-export default MenuItem;
+export default DefaultMenuItem;

@@ -79,12 +79,7 @@ class QuestionInputFocus extends React.Component {
     // TODO possible make state mirror a question object from graphql response
     this.state = {
       question: {
-        linksToTopics: {
-          edges: [],
-          pageInfo: {
-            hasNextPage: false,
-          }
-        },
+        linksToTopics: this.props.currentTopicLinks,
         linkTypeSelected: null,
         questionText: "",
       }
@@ -93,6 +88,7 @@ class QuestionInputFocus extends React.Component {
     this.handleSubmitQuestion = this.handleSubmitQuestion.bind(this);
     this.handleQuestionTextChange = this.handleQuestionTextChange.bind(this);
     this.handleUpdateQuestionLinkTypeSelected = this.handleUpdateQuestionLinkTypeSelected.bind(this);
+    this.handleDeleteTopic = this.handleDeleteTopic.bind(this);
     this.handleAddTopic = this.handleAddTopic.bind(this);
   }
 
@@ -127,55 +123,90 @@ class QuestionInputFocus extends React.Component {
   }
 
   handleAddTopic(topic) {
-    this.props.findOrCreateTopic(topic)
-      .then(response => {
-        if (response.data.findOrCreateTopic) {
-          this.setState({
-            question: {
-              ...this.state.question,
-              linksToTopics: {
-                edges: [...this.state.question.linksToTopics.edges, { node: { topic: response.data.findOrCreateTopic } }],
-                pageInfo: this.state.question.linksToTopics.pageInfo
+    if (!isEmpty(topic)) {
+      this.props.findOrCreateTopic(topic.trim().toLowerCase())
+        .then(response => {
+          if (response.data.findOrCreateTopic) {
+            this.setState({
+              question: {
+                ...this.state.question,
+                linksToTopics: {
+                  edges: [...this.state.question.linksToTopics.edges, { node: { topic: response.data.findOrCreateTopic } }],
+                  pageInfo: this.state.question.linksToTopics.pageInfo
 
+                }
               }
-            }
-          })
-        }
-      })
-      .catch(error => {
-        // TODO handle error with notifications
-        console.log(error)
-      })
+            })
+          }
+        })
+        .catch(error => {
+          // TODO handle error with notifications
+          console.log(error)
+        })
+    }
+    else {
+      this.props.inputFieldEmptyErrorNotification("No topic entered! You must enter a topic first");
+    }
+
 
   }
 
-  handleSubmitQuestion() {
-    const questionText = this.state.question.questionText;
-    const linkType = this.state.question.linkTypeSelected ? this.state.question.linkTypeSelected.linkType : null;
-    const topicIds = this.state.question.linksToTopics.edges.map(edge => edge.node.topic.id);
+  handleDeleteTopic(topicId) {
+    let topicIds = this.state.question.linksToTopics.edges.map(edge => edge.node.topic.id);
+    let indexToRemove = topicIds.indexOf(topicId);
 
-    this.props.createQuestion(questionText, topicIds, linkType, this.props.questioningId).then(response => {
-      this.setState({
-        question: {
-          linksToTopics: {
-            edges: [],
-            pageInfo: {
-              hasNextPage: false,
-            }
-          },
-          linkTypeSelected: null,
-          questionText: "",
+    const newEdges = [];
+    for(let i = 0 ; i < this.state.question.linksToTopics.edges.length ; i++) {
+      if(i !== indexToRemove) {
+        newEdges.push(this.state.question.linksToTopics.edges[i]);
+      }
+    }
+
+    this.setState({
+      question: {
+        ...this.state.question,
+        linksToTopics: {
+          edges: newEdges,
+          pageInfo: this.state.question.linksToTopics.pageInfo
+
         }
-      });
-      browserHistory.push({
-        pathname: "/question",
-        query: { questionId: response.data.createQuestion.id }
-      })
+      }
     })
-      .catch(error => {
-        // TODO handle error with notification
-        console.log("Error", error);
+  }
+
+  handleSubmitQuestion() {
+    if (!isEmpty(this.state.question.questionText))
+    {
+      const questionText = this.state.question.questionText.trim().toLowerCase();
+      const linkType = this.state.question.linkTypeSelected ? this.state.question.linkTypeSelected.linkType : null;
+      const topicIds = this.state.question.linksToTopics.edges.map(edge => edge.node.topic.id);
+
+      this.props.createQuestion(questionText, topicIds, linkType, this.props.questioningId).then(response => {
+        this.setState({
+          question: {
+            linksToTopics: {
+              edges: [],
+              pageInfo: {
+                hasNextPage: false,
+              }
+            },
+            linkTypeSelected: null,
+            questionText: "",
+          }
+        });
+        browserHistory.push({
+          pathname: "/question",
+          query: { questionId: response.data.createQuestion.id }
+        })
       })
+        .catch(error => {
+          // TODO handle error with notification
+          console.log("Error", error);
+        })
+    }
+    else {
+      this.props.inputFieldEmptyErrorNotification("Question empty! Please enter a question first");
+    }
   }
 
   render() {
@@ -189,6 +220,7 @@ class QuestionInputFocus extends React.Component {
           question={this.state.question}
           onSelectQuestionLink={this.handleUpdateQuestionLinkTypeSelected}
           linkTypes={this.linkTypes}
+          onDeleteTopic={this.handleDeleteTopic}
           onAddTopic={this.handleAddTopic}
         />
         <UserInteractionsBar
@@ -201,11 +233,16 @@ class QuestionInputFocus extends React.Component {
   }
 }
 
+function isEmpty(str){
+  return !str.replace(/^\s+/g, '').length; // boolean (`true` if field is empty)
+}
+
 QuestionInputFocus.propTypes = {
   toggleIsInput: PropTypes.func.isRequired,
   findOrCreateTopic: PropTypes.func.isRequired,
   createQuestion: PropTypes.func.isRequired,
   questioningId: PropTypes.string.isRequired,
+  inputFieldEmptyErrorNotification: PropTypes.func.isRequired
 };
 
 export default compose(

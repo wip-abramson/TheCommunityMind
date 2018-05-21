@@ -166,16 +166,17 @@ const unapproveQuestionTopicLink = graphql(UNAPPROVE_QUESTION_TOPIC_LINK_MUTATIO
 });
 
 
-const TopicsBar = ({ topicLinks, questionId, hasMoreTopics, onAddTopic, isInput, approveQuestionTopicLink, unapproveQuestionTopicLink, followTopic, unfollowTopic }) =>
+const TopicsBar = ({ topicLinks, questionId, hasMoreTopics, onAddTopic, onDeleteTopic, isInput, approveQuestionTopicLink, unapproveQuestionTopicLink, followTopic, unfollowTopic }) =>
 {
   return (
     <div className={styles.topicsBar}>
       <div className={styles.topics}>
-      {topicLinks.map(topicLink =>
+      {topicLinks.sort((a,b) => a.topic.strength - b.topic.strength).map(topicLink =>
         <Topic
           questionId={questionId}
           approveQuestionTopicLink={approveQuestionTopicLink}
           unapproveQuestionTopicLink={unapproveQuestionTopicLink}
+          onDeleteTopic={onDeleteTopic}
           followTopic={followTopic}
           unfollowTopic={unfollowTopic}
           linkApproved={topicLink.approvedByCurrentUser}

@@ -10,18 +10,20 @@ import FollowTopic from './MenuItems/FollowTopic';
 import ApproveLink from './MenuItems/ApproveLink';
 import Incentivise from './MenuItems/Incentivise';
 import ViewTopic from './MenuItems/ViewTopic';
+import DeleteIcon from '../generic/DeleteIcon/DeleteIcon';
+import {MenuItem} from 'react-bootstrap';
 
 
-
-
-const Topic = ({ styles, questionId, topic, strength, isInput, followTopic, unfollowTopic, linkApproved, approveQuestionTopicLink, unapproveQuestionTopicLink }) => {
+const Topic = ({ styles, questionId, topic, onDeleteTopic, strength, isInput, followTopic, unfollowTopic, linkApproved, approveQuestionTopicLink, unapproveQuestionTopicLink }) => {
   return isInput ?
     <div className={styles.topic}>
-      {topic.name}
+      {formatTopic(topic.name)}
+      <DeleteIcon onDelete={() => {console.log(topic); onDeleteTopic(topic.id)} }/>
     </div> :
 
     <div className={styles.topic}>
       <Dropdown
+
         id={topic.id}
         title={formatTopic(topic.name)}
         fontSize={15}
@@ -46,9 +48,7 @@ const Topic = ({ styles, questionId, topic, strength, isInput, followTopic, unfo
 };
 
 function formatTopic(topic) {
-  return topic.replace(/\w\S*/g, function (txt) {
-    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-  });
+  return topic.replace(/\b\w/g, l => l.toUpperCase())
 }
 
 Topic.propTypes = {

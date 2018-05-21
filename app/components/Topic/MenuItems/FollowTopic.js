@@ -9,7 +9,7 @@ import DefaultMenuItem from '../../generic/DefaultMenuItem/DefaultMenuItem';
 //TODO change onClick to real function
 const FollowTopic = ({topicId, followTopic, unfollowTopic, canFollow}) =>
   <DefaultMenuItem title={canFollow ? "Follow Topic" : "Unfollow Topic"}
-                   onClick={() => {console.log("Follow"); canFollow ? followTopic(topicId) : unfollowTopic(topicId)}}/>;
+                   onClick={() => {canFollow ? followTopic(topicId) : unfollowTopic(topicId)}}/>;
 
 FollowTopic.propTypes = {
   topicId: PropTypes.string.isRequired,

@@ -2,8 +2,6 @@ import React from "react";
 import {Router, Route, browserHistory, IndexRoute} from "react-router";
 
 import Main from "../components/Main/Main";
-import Home from '../components/Home/Home';
-import QuestionsView from '../components/old/QuestionViews/QuestionsView'
 import LoginContainer from "../components/Authentication/LoginContainer";
 import RegisterContainer from "../components/Authentication/RegisterContainer";
 import UserProfileContainer from "../components/UserProfile/UserProfileContainer";

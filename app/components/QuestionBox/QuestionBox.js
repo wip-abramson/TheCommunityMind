@@ -31,6 +31,7 @@ class QuestionBox extends React.Component {
           onAddTopic={this.props.onAddTopic}
           isInput={this.props.isInput}
           questionId={this.props.question.id}
+          onDeleteTopic={this.props.onDeleteTopic}
         />
         {this.props.isInput ?
           <QuestionInput currentInput={this.props.question.questionText} onInputChange={this.props.onQuestionChange}/> :
@@ -64,7 +65,8 @@ QuestionBox.propTypes = {
   }).isRequired,
   onQuestionChange: PropTypes.func,
   onSelectQuestionLink: PropTypes.func.isRequired,
-  onAddTopic: PropTypes.func
+  onAddTopic: PropTypes.func,
+  onDeleteTopic: PropTypes.func
 };
 
 export default QuestionBox;

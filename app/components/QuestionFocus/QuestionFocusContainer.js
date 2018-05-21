@@ -9,7 +9,7 @@ import QuestionFocus from './QuestionFocus';
 import QuestionInputFocus from './QuestionInputFocus'
 
 import Notifications from 'react-notification-system-redux';
-import { unauthorizedErrorNotification, unableToNavPrevious } from '../../notifications/error.notifications';
+import { unauthorizedErrorNotification, unableToNavPrevious, inputFieldEmpty } from '../../notifications/error.notifications';
 
 const mapStateToProps = function (state) {
   return {
@@ -25,6 +25,10 @@ const mapDispatchToProps = (dispatch) => {
     },
     unableToNavBackwards: () => {
       dispatch(Notifications.error(unableToNavPrevious))
+    },
+    inputFieldEmpty:(message) => {
+      inputFieldEmpty.message = message;
+      dispatch(Notifications.error(inputFieldEmpty))
 
     }
   }
@@ -79,7 +83,11 @@ class QuestionFocusContainer extends React.Component {
     console.log("Question", this.props.question);
     return (
       this.state.isInput ?
-        <QuestionInputFocus toggleIsInput={this.toggleIsInput} questioningId={this.props.question.id}/>
+        <QuestionInputFocus
+          currentTopicLinks={this.props.question.linksToTopics}
+          toggleIsInput={this.toggleIsInput}
+          inputFieldEmptyErrorNotification={this.props.inputFieldEmpty}
+          questioningId={this.props.question.id}/>
         :
         <QuestionFocus
           refetchQuestion={this.props.refetchQuery}

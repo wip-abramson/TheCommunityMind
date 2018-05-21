@@ -336,9 +336,17 @@ const questionLinkTypes = [
   REWORDING_LINK
 ];
 
+Conn.sync({ force: true })
+  .then(() => {
+    return QuestionLinkTypeModel.create({ linkType: PARENT_CHILD_LINK })
+      .then(createdLinkType => {
+        QuestionLinkType.create({ linkType: RELATED_LINK });
+        QuestionLinkType.create({ linkType: REWORDING_LINK });
+      })
+  });
 //
-Conn.sync()
-  .then(() => ostUserQueries.editUser('9aa974b4-9fa7-4f93-bd88-a3cf3de1fa22', "Bob") );
+// Conn.sync()
+//   .then(() => ostUserQueries.editUser('9aa974b4-9fa7-4f93-bd88-a3cf3de1fa22', "Bob") );
 // Conn.sync({ force: true })
 //   .then(() => {
 //     return QuestionLinkTypeModel.create({ linkType: PARENT_CHILD_LINK })

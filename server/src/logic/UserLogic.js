@@ -116,6 +116,8 @@ export const userLogic = {
                 .then(result => {
                   // console.log(result);
                   return currentUser;
+                }).catch(error => {
+                  console.log("OST error", error);
                 })
             })
         })
@@ -329,7 +331,7 @@ export const userLogic = {
       return authLogic.getAuthenticatedUser(ctx)
         .then(authorisedUser => {
           if (authorisedUser && authorisedUser.id === user.id) {
-            return ostUserQueries.getUser(user.ostUuid, user.username)
+            return ostUserQueries.getUser(user.ostUuid)
               .then(ostUser => {
                 if (!ostUser) {
                   throw new Error('Unable to fetch ost user with uuid: ' + user.ostUuid);

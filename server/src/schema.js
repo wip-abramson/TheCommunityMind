@@ -84,7 +84,7 @@ const typeDefs = `
   type QuestionLink {
     fromQuestion: Question!
     toQuestion: Question!
-    createdAt: Date!
+    createdAt: String!
     approval: Int!
     linkType: String!
     approvedByCurrentUser: Boolean!

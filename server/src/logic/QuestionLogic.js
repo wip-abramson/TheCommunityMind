@@ -16,34 +16,41 @@ export const questionLogic = {
 
     return authLogic.getAuthenticatedUser(ctx)
       .then(user => {
-        return ostTransactions.executeQuestionTransaction(user.ostUuid).then(transactionHash => {
-          console.log(transactionHash);
-          return user.createQuestion({
-            questionText,
-            stars: 0,
-          }).then(question => {
+        return ostTransactions.executeQuestionTransaction(user.ostUuid).then(success => {
+          if (success) {
+            return user.createQuestion({
+              questionText,
+              stars: 0,
+            }).then(question => {
 
-            return Promise.all(topicIds.map(topicId => {
-              return user.createQuestionTopicLink({
-                questionId: question.id,
-                topicId: topicId
-              }).then(questionTopicLink => {
-                user.addTopicLinkApproval(questionTopicLink);
-                return questionTopicLink;
-              })
-            }))
-              .then(() => {
-                if (linkType && questioningId) {
-                  return createQuestionLink(user, linkType, question, questioningId)
-                    .then(questionLink => {
-                      return user.addQuestionLinkApproval(questionLink)
-                        .then(() => question)
-                    })
-                }
-                return question;
-              })
-          })
-        });
+              return Promise.all(topicIds.map(topicId => {
+                return user.createQuestionTopicLink({
+                  questionId: question.id,
+                  topicId: topicId
+                }).then(questionTopicLink => {
+                  user.addTopicLinkApproval(questionTopicLink);
+                  return questionTopicLink;
+                })
+              }))
+                .then(() => {
+                  if (linkType && questioningId) {
+                    return createQuestionLink(user, linkType, question, questioningId)
+                      .then(questionLink => {
+                        return user.addQuestionLinkApproval(questionLink)
+                          .then(() => question)
+                      })
+                  }
+                  return question;
+                })
+            })
+          }
+          else {
+            throw new Error('Unable to execute ost question transaction');
+          }
+
+        }).catch(error => {
+          console.log("OST error", error);
+        })
 
       });
   },
@@ -106,27 +113,36 @@ export const questionLogic = {
   starQuestion(_, { id }, ctx) {
     return authLogic.getAuthenticatedUser(ctx)
       .then((user) => {
+
         return Question.findOne({
           where: { id },
           include: [{ model: User }]
         }).then(unstarredQuestion => {
-          // console.log(unstarredQuestion.user.ostUuid)
-          return ostTransactions.executeApproveTransaction(user.ostUuid, unstarredQuestion.user.ostUuid).then(transaction => {
-            if (transaction === null) {
-              return unstarredQuestion;
-            }
+          if (unstarredQuestion.user.ostUuid === user.ostUuid) {
             return unstarredQuestion.addStarredBy(user).then(() => {
               return unstarredQuestion
-
             });
+          }
+          return ostTransactions.executeApproveTransaction(user.ostUuid, unstarredQuestion.user.ostUuid).then(success => {
+            if (success) {
+              return unstarredQuestion.addStarredBy(user).then(() => {
+                return unstarredQuestion
+              });
+            }
+            else {
+              throw new Error('Unable to approve star question OST')
+            }
 
-          });
+          })
+
         })
+
       })
       .catch(error => {
         console.log(error, "Error");
         return Promise.reject(error)
       })
+
   },
   unstarQuestion(_, { id }, ctx) {
     return authLogic.getAuthenticatedUser(ctx)
@@ -146,19 +162,33 @@ export const questionLogic = {
   ponderQuestion(_, { id }, ctx) {
     return authLogic.getAuthenticatedUser(ctx)
       .then(user => {
-          return Question.findOne({
-            where: { id },
-            include: [{ model: User }]
-          }).then(question => {
-            // console.log(unstarredQuestion.user.ostUuid)
-            return ostTransactions.executeApproveTransaction(user.ostUuid, question.user.ostUuid).then(transaction => {
+        return Question.findOne({
+          where: { id },
+          include: [{ model: User }]
+        }).then(question => {
+          // TODO not sure if user should be able to like and ponder there own questions?
+          if (user.id === question.user.id) {
+            return user.addPonder(question)
+              .then(() => {
+                return question;
+              })
+          }
+          return ostTransactions.executeApproveTransaction(user.ostUuid, question.user.ostUuid).then(success => {
+            if (success) {
               return user.addPonder(question)
                 .then(() => {
                   return question;
                 })
-            });
+            }
+            else {
+              throw new Error('Unable to Approve Ponder');
+            }
 
-          })
+          }).catch(error => {
+            console.log("OST error", error);
+          });
+
+        })
       })
       .catch(error => {
         console.log(error, "Error");
@@ -381,10 +411,10 @@ export const questionLogic = {
     console.log(visitedQuestionIds);
     return Question.count().then(count => {
       // console.log(currentQuestionId);
-      let id = Math.floor(Math.random() * (count)) +1 ;
-      console.log(visitedQuestionIds.indexOf(id+'') !== -1);
-      while(visitedQuestionIds.indexOf(id+'') !== -1) {
-        id = Math.floor(Math.random() * (count)) +1 ;
+      let id = Math.floor(Math.random() * (count)) + 1;
+      console.log(visitedQuestionIds.indexOf(id + '') !== -1);
+      while (visitedQuestionIds.indexOf(id + '') !== -1) {
+        id = Math.floor(Math.random() * (count)) + 1;
         console.log(id);
       }
       console.log("FIND QUESTION", id)

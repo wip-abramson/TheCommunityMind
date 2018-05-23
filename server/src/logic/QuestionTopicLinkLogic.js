@@ -62,9 +62,15 @@ export const questionTopicLinkLogic = {
             console.log(questionTopicLink)
               // TODO this isnt the best way to do this
             return User.findById(questionTopicLink.userId).then(user => {
-              return ostTransactions.executeLikeTopicQuestionLink(currentUser.ostUuid, user.ostUuid).then(transaction => {
-                return currentUser.addTopicLinkApproval(questionTopicLink)
-                  .then(() => questionTopicLink);
+              return ostTransactions.executeLikeTopicQuestionLink(currentUser.ostUuid, user.ostUuid).then(success => {
+                if(success) {
+                  return currentUser.addTopicLinkApproval(questionTopicLink)
+                    .then(() => questionTopicLink);
+                }
+                throw new Error('Unsuccessful transaction');
+
+              }).catch(error => {
+                console.log("OST error", error);
               })
             })
 

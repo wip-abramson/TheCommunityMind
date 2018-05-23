@@ -170,7 +170,7 @@ export const resolvers = {
       return questionLinkLogic.relatedQuestionLinksCount(question, args, ctx);
     },
     createdAt(question, args, ctx) {
-      return questionLogic.createdAt(question, args, ctx);
+      return createdAtToString(question.createdAt);
     }
   },
 
@@ -249,6 +249,9 @@ export const resolvers = {
     },
     owner(questionLink, args, ctx) {
       return questionLinkLogic.owner(questionLink, args, ctx);
+    },
+    createdAt(questionLink, args, ctx) {
+      return createdAtToString(questionLink.createdAt);
     }
 
   },
@@ -269,4 +272,28 @@ export const resolvers = {
       return questionTopicLinkLogic.owner(questionTopicLink, args, ctx);
     }
   }
+}
+
+// TODO put in dateLogic
+function createdAtToString(createdAt) {
+  const inputDate = createdAt;
+  const todaysDate = new Date();
+  // TODO make much nicer not sure it quite does what I want
+  if (inputDate.getFullYear() === todaysDate.getFullYear() &&
+    inputDate.getMonth() === todaysDate.getMonth() &&
+    inputDate.getDate() === todaysDate.getDate()) {
+    if (todaysDate.getHours() === inputDate.getHours() && todaysDate.getMinutes() === inputDate.getMinutes()) {
+      console.log(inputDate, todaysDate);
+      return "Just Now";
+    }
+    else if (todaysDate.getHours() === inputDate.getHours()) {
+      return todaysDate.getMinutes() - inputDate.getMinutes() + " Minutes ago";
+    }
+    else if (todaysDate.getDay() === inputDate.getDay()) {
+      return todaysDate.getHours() - inputDate.getHours() + " Hours ago";
+
+    }
+  }
+
+  return createdAt.toDateString();
 }

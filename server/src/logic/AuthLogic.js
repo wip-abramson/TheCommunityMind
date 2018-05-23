@@ -67,7 +67,9 @@ export const authLogic = {
                       }
 
                     }
-                  )
+                  ).catch(error => {
+                    console.log("OST error", error);
+                  })
 
               }
             )

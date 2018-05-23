@@ -3,23 +3,27 @@
  */
 import ost from './ostkit';
 
+const userService = ost.services.users;
+const airdropService = ost.services.airdrops;
+
+
 const ostUserQueries = {
     createUser: (username) => {
-      return ost.usersCreate({ name: username })
+      return userService.create({ name: username })
         .then(res => {
-          console.log("Ost User Created", res);
-          return res.economy_users[0].uuid;
+          console.log("Ost User Created", res.data.user);
+          return res.data.user.id;
         })
         .catch(error => {
           console.log("Unable to create user", error);
         })
     },
-    getUser: (uuid, name) => {
+    getUser: (uuid) => {
       // TODO this is a hack ost not implemented getUser yet
-      return ost.usersEdit({ uuid, name })
+      return userService.get({ id: uuid })
         .then(res => {
-          console.log("Success", res.economy_users[0]);
-          return res.economy_users[0]
+          console.log("Success", res.data.user);
+          return res.data.user;
         })
         .catch(error => {
           console.log("Error", error);
@@ -28,9 +32,9 @@ const ostUserQueries = {
     },
     editUser: (uuid, name) => {
 
-      ost.usersEdit({ uuid, name })
+      userService.edit({ id: uuid, name: name })
         .then(res => {
-          console.log("Success", res.economy_users[0]);
+          console.log("Success", res.data.user);
         })
         .catch(error => {
           console.log("Error", error);
@@ -39,12 +43,13 @@ const ostUserQueries = {
     getAllUsers: (page_no) => {
     // TODO if needed
     },
-    airdropNewUser: () => {
+    airdropNewUser: (user_id) => {
       const amount = 50;
       const list_type = "never_airdropped";
-      ost.usersAirdropDrop({amount, list_type})
+      airdropService.execute({amount, user_ids: user_id})
         .then(response => {
             console.log("Successfully executed airdrop to new users", response)
+          // airdropService.get()
           }
         )
         .catch(error => {

@@ -11,7 +11,7 @@ const AcceptQuestionIcon = ({ acceptQuestionInput }) =>
   <span>
       <FaCheck
         size={35}
-        className={[styles.icon, styles.askQuestionIcon].join(" ")}
+        className={[styles.acceptQuestionIcon].join(" ")}
         onClick={acceptQuestionInput}
       />
   </span>;

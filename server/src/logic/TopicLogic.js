@@ -1,23 +1,14 @@
 /**
  * Created by will on 08/11/17.
  */
-import { Topic, User, Question } from '../db';
+import { Topic, User, Question, QuestionTopicLink } from '../db';
 import { authLogic } from './AuthLogic';
+import { questionLogic } from './QuestionLogic';
+import { paginationLogic } from './PaginationLogic';
 
 export const topicLogic = {
-  query(_, { name }, ctx) {
-    return Topic.findAll({
-      // where: {
-      //   name,
-      // }
-    })
-      .then(topics => {
-        return topics;
-      })
-      .catch(error => {
-        console.log(error, "Error");
-        return Promise.reject(error)
-      })
+  query(_, { topicId }, ctx) {
+    return Topic.findById(topicId);
   },
   topTopics(_, args, ctx) {
     return authLogic.getAuthenticatedUser(ctx)
@@ -67,21 +58,16 @@ export const topicLogic = {
         return Promise.reject(error)
       })
   },
-  questions(topic, args, ctx) {
-    return Question.findAll({
-      include: [{ model: Topic, as: "Questions", where: { id: topic.id } }]
-    })
-      .then(questions => {
-        return questions;
-      })
-      .catch(error => {
-        console.log(error, "Error");
-        return Promise.reject(error)
-      })
+  questions(topic, {first, after, last, before}, ctx) {
+
+    let args = paginationLogic.buildArgs(first, after, last, before);
+    args.include = [{ model: Topic, where: { id: topic.id } }];
+
+    return questionLogic.buildPaginatedQuestions(args, before);
   },
   numberOfFollowers(topic, args, ctx) {
     return User.count({
-      include: [{ model: Topic, as: "Followers", where: { id: topic.id } }]
+      include: [{ model: Topic, where: { id: topic.id } }]
     })
       .then(count => {
         return count;
@@ -96,7 +82,7 @@ export const topicLogic = {
       .then(currentUser => {
         return Topic.findOne({
           where: { id: topic.id },
-          include: [{ model: User, as: "FollowedBy", where: { id: currentUser.id } }]
+          include: [{ model: User, where: { id: currentUser.id } }]
         }).then(user => {
           return !!user;
         })
@@ -105,6 +91,12 @@ export const topicLogic = {
       .catch(error => {
         return false;
       })
+  },
+  questionsCount(topic, args, ctx) {
+    return Topic.count({
+      where: {id: topic.id},
+      include: [{model: Question}]
+    })
   }
 };
 

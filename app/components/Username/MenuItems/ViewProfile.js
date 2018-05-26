@@ -3,12 +3,13 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
+import {browserHistory} from 'react-router';
 
 import DefaultMenuItem from '../../generic/DefaultMenuItem/DefaultMenuItem';
 
 //TODO change onClick to real function
 const ViewProfile = ({userId}) =>
-  <DefaultMenuItem title="View Profile" onClick={() => console.log("View profile")}/>;
+  <DefaultMenuItem title="View Profile" onClick={() => browserHistory.push({pathname: "/profile", query: {userId: userId}})}/>;
 
 ViewProfile.propTypes = {
   userId: PropTypes.string.isRequired

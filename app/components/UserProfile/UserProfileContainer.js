@@ -5,7 +5,7 @@ import React from 'react'
 import { compose, graphql } from "react-apollo";
 import { connect } from "react-redux";
 
-import USER_QUERY from '../../graphql/querys/user.query'
+import FULL_USER_QUERY from '../../graphql/querys/fullUser.query'
 
 import FOLLOW_USER_MUTATION from '../../graphql/mutations/followUser.mutation'
 import UNFOLLOW_USER_MUTATION from '../../graphql/mutations/unfollowUser.mutation';
@@ -125,7 +125,7 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  graphql(USER_QUERY, {
+  graphql(FULL_USER_QUERY, {
     options: (props) => ({
       variables: { userId: props.location.query.userId, first: 10 },
       // pollInterval: 100000
@@ -134,7 +134,7 @@ export default compose(
       loading,
       error,
       user,
-      // refetchQuery: USER_QUERY,
+      // refetchQuery: FULL_USER_QUERY,
     })
   }),
   followUser,

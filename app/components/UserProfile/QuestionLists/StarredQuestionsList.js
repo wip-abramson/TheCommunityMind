@@ -5,18 +5,20 @@ import React from 'react';
 import update from 'immutability-helper';
 import { graphql } from 'react-apollo';
 
-import QuestionListContainer from './QuestionListContainer';
+import QuestionsList from '../../QuestionsList/QuestionsList';
 
 import USER_STARRED_QUESTIONS_QUERY from '../../../graphql/querys/userStarredQuestions.query';
 
 const StarredQuestionsList = graphql(USER_STARRED_QUESTIONS_QUERY, {
   options: (props) => ({
-    variables: {userId: props.userId, first: 5}
+    variables: {userId: props.user.id, first: 10}
   }),
   props: ({ ownProps, data: { fetchMore, loading, error, userStarredQuestions } }) => ({
     loading,
     error,
-    connection: userStarredQuestions,
+    questionConnection: userStarredQuestions,
+    totalQuestionsCount: ownProps.user.questionsStarredCount,
+    title: ownProps.user.username + "'s Starred Questions",
     loadMoreEntries() {
       fetchMore({
         variables: {
@@ -41,6 +43,6 @@ const StarredQuestionsList = graphql(USER_STARRED_QUESTIONS_QUERY, {
       })
     }
   })
-})(QuestionListContainer);
+})(QuestionsList);
 
 export default StarredQuestionsList;

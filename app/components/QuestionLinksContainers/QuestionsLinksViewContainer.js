@@ -7,6 +7,7 @@ import {browserHistory} from 'react-router';
 import { graphql } from 'react-apollo';
 
 import QuestionFocusContainer from '../QuestionFocus/QuestionFocusContainer';
+import LinkFocus from '../LinkFocus/LinkFocus'
 
 import QUESTION_LINKS_QUERY from '../../graphql/querys/questionLinks.query';
 
@@ -30,7 +31,7 @@ class QuestionsLinksViewContainer extends React.Component {
   }
 
   onNextQuestion() {
-    if (this.state.currentIndex < this.props.questionLinks.edges.length) {
+    if (this.state.currentIndex <= this.props.questionLinks.edges.length) {
       this.setState({
         currentIndex: this.state.currentIndex+1
       })
@@ -58,9 +59,8 @@ class QuestionsLinksViewContainer extends React.Component {
       <div>
         <h1>{this.state.currentIndex + 1 + " / " + this.props.questionLinks.edges.length + " " + this.props.linkType} </h1>
         <button onClick={() => browserHistory.push({pathname: "/question", query: {questionId: this.props.questionId}})}>Back to question</button>
-        <QuestionFocusContainer
-          loading={false}
-          question={this.getQuestionToDisplay()}
+        <LinkFocus
+          questionLink={this.props.questionLinks.edges[this.state.currentIndex].node}
           onNextQuestion={this.onNextQuestion}
           onPreviousQuestion={this.onPreviousQuestion}/>
       </div>

@@ -11,7 +11,7 @@ const CancelQuestionIcon = ({ cancelQuestionInput }) =>
   <span>
       <FaClose
         size={35}
-        className={[styles.icon, styles.askQuestionIcon].join(" ")}
+        className={[styles.cancelQuestionIcon].join(" ")}
         onClick={cancelQuestionInput}
       />
   </span>;

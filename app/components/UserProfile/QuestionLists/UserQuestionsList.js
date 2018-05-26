@@ -5,18 +5,20 @@ import React from 'react';
 import update from 'immutability-helper';
 import { graphql } from 'react-apollo';
 
-import QuestionListContainer from './QuestionListContainer';
+import QuestionsList from '../../QuestionsList/QuestionsList';
 
 import USER_QUESTIONS_QUERY from '../../../graphql/querys/userQuestions.query';
 
 const UserQuestionsList = graphql(USER_QUESTIONS_QUERY, {
   options: (props) => ({
-    variables: {userId: props.userId, first: 5}
+    variables: {userId: props.user.id, first: 10}
   }),
   props: ({ ownProps, data: { fetchMore, loading, error, userQuestions } }) => ({
     loading,
     error,
-    connection: userQuestions,
+    questionConnection: userQuestions,
+    totalQuestionsCount: ownProps.user.questionsAskedCount,
+    title: ownProps.user.username + "'s Questions",
     loadMoreEntries() {
       fetchMore({
         variables: {
@@ -40,6 +42,6 @@ const UserQuestionsList = graphql(USER_QUESTIONS_QUERY, {
       })
     }
   })
-})(QuestionListContainer);
+})(QuestionsList);
 
 export default UserQuestionsList;

@@ -7,13 +7,23 @@
     align-items: center;
 }
 
-.icon {
+.icon:hover {
     cursor: pointer;
+    color: #17A0CE;
 }
 
 .ponderingIcon {
     cursor: pointer;
-    color: yellow;
+    color: #FFCC33;}
+
+.cancelQuestionIcon:hover {
+    color: red;
+    cursor: pointer;
+}
+
+.acceptQuestionIcon:hover {
+    cursor: pointer;
+    color: darkgreen;
 }
 
 .starredIcon {

@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
 
 import UserQuestions from './UserQuestions';
 
-import { LATEST } from './viewLabels';
+import { USERQUESTIONS } from './viewLabels';
 
 class UserQuestionsContainer extends React.Component {
 
@@ -14,7 +14,7 @@ class UserQuestionsContainer extends React.Component {
     super(props);
 
     this.state = {
-      questionView: LATEST,
+      questionView: USERQUESTIONS,
     };
 
     this.changeView = this.changeView.bind(this);
@@ -27,7 +27,7 @@ class UserQuestionsContainer extends React.Component {
   render() {
     return (
       <UserQuestions
-        userId={this.props.user.id}
+        user={this.props.user}
         questionView={this.state.questionView}
         onViewChange={this.changeView}
       />

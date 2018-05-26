@@ -80,7 +80,6 @@ class QuestionFocusContainer extends React.Component {
     else if (this.props.error) {
       return <h1>Error</h1>
     }
-    console.log("Question", this.props.question);
     return (
       this.state.isInput ?
         <QuestionInputFocus

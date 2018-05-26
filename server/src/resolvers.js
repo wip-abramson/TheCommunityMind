@@ -41,7 +41,10 @@ export const resolvers = {
     },
     randomQuestion(_, args, ctx) {
       return questionLogic.randomQuestionQuery(_, args, ctx);
-    }
+    },
+    topic(_, args, ctx) {
+      return topicLogic.query(_, args, ctx);
+    },
 
   },
   Mutation: {
@@ -112,6 +115,7 @@ export const resolvers = {
   },
 
   Topic: {
+
     questions(topic, args, ctx) {
       return topicLogic.questions(topic, args, ctx);
     },
@@ -123,6 +127,9 @@ export const resolvers = {
     },
     followedByCurrentUser(topic, args, ctx) {
       return topicLogic.followedByCurrentUser(topic, args, ctx);
+    },
+    questionsCount(topic, args, ctx) {
+      return topicLogic.questionsCount(topic, args, ctx)
     }
   },
 

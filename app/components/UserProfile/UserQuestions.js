@@ -7,24 +7,24 @@ import PropTypes from 'prop-types';
 import UserQuestionsList from './QuestionLists/UserQuestionsList';
 import StarredQuestionsList from './QuestionLists/StarredQuestionsList';
 
-import { LATEST, STAR } from './viewLabels';
+import { USERQUESTIONS, STARRREDQUESTIONS } from './viewLabels';
 
 const UserQuestions = (props) => {
 
-  var questionLst;
-  if (props.questionView === LATEST) {
-    questionLst = <UserQuestionsList userId={props.userId}/>
+  let questionLst;
+  if (props.questionView === USERQUESTIONS) {
+    questionLst = <UserQuestionsList user={props.user}/>
   }
-  if (props.questionView === STAR) {
-    questionLst =  <StarredQuestionsList userId={props.userId}/>
+  if (props.questionView === STARRREDQUESTIONS) {
+    questionLst =  <StarredQuestionsList user={props.user}/>
 
   }
   return (
     <div>
-      <button onClick={() => {props.onViewChange(LATEST)}}>Latest</button>
+      <button onClick={() => {props.onViewChange(USERQUESTIONS)}}>User's Questions</button>
 
 
-      <button onClick={() => {props.onViewChange(STAR)}}>Starred Questions</button>
+      <button onClick={() => {props.onViewChange(STARRREDQUESTIONS)}}>Starred Questions</button>
 
 
       {questionLst}
@@ -34,9 +34,9 @@ const UserQuestions = (props) => {
 }
 
 UserQuestions.propTypes = {
-  userId: PropTypes.string,
+  user: PropTypes.shape({}).isRequired,
   onViewChange: PropTypes.func.isRequired,
 
-}
+};
 
 export default UserQuestions;

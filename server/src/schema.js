@@ -10,7 +10,8 @@ const typeDefs = `
    followers: [User]
    numberOfFollowers: Int!
    followedByCurrentUser: Boolean!
-   questions: [Question]
+   questions(first: Int, after: String, last: Int, before: String): QuestionConnection!
+   questionsCount: Int!
   }
   
   type PageInfo {
@@ -117,12 +118,14 @@ const typeDefs = `
   
   
   type Query {
+   
+   topic(topicId: ID!): Topic!
    topTopics: [Topic]
    topics: [Topic]    
    user(id: ID!): User
    questionById(questionId: ID!): Question!
    questionLinks(questionId: ID!, linkType: String!, first: Int, after: String, last: Int, before: String): QuestionLinkConnection!
-
+    
    
    randomQuestion(visitedQuestionIds: [ID]!): Question!
    questions(parentId: Int, first: Int, after: String, last: Int, before: String): QuestionConnection!

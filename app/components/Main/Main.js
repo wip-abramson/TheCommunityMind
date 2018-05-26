@@ -10,7 +10,7 @@ import { browserHistory } from 'react-router'
 import QuestionPopupContainer from '../old/QuestionPopup/QuestionPopupContainer';
 
 import Notifications from 'react-notification-system-redux';
-import Modal from '../generic/Modal';
+import Modal from '../generic/Modal/Modal';
 import OstInformation from '../OstInformation/OstInformation';
 
 

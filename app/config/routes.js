@@ -9,6 +9,8 @@ import LandingPage from '../components/LandingPage/LandingPage';
 import QuestionsLinksContainer from '../components/QuestionLinksContainers/QuestionsLinksViewContainer';
 import RandomQuestionTracker from '../components/RandomQuestionContainer/RandomQuestionTracker';
 import QuestionIdFocusContainer from '../components/QuestionIdFocusContainer/QuestionIdFocusContainer';
+import LinkFocus from '../components/LinkFocus/LinkFocus';
+import TopicsQuestionsContainer from '../components/TopicContainer/TopicContainer';
 
 const AppRouter = function () {
   return (
@@ -23,6 +25,7 @@ const AppRouter = function () {
 
         <Route path='/question' component={QuestionIdFocusContainer}/>
         <Route path='/question/links' component={QuestionsLinksContainer}/>
+        <Route path='/topic' component={TopicsQuestionsContainer}/>
 
         < Route
           path='/login'

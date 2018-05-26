@@ -10,16 +10,23 @@ const QUESTION_LINKS_QUERY = gql`
       edges {
         node {
           fromQuestion {
-            ...QuestionFragment
+            id
+            questionText
           }
           toQuestion {
-            ...QuestionFragment
+            id
+            questionText
+          }
+          createdAt
+          linkType
+          owner {
+            id
+            username
           }
         }
       }
     }
   }
-  ${QUESTION_FRAGMENT}
 `;
 
 export default QUESTION_LINKS_QUERY;

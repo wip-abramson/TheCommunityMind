@@ -18,8 +18,9 @@ class Modal extends React.Component {
       <div className={[styles.backdrop, "backdrop"].join(' ')}>
         <div className={[styles.modalStyle, "modal"].join(' ')}>
           {this.props.children}
-
+          {this.props.onClose ?
             <FaClose className={styles.closeButton} size={30} onClick={this.props.onClose}/>
+            : null}
         </div>
       </div>
     );
@@ -27,7 +28,7 @@ class Modal extends React.Component {
 }
 
 Modal.propTypes = {
-  onClose: PropTypes.func.isRequired,
+  onClose: PropTypes.func,
   show: PropTypes.bool,
   children: PropTypes.node
 };

@@ -11,6 +11,8 @@ import styles from './styles.css';
 import UserInteractionsBar from '../UserInteractionsBar/UserInteractionsBar';
 import QuestionUsernameBar from '../QuestionUsernameBar/QuestionUsernameBar';
 import QuestionBox from '../QuestionBox/QuestionBox'
+import Modal from '../generic/Modal/Modal';
+import Loading from '../generic/Loading/Loading';
 
 import FIND_OR_CREATE_TOPIC from '../../graphql/mutations/findOrCreateTopic.mutation';
 import CREATE_QUESTION_MUTATION from '../../graphql/mutations/createQuestion.mutation';
@@ -97,7 +99,8 @@ class QuestionInputFocus extends React.Component {
       question: {
         ...this.state.question,
         questionText: updatedQuestionText
-      }
+      },
+      showLoadingModal: false,
 
     })
   }
@@ -148,7 +151,6 @@ class QuestionInputFocus extends React.Component {
       this.props.inputFieldEmptyErrorNotification("No topic entered! You must enter a topic first");
     }
 
-
   }
 
   handleDeleteTopic(topicId) {
@@ -156,8 +158,8 @@ class QuestionInputFocus extends React.Component {
     let indexToRemove = topicIds.indexOf(topicId);
 
     const newEdges = [];
-    for(let i = 0 ; i < this.state.question.linksToTopics.edges.length ; i++) {
-      if(i !== indexToRemove) {
+    for (let i = 0; i < this.state.question.linksToTopics.edges.length; i++) {
+      if (i !== indexToRemove) {
         newEdges.push(this.state.question.linksToTopics.edges[i]);
       }
     }
@@ -175,8 +177,8 @@ class QuestionInputFocus extends React.Component {
   }
 
   handleSubmitQuestion() {
-    if (!isEmpty(this.state.question.questionText))
-    {
+    if (!isEmpty(this.state.question.questionText)) {
+      this.setState({showLoadingModal: true});
       const questionText = this.state.question.questionText.trim().toLowerCase();
       const linkType = this.state.question.linkTypeSelected ? this.state.question.linkTypeSelected.linkType : null;
       const topicIds = this.state.question.linksToTopics.edges.map(edge => edge.node.topic.id);
@@ -192,7 +194,8 @@ class QuestionInputFocus extends React.Component {
             },
             linkTypeSelected: null,
             questionText: "",
-          }
+          },
+          showLoadingModal: false
         });
         browserHistory.push({
           pathname: "/question",
@@ -208,6 +211,8 @@ class QuestionInputFocus extends React.Component {
       this.props.inputFieldEmptyErrorNotification("Question empty! Please enter a question first");
     }
   }
+
+
 
   render() {
     return (
@@ -227,13 +232,16 @@ class QuestionInputFocus extends React.Component {
           isInput={this.isInput}
           onSubmitQuestion={this.handleSubmitQuestion}
           toggleIsInput={this.props.toggleIsInput}/>
+        <Modal show={this.state.showLoadingModal}>
+          <Loading loadingText="Submitting Inspiration to The Community Mind."/>
+        </Modal>
       </div>
 
     )
   }
 }
 
-function isEmpty(str){
+function isEmpty(str) {
   return !str.replace(/^\s+/g, '').length; // boolean (`true` if field is empty)
 }
 

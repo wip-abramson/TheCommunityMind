@@ -337,41 +337,42 @@ const questionLinkTypes = [
   REWORDING_LINK
 ];
 
-// Conn.sync({ force: true, logging: console.log })
-//   .then(() => {
-//     return QuestionLinkTypeModel.create({ linkType: PARENT_CHILD_LINK })
-//       .then(createdLinkType => {
-//         QuestionLinkType.create({ linkType: RELATED_LINK });
-//         QuestionLinkType.create({ linkType: REWORDING_LINK });
-//                 const passwrd = "tPass2";
-//         return bcrypt.hash(passwrd, 10)
-//           .then((hash1) => {
-//             let user1 = {
-//               email: faker.internet.email(),
-//               username: "Alice",
-//               password: hash1,
-//               version: 1,
-//               ostUuid: 'e3586536-bfb4-4b98-8998-e4c9a8069cba',
-//             };
-//             return UserModel.create(user1)
-//               .then(user1 => {
-//                 return user1.createQuestion({
-//                   questionText: "Why should I care about blockchain technology"
-//                 })
-//               })
-//           })
-//
-//
-//       })
-//
-//
-//   });
-//
-Conn.sync()
+Conn.sync({ force: true, logging: console.log })
   .then(() => {
-  populateActions();
-  ostUserQueries.getUser('9aa974b4-9fa7-4f93-bd88-a3cf3de1fa22')
-  } );
+
+    return QuestionLinkTypeModel.create({ linkType: PARENT_CHILD_LINK })
+      .then(createdLinkType => {
+        QuestionLinkType.create({ linkType: RELATED_LINK });
+        QuestionLinkType.create({ linkType: REWORDING_LINK });
+                const passwrd = "tPass2";
+        return bcrypt.hash(passwrd, 10)
+          .then((hash1) => {
+            let user1 = {
+              email: faker.internet.email(),
+              username: "Alice",
+              password: hash1,
+              version: 1,
+              ostUuid: 'e3586536-bfb4-4b98-8998-e4c9a8069cba',
+            };
+            return UserModel.create(user1)
+              .then(user1 => {
+                return user1.createQuestion({
+                  questionText: "Why should I care about blockchain technology"
+                })
+              })
+          })
+
+
+      })
+
+
+  });
+//
+// Conn.sync()
+//   .then(() => {
+//   populateActions();
+//   ostUserQueries.getUser('9aa974b4-9fa7-4f93-bd88-a3cf3de1fa22')
+//   } );
 // Conn.sync({ force: true })
 //   .then(() => {
 //     return QuestionLinkTypeModel.create({ linkType: PARENT_CHILD_LINK })

@@ -22,7 +22,7 @@ const QuestionLinkType = ({hasBorder, linkType, isInput, selectLinkType, idSelec
         <Checkbox
           isSelected={idSelected === linkType.id}
           selectCheckbox={() => selectLinkType(linkType)}/>
-        : <Count amount={linkType.amount}/>}
+        : <Count amount={linkType.amount} toolTipMessage={linkType.linkType + "s"}/>}
     </div>
   )
 };

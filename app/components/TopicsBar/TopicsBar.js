@@ -93,8 +93,8 @@ const unfollowTopic = graphql(UNFOLLOW_TOPIC_MUTATION, {
 
 const approveQuestionTopicLink = graphql(APPROVE_QUESTION_TOPIC_LINK_MUTATION, {
   props: ({ ownProps, mutate }) => ({
-    approveQuestionTopicLink: (topicId, questionId) => {
-
+    approveQuestionTopicLink: (topicId, questionId, approval) => {
+      console.log("Approve link", topicId, questionId, approval);
       return mutate({
         variables: { topicId, questionId },
         optimisticResponse: {
@@ -102,6 +102,7 @@ const approveQuestionTopicLink = graphql(APPROVE_QUESTION_TOPIC_LINK_MUTATION, {
           approveQuestionTopicLink: {
             __typename: 'QuestionTopicLink',
             approvedByCurrentUser: true,
+            approval: approval +1,
             question: {
               __typename: 'Question',
               id: questionId
@@ -112,6 +113,18 @@ const approveQuestionTopicLink = graphql(APPROVE_QUESTION_TOPIC_LINK_MUTATION, {
             }
           }
         },
+        update: (proxy, { data: { approveQuestionTopicLink } }) => {
+          ownProps.updateQuery(proxy, (question) => {
+            question.linksToTopics.edges.forEach(edge => {
+              if (edge.node.topic.id === topicId) {
+                edge.node.approvedByCurrentUser = true;
+                edge.node.approval ++;
+              }
+            });
+
+            return question;
+          })
+        }
       })
         .catch(res => {
           // catches any error returned from mutation request
@@ -130,8 +143,8 @@ const approveQuestionTopicLink = graphql(APPROVE_QUESTION_TOPIC_LINK_MUTATION, {
 
 const unapproveQuestionTopicLink = graphql(UNAPPROVE_QUESTION_TOPIC_LINK_MUTATION, {
   props: ({ ownProps, mutate }) => ({
-    unapproveQuestionTopicLink: (topicId, questionId) => {
-      console.log("Unapprove link", topicId, questionId);
+    unapproveQuestionTopicLink: (topicId, questionId, approval) => {
+      console.log("Unapprove link", topicId, questionId, approval);
       return mutate({
         variables: { topicId, questionId },
         optimisticResponse: {
@@ -139,6 +152,7 @@ const unapproveQuestionTopicLink = graphql(UNAPPROVE_QUESTION_TOPIC_LINK_MUTATIO
           unapproveQuestionTopicLink: {
             __typename: 'QuestionTopicLink',
             approvedByCurrentUser: false,
+            approval: 0,
             question: {
               __typename: 'Question',
               id: questionId
@@ -149,6 +163,18 @@ const unapproveQuestionTopicLink = graphql(UNAPPROVE_QUESTION_TOPIC_LINK_MUTATIO
             }
           }
         },
+        update: (proxy, { data: { unapproveQuestionTopicLink } }) => {
+          ownProps.updateQuery(proxy, (question) => {
+            question.linksToTopics.edges.forEach(edge => {
+              if (edge.node.topic.id === topicId) {
+                edge.node.approvedByCurrentUser = false;
+                edge.node.approval--;
+              }
+            });
+
+            return question;
+          })
+        }
       })
         .catch(res => {
           // catches any error returned from mutation request

@@ -85,10 +85,13 @@ class QuestionFocusContainer extends React.Component {
         <QuestionInputFocus
           currentTopicLinks={this.props.question.linksToTopics}
           toggleIsInput={this.toggleIsInput}
+          previousQuestion={this.props.question.questionText}
           inputFieldEmptyErrorNotification={this.props.inputFieldEmpty}
           questioningId={this.props.question.id}/>
         :
         <QuestionFocus
+          updateQuery={this.props.updateQuery}
+          navRightText={this.props.navRightText}
           refetchQuestion={this.props.refetchQuery}
           onNextQuestion={this.props.onNextQuestion}
           onPreviousQuestion={this.handleNavBackwards}
@@ -105,6 +108,8 @@ QuestionFocusContainer.propTypes = {
   error: PropTypes.string,
   onNextQuestion: PropTypes.func.isRequired,
   onPreviousQuestion: PropTypes.func.isRequired,
+  navRightText: PropTypes.string.isRequired,
+  updateQuery: PropTypes.func.isRequired
 };
 
 export default connect(

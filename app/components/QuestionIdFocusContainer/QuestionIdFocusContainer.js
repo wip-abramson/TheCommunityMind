@@ -19,7 +19,21 @@ export default graphql(QUESTION_BY_ID_QUERY, {
     loading,
     error,
     question: questionById,
+    updateQuery: (proxy, updateQuestion) => {
+
+      const query = {
+        query: QUESTION_BY_ID_QUERY,
+        variables: { questionId: ownProps.location.query.questionId},
+      };
+      let data = proxy.readQuery(query);
+
+      data.questionById = updateQuestion(data.questionById);
+      // Write our data back to the cache.
+      query.data = data;
+      proxy.writeQuery(query);
+    },
     onNextQuestion: () => { browserHistory.push({pathname: "/"})},
     onPreviousQuestion: (previousQuestionId) =>  { browserHistory.push({pathname: "/question", query: {questionId: previousQuestionId}})},
+    navRightText: "Random Question"
   })
 })(QuestionFocusContainer)

@@ -12,6 +12,7 @@ const APPROVE_QUESTION_TOPIC_LINK_MUTATION = gql`
         id
       }
       approvedByCurrentUser
+      approval
     }
   }
 `;

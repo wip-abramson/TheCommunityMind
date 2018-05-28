@@ -6,10 +6,10 @@ import PropTypes from 'prop-types';
 
 import styles from './styles.css';
 
-const QuestionInput = ({currentInput, onInputChange}) =>
+const QuestionInput = ({currentInput, onInputChange, previousQuestion}) =>
   <div className={styles.questionInputBox}>
     <textarea
-      placeholder="Ask your beautiful question ...."
+      placeholder={previousQuestion + "...."}
       value={currentInput}
       onChange={(evt) => onInputChange(evt.target.value)}
       autoFocus={true}
@@ -18,7 +18,8 @@ const QuestionInput = ({currentInput, onInputChange}) =>
 
 QuestionInput.propTypes = {
   currentInput: PropTypes.string.isRequired,
-  onInputChange: PropTypes.func.isRequired
+  onInputChange: PropTypes.func.isRequired,
+  previousQuestion: PropTypes.string.isRequired
 };
 
 export default QuestionInput;

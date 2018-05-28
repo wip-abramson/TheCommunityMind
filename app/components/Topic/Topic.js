@@ -34,6 +34,7 @@ const Topic = ({ styles, questionId, topic, onDeleteTopic, strength, isInput, fo
           followTopic={followTopic}
           unfollowTopic={unfollowTopic}/>
         <ApproveLink
+          approval={strength}
           questionId={questionId}
           canApprove={!linkApproved}
           approveLink={approveQuestionTopicLink}
@@ -42,7 +43,7 @@ const Topic = ({ styles, questionId, topic, onDeleteTopic, strength, isInput, fo
         <Incentivise topicId={topic.id}/>
         <ViewTopic topicId={topic.id}/>
       </Dropdown>
-      <Count amount={strength}/>
+      <Count amount={strength} toolTipMessage=" Approved Links"/>
 
     </div>;
 };

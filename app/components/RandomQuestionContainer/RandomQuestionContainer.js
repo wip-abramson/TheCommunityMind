@@ -12,8 +12,9 @@ import RANDOM_QUESTION_QUERY from '../../graphql/querys/randomQuestion.query';
 export default graphql(RANDOM_QUESTION_QUERY, {
   options: (ownProps) => {
     return ({
+      // TODO visited question ids should be tracked in backend
       variables: { visitedQuestionIds: ownProps.visitedQuestionIds },
-      refetchQuery: graphql(RANDOM_QUESTION_QUERY, {variables: {visitedQuestionIds: ownProps.visitedQuestionIds }})
+      refetchQuery: graphql(RANDOM_QUESTION_QUERY, { variables: { visitedQuestionIds: ownProps.visitedQuestionIds } })
     });
   },
   props: ({ ownProps, data: { refetchQuery, loading, error, randomQuestion } }) => ({
@@ -21,12 +22,26 @@ export default graphql(RANDOM_QUESTION_QUERY, {
     error,
     question: randomQuestion,
     refetchQuery: refetchQuery,
+    updateQuery: (proxy, updateQuestion) => {
+
+      const query = {
+        query: RANDOM_QUESTION_QUERY,
+        variables: { visitedQuestionIds: ownProps.visitedQuestionIds },
+      };
+      let data = proxy.readQuery(query);
+
+      data.randomQuestion = updateQuestion(data.randomQuestion);
+      // Write our data back to the cache.
+      query.data = data;
+      proxy.writeQuery(query);
+    },
     onNextQuestion: () => {
       ownProps.onNextQuestion(randomQuestion.id)
     },
     onPreviousQuestion: (previousQuestionId) => {
       browserHistory.push({ pathname: "/question", query: { questionId: previousQuestionId } })
     },
+    navRightText: "Random Question"
   })
 })(QuestionFocusContainer);
 

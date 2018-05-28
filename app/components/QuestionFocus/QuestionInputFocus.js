@@ -219,6 +219,7 @@ class QuestionInputFocus extends React.Component {
       <div className={styles.focusGrid}>
         <QuestionUsernameBar focusType="Question Input" isInput={this.isInput}/>
         <QuestionBox
+          previousQuestion={this.props.previousQuestion}
           isInput={this.isInput}
           onSubmitQuestion={this.handleSubmitQuestion}
           onQuestionChange={this.handleQuestionTextChange}
@@ -246,6 +247,7 @@ function isEmpty(str) {
 }
 
 QuestionInputFocus.propTypes = {
+  previousQuestion: PropTypes.string.isRequired,
   toggleIsInput: PropTypes.func.isRequired,
   findOrCreateTopic: PropTypes.func.isRequired,
   createQuestion: PropTypes.func.isRequired,

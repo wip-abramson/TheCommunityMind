@@ -17,6 +17,7 @@ class QuestionsList extends React.Component {
     this.onPreviousQuestion = this.onPreviousQuestion.bind(this);
     this.getQuestionToDisplay = this.getQuestionToDisplay.bind(this);
     this.getTitle = this.getTitle.bind(this);
+    this.updateQuestionInQuery = this.updateQuestionInQuery.bind(this);
   }
 
   onPreviousQuestion() {
@@ -28,20 +29,24 @@ class QuestionsList extends React.Component {
   }
 
   onNextQuestion() {
-    console.log("NEXT", this.state.currentIndex, this.props.totalQuestionsCount)
     if (this.state.currentIndex + 1 <= this.props.totalQuestionsCount - 1) {
       if(this.state.currentIndex + 1 >= this.props.questionConnection.edges.length -1) {
         this.props.loadMoreEntries();
       }
-      console.log("NEXT", this.props.questionConnection.edges.length, this.props.totalQuestionsCount)
 
       while(this.props.questionConnection.edges.length <= this.state.currentIndex+1){}
       this.setState({
         currentIndex: this.state.currentIndex+1
       })
-
-
     }
+  }
+
+  updateQuestionInQuery(proxy, updateQuestion) {
+    this.props.updateQuery(proxy, (questionEdges) => {
+      questionEdges[this.state.currentIndex].node.question = updateQuestion(questionEdges[this.state.currentIndex].node);
+
+      return questionEdges;
+    })
   }
 
   getQuestionToDisplay() {
@@ -60,12 +65,12 @@ class QuestionsList extends React.Component {
     if(this.props.error) {
       return <h1>Error</h1>
     }
-    console.log(this.props.questionConnection)
     return (
       <div>
         <h1>{this.getTitle()}</h1>
-        {/*<div>{this.props.questionConnection.edges.length}</div>*/}
         <QuestionFocusContainer
+          navRightText="Next Question"
+          updateQuery={this.updateQuestionInQuery}
           question={this.getQuestionToDisplay()}
           loading={false}
           onNextQuestion={this.onNextQuestion}
@@ -77,6 +82,7 @@ class QuestionsList extends React.Component {
 
 }
 
+// TODO what is wrong with this???
 // QuestionsList.propTypes = {
 //   questionConnection: PropTypes.shape({
 //     edges: PropTypes.array().isRequired,

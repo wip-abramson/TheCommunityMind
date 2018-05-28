@@ -5,6 +5,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
+import ReactTooltip from 'react-tooltip'
 
 import styles from './styles.css';
 
@@ -54,14 +55,15 @@ class QuestionFocus extends React.Component {
                              user={this.props.question.owner}
                              timeCreated={this.props.question.createdAt}
                              focusType="Question Focus"/>
-        <FaLeftArrow size={30} className={styles.leftNav} onClick={this.props.onPreviousQuestion}/>
+        <FaLeftArrow size={30} className={styles.leftNav} onClick={this.props.onPreviousQuestion} data-tip="Previous Question"/>
         <QuestionBox
+          updateQuery={this.props.updateQuery}
           refetchQuestion={this.props.refetchQuestion}
           onSelectQuestionLink={this.handleSelectLinkType}
           question={this.props.question}
           isInput={this.isInput}
           onSubmitQuestion={this.handleSubmitQuestion}/>
-        <FaRightArrow size={30} className={styles.rightNav} onClick={this.props.onNextQuestion}/>
+        <FaRightArrow size={30} className={styles.rightNav} onClick={this.props.onNextQuestion} data-tip={this.props.navRightText}/>
         <UserInteractionsBar isInput={this.isInput}
                              stars={this.props.question.stars}
                              starredByCurrentUser={this.props.question.starredByCurrentUser}
@@ -69,6 +71,7 @@ class QuestionFocus extends React.Component {
                              ponderedByCurrentUser={this.props.question.ponderedByCurrentUser}
                              questionId={this.props.question.id}
                              toggleIsInput={this.props.toggleIsInput}/>
+        <ReactTooltip/>
       </div>
 
     )
@@ -79,7 +82,8 @@ QuestionFocus.propTypes = {
   question: PropTypes.shape({}).isRequired,
   toggleIsInput: PropTypes.func.isRequired,
   onNextQuestion: PropTypes.func.isRequired,
-  onPreviousQuestion: PropTypes.func.isRequired
+  onPreviousQuestion: PropTypes.func.isRequired,
+  navRightText: PropTypes.string.isRequired
 };
 
 export default connect(

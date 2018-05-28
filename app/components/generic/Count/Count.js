@@ -8,11 +8,12 @@ import {Badge} from 'react-bootstrap';
 
 import styles from './styles.css';
 
-const Count = ({amount}) =>
-  <Badge className={styles.badge}>{amount}</Badge>;
+const Count = ({amount, toolTipMessage}) =>
+  <Badge data-tip={amount + " " + toolTipMessage} className={styles.badge}>{amount}</Badge>;
 
 Count.propTypes = {
-  amount: PropTypes.number.isRequired
+  amount: PropTypes.number.isRequired,
+  toolTipMessage: PropTypes.string.isRequired
 };
 
 export default Count;

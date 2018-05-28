@@ -26,6 +26,7 @@ class QuestionBox extends React.Component {
     return (
       <div className={styles.questionBox}>
         <TopicsBar
+          updateQuery={this.props.updateQuery}
           topicLinks={this.props.question.linksToTopics.edges.map(edge => edge.node)}
           hasMoreTopics={this.props.question.linksToTopics.pageInfo.hasNextPage}// this.props.question.linksToTopics.edges.pageInfo.hasNextPage}
           onAddTopic={this.props.onAddTopic}
@@ -34,7 +35,7 @@ class QuestionBox extends React.Component {
           onDeleteTopic={this.props.onDeleteTopic}
         />
         {this.props.isInput ?
-          <QuestionInput currentInput={this.props.question.questionText} onInputChange={this.props.onQuestionChange}/> :
+          <QuestionInput previousQuestion={this.props.previousQuestion} currentInput={this.props.question.questionText} onInputChange={this.props.onQuestionChange}/> :
           <QuestionText questionText={this.props.question.questionText} />}
         <QuestionLinksBar
           superQuestionsCount={this.props.question.superQuestionsCount}
@@ -66,7 +67,8 @@ QuestionBox.propTypes = {
   onQuestionChange: PropTypes.func,
   onSelectQuestionLink: PropTypes.func.isRequired,
   onAddTopic: PropTypes.func,
-  onDeleteTopic: PropTypes.func
+  onDeleteTopic: PropTypes.func,
+  previousQuestion: PropTypes.string,
 };
 
 export default QuestionBox;

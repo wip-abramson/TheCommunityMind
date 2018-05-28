@@ -1,7 +1,10 @@
 import React from 'react'
 import MainHeader from './Header/MainHeader'
 import FullDiv from '../generic/FullDiv';
-import { Grid, Row } from 'react-bootstrap'
+import { Grid } from 'react-bootstrap'
+import ReactTooltip from 'react-tooltip'
+
+
 import { connect } from 'react-redux'
 import { signOut } from '../../actions/Auth';
 import { showQuestionPopup, hideQuestionPopup } from '../../actions/QuestionPopup';
@@ -136,6 +139,7 @@ class Main extends React.Component{
         <Modal onClose={this.toggleOstModal} show={this.state.ostModalOpen}>
           <OstInformation/>
         </Modal>
+        <ReactTooltip place="top" type="dark" effect="float"/>
 
       </FullDiv>
     )

@@ -159,16 +159,19 @@ const View = ({stars, starredByCurrentUser, starQuestion, unstarQuestion, ponder
       starQuestion={starQuestion}
       unstarQuestion={unstarQuestion}
     />
-    <PonderIcon
-      ponderCount={ponderCount}
-      isPondering={ponderedByCurrentUser}
-      ponderQuestion={ponderQuestion}
-      forgetAboutQuestion={forgetQuestion}
-    />
+      <PonderIcon
+
+        ponderCount={ponderCount}
+        isPondering={ponderedByCurrentUser}
+        ponderQuestion={ponderQuestion}
+        forgetAboutQuestion={forgetQuestion}
+      />
+
     <div className={styles.spaceHolder}/>
     {// TODO Implement adding links
       /*<AddLinkIcon addLinkToQuestion={() => console.log("Add Link")}/>*/}
     <AskQuestionIcon changeToInputView={toggleIsInput}/>
+
   </div>;
 
 View.propTypes = {

@@ -12,13 +12,14 @@ import Count from '../../generic/Count/Count';
 const StarIcon = ({ isStarred, starQuestion, unstarQuestion, starCount }) => {
   console.log(isStarred);
   return (
-    <span>
+    <span >
       <FaStar
+        data-tip="Star Question"
         size={35}
         className={isStarred ? styles.starredIcon : styles.icon}
         onClick={ isStarred ? unstarQuestion : starQuestion }
       />
-      <Count amount={starCount}/>
+      <Count amount={starCount} toolTipMessage="Starred Questions"/>
     </span>
   )
 };

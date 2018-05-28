@@ -16,11 +16,12 @@ const PonderIcon =  ({ isPondering, ponderCount, ponderQuestion, forgetAboutQues
   return (
     <span>
     <FaLightBulb
+      data-tip="Ponder Question"
       size={35}
       className={isPondering ? styles.ponderingIcon : styles.icon}
       onClick={isPondering ? forgetAboutQuestion : ponderQuestion}
     />
-    <Count amount={ponderCount}/>
+    <Count amount={ponderCount} toolTipMessage="users pondering"/>
   </span>
   )
 }

@@ -8,7 +8,7 @@ import FaQuestion from 'react-icons/lib/fa/question-circle';
 import styles from '../styles.css';
 
 const AskQuestionIcon = ({ changeToInputView }) =>
-  <span>
+  <span data-tip="Ask Question">
       <FaQuestion
         size={35}
         className={[styles.icon, styles.askQuestionIcon].join(" ")}

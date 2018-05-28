@@ -21,6 +21,12 @@ import FOLLOW_USER_MUTATION from '../../graphql/mutations/followUser.mutation'
 import UNFOLLOW_USER_MUTATION from '../../graphql/mutations/unfollowUser.mutation';
 import TIP_USER_MUTATION from '../../graphql/mutations/tipUser.mutation';
 
+const mapStateToProps = function(state) {
+  return {
+    currentUser: state.auth.currentUser
+  }
+};
+
 const mapDispatchToProps = function (dispatch) {
   return {
     unAuthorized: () => {
@@ -122,22 +128,31 @@ const tipUser = graphql(TIP_USER_MUTATION, {
 });
 
 
-const Username = ({user, followUser, unfollowUser, tipUser}) => {
+const Username = ({user, followUser, unfollowUser, tipUser, currentUser}) => {
+
+
   console.log(user);
   return (
     <div className={styles.username}>
-      <Dropdown title={user.username} fontSize={22} id={user.id}>
-        <FollowUser
-          canFollow={!user.followedByCurrentUser}
-          followUser={followUser}
-          unfollowUser={unfollowUser}
-          userId={user.id}/>
-        <TipUser
-          userId={user.id}
-          tipUser={tipUser}/>
-        <ViewProfile userId={user.id}/>
-      </Dropdown>
-      <Count amount={user.questionsAskedCount}/>
+      {currentUser.id !== user.id ?
+        <Dropdown title={user.username} fontSize={22} id={user.id}>
+
+          <FollowUser
+            canFollow={!user.followedByCurrentUser}
+            followUser={followUser}
+            unfollowUser={unfollowUser}
+            userId={user.id}/>
+          <TipUser
+            userId={user.id}
+            tipUser={tipUser}/>
+          <ViewProfile userId={user.id}/>
+        </Dropdown>
+        :
+        <Dropdown title={user.username} fontSize={22} id={user.id}>
+          <ViewProfile userId={user.id}/>
+        </Dropdown>}
+
+      <Count amount={user.questionsAskedCount} toolTipMessage=" Questions Asked"/>
     </div>
   )
 }
@@ -155,7 +170,7 @@ Username.propTypes = {
 
 export default compose(
   connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
   ),
   tipUser,

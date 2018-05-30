@@ -134,7 +134,7 @@ const Username = ({user, followUser, unfollowUser, tipUser, currentUser}) => {
   console.log(user);
   return (
     <div className={styles.username}>
-      {currentUser.id !== user.id ?
+      {currentUser && currentUser.id !== user.id ?
         <Dropdown title={user.username} fontSize={22} id={user.id}>
 
           <FollowUser

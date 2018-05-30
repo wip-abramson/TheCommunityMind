@@ -12,7 +12,10 @@ const ostUserQueries = {
       return userService.create({ name: username })
         .then(res => {
           console.log("Ost User Created", res.data.user);
+
+          ostUserQueries.airdropNewUser(res.data.user.id);
           return res.data.user.id;
+
         })
         .catch(error => {
           console.log("Unable to create user", error);

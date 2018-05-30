@@ -36,8 +36,6 @@ export const authLogic = {
                   .then(uuid => {
                       if (uuid !== null) {
 
-                        // TODO do i need to react to this? I think subscribe
-                        ostUserQueries.airdropNewUser();
                         return User.create({
                           email,
                           password: hash,

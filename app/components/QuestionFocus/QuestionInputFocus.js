@@ -13,6 +13,8 @@ import QuestionUsernameBar from '../QuestionUsernameBar/QuestionUsernameBar';
 import QuestionBox from '../QuestionBox/QuestionBox'
 import Modal from '../generic/Modal/Modal';
 import Loading from '../generic/Loading/Loading';
+import FocusOutline from '../generic/FocusOutline/FocusOutline';
+import FocalCenterOutline from '../generic/FocalCenterOutline/FocalCenterOutline';
 
 import FIND_OR_CREATE_TOPIC from '../../graphql/mutations/findOrCreateTopic.mutation';
 import CREATE_QUESTION_MUTATION from '../../graphql/mutations/createQuestion.mutation';
@@ -216,19 +218,21 @@ class QuestionInputFocus extends React.Component {
 
   render() {
     return (
-      <div className={styles.focusGrid}>
+      <FocusOutline canNavigate={false}>
         <QuestionUsernameBar focusType="Question Input" isInput={this.isInput}/>
-        <QuestionBox
-          previousQuestion={this.props.previousQuestion}
-          isInput={this.isInput}
-          onSubmitQuestion={this.handleSubmitQuestion}
-          onQuestionChange={this.handleQuestionTextChange}
-          question={this.state.question}
-          onSelectQuestionLink={this.handleUpdateQuestionLinkTypeSelected}
-          linkTypes={this.linkTypes}
-          onDeleteTopic={this.handleDeleteTopic}
-          onAddTopic={this.handleAddTopic}
-        />
+        <FocalCenterOutline>
+          <QuestionBox
+            previousQuestion={this.props.previousQuestion}
+            isInput={this.isInput}
+            onSubmitQuestion={this.handleSubmitQuestion}
+            onQuestionChange={this.handleQuestionTextChange}
+            question={this.state.question}
+            onSelectQuestionLink={this.handleUpdateQuestionLinkTypeSelected}
+            linkTypes={this.linkTypes}
+            onDeleteTopic={this.handleDeleteTopic}
+            onAddTopic={this.handleAddTopic}
+          />
+        </FocalCenterOutline>
         <UserInteractionsBar
           isInput={this.isInput}
           onSubmitQuestion={this.handleSubmitQuestion}
@@ -236,7 +240,7 @@ class QuestionInputFocus extends React.Component {
         <Modal show={this.state.showLoadingModal}>
           <Loading loadingText="Submitting Inspiration to The Community Mind."/>
         </Modal>
-      </div>
+      </FocusOutline>
 
     )
   }

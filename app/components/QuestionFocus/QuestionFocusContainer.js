@@ -5,6 +5,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 
+import LoadingFocus from '../LoadingFocus/LoadingFocus';
 import QuestionFocus from './QuestionFocus';
 import QuestionInputFocus from './QuestionInputFocus'
 
@@ -75,7 +76,7 @@ class QuestionFocusContainer extends React.Component {
 
   render() {
     if (this.props.loading) {
-      return <div/>
+      return <LoadingFocus/>
     }
     else if (this.props.error) {
       return <h1>Error</h1>

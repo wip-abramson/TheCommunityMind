@@ -1,13 +1,10 @@
 .linkBox {
-    grid-area: questionBox;
     height: 100%;
     width: 100%;
 
     display: grid;
     grid-template-rows: 3fr 1fr 3fr;
     grid-template-areas: "fromQuestion" "relation" "toQuestion";
-
-    border: 3px solid black;
 }
 
 .fromQuestion {

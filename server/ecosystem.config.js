@@ -24,7 +24,7 @@ module.exports = {
   deploy: {
     production: {
       user: 'ubuntu',
-      host: 'ec2-35-176-132-192.eu-west-2.compute.amazonaws.com',
+      host: 'ec2-35-177-227-135.eu-west-2.compute.amazonaws.com',
       key: '~/.ssh/TCM_key.pem',
       ref: 'origin/master',
       repo: 'git@github.com:wip-abramson/TheCommunityMind.git',
